@@ -1,315 +1,192 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
-    
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="loannes&#39;s blog">
-    <title>学习如何制作一个像Clear的时髦的手势驱动的备忘录app - loannes&#39;s blog</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <meta name="author" content="loannes">
-    
-    
-    
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"loannes","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"==================================================\n原文链接：https://www.raywenderlich.com/21842/how-to-make-a-gesture-driven-to-do-list-app-part-13\n[译]如何制作一个类似Clear支持手势驱动的备忘录App (一)\n学习如何制作一个像Clear的时髦的手势驱动的备忘录app\n这是由教程组的成员ColinEberhardt,ShinobiControls的CTO,一名会打造有趣又强大的iOS控件的开发者。看看他们的app，ShinobiPlay。你还能在Google+和 Twitter上找到Colin的踪迹。\n这三部分教程将会带你通过开发一个简单的备忘录应用，并且没有button，switch和其他常见的UI控件。\n换言之，用户将会通过一系列直觉性的手势动作来与你的app产生交互行为，包括挥动，拖动添加，捏。为了避免常见的界面组件，你将会提供给用户一个更加亮眼的又不杂乱的界面。这并不是意味着一个空的手势！\n这个教程是给中级和更高级的开发者的-你将会做一些棘手的东西像倾斜的图层，执行动画，甚至创建一个自定义个tableview。如果你是个初级开发者，你应该先去学习我们的其他课程。\n如果你想让你的应用在手势方面更加好用，这里就有一个适合你的教程。读一读然后亲手操练起来吧！\n拟物化和触摸界面\n在写代码之前，在UI设计中手势起到的作用这一点值得我们花一点时间去讨论下。不要急，这是一个很值得注意的话题。\n手机的多点触控界面允许了更多直接的交互-因此也产生了更多的控制方式和表现方式-远超了一个单点触碰的设备。\n一些非常酷又具有直觉性的手势被开发了出来，比如捏/张开,轻拍，拖曳，和点击长按。但是它们很少被使用！（有一个例外是捏/张开,这是将成为处理图像的标准机制。）\n尽管现在的触摸技术已经表现的很自然了，我们的开发者仍旧会倒退到使用那些旧的UI组件，buttons，sliders，和toggle switches。为什么？\n我们继续使用这些旧的UI组件其中一个原因是我们所知的设计理念就是拟物化。\n\n为了帮助用户理解这样一个计算机界面，我们把UI设计成像物体这样来给用户一种亲切感。Apple已经在他们的应用中彻底接受了拟物化设计，那些物体甚至实现了照片般的效果，例如笔记本和书架。\n但是没关系-设计会像科技一样容易演变。图形计算机界面已经有将近40年的历史了。那我们是不是该反问下自己，”按钮真的还有必要吗?”\n我强烈推荐去看看Josh Clarke写的Buttons are aHack,文中他鼓励开发者能想出更多有创造性的手势和触摸交互。下次你在你的界面中去添加一个新的控制的时候，问下你自己，”我能不能通过手势来执行相同的方法？”\n当一个应用出现时产生了很多好用的手势，那将会十分引人注目的。一个最近的例子就是Realmacsoftware 出的Clear。可以通过检查great demo onYouTube,甚至可以downloadtheapp来确认。\n这个教程介绍了一个和Clear非常相似的备忘录应用的开发过程。这个教程的目的是为了鼓励你去思考如何为你的应用做出更好的手势，而不是去创造一个Clear的克隆版。我鼓励你的下载购买Clear，它确实能够给你带来灵感。\n无论如何，我想是时候从我的soapbox中撤下来然后给你们展示所有的代码！\n开始\n打开Xcode并且通过File\\New\\Project创建一个新的iPhone应用，选择iOS\\Application\\Single View Application模板然后点击Next。在下一个界面中，在项目名中输入ClearStyle，然后按照下图填写其他类似的详情：注意你将会使用 Automatic Reference Counting(ARC)，但不使用Storyboards，因为它是个单个页面的应用。同样要注意的是类的前缀是在这里设置的-不过你可以无视它，如果你设置了，那你要注意自动生成的文件名将会和本课程中的不一样。\n备忘录从本质上来说其实就是呈现在屏幕上的一列项目。在iPhone应用程序中想呈现一个滑动的列表最标准的做法就是使用UITableView。接下来你会从已经被创建好的项目模板中添加一个到ViewController。\n点击SHCViewController.xib来打开界面构建器然后拖一个tableview到view层:\n为了访问到UITableview，你必须添加一个相关的outlet。因此，打开AssistantEditor（点击XcodeToolbar右上角按钮组中间那个按钮）并且把tableview拖到SHCViewController.h中，就像下面显示的，命名outlet为tableview:\n至此，你的用户界面已经完成了！\n眼神锐利的你可能觉得疑惑为什么我是以UIViewController配合UITableView使用，而不是用UITableViewController?我先不透露太多，我会在下一教程说明，你将会把UITableView替换为自定义UITableView。\n要呈现一个备忘录列表，你必须创建一个表示为每个任务的对象。因此让我们开始做这个！\n在项目导航中右键根项目，然后选择New File…，然后选择iOS\\Cocoa Touch\\Objective-C class模板然后添加一个名为SHCToDoItem的类.继承于NSObject:\n\n打开SHCToDoItem.h然后添加一系列属性和接口(在@interface和@endline之间)：\n// A text description of this item.@property (nonatomic, copy) NSString *text;\n// A Boolean value that determines the completed state of this item.@property (nonatomic) BOOL completed;\n// Returns an SHCToDoItem item initialized with the given text.-(id)initWithText:(NSString*)text;\n// Returns an SHCToDoItem item initialized with the given text.+(id)toDoItemWithText:(NSString*)text;\n一个备忘录项只是纯粹的有一个文本字符串，一个Boolean用来表示该项是否已经完成。\n如果这部分你以前是按照老的课程来做的，你可能希望合成你刚刚添加的属性。Surprise!从Xcode4.5之后你不必再这么做了，以后编译器都会自动为你合成属性。非常方便对吧？\n接下来你必须在initWithText:中做些动作了，初始化一个支持text的SHCToDoItem实例。为了方便起见，使对象创建起来更方便就加了这个toDoItemWithText:类接口。\n在SHCToDoItem.m的@implementation这行后添加如下代码：\n-(id)initWithText:(NSString*)text {if (self = [super init]) {self.text = text;}return self;}\n+(id)toDoItemWithText:(NSString *)text {return [[SHCToDoItem alloc] initWithText:text];}\n现在你有了自己的备忘录项的类，接下来创建一个备忘录项的数组然后通过UITableView来显示它们是相当标准的，所以我们尽快做接下来的几步。\n在SHCViewController.m顶部添加如下代码（在已存在的#import这行下面，替换空的类扩折和@implemetation 这行）:\n#import “SHCToDoItem.h”\n@implementation SHCViewController {// an array of to-do itemsNSMutableArray* _toDoItems;}\n-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle*)nibBundleOrNil {self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];if (self){// create a dummy to-do list_toDoItems = [[NSMutableArray alloc] init];[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Feed thecat”]];[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Buy eggs”]];[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Pack bags forWWDC”]];[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Rule theweb”]];[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Buy a newiPhone”]];[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Find missingsocks”]];[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Write a newtutorial”]];[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”MasterObjective-C”]];[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Remember yourwedding anniversary!”]];[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Drink lessbeer”]];[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Learn todraw”]];[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Take the car tothe garage”]];[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Sell things oneBay”]];[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Learn tojuggle”]];[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Give up”]];}return self;}\n到了这里当你导入了备忘录项类的头文件后，添加一个实例变量_toDoItems,然后重写 initWithNibName:bundle:来构成一个由虚拟数据组成的数组。上面的代码表示了toDoItemWithText接口的值：已经去掉了重复的alloc/init备忘录对象。\n你必须为tableview提供一个datasource。对于一个简单的应用，使用viewcontroller来当做datasource是明智的选择，所以接着编辑SHCViewController.h文件采用UITableViewDataSource协议：\n@interface SHCViewController : UIViewController\n你必须设置viewcontroller来作为tableview的datasource。通常，你应该通过InterfaceBuilder来链接datasource tableview 的datasource 到SHCViewController。但是你也能通过在SHCViewController.m的viewDidLoad中添加以下代码也能做到：\nself.tableView.dataSource = self;[self.tableView registerClass:[UITableViewCell class]forCellReuseIdentifier:@”cell”];\n以上代码也注册了UITableViewCell类这样这个类会给tableview提供cells。\nUITableViewDataSource协议定义了2个接口并且在任何类中都必须采取这个协议。一个是（tableView:numberOfRowsInSection:）在每个分组中的行数，而另一个(tableView:cellForRowAtIndexPath:)是为一个特定行/组请求cell的实例。\n执行那些接口十分简单-只要在SHCViewController.m的地步添加如下代码：\n#pragma mark - UITableViewDataSource protocol methods-(NSInteger)tableView:(UITableView *)tableViewnumberOfRowsInSection:(NSInteger)section {return _toDoItems.count;}\n-(UITableViewCell *)tableView:(UITableView *)tableViewcellForRowAtIndexPath:(NSIndexPath *)indexPath {NSString *ident = @”cell”;// re-use or create a cellUITableViewCell *cell = [tableViewdequeueReusableCellWithIdentifier:ident forIndexPath:indexPath];// find the to-do item for this indexint index = [indexPath row];SHCToDoItem *item = _toDoItems[index];// set the textcell.textLabel.text = item.text;return cell;}\n你只有一个单独的分组，这是tableview的默认行为，所以上面只通过tableView:numberOfRowsInSection:简单的返回了项目的数量。\ntableView:cellForRowAtIndexPath:的执行代码基本上都是模板：一个cell已经创建了，相关的备忘录项查找，cell上的文本已经设置了。\nNote:在iOS6以前，当创建一个新的UITableViewCell,你不得不从队列中得到cell，如果你没能通过重用池得到一个cell，那你必须通过代码创建这个cell。这个在iOS6已经没有必要了，因为dequeueReusableCellWithIdentifier:forIndexPath:会当重用池中未能找到cell的情况下自动创建一个新的cell给你，只要你预先为这个cell注册过id。(这个你已经在viewDidLoad中做过了)\n编译你的代码，你将会看到一个完美的简介备忘录，如下：\n\n定制你的Cell\n在你开始添加手势之前，让我们把列表做的从视觉上更简便点。\nUITableView有一个分离的协议可以用来定制UITableViewDelegate。切换到SHCViewController.h然后为列表添加协议：\n@interface SHCViewController : UIViewController&lt;UITableViewDataSource, UITableViewDelegate&gt;\n当然，tableview的委托可以通过Interface Builder 或者代码来设置。现在用代码的方式来添加到SHCViewController.m的viewDidLoad中：\nself.tableView.delegate = self;\nself.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;self.tableView.backgroundColor = [UIColor blackColor];\n这些代码移除了tableview的分割线并且设置了背景色。\n现在你能添加下面这些代码在文件底部来增加每行的高度和设置每行的背景色：\n-(UIColor_)colorForIndex:(NSInteger) index {NSUInteger itemCount = toDoItems.count - 1;float val = ((float)index / (float)itemCount) 0.6;return [UIColor colorWithRed: 1.0 green:val blue: 0.0 alpha:1.0];}\n#pragma mark - UITableViewDataDelegate protocol methods-(CGFloat)tableView:(UITableView *)tableViewheightForRowAtIndexPath:(NSIndexPath *)indexPath {return 50.0f;}\n-(void)tableView:(UITableView *)tableViewwillDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath*)indexPath {cell.backgroundColor = [self colorForIndex:indexPath.row];}\n这个是从colorForIndex返回的由红变黄的渐变色，只是考虑到审美的关系。编译项目你就会看到：\n\n现在我们要为每一行设置了一个特定的颜色。当用户往下滑动的时候整体的颜色也会随着改变，注意这个很难说明哪一个cell开始变化哪一个cell结束变化，尤其在接近顶部的时候，几乎每个cell都是红色背景。\n所以接下来的步骤就是为每个cell添加一个渐变效果这样来更方便地区分cell。你能通过datasource和delegate更方便的修改cell的样式，不过还有更优雅的解决方案就是继承UITableViewCell来自定义cell。\n在项目中添加一个iOS\\Cocoa Touch\\Objective-C class模块的新类。命名为SHCTableViewCell，然后让它继承UITableViewCell：\n\n替换一下内容到SHCTableViewCell.m中：\n#import &lt;QuartzCore/QuartzCore.h&gt;#import “SHCTableViewCell.h”\n@implementation SHCTableViewCell{CAGradientLayer* _gradientLayer;}\n-(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString*)reuseIdentifier {self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];if (self) {// add a layer that overlays the cell adding a subtle gradient effect_gradientLayer = [CAGradientLayer layer];_gradientLayer.frame = self.bounds;_gradientLayer.colors = @[(id)[[UIColor colorWithWhite:1.0falpha:0.2f] CGColor],(id)[[UIColor colorWithWhite:1.0f alpha:0.1f] CGColor],(id)[[UIColor clearColor] CGColor],(id)[[UIColor colorWithWhite:0.0f alpha:0.1f] CGColor]];_gradientLayer.locations = @[@0.00f, @0.01f, @0.95f, @1.00f];[self.layer insertSublayer:_gradientLayer atIndex:0];}return self;}\n-(void) layoutSubviews {[super layoutSubviews];// ensure the gradient layers occupies the full bounds_gradientLayer.frame = self.bounds;}\n@end\n这里你添加了一个CAGradientLayer实例变量并且在初始化接口中创建了一个四层色阶。注意到的是色阶中的白色值在最顶端，黑色的在最底部。这会覆盖在已存在的颜色顶部，会产生高亮部分在顶部而暗部分在底部的效果，这样就能创建出一个从上到下都很流畅的模拟发光效果。\nNote:仍旧要尝试如何做出合适的覆盖效果和其他的模拟发光效果？看看Vicki写的thislightingtutorial。\n试着编译代码，你会发现会报一堆链接上的错。这是因为上面的代码使用了QuartzCore框架。\n为了让编译器满意，点击项目的根目录切换到projectsettings，然后展开Build Phases标签的Link Binary With Libraries分组，然后点击(+)按钮把框架添加到你的项目中。你会发现QuartzCore在列表中。\n\n到此框架添加完成，但是你现在还是不能使用你的自定义UITableViewCell！你必须使用自定义cell。\n切换到SHCViewController.m 然后在顶部导入以下代码：\n#import “SHCTableViewCell.h”\n然后在viewDidLoad中替换下面这行代码：\n[self.tableView registerClass:[UITableViewCell class]forCellReuseIdentifier:@”cell”];\n到 ：\n[self.tableView registerClass:[SHCTableViewCell class]forCellReuseIdentifier:@”cell”];\n最后，在tableView:cellForRowAtIndexPath:类中把cell的类替换成SHCTableCelClass,像如下代码：\nSHCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ident forIndexPath:indexPath];cell.textLabel.backgroundColor = [UIColor clearColor];\n这样就可以了！因为你在viewDidLoad中被注册用来创建新的tableview cell在执行tableView:cellForRowAtIndexPath:时需要这个tablecell，你的新类将会被自动调用\n编译你的项目，然后你的备忘录项会有一个比较明显的坡度，这样能使每行之间更容易区分：\n\n滑动删除\n现在你的列表已经呈现出来了，是时候添加你的第一个收拾啦。真是令人兴奋啊！\n就用户的交互而言多点触碰设备提供了app开发者更加复杂和详尽的信息。当每个手指位于屏幕上是，它会把跟踪到的点位通过一系列的touch事件反馈到你的应用。设计这些低等级的touch事件到高等级的手势，比如拖动或者捏，都是很有挑战性的。\n对大部分需要精确定位的设备来说一根手指是不够的!而且手势必然会有内置的偏差。举个例子，手指准备拖动的前不得不移动一段距离。\n幸运的是，iOS的框架已经提供了完完整整的一套手势。那些方便又轻便的类管理着低等级的touch事件，节省你从复杂的事件中标记手势类型所花的时间并且允许你把注意力放在更高级的任务上来响应每个手势。\n这篇课程会跳过这些细节，如果你想学习更多相关知识的话可以去看下我们的UIGestureRecognizertutorial。\n在你的自定义table viewcell中SHCTableViewCell.m的init中方法添加一个滑动手势，如下面代码:\nUIGestureRecognizer* recognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(handlePan:)];recognizer.delegate = self;[self addGestureRecognizer:recognizer];\n这样任何滑动手势都会被发送到handlePan:事件中，但是在添加该接口之前，你需要几个实例变量。如下面已存在的实例变量_gradientLayer:\nCGPoint _originalCenter;BOOL _deleteOnDragRelease;\n然后添加如下代码:\n#pragma mark - horizontal pan gesture methods-(BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer*)gestureRecognizer {CGPoint translation = [gestureRecognizer translationInView:[selfsuperview]];// Check for horizontal gestureif (fabsf(translation.x) &gt; fabsf(translation.y)) {return YES;}return NO;}\n-(void)handlePan:(UIPanGestureRecognizer *)recognizer {// 1if (recognizer.state == UIGestureRecognizerStateBegan) {// if the gesture has just started, record the current centre location_originalCenter = self.center;}\n// 2\nif (recognizer.state == UIGestureRecognizerStateChanged) {\n    // translate the center\n    CGPoint translation = [recognizer translationInView:self];\n    self.center = CGPointMake(_originalCenter.x + translation.x, _originalCenter.y);\n    // determine whether the item has been dragged far enough to initiate a delete / complete\n    _deleteOnDragRelease = self.frame.origin.x &lt; -self.frame.size.width / 2;\n\n}\n\n// 3\nif (recognizer.state == UIGestureRecognizerStateEnded) {\n    // the frame this cell would have had before being dragged\n    CGRect originalFrame = CGRectMake(0, self.frame.origin.y,\n                                      self.bounds.size.width, self.bounds.size.height);\n    if (!_deleteOnDragRelease) {\n        // if the item is not being deleted, snap back to the original location\n        [UIView animateWithDuration:0.2\n                         animations:^{\n                             self.frame = originalFrame;\n                         }\n         ];\n    }\n}}\n这些代码中做了不少的事情。我们先执行handlePan:,一步一步来。\n\n手势处理，比如这个接口，它通过手势的生命周期调在各种各样的点上调用：手势的开始，变化（前提是手势在执行中），然后是结束。当滑动手势第一次执行的时候，cell的中心点会被记录到_originalCenter。\n当滑动过程中（当用户移动他们的手指时），这个接口确定了cell和通过手势而产生的新的点之间的偏差，然后就相应地偏移了center属性。如果偏移量超过cell宽度的一般，接下来你要考虑删除操作了。用_deleteOnDragRelease实例变量来作为标签来标记当前的行为是删除动作。\n当然，当手势结束时，你通过检查这个标签来确定当前的动作是不是删除动作（用户可能拖到一半的时候又拖回去了，其实这根本没执行删除操作）。\n\n接下来是gestureRecognizerShouldBegin-它做了什么?你可能注意到了当handlePan:作为手势的动作时，上面的代码也说明了cell这个类被用来作为滑动手势的委托。\n这个借口将允许你在它开始之前取消手势。在这个例子中，你要确定滑动的方向是横向还是竖向。如果是竖向就取消，因为你不必要处理任何竖向滑动。\n这是非常重要的一步！你的cells是存在于一个竖向滑动的view中。所以如果取消竖向的滑动那scrollview就会失效，这样任务列表将不能滑动。\n编译项目，你将会发现你可以向左或者向右滑动item。当你释放的时候，该项就会返回到中心，除非你往左拖动它超过半个屏幕的时候，这就表示该项将要被删除:\n\n当然，你也会注意到项目并没有被删除。那么你该如何从你的列表中删除一个项目？\n任务清单的项目是被存储在你的viewcontroller中的NSMutableArray中。所以你应该找到一些方法来标记这个viewcontroller这样当一个项目被删除的时候可以从数组中删除该项。\nUIcontrols是通过协议来标记状态变化和用户交互。你也同样可以在这里采用它。\n在项目中通过iOS\\Cocoa Touch\\Objective-C protocol模板添加一个新的协议。命名为SHCTableViewCellDelegate。\n现在打开SHCTableViewCellDelegate.h 然后替换内容为：\n#import “SHCToDoItem.h”\n// A protocol that the SHCTableViewCell uses to inform of state change@protocol SHCTableViewCellDelegate\n// indicates that the given item has been deleted-(void) toDoItemDeleted:(SHCToDoItem*)todoItem;\n@end\n上面的代码添加了一个简单的接口用来说明一个项目已经被删除了。\n自定义cell类必须声明这个委托，并且它需要知道它呈现了哪个项目。在SHCTableViewCell.h中替换这些内容来添加这些信息：\n#import “SHCToDoItem.h”#import “SHCTableViewCellDelegate.h”\n// A custom table cell that renders SHCToDoItem items.@interface SHCTableViewCell : UITableViewCell\n// The item that this cell renders.@property (nonatomic) SHCToDoItem *todoItem;\n// The object that acts as delegate for this cell.@property (nonatomic, assign) id delegate;\n@end\n为了能够使用这个委托，在SHCTableViewCell.h中handlePan:中需要添加如下代码来更新逻辑：\nif (_deleteOnDragRelease) {// notify the delegate that this item should be deleted[self.delegate toDoItemDeleted:self.todoItem];}\n上面的代码是指当用户拖动这个项目足够距离的时候就会调用委托接口。\n接下来该利用上面的代码来做些修改。切换到SHCViewController.h并且声明这个类让它支持新的协议（也就是添加有必要的#import）:\n#import “SHCTableViewCellDelegate.h”\n@interface SHCViewController : UIViewController&lt;UITableViewDataSource, UITableViewDelegate, SHCTableViewCellDelegate&gt;\n然后，打开SHCViewController.m然后在tableView:cellForRowAtIndex:中添加如下代码:\ncell.delegate = self;cell.todoItem = item;\n最后，在新增的委托接口中添加删除项目：\n-(void)toDoItemDeleted:(id)todoItem {// use the UITableView to animate the removal of this rowNSUInteger index = [_toDoItems indexOfObject:todoItem];[self.tableView beginUpdates];[_toDoItems removeObject:todoItem];[self.tableView deleteRowsAtIndexPaths:@[[NSIndexPathindexPathForRow:index inSection:0]]withRowAnimation:UITableViewRowAnimationFade];[self.tableView endUpdates];}\n上面的代码移除了任务清单的项目，然后使用了UITableView的动画去删除，用的是默认动画之一。\n##滑动完成\n你的任务清单应用允许用户删除项目，但是如何把它们标记成完成呢？为了这个，你将要使用到右滑的手势。\n当一个项目标记成完成的时候，它会变成绿色的背景并且在文本上有一条删除线。不幸的是，iOS不支持删除线，所以你不得不自己做出来！\n我通过在StackOverfolw找到了一些关于UILabel的删除线效果的方法，但是都是通过使用drawRect和Quartz2D来实现的。我更倾向于layers这类方式，因为这些代码更易读，而且layers更容易通过它们的隐藏属性来打开或者关闭删除线。\n\n注意:此外，你也可以通过iOS6更新的NSAttributedString的功能来实现。若想知道更多，可以查看iOS6教程的第15章，”What’sNew with Attributed Strings.”\n\n那么，在iOS\\Cocoa Touch\\Objective-C class模板中创建一个新文件.一个继承于UILabel的名为SHCStrikethroushLabel。\n// A UILabel subclass that can optionally have a strikethrough.@interface SHCStrikethroughLabel : UILabel\n// A Boolean value that determines whether the label should have astrikethrough.@property (nonatomic) bool strikethrough;\n@end\n切换到SHCStrikethroushLabel.m中替换如下内容到类中：\n#import &lt;QuartzCore/QuartzCore.h&gt;#import “SHCStrikethroughLabel.h”\n@implementation SHCStrikethroughLabel {bool _strikethrough;CALayer* _strikethroughLayer;}\nconst float STRIKEOUT_THICKNESS = 2.0f;\n-(id)initWithFrame:(CGRect)frame {self = [super initWithFrame:frame];if (self) {_strikethroughLayer = [CALayer layer];_strikethroughLayer.backgroundColor = [[UIColor whiteColor]CGColor];_strikethroughLayer.hidden = YES;[self.layer addSublayer:_strikethroughLayer];}return self;}\n-(void)layoutSubviews {[super layoutSubviews];[self resizeStrikeThrough];}\n-(void)setText:(NSString *)text {[super setText:text];[self resizeStrikeThrough];}\n// resizes the strikethrough layer to match the current label text-(void)resizeStrikeThrough {CGSize textSize = [self.text sizeWithFont:self.font];_strikethroughLayer.frame = CGRectMake(0, self.bounds.size.height/2,textSize.width, STRIKEOUT_THICKNESS);}\n#pragma mark - property setter-(void)setStrikethrough:(bool)strikethrough {_strikethrough = strikethrough;_strikethroughLayer.hidden = !strikethrough;}\n@end\n删除线是基本上就是一个放在文本上的图层。因为删除线的属性已经设置了，删除线图层的显示和隐藏就变得很有必要。\n好了，现在你有了自己的删除线标签，接下来需要添加到自己的自定义cell中。打开SHCTableViewCell.m然后把你的新类导进去:\n#import “SHCStrikethroughLabel.h”\n然后在实例变量_deleteOnDragRelease下面添加如下一系列的实例变量:\nSHCStrikethroughLabel *_label;CALayer *_itemCompleteLayer;\n接下来在initWithStyle:reuseIdentifier: 的顶部添加如下代码:\n// create a label that renders the to-do item text_label = [[SHCStrikethroughLabel alloc] initWithFrame:CGRectNull];_label.textColor = [UIColor whiteColor];_label.font = [UIFont boldSystemFontOfSize:16];_label.backgroundColor = [UIColor clearColor];[self addSubview:_label];// remove the default blue highlight for selected cellsself.selectionStyle = UITableViewCellSelectionStyleNone;\n仍旧是在initWithStyle:reuseIdentifier:,在添加手势前添加如下代码:\n// add a layer that renders a green background when an item is complete_itemCompleteLayer = [CALayer layer];_itemCompleteLayer.backgroundColor = [[[UIColor alloc]initWithRed:0.0 green:0.6 blue:0.0 alpha:1.0] CGColor];_itemCompleteLayer.hidden = YES;[self.layer insertSublayer:_itemCompleteLayer atIndex:0];\n上面添加到你的自定义cell的代码中既有删除线标签也有一个军绿色图层，它们将会在项目完成的时候显示出来。\n现在在layoutSubviews中替换一下代码:\nconst float LABEL_LEFT_MARGIN = 15.0f;\n-(void)layoutSubviews {[super layoutSubviews];// ensure the gradient layers occupies the full bounds_gradientLayer.frame = self.bounds;_itemCompleteLayer.frame = self.bounds;_label.frame = CGRectMake(LABEL_LEFT_MARGIN, 0,self.bounds.size.width - LABEL_LEFT_MARGIN,self.bounds.size.height);}\n然后按照一下代码为todoItem属性setter:\n-(void)setTodoItem:(SHCToDoItem *)todoItem {_todoItem = todoItem;// we must update all the visual state associated with the model item_label.text = todoItem.text;_label.strikethrough = todoItem.completed;_itemCompleteLayer.hidden = !todoItem.completed;}\n现在你通过setter设置了标签的文本，打开SHCViewController.m注释的那行就是用来设置label的：\n//cell.textLabel.text = item.text;\n最后你要做的事就是发现当cell往右拖动超过一半的时候，任务清单项被设置为完成。这里有一个非常相似的处理方式，想要用自己的方式尝试下吗？你想吗?好，我会等你尝试一下，走你！\n。。。\n。。。\n。。。\n\n你是不是还在试？继续，我在这里等着! :]…\n…\n…\n修复好了吗？如果没有，让我们来检查一下。你开始添加一个新的实例变量到SHCTableViewcell.m中，它会作为一个标记项目是否完成的标签：\nBOOL _markCompleteOnDragRelease;\n接下来，在handlePan:函数中的UIGestureRecognizerStateChanged这块，你设置的标签依赖于cell向右滑动多少距离，如下（当_deleteOnDragRelease被设置的时候你可以添加如下代码）：\n_markCompleteOnDragRelease = self.frame.origin.x &gt;self.frame.size.width / 2;\n最后，仍旧在handlePan:不过是在UIGestureRecognizerStateEnded块中，如果完成的标签被设置了你标记cell为完成：\nif (_markCompleteOnDragRelease) {// mark the item as complete and update the UI stateself.todoItem.completed = YES;_itemCompleteLayer.hidden = NO;_label.strikethrough = YES;}\n如你所注意到的，这些代码把项目标记为完成，显示了完成的图层并且在label上产生了删除线效果。\n完成！现在你能过通过滑动项目来完成或者删除。最新添加的绿色图层位于你的删除线后面，所以完成的行仍旧会有阴影效果。\n现在编译项目，然后你就能看到如下效果：\n\n现在它看起来棒多了！\n##\n任务清单现在已经有了一个新颖的，简洁的交互方式…当你知道这是怎么回事的话。有一个关于手势的小问题那就是它们和传统的拟物化相比没有直接显示给用户。\n有一样东西你是可以做到的那就是通过用户对基于界面的手势的理解，除了妥协于简单朴素的界面之外。为了一个更棒的手势效果，我推荐阅读这篇我朋友GrahamOdds写的博客，这里有很多这种例子。\n这种手势交互通常通过这些功能和行为来给用户的所作所为得到响应。举个例子，鼠标指针从桌面浏览器被用户移到在一个超链接上的时候。\n同样的方法会被用到基于界面的手势上。当一个用户开始与界面产生交互的时候，你可以提供很微妙的可见的线索来促进进一步的交互来表示这个功能，这样的话这个手势就会被触发。\n对于你的任务清单，可以用一个简单的标记来表示当用户往左或者往右拖动一个项目的时候是删除还是完成。所以记下来就要添加它们！\n添加一系列UILabel的实例变量到SHCTableViewCell.m中，\n如下:\nUILabel *_tickLabel;UILabel *_crossLabel;\n接下来，在initWithStyle:reuseIdentifier：上面上面定义一些常量：\nconst float UI_CUES_MARGIN = 10.0f;const float UI_CUES_WIDTH = 50.0f;\n现在在initWithStyle:reuseIdentifier：中的if(self)的结构里添加如下代码:\n// add a tick and cross_tickLabel = [self createCueLabel];_tickLabel.text = @”\\u2713”;_tickLabel.textAlignment = NSTextAlignmentRight;[self addSubview:_tickLabel];_crossLabel = [self createCueLabel];_crossLabel.text = @”\\u2717”;_crossLabel.textAlignment = NSTextAlignmentLeft;[self addSubview:_crossLabel];\n然后添加下面这个创建label的接口:\n// utility method for creating the contextual cues-(UILabel) createCueLabel {UILabel label = [[UILabel alloc] initWithFrame:CGRectNull];label.textColor = [UIColor whiteColor];label.font = [UIFont boldSystemFontOfSize:32.0];label.backgroundColor = [UIColor clearColor];return label;}\n对于标记和叉的图标来说与其用图片素材，还不如使用Unicode编码就像上面的代码一样来得好。你可能找到了一些比较漂亮的素材，但是这些编码能够很快执行出这样的效果，所以无需添加图片素材。\n\n注意：为什么我知道这些代表着对号和叉号的unicode值？可以通过list ofuseful Unicodesymbols很方便的找到!\n\n现在在layoutSubviews函数末尾添加如下代码来重定位这些标签:\n_tickLabel.frame = CGRectMake(-UI_CUES_WIDTH - UI_CUES_MARGIN, 0,UI_CUES_WIDTH, self.bounds.size.height);_crossLabel.frame = CGRectMake(self.bounds.size.width +UI_CUES_MARGIN, 0,UI_CUES_WIDTH, self.bounds.size.height);\n上面的代码让标签位于屏幕外，勾号再左边叉号再右边。\n最后，在handlePan:中添加代码，在block中处于UIGestureRecognizerStateChanged状态哪里添加如下代码，用来在用户拖动cell的时候调整label的透明度:\n// fade the contextual cuesfloat cueAlpha = fabsf(self.frame.origin.x) / (self.frame.size.width /2);_tickLabel.alpha = cueAlpha;_crossLabel.alpha = cueAlpha;\n// indicate when the item have been pulled far enough to invoke thegiven action_tickLabel.textColor = _markCompleteOnDragRelease ?[UIColor greenColor] : [UIColor whiteColor];_crossLabel.textColor = _deleteOnDragRelease ?[UIColor redColor] : [UIColor whiteColor];\n这个勾和叉号通过改变颜色更加明显的体现了用户拖动的项目是否足够远-接下来编译项目你就会注意到这个现象了：\n完成这个最后的功能之后，你已经完成了整套系列的三分之一！\n接下来该做什么?\n这里有一些示例，里面包含了这个部分的所有源代码。\n下一步做什么呢？好遥远，现在这个app只是能够允许用户标记项目完成或者删除项目。这里显然需要更多的手势或者特性来是的应用更丰富。\n不过，我不是很想用很常见的UITableView提供的删除动画。我肯定这里应该需要用一个更加炫的方法。\n不幸的是，使用继承UITableView多多少少限制了一些功能，这也是为什么接下来的一部分将会替换这部分你写的自定义功能。不过它一直都是一个很大的话题，你会等到第二部分才能找出所有有关它的一切。\n其实，为什么不自己思考更多有趣的东西和手势来想替换现有的控件。当然，如果你使用手势，不要忘记怎么去提醒用户来发现它们和使用它们的可能性。\n","dateCreated":"2016-05-18T11:12:19+08:00","dateModified":"2019-12-12T23:42:15+08:00","datePublished":"2016-05-18T11:12:19+08:00","description":"","headline":"学习如何制作一个像Clear的时髦的手势驱动的备忘录app","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/http:/yoursite.com/2016/05/18/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/"},"publisher":{"@type":"Organization","name":"loannes","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"/http:/yoursite.com/2016/05/18/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/","keywords":"iOS"}</script>
-    <meta name="description" content="&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 原文链接：https:&#x2F;&#x2F;www.raywenderlich.com&#x2F;21842&#x2F;how-to-make-a-gesture-driven-to-do-list-app-part-13 [译]如何制作一个类似Clear支持手势驱动的备忘录App (一) 学习如何制作一个像Clear的时髦的手势驱动">
-<meta property="og:type" content="blog">
-<meta property="og:title" content="学习如何制作一个像Clear的时髦的手势驱动的备忘录app">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2016&#x2F;05&#x2F;18&#x2F;%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20&#x2F;index.html">
-<meta property="og:site_name" content="loannes&#39;s blog">
-<meta property="og:description" content="&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 原文链接：https:&#x2F;&#x2F;www.raywenderlich.com&#x2F;21842&#x2F;how-to-make-a-gesture-driven-to-do-list-app-part-13 [译]如何制作一个类似Clear支持手势驱动的备忘录App (一) 学习如何制作一个像Clear的时髦的手势驱动">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn1.raywenderlich.com&#x2F;wp-content&#x2F;uploads&#x2F;2012&#x2F;09&#x2F;Skeuomorph-480x147.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn4.raywenderlich.com&#x2F;wp-content&#x2F;uploads&#x2F;2012&#x2F;09&#x2F;NewProject-471x320.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn4.raywenderlich.com&#x2F;wp-content&#x2F;uploads&#x2F;2012&#x2F;09&#x2F;AddingTableView-420x320.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn5.raywenderlich.com&#x2F;wp-content&#x2F;uploads&#x2F;2012&#x2F;09&#x2F;TableViewOutlet-480x304.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn1.raywenderlich.com&#x2F;wp-content&#x2F;uploads&#x2F;2012&#x2F;09&#x2F;AddToDoItemClass-469x320.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn4.raywenderlich.com&#x2F;wp-content&#x2F;uploads&#x2F;2012&#x2F;09&#x2F;ToDoListFirstCut.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn3.raywenderlich.com&#x2F;wp-content&#x2F;uploads&#x2F;2012&#x2F;09&#x2F;ToDoListColored.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn2.raywenderlich.com&#x2F;wp-content&#x2F;uploads&#x2F;2012&#x2F;09&#x2F;AddCustomCell-473x320.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn2.raywenderlich.com&#x2F;wp-content&#x2F;uploads&#x2F;2012&#x2F;09&#x2F;AddFramework-480x250.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn1.raywenderlich.com&#x2F;wp-content&#x2F;uploads&#x2F;2012&#x2F;09&#x2F;ToDoListGradient.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn4.raywenderlich.com&#x2F;wp-content&#x2F;uploads&#x2F;2012&#x2F;09&#x2F;DeleteItem.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn5.raywenderlich.com&#x2F;wp-content&#x2F;uploads&#x2F;2010&#x2F;09&#x2F;Tsan_angry.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn4.raywenderlich.com&#x2F;wp-content&#x2F;uploads&#x2F;2012&#x2F;09&#x2F;ToDoListMarkComplete.jpg">
-<meta property="article:published_time" content="2016-05-18T03:12:19.000Z">
-<meta property="article:modified_time" content="2019-12-12T15:42:15.000Z">
-<meta property="article:author" content="loannes">
-<meta property="article:tag" content="iOS">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn1.raywenderlich.com&#x2F;wp-content&#x2F;uploads&#x2F;2012&#x2F;09&#x2F;Skeuomorph-480x147.jpg">
-    
-    
-        
-    
-    
-    
-    
-    
-    <!--STYLES-->
-    
-<link rel="stylesheet" href="/assets/css/all.css">
-
-    
-<link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
-
-    
-<link rel="stylesheet" href="/assets/css/thumbs.css">
-
-    
-<link rel="stylesheet" href="/assets/css/tranquilpeak.css">
-
-    <!--STYLES END-->
-    
-
-    
-
-    
-        
-    
-</head>
-
-    <body>
-        <div id="blog">
-            <!-- Define author's picture -->
 
 
+
+
+
+<title>学习如何制作一个像Clear的时髦的手势驱动的备忘录app | loannes&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
     
 
-<header id="header" data-behavior="4">
-    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-    <div class="header-title">
-        <a
-            class="header-title-link"
-            href="/%20"
-            aria-label=""
-        >
-            loannes&#39;s blog
-        </a>
-    </div>
+
+
+    <!-- scripts list from _config.yml -->
     
-        
-            <a
-                class="header-right-picture "
-                href="#about"
-                aria-label="Öffne den Link: /#about"
-            >
-        
-        
-        </a>
+    <script src="/js/script.js"></script>
     
-</header>
+    <script src="/js/tocbot.min.js"></script>
+    
 
-            <!-- Define author's picture -->
 
 
-<nav id="sidebar" data-behavior="4">
-    <div class="sidebar-container">
-        
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/%20"
-                            
-                            title="Home"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-categories"
-                            
-                            title="Kategorien"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Kategorien</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-tags"
-                            
-                            title="Tags"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Tags</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-archives"
-                            
-                            title="Archiv"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archiv</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link open-algolia-search"
-                             href="#search"
-                            
-                            title="Suche"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Suche</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="#about"
-                            
-                            title="Über"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Über</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://github.com/" target="_blank" rel="noopener" title="GitHub">
-                    
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
-                    
-                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Stack Overflow</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://twitter.com/" target="_blank" rel="noopener" title="Twitter">
-                    
-                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Twitter</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://facebook.com/" target="_blank" rel="noopener" title="Facebook">
-                    
-                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Facebook</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://plus.google.com/" target="_blank" rel="noopener" title="Google Plus">
-                    
-                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Google Plus</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://www.linkedin.com/profile/" target="_blank" rel="noopener" title="LinkedIn">
-                    
-                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">LinkedIn</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/mailto"
-                            title="E-Mail"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">E-Mail</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/atom.xml"
-                            
-                            title="RSS"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">RSS</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-    </div>
-</nav>
 
-            
-            <div id="main" data-behavior="4"
-                 class="
-                        hasCoverMetaIn
-                        ">
+<meta name="generator" content="Hexo 4.1.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">loannes&#39;s Blog</a></div>
+            <div class="menu navbar-right">
                 
-<article class="post">
-    
-    
-        <div class="post-header main-content-wrap text-left">
-    
-        <h1 class="post-title">
-            学习如何制作一个像Clear的时髦的手势驱动的备忘录app
-        </h1>
-    
-    
-        <div class="post-meta">
-    <time datetime="2016-05-18T11:12:19+08:00">
-	
-		    18 5月 2016
-    	
-    </time>
-    
-</div>
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
 
     
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">loannes&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
 </div>
 
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
     
-    <div class="post-content markdown">
-        <div class="main-content-wrap">
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">学习如何制作一个像Clear的时髦的手势驱动的备忘录app</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">loannes</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">五月 18, 2016&nbsp;&nbsp;11:12:19</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
             <p>==================================================</p>
 <p>原文链接：<a href="https://www.raywenderlich.com/21842/how-to-make-a-gesture-driven-to-do-list-app-part-13" target="_blank" rel="noopener">https://www.raywenderlich.com/21842/how-to-make-a-gesture-driven-to-do-list-app-part-13</a></p>
 <p>[译]如何制作一个类似Clear支持手势驱动的备忘录App (一)</p>
@@ -580,333 +457,74 @@ if (recognizer.state == UIGestureRecognizerStateEnded) {
 <p>不幸的是，使用继承UITableView多多少少限制了一些功能，这也是为什么接下来的一部分将会替换这部分你写的自定义功能。不过它一直都是一个很大的话题，你会等到第二部分才能找出所有有关它的一切。</p>
 <p>其实，为什么不自己思考更多有趣的东西和手势来想替换现有的控件。当然，如果你使用手势，不要忘记怎么去提醒用户来发现它们和使用它们的可能性。</p>
 
-            
-
-
         </div>
-    </div>
-    <div id="post-footer" class="post-footer main-content-wrap">
-        
-            <div class="post-footer-tags">
-                <span class="text-color-light text-small">GETAGGT IN</span><br/>
-                
-    <a class="tag tag--primary tag--small t-link" href="/tags/iOS/" rel="tag">iOS</a>
 
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>loannes</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://yoursite.com/2016/05/18/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/">http://yoursite.com/2016/05/18/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/iOS/"># iOS</a>
+                    
+                        
+                </span>
             </div>
-        
-        
-            <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2016/06/22/WWDC15%20%E6%80%BB%E7%BB%93%20/"
-                    data-tooltip="WWDC15 总结"
-                    aria-label="FRÜHER: WWDC15 总结"
-                >
-                    
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">FRÜHER</span>
-                    </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2016/04/13/%E8%B0%88%E8%B0%88Http%E5%92%8CHttps%20/"
-                    data-tooltip="谈谈Http和Https"
-                    aria-label="NÄCHSTER: 谈谈Http和Https"
-                >
-                    
-                        <span class="hide-xs hide-sm text-small icon-mr">NÄCHSTER</span>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a
-                class="post-action-btn btn btn--default btn-open-shareoptions"
-                href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
-            >
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2016/06/22/WWDC15%20%E6%80%BB%E7%BB%93%20/">WWDC15 总结</a>
             
             
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2016/05/18/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/"
-                    title="Teilen auf Facebook"
-                    aria-label="Teilen auf Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
+            <a class="next" rel="next" href="/2016/04/13/%E8%B0%88%E8%B0%88Http%E5%92%8CHttps%20/">谈谈Http和Https</a>
             
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2016/05/18/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/"
-                    title="Teilen auf Twitter"
-                    aria-label="Teilen auf Twitter"
-                >
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2016/05/18/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/"
-                    title="Teilen auf Google Plus"
-                    aria-label="Teilen auf Google Plus"
-                >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
+        </section>
+
+
+    </article>
 </div>
 
-
-        
-        
-            
-        
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
     </div>
-</article>
-
-
-
-                <footer id="footer" class="main-content-wrap">
-    <span class="copyrights">
-        Copyrights &copy; 2019 loannes. All Rights Reserved.
-    </span>
 </footer>
 
-            </div>
-            
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
-                    <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2016/06/22/WWDC15%20%E6%80%BB%E7%BB%93%20/"
-                    data-tooltip="WWDC15 总结"
-                    aria-label="FRÜHER: WWDC15 总结"
-                >
-                    
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">FRÜHER</span>
-                    </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2016/04/13/%E8%B0%88%E8%B0%88Http%E5%92%8CHttps%20/"
-                    data-tooltip="谈谈Http和Https"
-                    aria-label="NÄCHSTER: 谈谈Http和Https"
-                >
-                    
-                        <span class="hide-xs hide-sm text-small icon-mr">NÄCHSTER</span>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a
-                class="post-action-btn btn btn--default btn-open-shareoptions"
-                href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
-            >
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2016/05/18/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/"
-                    title="Teilen auf Facebook"
-                    aria-label="Teilen auf Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2016/05/18/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/"
-                    title="Teilen auf Twitter"
-                    aria-label="Teilen auf Twitter"
-                >
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2016/05/18/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/"
-                    title="Teilen auf Google Plus"
-                    aria-label="Teilen auf Google Plus"
-                >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
-
-
-                </div>
-                
-    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
-        <i id="btn-close-shareoptions" class="fa fa-times"></i>
-        <ul class="share-options">
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2016/05/18/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/"
-                        aria-label="Teilen auf Facebook"
-                    >
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Teilen auf Facebook</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2016/05/18/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/"
-                        aria-label="Teilen auf Twitter"
-                    >
-                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Teilen auf Twitter</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://plus.google.com/share?url=http://yoursite.com/2016/05/18/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/"
-                        aria-label="Teilen auf Google Plus"
-                    >
-                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Teilen auf Google Plus</span>
-                    </a>
-                </li>
-            
-        </ul>
     </div>
-
-
-            
-        </div>
-        
-
-
-<div id="about">
-    <div id="about-card">
-        <div id="about-btn-close">
-            <i class="fa fa-times"></i>
-        </div>
-        
-            <h4 id="about-card-name">loannes</h4>
-        
-            <div id="about-card-bio"><p>author.bio</p>
-</div>
-        
-        
-            <div id="about-card-job">
-                <i class="fa fa-briefcase"></i>
-                <br/>
-                <p>author.job</p>
-
-            </div>
-        
-        
-    </div>
-</div>
-
-        
-        
-<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
-        <!--SCRIPTS-->
-
-<script src="/assets/js/jquery.js"></script>
-
-
-<script src="/assets/js/jquery.fancybox.js"></script>
-
-
-<script src="/assets/js/thumbs.js"></script>
-
-
-<script src="/assets/js/tranquilpeak.js"></script>
-
-<!--SCRIPTS END-->
-
-
-    
-
-
-
-
-    </body>
+</body>
 </html>

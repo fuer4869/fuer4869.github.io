@@ -1,301 +1,192 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
-    
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="loannes&#39;s blog">
-    <title>iOS8新特性 UIPresentationController - loannes&#39;s blog</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <meta name="author" content="loannes">
-    
-    
-    
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"loannes","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"================================\n先推荐几篇关于UIPresentationController的好文章\n\niOS8 PresentationController\nCustom presentations using UIPresentationController inSwift自从iOS8更新之后，swift成为了各个程序员平时议论的焦点，包括我。这几天回顾了下去年的WWDC发现了这次Apple更新了很多好玩的东西，其中我就发现了一个叫UIPresentationController以前一直都很想做一个比较酷炫的界面过渡效果，但一直没有花时间去研究，这次正好被我机缘巧合的碰到了就顺手拿来研究了一下。\n\n什么是UIPresentationController其实从我上面说的话就可以知道UIPresentationController就是专门控制界面之间的过渡效果的类。这是官方文档的原话\n\nA UIPresentationController object provides advanced view andtransition management for presented view controllers.\n\n意思就是UIPresentationController提供了对viewcontrollers的呈现和移动的管理，你可以通过这个类来对被跳转和将要呈现的界面进行管理。你可以让他们缩小变大，翻转可以加上一些其他的动画效果。\n早在iOS7的时候其实苹果已经开放了类似的功能UIViewControllerTransitioning，而此次更新主要解决了自适应的问题，以前在Compact的宽度条件下如果要使用popoverPresentationController的话必须先判断iPhone和iPad设备，入下面的代码：\nif UIDevice.currentDevice().userInterfaceIdiom == .Pad {\n    let popOverController = UIPopoverController(contentViewController: nextVC)\npopOverController.presentPopoverFromRect(aRect, inView: self.view,         permittedArrowDirections: .Any, animated: true)\n} else {\n    presentViewController(nextVC, animated: true, completion: nil)\n}现在有了UIPresentationController就不需要这样做了。从SizeClasses改革了.m文件中全是判断设备的代码之后，这次把这仅存的需要判断设备的代码也清除了，同时你也可以看到相关的判断设备的方法已经被弃用了。\n下面就用个实例来说明UIPensentationController是如何使用和工作的吧，就做一个模仿twitter分享效果的例子吧\nUIViewControllerTransitioningDelegate先来看一下UIViewControllerTransitioningDelegate我们现在将要呈现的页面中实现UIViewControllerTransitioningDelegate的接口\nfunc presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController, sourceViewController source: UIViewController) -&gt; UIPresentationController? {\n    return CustomPresentationController(presentedViewController:presented,presentingViewController:presenting)\n}\n\nfunc animationControllerForDismissedController(dismissed: UIViewController) -&gt; UIViewControllerAnimatedTransitioning? {\n    return NormalDismissAnimation()\n}\nfunc animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -&gt; UIViewControllerAnimatedTransitioning? {\n   return PresentationAnimation()\n}其中我对第二第三个接口返回了自定义的动画效果,对第一个接口返回了继承UIPresentationController的类并初始化。\n\nInitializes and returns a presentation controller for transitioningbetween the specified view controllers\n\nUIPresentationController先看下UIPresentationController的4个接口\n\npresentationTransitionWillBegin\npresentationTransitionDidEnd\ndismissalTransitionWillBegin\ndismissalTransitionDidEnd\n\n顾名思义，想要创建一些效果的话就必须在presentationTransitionWillBegin实现,如果在init函数中实现的话会获取不到containerView。\nimport UIKit\n\nclass CustomPresentationController: UIPresentationController {\n   lazy var dimmingView:UIView = {\n    let view = UIView(frame: self.containerView!.bounds)\n    view.backgroundColor = UIColor(red: 0.0, green: 0.0, blue:         0.0, alpha: 0.5)\nreturn view\n    }()\noverride init(presentedViewController: UIViewController,     presentingViewController: UIViewController) {\nsuper.init(presentedViewController: presentedViewController,             presentingViewController: presentingViewController)\n}这里必须重写init方法，否则上面的四个接口不会执行。\n override func presentationTransitionWillBegin() {\n\n        let containerView = self.containerView!\n        let presentedView = self.presentedView()!\n\n    //在containerView中加载dimmingView，dimmingView就是在界面过渡中的一个效果\n    dimmingView.frame = containerView.bounds\n    containerView.addSubview(dimmingView)\n    containerView.addSubview(presentedView)\n    self.dimmingView.alpha = 0\n\n    //对dimmingView做一个渐变效果\n    if let transitionCoordinator = self.presentingViewController.transitionCoordinator() {\n        transitionCoordinator.animateAlongsideTransition({(context: UIViewControllerTransitionCoordinatorContext!) -&gt; Void in\n            self.dimmingView.alpha = 0.7\n            }, completion:nil)\n    }\n}\n\noverride func presentationTransitionDidEnd(completed: Bool) {\n\n}\n\noverride func dismissalTransitionWillBegin() {\n    if let transitionCoordinator = self.presentingViewController.transitionCoordinator() {\n        transitionCoordinator.animateAlongsideTransition({(context: UIViewControllerTransitionCoordinatorContext!) -&gt; Void in\n            self.dimmingView.alpha = 0.0\n            }, completion:nil)\n    }\n}\n\noverride func dismissalTransitionDidEnd(completed: Bool) {\n    if completed {\n        self.dimmingView.removeFromSuperview()\n    }\n}对这4个接口分别写上处理dimmingView的逻辑，动画效果基本就做好了。\nUIViewControllerAnimatedTransitioning接下来是2个自定义的动画，其实如果像方便点的话直接把这2个动画写在UIPresentationController里也是可以的。不过为了重用性，我选择把这2个动画拿出来\nclass PresentationAnimation: NSObject ,UIViewControllerAnimatedTransitioning{\n\nlet duration = 0.7\n\nfunc transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -&gt; NSTimeInterval {\n    return self.duration\n}\n\nfunc animateTransition(transitionContext: UIViewControllerContextTransitioning) {\n    //将呈现的视图\n    let presentedView = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!\n    let presentingView = transitionContext.viewForKey(UITransitionContextToViewKey)!\n    let contrainerView = transitionContext.containerView()!\n    //被过渡的视图\n    let fromView = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)\n    let center = fromView!.view.center\n\n\n    let pSize = CGSizeMake(presentingView.frame.size.width*0.95, presentingView.frame.size.height*0.95)\n    presentingView.frame = transitionContext.finalFrameForViewController(presentedView)\n    presentingView.center.y += contrainerView.bounds.size.height\n    contrainerView.addSubview(presentingView)\n\n\n\n    UIView.animateWithDuration(self.duration, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {\n        fromView!.view.frame.size = pSize\n        fromView!.view.center = center\n        presentingView.center.y -= contrainerView.bounds.size.height\n        }, completion: {(completed: Bool) -&gt; Void in\n            transitionContext.completeTransition(completed)\n            contrainerView.insertSubview(fromView!.view, atIndex: 0)\n    })\n}我对fromView也就是被过渡的视图的宽高缩小到95%的动画效果，在dismiss动画就反过来。\n有一点要注意的是当dismiss动画结束之后，fromview会莫名其妙的被移除掉。这个问题很奇怪我也没找到很好的解释，解决方案可以参考stackoverflow上的一篇问答\n“From View Controller” disappears usingUIViewControllerContextTransitioning\n在动画结束后重新加载fromview就可以了。\nUIApplication.sharedApplication().keyWindow!.addSubview(fromView.view)下面看下效果：\n附上源码\nUIPresentationControllerDemo\n","dateCreated":"2015-07-14T11:12:19+08:00","dateModified":"2019-12-12T23:41:25+08:00","datePublished":"2015-07-14T11:12:19+08:00","description":"","headline":"iOS8新特性 UIPresentationController","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/http:/yoursite.com/2015/07/14/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/"},"publisher":{"@type":"Organization","name":"loannes","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"/http:/yoursite.com/2015/07/14/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/","keywords":"iOS"}</script>
-    <meta name="description" content="&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 先推荐几篇关于UIPresentationController的好文章  iOS8 PresentationController Custom presentations using UIPresentationController inSwift自从iOS8更新之后，swift成为了各个程序员平时议论的焦点，包括我。这几天回顾了下">
-<meta property="og:type" content="blog">
-<meta property="og:title" content="iOS8新特性 UIPresentationController">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2015&#x2F;07&#x2F;14&#x2F;iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20&#x2F;index.html">
-<meta property="og:site_name" content="loannes&#39;s blog">
-<meta property="og:description" content="&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 先推荐几篇关于UIPresentationController的好文章  iOS8 PresentationController Custom presentations using UIPresentationController inSwift自从iOS8更新之后，swift成为了各个程序员平时议论的焦点，包括我。这几天回顾了下">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2015-07-14T03:12:19.000Z">
-<meta property="article:modified_time" content="2019-12-12T15:41:25.000Z">
-<meta property="article:author" content="loannes">
-<meta property="article:tag" content="iOS">
-<meta name="twitter:card" content="summary">
-    
-    
-        
-    
-    
-    
-    
-    
-    <!--STYLES-->
-    
-<link rel="stylesheet" href="/assets/css/all.css">
-
-    
-<link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
-
-    
-<link rel="stylesheet" href="/assets/css/thumbs.css">
-
-    
-<link rel="stylesheet" href="/assets/css/tranquilpeak.css">
-
-    <!--STYLES END-->
-    
-
-    
-
-    
-        
-    
-</head>
-
-    <body>
-        <div id="blog">
-            <!-- Define author's picture -->
 
 
+
+
+
+<title>iOS8新特性 UIPresentationController | loannes&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
     
 
-<header id="header" data-behavior="4">
-    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-    <div class="header-title">
-        <a
-            class="header-title-link"
-            href="/%20"
-            aria-label=""
-        >
-            loannes&#39;s blog
-        </a>
-    </div>
+
+
+    <!-- scripts list from _config.yml -->
     
-        
-            <a
-                class="header-right-picture "
-                href="#about"
-                aria-label="Öffne den Link: /#about"
-            >
-        
-        
-        </a>
+    <script src="/js/script.js"></script>
     
-</header>
+    <script src="/js/tocbot.min.js"></script>
+    
 
-            <!-- Define author's picture -->
 
 
-<nav id="sidebar" data-behavior="4">
-    <div class="sidebar-container">
-        
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/%20"
-                            
-                            title="Home"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-categories"
-                            
-                            title="Kategorien"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Kategorien</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-tags"
-                            
-                            title="Tags"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Tags</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-archives"
-                            
-                            title="Archiv"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archiv</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link open-algolia-search"
-                             href="#search"
-                            
-                            title="Suche"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Suche</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="#about"
-                            
-                            title="Über"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Über</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://github.com/" target="_blank" rel="noopener" title="GitHub">
-                    
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
-                    
-                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Stack Overflow</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://twitter.com/" target="_blank" rel="noopener" title="Twitter">
-                    
-                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Twitter</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://facebook.com/" target="_blank" rel="noopener" title="Facebook">
-                    
-                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Facebook</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://plus.google.com/" target="_blank" rel="noopener" title="Google Plus">
-                    
-                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Google Plus</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://www.linkedin.com/profile/" target="_blank" rel="noopener" title="LinkedIn">
-                    
-                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">LinkedIn</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/mailto"
-                            title="E-Mail"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">E-Mail</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/atom.xml"
-                            
-                            title="RSS"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">RSS</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-    </div>
-</nav>
 
-            
-            <div id="main" data-behavior="4"
-                 class="
-                        hasCoverMetaIn
-                        ">
+<meta name="generator" content="Hexo 4.1.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">loannes&#39;s Blog</a></div>
+            <div class="menu navbar-right">
                 
-<article class="post">
-    
-    
-        <div class="post-header main-content-wrap text-left">
-    
-        <h1 class="post-title">
-            iOS8新特性 UIPresentationController
-        </h1>
-    
-    
-        <div class="post-meta">
-    <time datetime="2015-07-14T11:12:19+08:00">
-	
-		    14 7月 2015
-    	
-    </time>
-    
-</div>
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
 
     
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">loannes&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
 </div>
 
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
     
-    <div class="post-content markdown">
-        <div class="main-content-wrap">
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">iOS8新特性 UIPresentationController</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">loannes</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">七月 14, 2015&nbsp;&nbsp;11:12:19</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
             <p>================================</p>
 <p>先推荐几篇关于UIPresentationController的好文章</p>
 <ul>
@@ -426,333 +317,74 @@ func animateTransition(transitionContext: UIViewControllerContextTransitioning) 
 <p>附上源码</p>
 <p><a href="https://github.com/fuer4869/UIPresentationController.git" target="_blank" rel="noopener">UIPresentationControllerDemo</a></p>
 
-            
-
-
         </div>
-    </div>
-    <div id="post-footer" class="post-footer main-content-wrap">
-        
-            <div class="post-footer-tags">
-                <span class="text-color-light text-small">GETAGGT IN</span><br/>
-                
-    <a class="tag tag--primary tag--small t-link" href="/tags/iOS/" rel="tag">iOS</a>
 
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>loannes</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://yoursite.com/2015/07/14/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/">http://yoursite.com/2015/07/14/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/iOS/"># iOS</a>
+                    
+                        
+                </span>
             </div>
-        
-        
-            <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2015/12/29/%E7%BB%86%E8%B0%88iOS8%E7%9A%84Self-Sizing%20Cells%20/"
-                    data-tooltip="细谈iOS8的Self-Sizing Cells"
-                    aria-label="FRÜHER: 细谈iOS8的Self-Sizing Cells"
-                >
-                    
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">FRÜHER</span>
-                    </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir%20/"
-                    data-tooltip="用xctool打包ipa文件自动上传到fir"
-                    aria-label="NÄCHSTER: 用xctool打包ipa文件自动上传到fir"
-                >
-                    
-                        <span class="hide-xs hide-sm text-small icon-mr">NÄCHSTER</span>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a
-                class="post-action-btn btn btn--default btn-open-shareoptions"
-                href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
-            >
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2015/12/29/%E7%BB%86%E8%B0%88iOS8%E7%9A%84Self-Sizing%20Cells%20/">细谈iOS8的Self-Sizing Cells</a>
             
             
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2015/07/14/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/"
-                    title="Teilen auf Facebook"
-                    aria-label="Teilen auf Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
+            <a class="next" rel="next" href="/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir%20/">用xctool打包ipa文件自动上传到fir</a>
             
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2015/07/14/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/"
-                    title="Teilen auf Twitter"
-                    aria-label="Teilen auf Twitter"
-                >
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2015/07/14/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/"
-                    title="Teilen auf Google Plus"
-                    aria-label="Teilen auf Google Plus"
-                >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
+        </section>
+
+
+    </article>
 </div>
 
-
-        
-        
-            
-        
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
     </div>
-</article>
-
-
-
-                <footer id="footer" class="main-content-wrap">
-    <span class="copyrights">
-        Copyrights &copy; 2019 loannes. All Rights Reserved.
-    </span>
 </footer>
 
-            </div>
-            
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
-                    <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2015/12/29/%E7%BB%86%E8%B0%88iOS8%E7%9A%84Self-Sizing%20Cells%20/"
-                    data-tooltip="细谈iOS8的Self-Sizing Cells"
-                    aria-label="FRÜHER: 细谈iOS8的Self-Sizing Cells"
-                >
-                    
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">FRÜHER</span>
-                    </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir%20/"
-                    data-tooltip="用xctool打包ipa文件自动上传到fir"
-                    aria-label="NÄCHSTER: 用xctool打包ipa文件自动上传到fir"
-                >
-                    
-                        <span class="hide-xs hide-sm text-small icon-mr">NÄCHSTER</span>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a
-                class="post-action-btn btn btn--default btn-open-shareoptions"
-                href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
-            >
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2015/07/14/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/"
-                    title="Teilen auf Facebook"
-                    aria-label="Teilen auf Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2015/07/14/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/"
-                    title="Teilen auf Twitter"
-                    aria-label="Teilen auf Twitter"
-                >
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2015/07/14/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/"
-                    title="Teilen auf Google Plus"
-                    aria-label="Teilen auf Google Plus"
-                >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
-
-
-                </div>
-                
-    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
-        <i id="btn-close-shareoptions" class="fa fa-times"></i>
-        <ul class="share-options">
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2015/07/14/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/"
-                        aria-label="Teilen auf Facebook"
-                    >
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Teilen auf Facebook</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2015/07/14/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/"
-                        aria-label="Teilen auf Twitter"
-                    >
-                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Teilen auf Twitter</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://plus.google.com/share?url=http://yoursite.com/2015/07/14/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/"
-                        aria-label="Teilen auf Google Plus"
-                    >
-                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Teilen auf Google Plus</span>
-                    </a>
-                </li>
-            
-        </ul>
     </div>
-
-
-            
-        </div>
-        
-
-
-<div id="about">
-    <div id="about-card">
-        <div id="about-btn-close">
-            <i class="fa fa-times"></i>
-        </div>
-        
-            <h4 id="about-card-name">loannes</h4>
-        
-            <div id="about-card-bio"><p>author.bio</p>
-</div>
-        
-        
-            <div id="about-card-job">
-                <i class="fa fa-briefcase"></i>
-                <br/>
-                <p>author.job</p>
-
-            </div>
-        
-        
-    </div>
-</div>
-
-        
-        
-<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
-        <!--SCRIPTS-->
-
-<script src="/assets/js/jquery.js"></script>
-
-
-<script src="/assets/js/jquery.fancybox.js"></script>
-
-
-<script src="/assets/js/thumbs.js"></script>
-
-
-<script src="/assets/js/tranquilpeak.js"></script>
-
-<!--SCRIPTS END-->
-
-
-    
-
-
-
-
-    </body>
+</body>
 </html>

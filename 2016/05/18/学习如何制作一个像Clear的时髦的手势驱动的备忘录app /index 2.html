@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="loannes">
+
+
+
+
+
+<title>学习如何制作一个像Clear的时髦的手势驱动的备忘录app | loannes&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.1.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">学习如何制作一个像Clear的时髦的手势驱动的备忘录app</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">loannes</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">五月 18, 2016&nbsp;&nbsp;11:12:19</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>==================================================</p>
+<p>原文链接：<a href="https://www.raywenderlich.com/21842/how-to-make-a-gesture-driven-to-do-list-app-part-13" target="_blank" rel="noopener">https://www.raywenderlich.com/21842/how-to-make-a-gesture-driven-to-do-list-app-part-13</a></p>
+<p>[译]如何制作一个类似Clear支持手势驱动的备忘录App (一)</p>
+<p>学习如何制作一个像Clear的时髦的手势驱动的备忘录app</p>
+<p>这是由教程组的成员<a href="https://www.raywenderlich.com/?page_id=9#colineberhardt" target="_blank" rel="noopener">Colin<br>Eberhardt</a>,<br><a href="http://www.shinobicontrols.com/" target="_blank" rel="noopener">ShinobiControls</a>的CTO,<br>一名会打造有趣又强大的iOS控件的开发者。看看他们的app，<a href="http://click.linksynergy.com/fs-bin/stat?id=9QfxPcziZp0&offerid=146261&type=3&subid=0&tmpid=1826&RD_PARM1=https%253A%252F%252Fitunes.apple.com%252Fus%252Fapp%252Fshinobiplay%252Fid545634307%253Fmt%253D8%2526uo%253D4%2526partnerId%253D30" target="_blank" rel="noopener">ShinobiPlay</a>。你还能在<a href="https://plus.google.com/u/0/104181672098184856535?rel=author" target="_blank">Google+</a><br>和 <a href="https://twitter.com/ColinEberhardt" target="_blank" rel="noopener">Twitter</a>上找到Colin的踪迹。</p>
+<p>这三部分教程将会带你通过开发一个简单的备忘录应用，并且没有button，switch<br>和其他常见的UI控件。</p>
+<p>换言之，用户将会通过一系列直觉性的手势动作来与你的app产生交互行为，包括挥动，拖动添加，捏。<br>为了避免常见的界面组件，你将会提供给用户一个更加亮眼的又不杂乱的界面。这并不是意味着一个空的手势！</p>
+<p>这个教程是给中级和更高级的开发者的-你将会做一些棘手的东西像倾斜的图层，执行动画，甚至创建一个自定义个tableview。如果你是个初级开发者，你应该先去学习我们的<a href="https://www.raywenderlich.com/?page_id=2519" target="_blank" rel="noopener">其他课程</a>。</p>
+<p>如果你想让你的应用在手势方面更加好用，这里就有一个适合你的教程。读一读然后亲手操练起来吧！</p>
+<h3 id="拟物化和触摸界面"><a href="#拟物化和触摸界面" class="headerlink" title="拟物化和触摸界面"></a>拟物化和触摸界面</h3><hr>
+<p>在写代码之前，在UI设计中手势起到的作用这一点值得我们花一点时间去讨论下。不要急，这是一个很值得注意的话题。</p>
+<p>手机的多点触控界面允许了更多直接的交互-因此也产生了更多的控制方式和表现方式-远超了一个单点触碰的设备。</p>
+<p>一些非常酷又具有直觉性的手势被开发了出来，比如捏/张开,轻拍，拖曳，和点击长按。但是它们很少被使用！（有一个例外是捏/张开,这是将成为处理图像的标准机制。）</p>
+<p>尽管现在的触摸技术已经表现的很自然了，我们的开发者仍旧会倒退到使用那些旧的UI组件，buttons，sliders，和<br>toggle switches。为什么？</p>
+<p>我们继续使用这些旧的UI组件其中一个原因是我们所知的设计理念就是拟物化。</p>
+<p><img src="https://cdn1.raywenderlich.com/wp-content/uploads/2012/09/Skeuomorph-480x147.jpg" alt=""></p>
+<p>为了帮助用户理解这样一个计算机界面，我们把UI设计成像物体这样来给用户一种亲切感。Apple<br>已经在他们的应用中彻底接受了拟物化设计，那些物体甚至实现了照片般的效果，例如笔记本和书架。</p>
+<p>但是没关系-设计会像科技一样容易演变。图形计算机界面已经有将近40年的历史了。那我们是不是该反问下自己，”按钮真的还有必要吗?”</p>
+<p>我强烈推荐去看看Josh Clarke写的<a href="http://www.lukew.com/ff/entry.asp?1566" target="_blank" rel="noopener">Buttons are a<br>Hack</a>,文中他鼓励开发者能想出更多有创造性的手势和触摸交互。下次你在你的界面中去添加一个新的控制的时候，问下你自己，”我能不能通过手势来执行相同的方法？”</p>
+<p>当一个应用出现时产生了很多好用的手势，那将会十分引人注目的。一个最近的例子就是Realmac<br>software 出的Clear。可以通过检查<a href="http://www.youtube.com/watch?v=S00H-rz7fGo" target="_blank" rel="noopener">great demo on<br>YouTube</a>,甚至可以<a href="http://click.linksynergy.com/fs-bin/stat?id=9QfxPcziZp0&offerid=146261&type=3&subid=0&tmpid=1826&RD_PARM1=https%253A%252F%252Fitunes.apple.com%252Fus%252Fapp%252Fclear%252Fid493136154%253Fmt%253D8%2526uo%253D4%2526partnerId%253D30" target="_blank" rel="noopener">download<br>the<br>app</a>来确认。</p>
+<p>这个教程介绍了一个和Clear非常相似的备忘录应用的开发过程。这个教程的目的是为了鼓励你去思考如何为你的应用做出更好的手势，而不是去创造一个Clear的克隆版。我鼓励你的下载购买Clear，它确实能够给你带来灵感。</p>
+<p>无论如何，我想是时候从我的soapbox中撤下来然后给你们展示所有的代码！</p>
+<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><hr>
+<p>打开Xcode并且通过<br>File\New\Project创建一个新的iPhone应用，选择<code>iOS\Application\Single View Application</code>模板然后点击<code>Next</code>。在下一个界面中，在项目名中输入<code>ClearStyle</code>，然后按照下图填写其他类似的详情：<br><img src="https://cdn4.raywenderlich.com/wp-content/uploads/2012/09/NewProject-471x320.jpg" alt=""><br>注意你将会使用 Automatic Reference Counting<br>(ARC)，但不使用Storyboards，因为它是个单个页面的应用。同样要注意的是类的前缀是在这里设置的-不过你可以无视它，如果你设置了，那你要注意自动生成的文件名将会和本课程中的不一样。</p>
+<p>备忘录从本质上来说其实就是呈现在屏幕上的一列项目。在iPhone应用程序中想呈现一个滑动的列表最标准的做法就是使用UITableView。接下来你会从已经被创建好的项目模板中添加一个到View<br>Controller。</p>
+<p>点击<code>SHCViewController.xib</code>来打开界面构建器然后拖一个table<br>view到view层:<br><img src="https://cdn4.raywenderlich.com/wp-content/uploads/2012/09/AddingTableView-420x320.jpg" alt=""></p>
+<p>为了访问到UITableview，你必须添加一个相关的outlet。因此，打开Assistant<br>Editor（点击Xcode<br>Toolbar右上角按钮组中间那个按钮）并且把tableview拖到<code>SHCViewController.h</code>中，就像下面显示的，命名outlet为<code>tableview</code>:<br><img src="https://cdn5.raywenderlich.com/wp-content/uploads/2012/09/TableViewOutlet-480x304.jpg" alt=""></p>
+<p>至此，你的用户界面已经完成了！</p>
+<p>眼神锐利的你可能觉得疑惑为什么我是以UIViewController配合UITableView使用，而不是用UITableViewController?<br>我先不透露太多，我会在下一教程说明，你将会把UITableView替换为自定义UITableView。</p>
+<p>要呈现一个备忘录列表，你必须创建一个表示为每个任务的对象。因此让我们开始做这个！</p>
+<p>在项目导航中右键根项目，然后选择<code>New File…</code>，然后选择<code>iOS\Cocoa Touch\Objective-C class</code>模板然后添加一个名为<code>SHCToDoItem</code>的类.继承于<code>NSObject</code>:</p>
+<p><img src="https://cdn1.raywenderlich.com/wp-content/uploads/2012/09/AddToDoItemClass-469x320.jpg" alt=""></p>
+<p>打开<code>SHCToDoItem.h</code>然后添加一系列属性和接口(在@interface和@end<br>line之间)：</p>
+<p>// A text description of this item.<br>@property (nonatomic, copy) NSString *text;</p>
+<p>// A Boolean value that determines the completed state of this item.<br>@property (nonatomic) BOOL completed;</p>
+<p>// Returns an SHCToDoItem item initialized with the given text.<br>-(id)initWithText:(NSString*)text;</p>
+<p>// Returns an SHCToDoItem item initialized with the given text.<br>+(id)toDoItemWithText:(NSString*)text;</p>
+<p>一个备忘录项只是纯粹的有一个文本字符串，一个Boolean用来表示该项是否已经完成。</p>
+<p>如果这部分你以前是按照老的课程来做的，你可能希望合成你刚刚添加的属性。Surprise!从Xcode4.5之后你不必再这么做了，以后编译器都会自动为你合成属性。非常方便对吧？</p>
+<p>接下来你必须在<code>initWithText:</code>中做些动作了，<br>初始化一个支持text的SHCToDoItem实例。为了方便起见，使对象创建起来更方便就加了这个<code>toDoItemWithText:</code>类接口。</p>
+<p>在<code>SHCToDoItem.m</code>的@implementation这行后添加如下代码：</p>
+<p>-(id)initWithText:(NSString*)text {<br>if (self = [super init]) {<br>self.text = text;<br>}<br>return self;<br>}</p>
+<p>+(id)toDoItemWithText:(NSString *)text {<br>return [[SHCToDoItem alloc] initWithText:text];<br>}</p>
+<p>现在你有了自己的备忘录项的类，接下来创建一个备忘录项的数组然后通过UITableView来显示它们是相当标准的，所以我们尽快做接下来的几步。</p>
+<p>在<code>SHCViewController.m</code>顶部添加如下代码（在已存在的#import<br>这行下面，替换空的类扩折和@implemetation 这行）:</p>
+<p>#import “SHCToDoItem.h”</p>
+<p>@implementation SHCViewController {<br>// an array of to-do items<br>NSMutableArray* _toDoItems;<br>}</p>
+<p>-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle<br>*)nibBundleOrNil {<br>self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];<br>if (self)<br>{<br>// create a dummy to-do list<br>_toDoItems = [[NSMutableArray alloc] init];<br>[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Feed the<br>cat”]];<br>[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Buy eggs”]];<br>[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Pack bags for<br>WWDC”]];<br>[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Rule the<br>web”]];<br>[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Buy a new<br>iPhone”]];<br>[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Find missing<br>socks”]];<br>[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Write a new<br>tutorial”]];<br>[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Master<br>Objective-C”]];<br>[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Remember your<br>wedding anniversary!”]];<br>[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Drink less<br>beer”]];<br>[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Learn to<br>draw”]];<br>[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Take the car to<br>the garage”]];<br>[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Sell things on<br>eBay”]];<br>[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Learn to<br>juggle”]];<br>[_toDoItems addObject:[SHCToDoItem toDoItemWithText:@”Give up”]];<br>}<br>return self;<br>}</p>
+<p>到了这里当你导入了备忘录项类的头文件后，添加一个实例变量<br>_toDoItems,然后重写 <code>initWithNibName:bundle:</code><br>来构成一个由虚拟数据组成的数组。上面的代码表示了<code>toDoItemWithText</code>接口的值：已经去掉了重复的alloc/init<br>备忘录对象。</p>
+<p>你必须为tableview提供一个datasource。对于一个简单的应用，使用view<br>controller来当做datasource是明智的选择，所以接着编辑<code>SHCViewController.h</code>文件采用UITableViewDataSource协议：</p>
+<p>@interface SHCViewController : UIViewController</p>
+<p>你必须设置view<br>controller来作为tableview的datasource。通常，你应该通过Interface<br>Builder来链接datasource tableview 的datasource 到<br>SHCViewController。但是你也能通过在<code>SHCViewController.m</code>的<code>viewDidLoad</code>中添加以下代码也能做到：</p>
+<p>self.tableView.dataSource = self;<br>[self.tableView registerClass:[UITableViewCell class]<br>forCellReuseIdentifier:@”cell”];</p>
+<p>以上代码也注册了UITableViewCell类这样这个类会给tableview提供cells。</p>
+<p>UITableViewDataSource协议定义了2个接口并且在任何类中都必须采取这个协议。一个是（tableView:numberOfRowsInSection:）在每个分组中的行数，而另一个(tableView:cellForRowAtIndexPath:)是为一个特定行/组请求cell的实例。</p>
+<p>执行那些接口十分简单-只要在<code>SHCViewController.m</code>的地步添加如下代码：</p>
+<p>#pragma mark - UITableViewDataSource protocol methods<br>-(NSInteger)tableView:(UITableView *)tableView<br>numberOfRowsInSection:(NSInteger)section {<br>return _toDoItems.count;<br>}</p>
+<p>-(UITableViewCell *)tableView:(UITableView *)tableView<br>cellForRowAtIndexPath:(NSIndexPath *)indexPath {<br>NSString *ident = @”cell”;<br>// re-use or create a cell<br>UITableViewCell *cell = [tableView<br>dequeueReusableCellWithIdentifier:ident forIndexPath:indexPath];<br>// find the to-do item for this index<br>int index = [indexPath row];<br>SHCToDoItem *item = _toDoItems[index];<br>// set the text<br>cell.textLabel.text = item.text;<br>return cell;<br>}</p>
+<p>你只有一个单独的分组，这是tableview的默认行为，所以上面只通过<code>tableView:numberOfRowsInSection:</code>简单的返回了项目的数量。</p>
+<p><code>tableView:cellForRowAtIndexPath:</code>的执行代码基本上都是模板：一个cell已经创建了，相关的备忘录项查找，cell上的文本已经设置了。</p>
+<p>Note:在iOS6以前，当创建一个新的UITableViewCell,你不得不从队列中得到cell，如果你没能通过重用池得到一个cell，那你必须通过代码创建这个cell。这个在iOS6已经没有必要了，因为<code>dequeueReusableCellWithIdentifier:forIndexPath:</code>会当重用池中未能找到cell的情况下自动创建一个新的cell给你，只要你预先为这个cell注册过id。(这个你已经在<code>viewDidLoad</code>中做过了)</p>
+<p>编译你的代码，你将会看到一个完美的简介备忘录，如下：</p>
+<p><img src="https://cdn4.raywenderlich.com/wp-content/uploads/2012/09/ToDoListFirstCut.jpg" alt=""></p>
+<h3 id="定制你的Cell"><a href="#定制你的Cell" class="headerlink" title="定制你的Cell"></a>定制你的Cell</h3><hr>
+<p>在你开始添加手势之前，让我们把列表做的从视觉上更简便点。</p>
+<p>UITableView<br>有一个分离的协议可以用来定制UITableViewDelegate。切换到<code>SHCViewController.h</code>然后为列表添加协议：</p>
+<p>@interface SHCViewController : UIViewController<br>&lt;UITableViewDataSource, UITableViewDelegate&gt;</p>
+<p>当然，tableview的委托可以通过Interface Builder 或者<br>代码来设置。现在用代码的方式来添加到<code>SHCViewController.m</code>的<code>viewDidLoad</code>中：</p>
+<p>self.tableView.delegate = self;</p>
+<p>self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;<br>self.tableView.backgroundColor = [UIColor blackColor];</p>
+<p>这些代码移除了tableview的分割线并且设置了背景色。</p>
+<p>现在你能添加下面这些代码在文件底部来增加每行的高度和设置每行的背景色：</p>
+<p>-(UIColor_)colorForIndex:(NSInteger) index {<br>NSUInteger itemCount = <em>toDoItems.count - 1;<br>float val = ((float)index / (float)itemCount)</em> 0.6;<br>return [UIColor colorWithRed: 1.0 green:val blue: 0.0 alpha:1.0];<br>}</p>
+<p>#pragma mark - UITableViewDataDelegate protocol methods<br>-(CGFloat)tableView:(UITableView *)tableView<br>heightForRowAtIndexPath:(NSIndexPath *)indexPath {<br>return 50.0f;<br>}</p>
+<p>-(void)tableView:(UITableView *)tableView<br>willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath<br>*)indexPath {<br>cell.backgroundColor = [self colorForIndex:indexPath.row];<br>}</p>
+<p>这个是从colorForIndex返回的由红变黄的渐变色，只是考虑到审美的关系。编译项目你就会看到：</p>
+<p><img src="https://cdn3.raywenderlich.com/wp-content/uploads/2012/09/ToDoListColored.jpg" alt=""></p>
+<p>现在我们要为每一行设置了一个特定的颜色。当用户往下滑动的时候整体的颜色也会随着改变，注意这个很难说明哪一个cell开始变化哪一个cell结束变化，尤其在接近顶部的时候，几乎每个cell都是红色背景。</p>
+<p>所以接下来的步骤就是为每个cell添加一个渐变效果这样来更方便地区分cell。你能通过datasource和delegate更方便的修改cell的样式，不过还有更优雅的解决方案就是继承UITableViewCell来自定义cell。</p>
+<p>在项目中添加一个<code>iOS\Cocoa Touch\Objective-C class</code>模块的新类。命名为<code>SHCTableViewCell</code>，然后让它继承<code>UITableViewCell</code>：</p>
+<p><img src="https://cdn2.raywenderlich.com/wp-content/uploads/2012/09/AddCustomCell-473x320.jpg" alt=""></p>
+<p>替换一下内容到<code>SHCTableViewCell.m</code>中：</p>
+<p>#import &lt;QuartzCore/QuartzCore.h&gt;<br>#import “SHCTableViewCell.h”</p>
+<p>@implementation SHCTableViewCell<br>{<br>CAGradientLayer* _gradientLayer;<br>}</p>
+<p>-(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString<br>*)reuseIdentifier {<br>self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];<br>if (self) {<br>// add a layer that overlays the cell adding a subtle gradient effect<br>_gradientLayer = [CAGradientLayer layer];<br>_gradientLayer.frame = self.bounds;<br>_gradientLayer.colors = @[(id)[[UIColor colorWithWhite:1.0f<br>alpha:0.2f] CGColor],<br>(id)[[UIColor colorWithWhite:1.0f alpha:0.1f] CGColor],<br>(id)[[UIColor clearColor] CGColor],<br>(id)[[UIColor colorWithWhite:0.0f alpha:0.1f] CGColor]];<br>_gradientLayer.locations = @[@0.00f, @0.01f, @0.95f, @1.00f];<br>[self.layer insertSublayer:_gradientLayer atIndex:0];<br>}<br>return self;<br>}</p>
+<p>-(void) layoutSubviews {<br>[super layoutSubviews];<br>// ensure the gradient layers occupies the full bounds<br>_gradientLayer.frame = self.bounds;<br>}</p>
+<p>@end</p>
+<p>这里你添加了一个CAGradientLayer<br>实例变量并且在初始化接口中创建了一个四层色阶。注意到的是色阶中的白色值在最顶端，黑色的在最底部。这会覆盖在已存在的颜色顶部，会产生高亮部分在顶部而暗部分在底部的效果，这样就能创建出一个从上到下都很流畅的模拟发光效果。</p>
+<p>Note:仍旧要尝试如何做出合适的覆盖效果和其他的模拟发光效果？看看Vicki写的<a href="http://www.vickiwenderlich.com/2011/09/three-dimensional-characters-objects-light-sources/" target="_blank" rel="noopener">this<br>lighting<br>tutorial</a>。</p>
+<p>试着编译代码，你会发现会报一堆链接上的错。这是因为上面的代码使用了QuartzCore框架。</p>
+<p>为了让编译器满意，点击项目的根目录切换到project<br>settings，然后展开<code>Build Phases</code>标签的<code>Link Binary With Libraries</code>分组，然后点击(+)按钮把框架添加到你的项目中。你会发现QuartzCore在列表中。</p>
+<p><img src="https://cdn2.raywenderlich.com/wp-content/uploads/2012/09/AddFramework-480x250.jpg" alt=""></p>
+<p>到此框架添加完成，但是你现在还是不能使用你的自定义UITableViewCell！你必须使用自定义cell。</p>
+<p>切换到<code>SHCViewController.m</code> 然后在顶部导入以下代码：</p>
+<p>#import “SHCTableViewCell.h”</p>
+<p>然后在<code>viewDidLoad</code>中替换下面这行代码：</p>
+<p>[self.tableView registerClass:[UITableViewCell class]<br>forCellReuseIdentifier:@”cell”];</p>
+<p>到 ：</p>
+<p>[self.tableView registerClass:[SHCTableViewCell class]<br>forCellReuseIdentifier:@”cell”];</p>
+<p>最后，在<code>tableView:cellForRowAtIndexPath:</code>类中把cell的类替换成SHCTableCelClass,像如下代码：</p>
+<pre><code>SHCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ident forIndexPath:indexPath];</code></pre><p>cell.textLabel.backgroundColor = [UIColor clearColor];</p>
+<p>这样就可以了！因为你在<code>viewDidLoad</code>中被注册用来创建新的tableview cell<br>在执行<code>tableView:cellForRowAtIndexPath:</code>时需要这个table<br>cell，你的新类将会被自动调用</p>
+<p>编译你的项目，然后你的备忘录项会有一个比较明显的坡度，这样能使每行之间更容易区分：</p>
+<p><img src="https://cdn1.raywenderlich.com/wp-content/uploads/2012/09/ToDoListGradient.jpg" alt=""></p>
+<h3 id="滑动删除"><a href="#滑动删除" class="headerlink" title="滑动删除"></a>滑动删除</h3><hr>
+<p>现在你的列表已经呈现出来了，是时候添加你的第一个收拾啦。真是令人兴奋啊！</p>
+<p>就用户的交互而言多点触碰设备提供了app开发者更加复杂和详尽的信息。当每个手指位于屏幕上是，它会把跟踪到的点位通过一系列的touch事件反馈到你的应用。设计这些低等级的touch事件到高等级的手势，比如拖动或者捏，都是很有挑战性的。</p>
+<p>对大部分需要精确定位的设备来说一根手指是不够的!而且手势必然会有内置的偏差。举个例子，手指准备拖动的前不得不移动一段距离。</p>
+<p>幸运的是，iOS的框架已经提供了完完整整的一套手势。那些方便又轻便的类管理着低等级的touch事件，节省你从复杂的事件中标记手势类型所花的时间并且允许你把注意力放在更高级的任务上来响应每个手势。</p>
+<p>这篇课程会跳过这些细节，如果你想学习更多相关知识的话可以去看下我们的<a href="https://www.raywenderlich.com/?p=6567" target="_blank" rel="noopener">UIGestureRecognizer<br>tutorial</a>。</p>
+<p>在你的自定义table view<br>cell中<code>SHCTableViewCell.m</code>的init中方法添加一个滑动手势，如下面代码:</p>
+<p>UIGestureRecognizer* recognizer = [[UIPanGestureRecognizer alloc]<br>initWithTarget:self action:@selector(handlePan:)];<br>recognizer.delegate = self;<br>[self addGestureRecognizer:recognizer];</p>
+<p>这样任何滑动手势都会被发送到<code>handlePan:</code>事件中，但是在添加该接口之前，你需要几个实例变量。如下面已存在的实例变量_gradientLayer:</p>
+<p>CGPoint _originalCenter;<br>BOOL _deleteOnDragRelease;</p>
+<p>然后添加如下代码:</p>
+<p>#pragma mark - horizontal pan gesture methods<br>-(BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer<br>*)gestureRecognizer {<br>CGPoint translation = [gestureRecognizer translationInView:[self<br>superview]];<br>// Check for horizontal gesture<br>if (fabsf(translation.x) &gt; fabsf(translation.y)) {<br>return YES;<br>}<br>return NO;<br>}</p>
+<p>-(void)handlePan:(UIPanGestureRecognizer *)recognizer {<br>// 1<br>if (recognizer.state == UIGestureRecognizerStateBegan) {<br>// if the gesture has just started, record the current centre location<br>_originalCenter = self.center;<br>}</p>
+<pre><code>// 2
+if (recognizer.state == UIGestureRecognizerStateChanged) {
+    // translate the center
+    CGPoint translation = [recognizer translationInView:self];
+    self.center = CGPointMake(_originalCenter.x + translation.x, _originalCenter.y);
+    // determine whether the item has been dragged far enough to initiate a delete / complete
+    _deleteOnDragRelease = self.frame.origin.x &lt; -self.frame.size.width / 2;
+
+}
+
+// 3
+if (recognizer.state == UIGestureRecognizerStateEnded) {
+    // the frame this cell would have had before being dragged
+    CGRect originalFrame = CGRectMake(0, self.frame.origin.y,
+                                      self.bounds.size.width, self.bounds.size.height);
+    if (!_deleteOnDragRelease) {
+        // if the item is not being deleted, snap back to the original location
+        [UIView animateWithDuration:0.2
+                         animations:^{
+                             self.frame = originalFrame;
+                         }
+         ];
+    }
+}</code></pre><p>}</p>
+<p>这些代码中做了不少的事情。我们先执行<code>handlePan</code>:,一步一步来。</p>
+<ol>
+<li>手势处理，比如这个接口，它通过手势的生命周期调在各种各样的点上调用：手势的开始，变化（前提是手势在执行中），然后是结束。当滑动手势第一次执行的时候，cell的中心点会被记录到_originalCenter。</li>
+<li>当滑动过程中（当用户移动他们的手指时），这个接口确定了cell和通过手势而产生的新的点之间的偏差，然后就相应地偏移了center属性。如果偏移量超过cell宽度的一般，接下来你要考虑删除操作了。用_deleteOnDragRelease实例变量来作为标签来标记当前的行为是删除动作。</li>
+<li>当然，当手势结束时，你通过检查这个标签来确定当前的动作是不是删除动作（用户可能拖到一半的时候又拖回去了，其实这根本没执行删除操作）。</li>
+</ol>
+<p>接下来是<code>gestureRecognizerShouldBegin</code>-<br>它做了什么?你可能注意到了当<code>handlePan:</code>作为手势的动作时，上面的代码也说明了cell<br>这个类被用来作为滑动手势的委托。</p>
+<p>这个借口将允许你在它开始之前取消手势。在这个例子中，你要确定滑动的方向是横向还是竖向。如果是竖向就取消，因为你不必要处理任何竖向滑动。</p>
+<p>这是非常重要的一步！你的cells是存在于一个竖向滑动的view中。所以如果取消竖向的滑动那scrollview<br>就会失效，这样任务列表将不能滑动。</p>
+<p>编译项目，你将会发现你可以向左或者向右滑动item。当你释放的时候，该项就会返回到中心，除非你往左拖动它超过半个屏幕的时候，这就表示该项将要被删除:</p>
+<p><img src="https://cdn4.raywenderlich.com/wp-content/uploads/2012/09/DeleteItem.jpg" alt=""></p>
+<p>当然，你也会注意到项目并没有被删除。那么你该如何从你的列表中删除一个项目？</p>
+<p>任务清单的项目是被存储在你的view<br>controller中的NSMutableArray中。所以你应该找到一些方法来标记这个view<br>controller这样当一个项目被删除的时候可以从数组中删除该项。</p>
+<p>UI<br>controls是通过协议来标记状态变化和用户交互。你也同样可以在这里采用它。</p>
+<p>在项目中通过<code>iOS\Cocoa Touch\Objective-C protocol</code>模板添加一个新的协议。命名为<code>SHCTableViewCellDelegate</code>。</p>
+<p>现在打开<code>SHCTableViewCellDelegate.h</code> 然后替换内容为：</p>
+<p>#import “SHCToDoItem.h”</p>
+<p>// A protocol that the SHCTableViewCell uses to inform of state change<br>@protocol SHCTableViewCellDelegate</p>
+<p>// indicates that the given item has been deleted<br>-(void) toDoItemDeleted:(SHCToDoItem*)todoItem;</p>
+<p>@end</p>
+<p>上面的代码添加了一个简单的接口用来说明一个项目已经被删除了。</p>
+<p>自定义cell类必须声明这个委托，并且它需要知道它呈现了哪个项目。在<code>SHCTableViewCell.h</code>中替换这些内容来添加这些信息：</p>
+<p>#import “SHCToDoItem.h”<br>#import “SHCTableViewCellDelegate.h”</p>
+<p>// A custom table cell that renders SHCToDoItem items.<br>@interface SHCTableViewCell : UITableViewCell</p>
+<p>// The item that this cell renders.<br>@property (nonatomic) SHCToDoItem *todoItem;</p>
+<p>// The object that acts as delegate for this cell.<br>@property (nonatomic, assign) id delegate;</p>
+<p>@end</p>
+<p>为了能够使用这个委托，在<code>SHCTableViewCell.h</code>中<code>handlePan:</code>中需要添加如下代码来更新逻辑：</p>
+<p>if (_deleteOnDragRelease) {<br>// notify the delegate that this item should be deleted<br>[self.delegate toDoItemDeleted:self.todoItem];<br>}</p>
+<p>上面的代码是指当用户拖动这个项目足够距离的时候就会调用委托接口。</p>
+<p>接下来该利用上面的代码来做些修改。切换到<code>SHCViewController.h</code><br>并且声明这个类让它支持新的协议（也就是添加有必要的#import）:</p>
+<p>#import “SHCTableViewCellDelegate.h”</p>
+<p>@interface SHCViewController : UIViewController<br>&lt;UITableViewDataSource, UITableViewDelegate, SHCTableViewCellDelegate&gt;</p>
+<p>然后，打开<code>SHCViewController.m</code>然后在<code>tableView:cellForRowAtIndex:</code>中添加如下代码:</p>
+<p>cell.delegate = self;<br>cell.todoItem = item;</p>
+<p>最后，在新增的委托接口中添加删除项目：</p>
+<p>-(void)toDoItemDeleted:(id)todoItem {<br>// use the UITableView to animate the removal of this row<br>NSUInteger index = [_toDoItems indexOfObject:todoItem];<br>[self.tableView beginUpdates];<br>[_toDoItems removeObject:todoItem];<br>[self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath<br>indexPathForRow:index inSection:0]]<br>withRowAnimation:UITableViewRowAnimationFade];<br>[self.tableView endUpdates];<br>}</p>
+<p>上面的代码移除了任务清单的项目，然后使用了UITableView的动画去删除，用的是默认动画之一。</p>
+<p>##滑动完成</p>
+<p>你的任务清单应用允许用户删除项目，但是如何把它们标记成完成呢？为了这个，你将要使用到右滑的手势。</p>
+<p>当一个项目标记成完成的时候，它会变成绿色的背景并且在文本上有一条删除线。不幸的是，iOS不支持删除线，所以你不得不自己做出来！</p>
+<p>我通过在<a href="http://stackoverflow.com/" target="_blank" rel="noopener">StackOverfolw</a>找到了一些关于UILabel的删除线效果的方法，但是都是通过使用drawRect和Quartz<br>2D来实现的。我更倾向于layers这类方式，因为这些代码更易读，而且<br>layers更容易通过它们的隐藏属性来打开或者关闭删除线。</p>
+<blockquote>
+<p>注意:此外，你也可以通过iOS6更新的<br>NSAttributedString的功能来实现。若想知道更多，可以查看iOS6教程的第15章，”What’s<br>New with Attributed Strings.”</p>
+</blockquote>
+<p>那么，在<code>iOS\Cocoa Touch\Objective-C class</code>模板中创建一个新文件.一个继承于UILabel的名为<code>SHCStrikethroushLabel</code>。</p>
+<p>// A UILabel subclass that can optionally have a strikethrough.<br>@interface SHCStrikethroughLabel : UILabel</p>
+<p>// A Boolean value that determines whether the label should have a<br>strikethrough.<br>@property (nonatomic) bool strikethrough;</p>
+<p>@end</p>
+<p>切换到<code>SHCStrikethroushLabel.m</code>中替换如下内容到类中：</p>
+<p>#import &lt;QuartzCore/QuartzCore.h&gt;<br>#import “SHCStrikethroughLabel.h”</p>
+<p>@implementation SHCStrikethroughLabel {<br>bool _strikethrough;<br>CALayer* _strikethroughLayer;<br>}</p>
+<p>const float STRIKEOUT_THICKNESS = 2.0f;</p>
+<p>-(id)initWithFrame:(CGRect)frame {<br>self = [super initWithFrame:frame];<br>if (self) {<br>_strikethroughLayer = [CALayer layer];<br>_strikethroughLayer.backgroundColor = [[UIColor whiteColor]<br>CGColor];<br>_strikethroughLayer.hidden = YES;<br>[self.layer addSublayer:_strikethroughLayer];<br>}<br>return self;<br>}</p>
+<p>-(void)layoutSubviews {<br>[super layoutSubviews];<br>[self resizeStrikeThrough];<br>}</p>
+<p>-(void)setText:(NSString *)text {<br>[super setText:text];<br>[self resizeStrikeThrough];<br>}</p>
+<p>// resizes the strikethrough layer to match the current label text<br>-(void)resizeStrikeThrough {<br>CGSize textSize = [self.text sizeWithFont:self.font];<br>_strikethroughLayer.frame = CGRectMake(0, self.bounds.size.height/2,<br>textSize.width, STRIKEOUT_THICKNESS);<br>}</p>
+<p>#pragma mark - property setter<br>-(void)setStrikethrough:(bool)strikethrough {<br>_strikethrough = strikethrough;<br>_strikethroughLayer.hidden = !strikethrough;<br>}</p>
+<p>@end</p>
+<p>删除线是基本上就是一个放在文本上的图层。因为删除线的属性已经设置了，删除线图层的显示和隐藏就变得很有必要。</p>
+<p>好了，现在你有了自己的删除线标签，接下来需要添加到自己的自定义cell中。打开<code>SHCTableViewCell.m</code>然后把你的新类导进去:</p>
+<p>#import “SHCStrikethroughLabel.h”</p>
+<p>然后在实例变量_deleteOnDragRelease下面添加如下一系列的实例变量:</p>
+<p>SHCStrikethroughLabel *_label;<br>CALayer *_itemCompleteLayer;</p>
+<p>接下来在<code>initWithStyle:reuseIdentifier:</code> 的顶部添加如下代码:</p>
+<p>// create a label that renders the to-do item text<br>_label = [[SHCStrikethroughLabel alloc] initWithFrame:CGRectNull];<br>_label.textColor = [UIColor whiteColor];<br>_label.font = [UIFont boldSystemFontOfSize:16];<br>_label.backgroundColor = [UIColor clearColor];<br>[self addSubview:_label];<br>// remove the default blue highlight for selected cells<br>self.selectionStyle = UITableViewCellSelectionStyleNone;</p>
+<p>仍旧是在<code>initWithStyle:reuseIdentifier:</code>,在添加手势前添加如下代码:</p>
+<p>// add a layer that renders a green background when an item is complete<br>_itemCompleteLayer = [CALayer layer];<br>_itemCompleteLayer.backgroundColor = [[[UIColor alloc]<br>initWithRed:0.0 green:0.6 blue:0.0 alpha:1.0] CGColor];<br>_itemCompleteLayer.hidden = YES;<br>[self.layer insertSublayer:_itemCompleteLayer atIndex:0];</p>
+<p>上面添加到你的自定义cell的代码中既有删除线标签也有一个军绿色图层，它们将会在项目完成的时候显示出来。</p>
+<p>现在在<code>layoutSubviews</code>中替换一下代码:</p>
+<p>const float LABEL_LEFT_MARGIN = 15.0f;</p>
+<p>-(void)layoutSubviews {<br>[super layoutSubviews];<br>// ensure the gradient layers occupies the full bounds<br>_gradientLayer.frame = self.bounds;<br>_itemCompleteLayer.frame = self.bounds;<br>_label.frame = CGRectMake(LABEL_LEFT_MARGIN, 0,<br>self.bounds.size.width - LABEL_LEFT_MARGIN,self.bounds.size.height);<br>}</p>
+<p>然后按照一下代码为<code>todoItem</code>属性setter:</p>
+<p>-(void)setTodoItem:(SHCToDoItem *)todoItem {<br>_todoItem = todoItem;<br>// we must update all the visual state associated with the model item<br>_label.text = todoItem.text;<br>_label.strikethrough = todoItem.completed;<br>_itemCompleteLayer.hidden = !todoItem.completed;<br>}</p>
+<p>现在你通过setter设置了标签的文本，打开<code>SHCViewController.m</code>注释的那行就是用来设置label的：</p>
+<p>//cell.textLabel.text = item.text;</p>
+<p>最后你要做的事就是发现当cell往右拖动超过一半的时候，任务清单项被设置为完成。这里有一个非常相似的处理方式，想要用自己的方式尝试下吗？你想吗?好，我会等你尝试一下，走你！</p>
+<p>。。。</p>
+<p>。。。</p>
+<p>。。。</p>
+<p><img src="https://cdn5.raywenderlich.com/wp-content/uploads/2010/09/Tsan_angry.jpg" alt=""></p>
+<p>你是不是还在试？继续，我在这里等着! :]<br>…</p>
+<p>…</p>
+<p>…</p>
+<p>修复好了吗？如果没有，让我们来检查一下。<br>你开始添加一个新的实例变量到<code>SHCTableViewcell.m</code>中，它会作为一个标记项目是否完成的标签：</p>
+<p>BOOL _markCompleteOnDragRelease;</p>
+<p>接下来，在<code>handlePan:</code>函数中的<code>UIGestureRecognizerStateChanged</code>这块，你设置的标签依赖于cell向右滑动多少距离，如下（当_deleteOnDragRelease被设置的时候你可以添加如下代码）：</p>
+<p>_markCompleteOnDragRelease = self.frame.origin.x &gt;<br>self.frame.size.width / 2;</p>
+<p>最后，仍旧在<code>handlePan:</code>不过是在<code>UIGestureRecognizerStateEnded</code>块中，如果完成的标签被设置了你标记cell为完成：</p>
+<p>if (_markCompleteOnDragRelease) {<br>// mark the item as complete and update the UI state<br>self.todoItem.completed = YES;<br>_itemCompleteLayer.hidden = NO;<br>_label.strikethrough = YES;<br>}</p>
+<p>如你所注意到的，这些代码把项目标记为完成，显示了完成的图层并且在label上产生了删除线效果。</p>
+<p>完成！现在你能过通过滑动项目来完成或者删除。最新添加的绿色图层位于你的删除线后面，所以完成的行仍旧会有阴影效果。</p>
+<p>现在编译项目，然后你就能看到如下效果：</p>
+<p><img src="https://cdn4.raywenderlich.com/wp-content/uploads/2012/09/ToDoListMarkComplete.jpg" alt=""></p>
+<p>现在它看起来棒多了！</p>
+<p>##</p>
+<p>任务清单现在已经有了一个新颖的，简洁的交互方式…当你知道这是怎么回事的话。有一个关于手势的小问题那就是它们和传统的拟物化相比没有直接显示给用户。</p>
+<p>有一样东西你是可以做到的那就是通过用户对基于界面的手势的理解，除了妥协于简单朴素的界面之外。为了一个更棒的手势效果，我推荐阅读这篇我朋友Graham<br>Odds写的<a href="http://www.scottlogic.co.uk/blog/graham/2010/05/contextual-cues-in-ui-design/" target="_blank" rel="noopener">博客</a>，这里有很多这种例子。</p>
+<p>这种手势交互通常通过这些功能和行为来给用户的所作所为得到响应。举个例子，鼠标指针从桌面浏览器被用户移到在一个超链接上的时候。</p>
+<p>同样的方法会被用到基于界面的手势上。当一个用户开始与界面产生交互的时候，你可以提供很微妙的可见的线索来促进进一步的交互来表示这个功能，这样的话这个手势就会被触发。</p>
+<p>对于你的任务清单，可以用一个简单的标记来表示当用户往左或者往右拖动一个项目的时候是删除还是完成。所以记下来就要添加它们！</p>
+<p>添加一系列<strong>UILabel</strong>的实例变量到<code>SHCTableViewCell.m</code>中，</p>
+<p>如下:</p>
+<p>UILabel *_tickLabel;<br>UILabel *_crossLabel;</p>
+<p>接下来，在<code>initWithStyle:reuseIdentifier：</code>上面上面定义一些常量：</p>
+<p>const float UI_CUES_MARGIN = 10.0f;<br>const float UI_CUES_WIDTH = 50.0f;</p>
+<p>现在在<code>initWithStyle:reuseIdentifier：</code>中的<code>if(self)</code>的结构里添加如下代码:</p>
+<p>// add a tick and cross<br>_tickLabel = [self createCueLabel];<br>_tickLabel.text = @”\u2713”;<br>_tickLabel.textAlignment = NSTextAlignmentRight;<br>[self addSubview:_tickLabel];<br>_crossLabel = [self createCueLabel];<br>_crossLabel.text = @”\u2717”;<br>_crossLabel.textAlignment = NSTextAlignmentLeft;<br>[self addSubview:_crossLabel];</p>
+<p>然后添加下面这个创建label的接口:</p>
+<p>// utility method for creating the contextual cues<br>-(UILabel<em>) createCueLabel {<br>UILabel</em> label = [[UILabel alloc] initWithFrame:CGRectNull];<br>label.textColor = [UIColor whiteColor];<br>label.font = [UIFont boldSystemFontOfSize:32.0];<br>label.backgroundColor = [UIColor clearColor];<br>return label;<br>}</p>
+<p>对于标记和叉的图标来说与其用图片素材，还不如使用Unicode编码就像上面的代码一样来得好。你可能找到了一些比较漂亮的素材，但是这些编码能够很快执行出这样的效果，所以无需添加图片素材。</p>
+<blockquote>
+<p>注意：为什么我知道这些代表着对号和叉号的unicode值？可以通过<a href="http://en.wikibooks.org/wiki/Unicode/List_of_useful_symbols" target="_blank" rel="noopener">list of<br>useful Unicode<br>symbols</a>很方便的找到!</p>
+</blockquote>
+<p>现在在<code>layoutSubviews</code>函数末尾添加如下代码来重定位这些标签:</p>
+<pre><code>_tickLabel.frame = CGRectMake(-UI_CUES_WIDTH - UI_CUES_MARGIN, 0,</code></pre><p>UI_CUES_WIDTH, self.bounds.size.height);<br>_crossLabel.frame = CGRectMake(self.bounds.size.width +<br>UI_CUES_MARGIN, 0,<br>UI_CUES_WIDTH, self.bounds.size.height);</p>
+<p>上面的代码让标签位于屏幕外，勾号再左边叉号再右边。</p>
+<p>最后，在<code>handlePan:</code>中添加代码，在block中处于<code>UIGestureRecognizerStateChanged</code>状态哪里添加如下代码，用来在用户拖动cell的时候调整label的透明度:</p>
+<p>// fade the contextual cues<br>float cueAlpha = fabsf(self.frame.origin.x) / (self.frame.size.width /<br>2);<br>_tickLabel.alpha = cueAlpha;<br>_crossLabel.alpha = cueAlpha;</p>
+<p>// indicate when the item have been pulled far enough to invoke the<br>given action<br>_tickLabel.textColor = _markCompleteOnDragRelease ?<br>[UIColor greenColor] : [UIColor whiteColor];<br>_crossLabel.textColor = _deleteOnDragRelease ?<br>[UIColor redColor] : [UIColor whiteColor];</p>
+<p>这个勾和叉号通过改变颜色更加明显的体现了用户拖动的项目是否足够远-接下来编译项目你就会注意到这个现象了：</p>
+<p>完成这个最后的功能之后，你已经完成了整套系列的三分之一！</p>
+<h3 id="接下来该做什么"><a href="#接下来该做什么" class="headerlink" title="接下来该做什么?"></a>接下来该做什么?</h3><hr>
+<p>这里有一些<a href="http://www.raywenderlich.com/downloads/ClearStyle1Final.zip" target="_blank" rel="noopener">示例</a>，里面包含了这个部分的所有源代码。</p>
+<p>下一步做什么呢？好遥远，现在这个app只是能够允许用户标记项目完成或者删除项目。这里显然需要更多的手势或者特性来是的应用更丰富。</p>
+<p>不过，我不是很想用很常见的UITableView提供的删除动画。我肯定这里应该需要用一个更加炫的方法。</p>
+<p>不幸的是，使用继承UITableView多多少少限制了一些功能，这也是为什么接下来的一部分将会替换这部分你写的自定义功能。不过它一直都是一个很大的话题，你会等到第二部分才能找出所有有关它的一切。</p>
+<p>其实，为什么不自己思考更多有趣的东西和手势来想替换现有的控件。当然，如果你使用手势，不要忘记怎么去提醒用户来发现它们和使用它们的可能性。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>loannes</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://yoursite.com/2016/05/18/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/">http://yoursite.com/2016/05/18/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/iOS/"># iOS</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2016/06/22/WWDC15%20%E6%80%BB%E7%BB%93%20/">WWDC15 总结</a>
+            
+            
+            <a class="next" rel="next" href="/2016/04/13/%E8%B0%88%E8%B0%88Http%E5%92%8CHttps%20/">谈谈Http和Https</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

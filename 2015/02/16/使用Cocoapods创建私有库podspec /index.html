@@ -1,307 +1,199 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
-    
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="loannes&#39;s blog">
-    <title>使用Cocoapods创建私有库podspec - loannes&#39;s blog</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <meta name="author" content="loannes">
-    
-    
-    
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"loannes","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"=======================\n前言\n最近忽然有种莫名的想自己做点开源项目的想法，再加上自己平时积累的东西越来越多，时候后把这些东西整理出来分享给大家。\n之前有写过一篇如何使用Cocoapods的文章,之前查阅过它的文档，发现它还有个更神奇的功能，你可以通过podspec创建自己的私有库，对自己的库进行管理和维护，同时能上传到cocoapods,通过审核后就能使用cocoapods安装自己的库。\n如何创建并使用podspec\n本文章的前提是已经有git和cocoapods环境的前提下，如果没有可查看这篇文章。接下来我们要做的有以下几点：\n\n创建私有的 Spec Repo\n创建带有pod的工程项目\n编辑podspec文件，同时创建pod项目相关的github项目\n\n创建私有的Spec Repo\n什么是SpecRepo？按照我的理解它就是一个存储pods的容器，相当于是一个git仓库的remote端。\n.\n├── Specs\n    └── [SPEC_NAME]\n        └── [VERSION]\n            └── [SPEC_NAME].podspec在创建本地私有SpecRepo仓库前，你首先得创建一个与工程相对应的git仓库，并且创建协议文件License（在创建项目的时候可以勾选，一般选择MIT格式）。\n创建完git仓库后\npod repo add GKit https://github.com/fuer4869/GKit.gitcocoapods 已在 ~/.cocoapods/repos创建好项目,私有SepcRepo已经创建好了。接下来要做的就是创建整个的pod项目。\n创建pod项目工程文件\n创建pod项目有2种方式，一种是你自己本身已经有项目并且有git版本控制环境的话就无需创建pod项目工程了。这里主要讲的还是你还没有一个自己的pod项目的情况下，你改如何创建工程文件。ps：建议执行这个过程的时候先翻墙，否则创建项目过程会很慢。\n首先cd到你需要创建项目的路径\n$ pod lib create GKit之后它会问你几个问题：\n\n是否需要example，也就是例子工程文件。\n选择一个测试框架\n是objectC还是swift\n是否基于view测试\n类的前缀\n\n这个按照具体情况具体选择。之后它就会自动帮你创建项目，过程需要点时间，因为网络的关系，翻墙之后会快很多。\n$ tree GKit -L 2\nGKit\n├── Example\n│   ├── GKit\n│   ├── GKit.xcodeproj\n│   ├── GKit.xcworkspace\n│   ├── Podfile\n│   ├── Podfile.lock\n│   ├── Pods\n│   └── Tests\n├── LICENSE\n├── Pod\n│   ├── Assets\n│   └── Classes\n├── GKit.podspec\n└── README.md\n\n9 directories, 5 files这是整个工程的目录介绍。\n上传到远端仓库\n接下来我们要做的就是把项目推送到远端库中。并且设置tag，因为podspec文件如果要获取git版本控制需要tag号，否则无法通过验证。\n$ git add .\n$ git commit -s -m &quot;Initial Commit&quot;\n$ git remote add origin https://github.com/fuer4869/GKit.git\n$ git push origin master打上标签tag\n$ git tag -m &quot;first commit&quot; 0.1.0\n$ git push --tags然后就可以编辑podspec文件了，很简单的一个步骤，以下都是必填项：这里面唯一要注意的是source_files，public_header_files,这里的路径是相对podspec文件的位置来填写的,需要注意的是这里，其他的没什么。\nPod::Spec.new do |s|\n  s.name             = &quot;GKit&quot;\n  s.version          = &quot;0.1.0&quot;\n  s.summary          = &quot;Testing Private Podspec&quot;\n\n  s.description      =  &lt;&lt;-DESC\n                   Testing Private Podspec.\n\n                   * Markdown format.\n                   * Don&apos;t worry about the indent, we strip it!\n                   DESC\n\n  s.homepage         = &quot;https://github.com/fuer4869/GKit&quot;\n  s.license          = &apos;MIT&apos;\n  s.author           = { &quot;fuer4869&quot; =&gt; &quot;fuer4869@gmail.com&quot; }\n  s.source           = { :git =&gt; &quot;https://github.com/fuer4869/    GKit.git&quot;, :tag =&gt; s.version.to_s }\n  s.platform     = :ios, &apos;7.0&apos;\n  s.requires_arc = true\n\n  s.source_files = &apos;Pod/Classes/**/*&apos;\n  s.resource_bundles = {\n    &apos;GKit&apos; =&gt; [&apos;Pod/Assets/*.png&apos;]\n  }\n s.public_header_files = &apos;Pod/Classes/**/*.h&apos;\n s.frameworks = &apos;UIKit&apos;\n s.dependency &apos;AFNetworking&apos;, &apos;~&gt; 2.3&apos;\nend编辑完podspec文件后就需要对这个文件做一次验证，保证刚刚填写的格式是否正确，否则会影响接下来的上传。\n$ pod lib lint等待一点时间后，如果你看到XXX passed validation.说明验证已经通过，否则就是你编辑的podspec文件有错误，一般都是路径错误或者缺少必填项这种错。\n目前已经知道的podspec文件是可用的，但是还没有知道整个pod项目是否符合安装环境，pod还不一定能够使用。所以这时候我们可以自己做一次本地的测试。\n创建一个新项目，新建并编辑podfile文件，\nplatform :ios, &apos;7.0&apos;\n\npod &apos;GKit&apos;, :path =&gt; &apos;~/.cocoapods/repos/GKit安装pod pod install --verbose --no-repo-update\n在项目中引入自己的包测试无误后就可以做最后的步骤啦！把podspec 提交到SpecRepo，之前上传到远端仓库的步骤总算起到作用了。\ncd到pod项目中\npod repo push WTSpecs GKit.podspec目前我的环境是Xcode7 beta，EICaptain，终端给我提示了这样的一个错误Assertion failed: _initializationCompletedSuccessfully,很是无语，今天又被xcode7坑了一次。后来在网上查阅了下资料找到了个比较靠谱的解答：Errorgenerating pods project - Podinstall因为目前我安装的是xcode-beta版本，只要把现在的xcode-select退到Xcoderelease版本就可以了。\nsudo xcode-select -s /Applications/Xcode-beta.app/Contents/Developer好了上传成功，你可以通过pod search直接搜索自己的库了。\n","dateCreated":"2015-02-16T11:12:19+08:00","dateModified":"2019-12-12T11:37:51+08:00","datePublished":"2015-02-16T11:12:19+08:00","description":"","headline":"使用Cocoapods创建私有库podspec","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/http:/yoursite.com/2015/02/16/%E4%BD%BF%E7%94%A8Cocoapods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93podspec%20/"},"publisher":{"@type":"Organization","name":"loannes","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"/http:/yoursite.com/2015/02/16/%E4%BD%BF%E7%94%A8Cocoapods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93podspec%20/","keywords":"iOS"}</script>
-    <meta name="description" content="&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 前言 最近忽然有种莫名的想自己做点开源项目的想法，再加上自己平时积累的东西越来越多，时候后把这些东西整理出来分享给大家。 之前有写过一篇如何使用Cocoapods的文章,之前查阅过它的文档，发现它还有个更神奇的功能，你可以通过podspec创建自己的私有库，对自己的库进行管理和维护，同时能上传到cocoapods,通过审核后就能使用cocoapods">
-<meta property="og:type" content="blog">
-<meta property="og:title" content="使用Cocoapods创建私有库podspec">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2015&#x2F;02&#x2F;16&#x2F;%E4%BD%BF%E7%94%A8Cocoapods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93podspec%20&#x2F;index.html">
-<meta property="og:site_name" content="loannes&#39;s blog">
-<meta property="og:description" content="&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 前言 最近忽然有种莫名的想自己做点开源项目的想法，再加上自己平时积累的东西越来越多，时候后把这些东西整理出来分享给大家。 之前有写过一篇如何使用Cocoapods的文章,之前查阅过它的文档，发现它还有个更神奇的功能，你可以通过podspec创建自己的私有库，对自己的库进行管理和维护，同时能上传到cocoapods,通过审核后就能使用cocoapods">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2015-02-16T03:12:19.000Z">
-<meta property="article:modified_time" content="2019-12-12T03:37:51.000Z">
-<meta property="article:author" content="loannes">
-<meta property="article:tag" content="iOS">
-<meta name="twitter:card" content="summary">
-    
-    
-        
-    
-    
-    
-    
-    
-    <!--STYLES-->
-    
-<link rel="stylesheet" href="/assets/css/all.css">
-
-    
-<link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
-
-    
-<link rel="stylesheet" href="/assets/css/thumbs.css">
-
-    
-<link rel="stylesheet" href="/assets/css/tranquilpeak.css">
-
-    <!--STYLES END-->
-    
-
-    
-
-    
-        
-    
-</head>
-
-    <body>
-        <div id="blog">
-            <!-- Define author's picture -->
 
 
+
+
+
+<title>使用Cocoapods创建私有库podspec | loannes&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
     
 
-<header id="header" data-behavior="4">
-    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-    <div class="header-title">
-        <a
-            class="header-title-link"
-            href="/%20"
-            aria-label=""
-        >
-            loannes&#39;s blog
-        </a>
-    </div>
+
+
+    <!-- scripts list from _config.yml -->
     
-        
-            <a
-                class="header-right-picture "
-                href="#about"
-                aria-label="Öffne den Link: /#about"
-            >
-        
-        
-        </a>
+    <script src="/js/script.js"></script>
     
-</header>
+    <script src="/js/tocbot.min.js"></script>
+    
 
-            <!-- Define author's picture -->
 
 
-<nav id="sidebar" data-behavior="4">
-    <div class="sidebar-container">
-        
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/%20"
-                            
-                            title="Home"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-categories"
-                            
-                            title="Kategorien"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Kategorien</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-tags"
-                            
-                            title="Tags"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Tags</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-archives"
-                            
-                            title="Archiv"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archiv</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link open-algolia-search"
-                             href="#search"
-                            
-                            title="Suche"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Suche</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="#about"
-                            
-                            title="Über"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Über</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://github.com/" target="_blank" rel="noopener" title="GitHub">
-                    
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
-                    
-                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Stack Overflow</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://twitter.com/" target="_blank" rel="noopener" title="Twitter">
-                    
-                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Twitter</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://facebook.com/" target="_blank" rel="noopener" title="Facebook">
-                    
-                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Facebook</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://plus.google.com/" target="_blank" rel="noopener" title="Google Plus">
-                    
-                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Google Plus</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://www.linkedin.com/profile/" target="_blank" rel="noopener" title="LinkedIn">
-                    
-                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">LinkedIn</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/mailto"
-                            title="E-Mail"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">E-Mail</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/atom.xml"
-                            
-                            title="RSS"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">RSS</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-    </div>
-</nav>
 
-            
-            <div id="main" data-behavior="4"
-                 class="
-                        hasCoverMetaIn
-                        ">
+<meta name="generator" content="Hexo 4.1.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">loannes&#39;s Blog</a></div>
+            <div class="menu navbar-right">
                 
-<article class="post">
-    
-    
-        <div class="post-header main-content-wrap text-left">
-    
-        <h1 class="post-title">
-            使用Cocoapods创建私有库podspec
-        </h1>
-    
-    
-        <div class="post-meta">
-    <time datetime="2015-02-16T11:12:19+08:00">
-	
-		    16 2月 2015
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E7%AE%A1%E7%90%86/">管理</a>
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
 
+        </div>
+    </nav>
 
     
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">loannes&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
 </div>
 
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
     
-</div>
 
     
-    <div class="post-content markdown">
-        <div class="main-content-wrap">
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">使用Cocoapods创建私有库podspec</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">loannes</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">二月 16, 2015&nbsp;&nbsp;11:12:19</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E7%AE%A1%E7%90%86/">管理</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
             <p>=======================</p>
 <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><hr>
 <p>最近忽然有种莫名的想自己做点开源项目的想法，再加上自己平时积累的东西越来越多，时候后把这些东西整理出来分享给大家。</p>
@@ -398,327 +290,72 @@ pod &apos;GKit&apos;, :path =&gt; &apos;~/.cocoapods/repos/GKit</code></pre><p>�
 <pre><code>pod repo push WTSpecs GKit.podspec</code></pre><p>目前我的环境是Xcode7 beta，EI<br>Captain，终端给我提示了这样的一个错误<code>Assertion failed: _initializationCompletedSuccessfully</code>,很是无语，今天又被xcode7<br>坑了一次。后来在网上查阅了下资料找到了个比较靠谱的解答：<a href="http://stackoverflow.com/questions/31085306/error-generating-pods-project-pod-install" target="_blank" rel="noopener">Error<br>generating pods project - Pod<br>install</a><br>因为目前我安装的是xcode-beta版本，只要把现在的xcode-select退到Xcode<br>release版本就可以了。</p>
 <pre><code>sudo xcode-select -s /Applications/Xcode-beta.app/Contents/Developer</code></pre><p>好了上传成功，你可以通过pod search直接搜索自己的库了。</p>
 
-            
-
-
         </div>
-    </div>
-    <div id="post-footer" class="post-footer main-content-wrap">
-        
-            <div class="post-footer-tags">
-                <span class="text-color-light text-small">GETAGGT IN</span><br/>
-                
-    <a class="tag tag--primary tag--small t-link" href="/tags/iOS/" rel="tag">iOS</a>
 
-            </div>
         
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>loannes</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://yoursite.com/2015/02/16/%E4%BD%BF%E7%94%A8Cocoapods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93podspec%20/">http://yoursite.com/2015/02/16/%E4%BD%BF%E7%94%A8Cocoapods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93podspec%20/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</span>
+                     </p>
+                
+
+            </section>
         
-            <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
                     
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2015/03/04/UITableViewCell%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97%E9%AB%98%E5%BA%A6%E4%BC%98%E5%8C%96%20/"
-                    data-tooltip="UITableViewCell自动计算高度优化"
-                    aria-label="FRÜHER: UITableViewCell自动计算高度优化"
-                >
                     
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">FRÜHER</span>
-                    </a>
-            </li>
-            <li class="post-action">
-                
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
+                        <a href="/tags/iOS/"># iOS</a>
+                    
                         
-                        <span class="hide-xs hide-sm text-small icon-mr">NÄCHSTER</span>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a
-                class="post-action-btn btn btn--default btn-open-shareoptions"
-                href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
-            >
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2015/03/04/UITableViewCell%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97%E9%AB%98%E5%BA%A6%E4%BC%98%E5%8C%96%20/">UITableViewCell自动计算高度优化</a>
             
             
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2015/02/16/%E4%BD%BF%E7%94%A8Cocoapods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93podspec%20/"
-                    title="Teilen auf Facebook"
-                    aria-label="Teilen auf Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2015/02/16/%E4%BD%BF%E7%94%A8Cocoapods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93podspec%20/"
-                    title="Teilen auf Twitter"
-                    aria-label="Teilen auf Twitter"
-                >
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2015/02/16/%E4%BD%BF%E7%94%A8Cocoapods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93podspec%20/"
-                    title="Teilen auf Google Plus"
-                    aria-label="Teilen auf Google Plus"
-                >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
+        </section>
+
+
+    </article>
 </div>
 
-
-        
-        
-            
-        
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
     </div>
-</article>
-
-
-
-                <footer id="footer" class="main-content-wrap">
-    <span class="copyrights">
-        Copyrights &copy; 2019 loannes. All Rights Reserved.
-    </span>
 </footer>
 
-            </div>
-            
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
-                    <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2015/03/04/UITableViewCell%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97%E9%AB%98%E5%BA%A6%E4%BC%98%E5%8C%96%20/"
-                    data-tooltip="UITableViewCell自动计算高度优化"
-                    aria-label="FRÜHER: UITableViewCell自动计算高度优化"
-                >
-                    
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">FRÜHER</span>
-                    </a>
-            </li>
-            <li class="post-action">
-                
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
-                        <span class="hide-xs hide-sm text-small icon-mr">NÄCHSTER</span>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a
-                class="post-action-btn btn btn--default btn-open-shareoptions"
-                href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
-            >
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2015/02/16/%E4%BD%BF%E7%94%A8Cocoapods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93podspec%20/"
-                    title="Teilen auf Facebook"
-                    aria-label="Teilen auf Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2015/02/16/%E4%BD%BF%E7%94%A8Cocoapods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93podspec%20/"
-                    title="Teilen auf Twitter"
-                    aria-label="Teilen auf Twitter"
-                >
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2015/02/16/%E4%BD%BF%E7%94%A8Cocoapods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93podspec%20/"
-                    title="Teilen auf Google Plus"
-                    aria-label="Teilen auf Google Plus"
-                >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
-
-
-                </div>
-                
-    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
-        <i id="btn-close-shareoptions" class="fa fa-times"></i>
-        <ul class="share-options">
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2015/02/16/%E4%BD%BF%E7%94%A8Cocoapods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93podspec%20/"
-                        aria-label="Teilen auf Facebook"
-                    >
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Teilen auf Facebook</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2015/02/16/%E4%BD%BF%E7%94%A8Cocoapods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93podspec%20/"
-                        aria-label="Teilen auf Twitter"
-                    >
-                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Teilen auf Twitter</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://plus.google.com/share?url=http://yoursite.com/2015/02/16/%E4%BD%BF%E7%94%A8Cocoapods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93podspec%20/"
-                        aria-label="Teilen auf Google Plus"
-                    >
-                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Teilen auf Google Plus</span>
-                    </a>
-                </li>
-            
-        </ul>
     </div>
-
-
-            
-        </div>
-        
-
-
-<div id="about">
-    <div id="about-card">
-        <div id="about-btn-close">
-            <i class="fa fa-times"></i>
-        </div>
-        
-            <h4 id="about-card-name">loannes</h4>
-        
-            <div id="about-card-bio"><p>author.bio</p>
-</div>
-        
-        
-            <div id="about-card-job">
-                <i class="fa fa-briefcase"></i>
-                <br/>
-                <p>author.job</p>
-
-            </div>
-        
-        
-    </div>
-</div>
-
-        
-        
-<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
-        <!--SCRIPTS-->
-
-<script src="/assets/js/jquery.js"></script>
-
-
-<script src="/assets/js/jquery.fancybox.js"></script>
-
-
-<script src="/assets/js/thumbs.js"></script>
-
-
-<script src="/assets/js/tranquilpeak.js"></script>
-
-<!--SCRIPTS END-->
-
-
-    
-
-
-
-
-    </body>
+</body>
 </html>

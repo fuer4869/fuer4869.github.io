@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="loannes">
+
+
+
+
+
+<title>初探Size Classes笔记 | loannes&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.1.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">初探Size Classes笔记</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">loannes</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">三月 17, 2015&nbsp;&nbsp;11:12:19</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>====================</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><hr>
+<p>自从苹果推出了iPhone6和plus，宣布苹果正式进入大屏时代。不单单设计师哭了，连我们这些苦逼的工程师也跟着要一起哭。因为本身iOS不需要和安卓那样考虑自适应的问题，原本这个只有做android的同学才会碰到的问题现在也终于轮到我们iOS开发工程师了。而且相信正在赶项目的同学，听到此消息估计是一口老血喷在屏幕上了。那我们该如何轻松的适配如此多的尺寸呢？</p>
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><hr>
+<p>查阅了官方文档，苹果给出了这样一个解决方案。</p>
+<blockquote>
+<p>Use size classes to enable a storyboard or xib file to work with all<br>available screen sizes. This enables the user interface of your app to<br>work on any iOS device.</p>
+</blockquote>
+<p>Size Classes<br>单从名字上我是这么理解的，apple把所有设备的尺寸分成了几种类型。以前我们一个页面需要创建多个xib来适配，现在我们不需要那么做了。这次iOS8的更新可以说是在设计界面上的一大突破。从iOS7更新的Auto<br>Layout之后，我们设计界面从以前的绝对坐标这种概念转换成了约束来指定视图的坐标和大小，致使我们不必再考虑设备的具体尺寸和方向了。但从iPhone6等新设备出来之后，我们不得不考虑Auto<br>Layout这种布局方案在不同设备上的体验还是有一些缺点的。可能你正在设计一个iPhone6的界面，但是你用的是一张4-inch的xib，这个时候你会明显的发现这样的界面完全设计不出你想要的效果。这个时候我们就需要用到Size<br>Classes了。<br>Size Classes有两种类型，compact（紧凑）和 regular（正常）。</p>
+<p>这样我们可以根据官方文档给出的介绍，可以针对不同的设备不同的方向采用不用的Size<br>Class。\</p>
+<p>看过这2张图之后相信能够很清晰的了解我们该如何使用Size<br>Classes了。总的来说iPad两个方向都是Regular，而iPhone的话，竖的是width-Compact,height-Regular。横向的话因为iPhone<br>6plus的屏幕尺寸比较特殊，所以就按照它的尺寸选择width-Regular，height-Compact。那也就是说Auto<br>Layout本身已经解决了我们在设计界面过程中确定视图的尺寸和坐标，而Size<br>Classes帮我们解决了Auto<br>Layout在布局方案对于不同设备的缺点也解决掉了，想想一套布局就可以完美解决所有设备的适配问题，那酸爽！</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><hr>
+<p>在iOS7时代，以为Auto<br>Layout会是设计界面的神器，没想到更新到了iOS8之后更新了Size<br>Classes这个革命性的功能。起初发布会一结束还被做android的同事开过玩笑，你们做iOS也来感受下我们做android的苦的时候Apple更新了如此人性化的功能。相信这个功能绝对是以后开发界面的核心！</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>loannes</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://yoursite.com/2015/03/17/%E5%88%9D%E6%8E%A2Size%20Classes%E7%AC%94%E8%AE%B0%20/">http://yoursite.com/2015/03/17/%E5%88%9D%E6%8E%A2Size%20Classes%E7%AC%94%E8%AE%B0%20/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/iOS/"># iOS</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2015/03/22/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20/">使用Autolayout实现动态高度的ScrollView</a>
+            
+            
+            <a class="next" rel="next" href="/2015/03/16/%E4%BD%BF%E7%94%A8Cocoapods%E5%81%9AiOS%E9%A1%B9%E7%9B%AE%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%20/">使用Cocoapods做iOS项目依赖管理</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

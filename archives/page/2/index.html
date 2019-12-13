@@ -1,1603 +1,215 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
-    
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="loannes&#39;s blog">
-    <title>Archiv - loannes&#39;s blog</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <meta name="author" content="loannes">
-    
-    
-    
-    <script type="application/ld+json">{}</script>
-    <meta property="og:type" content="blog">
-<meta property="og:title" content="loannes&#39;s blog">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;archives&#x2F;page&#x2F;2&#x2F;index.html">
-<meta property="og:site_name" content="loannes&#39;s blog">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:author" content="loannes">
-<meta name="twitter:card" content="summary">
-    
-    
-        
-    
-    
-    
-    
-    
-    <!--STYLES-->
-    
-<link rel="stylesheet" href="/assets/css/all.css">
-
-    
-<link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
-
-    
-<link rel="stylesheet" href="/assets/css/thumbs.css">
-
-    
-<link rel="stylesheet" href="/assets/css/tranquilpeak.css">
-
-    <!--STYLES END-->
-    
-
-    
-
-    
-</head>
-
-    <body>
-        <div id="blog">
-            <!-- Define author's picture -->
 
 
+
+
+
+<title>归档 | loannes&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
     
 
-<header id="header" data-behavior="1">
-    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-    <div class="header-title">
-        <a
-            class="header-title-link"
-            href="/%20"
-            aria-label=""
-        >
-            loannes&#39;s blog
-        </a>
-    </div>
+
+
+    <!-- scripts list from _config.yml -->
     
-        
-            <a
-                class="header-right-picture "
-                href="#about"
-                aria-label="Öffne den Link: /#about"
-            >
-        
-        
-        </a>
+    <script src="/js/script.js"></script>
     
-</header>
+    <script src="/js/tocbot.min.js"></script>
+    
 
-            <!-- Define author's picture -->
 
 
-<nav id="sidebar" data-behavior="1">
-    <div class="sidebar-container">
-        
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/%20"
-                            
-                            title="Home"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-categories"
-                            
-                            title="Kategorien"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Kategorien</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-tags"
-                            
-                            title="Tags"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Tags</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-archives"
-                            
-                            title="Archiv"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archiv</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link open-algolia-search"
-                             href="#search"
-                            
-                            title="Suche"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Suche</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="#about"
-                            
-                            title="Über"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Über</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://github.com/" target="_blank" rel="noopener" title="GitHub">
-                    
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
-                    
-                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Stack Overflow</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://twitter.com/" target="_blank" rel="noopener" title="Twitter">
-                    
-                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Twitter</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://facebook.com/" target="_blank" rel="noopener" title="Facebook">
-                    
-                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Facebook</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://plus.google.com/" target="_blank" rel="noopener" title="Google Plus">
-                    
-                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Google Plus</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://www.linkedin.com/profile/" target="_blank" rel="noopener" title="LinkedIn">
-                    
-                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">LinkedIn</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/mailto"
-                            title="E-Mail"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">E-Mail</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/atom.xml"
-                            
-                            title="RSS"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">RSS</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-    </div>
-</nav>
 
-            
-            <div id="main" data-behavior="1"
-                 class="
-                        hasCoverMetaIn
-                        ">
+<meta name="generator" content="Hexo 4.1.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">loannes&#39;s Blog</a></div>
+            <div class="menu navbar-right">
                 
-    <section class="postShorten-group main-content-wrap">
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2016/04/13/%E8%B0%88%E8%B0%88Http%E5%92%8CHttps%20/"
-                            aria-label=": 谈谈Http和Https"
-                        >
-                            谈谈Http和Https
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-04-13T11:12:19+08:00">
-	
-		    13 4月 2016
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/https/">https</a>
-
-
-    
-</div>
-
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
             </div>
-            
-                <div class="postShorten-content">
-                    <p>===============</p>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><hr>
-<p>继续上一篇文章深入研究网络相关的知识，因为上一篇还是有很多没有解释很清楚的地方，所以在这里想讲讲自己对http和https的理解。</p>
-<p>自从苹果更新了iOS9.0之后一直没机会研究它为什么把所以的请求都改为了https，第一反应肯定是考虑安全方面，那到底http和https有什么区别，https改善了http的哪些安全方面的不足呢？</p>
-<h3 id="Http的缺点"><a href="#Http的缺点" class="headerlink" title="Http的缺点"></a>Http的缺点</h3><hr>
-<p>Http从1990年正式推出到后面更新到Http/2之后就再也没更新。而在安全方面它只是更新到了1.1，也就是说这么多年来Http一直都没有解决安全方面的问题。</p>
-<p>1.因为Http的通信是明文的，所以存在被窃听的风险。<br>2.无法确认身份。<br>3.无法验证报文的完整性。</p>
-<h3 id="通信明文"><a href="#通信明文" class="headerlink" title="通信明文"></a>通信明文</h3><p>因为Http本身没有加密功能，所以在通信过程中都是明文通信的，这样会造成被第三方窃听的危险。</p>
-<p>目前比较普遍的解决方式就是对通信内容进行加密，在客户端与服务端在通信之间对通信的数据进行加密，这样即使被窃听了，窃听方必须进行解密才能看到数据内容。但是这并不是最安全的方式，因为还是有可能会被解密的。</p>
-<h3 id="无法验证通信方的身份"><a href="#无法验证通信方的身份" class="headerlink" title="无法验证通信方的身份"></a>无法验证通信方的身份</h3><p>因为Http没有验证身份的功能，所以很有可能会被人伪装。</p>
-<ul>
-<li>目前很多都是用用户密码的方式来验证身份，但是一旦密码被窃取就会被其他人伪装，所以也不是很安全，这是第一点。</li>
-<li>是如果服务器不对客户端请求进行身份认证的话，那随便哪个客户端都能对服务器进行通信，这样可能造成恶意攻击等问题而使服务器浪费不必要的资源甚至瘫痪。</li>
-<li>因为无法验证身份所以，在通信过程中服务端无法得知客户端是谁，客户端也不知道得到的响应是谁发送过来的，其中很有可能伪装的。</li>
-</ul>
-<h3 id="无法验证报文的完整性"><a href="#无法验证报文的完整性" class="headerlink" title="无法验证报文的完整性"></a>无法验证报文的完整性</h3><p>因为Http无法验证收到的报文信息的完整性。因此通信双方无法在收到信息前得知发送过来的报文是否和接收到的报文是否一致，也就是说无法验证在途中是否被篡改过。</p>
-<h1 id="Https的优点"><a href="#Https的优点" class="headerlink" title="Https的优点"></a>Https的优点</h1><hr>
-<p>那知道了以上的缺点之后大概也能猜得出Https和Http有什么区别了吧。Https就是Http</p>
-<ul>
-<li>通信加密 + 身份认证 +<br>数据完整性的保护。Https主要应用在需要在安全上面做一些保护的通信上，比如像平时登录淘宝，浏览器的地址栏会有一个带锁的标志，这个就是Https通信的标识。</li>
-</ul>
-<p>有一点需要先说清楚，Https并不是新的协议，它只是对原先的Http套了一层壳，这个壳的作用就是起到了保护的作用，可以说是对Http给了套装备，但是它还是Http。而这层壳的名字就叫SSL（Secure<br>Socket Layer），通常都是Http和TCP通信，加了SSL层之后就变成先是 Http 和<br>SSL通信，然后再由SSL和TCP通信。</p>
-<p>经过SSL这一层的保护之后，Http就有了通信加密，身份认证(证书)和数据完整性验证的功能了。</p>
-<p>![](./谈谈Http和Https _ 飞奔的蜗牛的博客_files/https_01.jpg)</p>
-<h3 id="Https是如何解决这些问题的"><a href="#Https是如何解决这些问题的" class="headerlink" title="Https是如何解决这些问题的"></a>Https是如何解决这些问题的</h3><hr>
-<p>SSL使用了公开秘钥加密技术，从而解决了通信加密和身份认证的问题。</p>
-<h3 id="相互交换的公开密钥加密技术"><a href="#相互交换的公开密钥加密技术" class="headerlink" title="相互交换的公开密钥加密技术"></a>相互交换的公开密钥加密技术</h3><p>大家都知道，外面的很多加密算法都是公开的，所以不是很安全。这里所指的公开密钥加密技术就是在通信双方各持2种密钥，一种是公开密钥一种是私钥，公钥和密钥的关系就是公钥加密了，就要用对方的私钥解密。</p>
-<p>比方说客户端有份需要加密的数据需要发送给服务器，它首先持手中的公钥对数据进行了加密，然后连同数据一起发送给服务器，这个时候服务器拿到加密后的数据和客户端发过来的公钥后，它会对公钥进行验证确认下是不是自己人，这里就先解决了身份认证的问题。然后服务器持手中的私钥，这个是只有服务器才有的钥匙，对数据进行解密。因为私钥从未公开过，所以没有人能拿到这个私钥，而发送过来的公钥是不能够对这份数据进行解密的，所以也解决了数据加密而防止被人破解的问题。</p>
-<p>![](./谈谈Http和Https _ 飞奔的蜗牛的博客_files/https_02.jpg)</p>
-<p>为什么要用公钥私钥两把钥匙，因为如果通信双方公用一把钥匙的话就可能会被拦截，然后使用这把钥匙给解密。但是如果不发送钥匙的话又不知道对方的身份。</p>
-<p>这里有个疑问，密钥是从何而来的？密钥其实就是一种加密算法。如果被攻击者偷偷替换掉了公钥，那数据不就危险了吗？这个是这个技术唯一的缺点，当然也有解决方法，那就是从第三方证书颁发机构申请，当然这个是需要付费的。当你用自己的密钥向可靠的第三方申请数字证书的时候，第三方颁布的它会把密钥和带有数字签名的证书绑定在一起，这个时候当你需要验证这份公钥是否是自己的就可以通过第三方验证。</p>
-<p>![](./谈谈Http和Https _ 飞奔的蜗牛的博客_files/https_03.jpg)</p>
-<p><strong><em>关于第三点，因为通信被加密了所以也就不存在数据被人篡改的问题了</em></strong></p>
-<h3 id="已知SSL的缺点"><a href="#已知SSL的缺点" class="headerlink" title="已知SSL的缺点"></a>已知SSL的缺点</h3><p>其实SSL真正用起来的话比刚刚所说的还要复杂，除了密钥公钥，验证密钥，加密解密等步骤，还有一些零零碎碎的会话需要处理，所以相比http会慢很多。不过起码保证了安全嘛，而且平时开发中只有涉及到敏感数据才使用SSL。否则对服务器压力太大也是件麻烦事。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>看过书之后以前一直觉得远不可攀的这些东西，自己琢磨之后也就那回事情，虽然本文章并没有把Https的方方面面给讲透，但已经把核心部分给说明了。总结下来就是</p>
 
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2016/04/13/%E8%B0%88%E8%B0%88Http%E5%92%8CHttps%20/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Kommentieren und teilen
-                            </a>
-                        </p>
-                    
-                </div>
-            
         </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2016/03/18/SDWebImage%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"
-                            aria-label=": SDWebImage源码分析"
-                        >
-                            SDWebImage源码分析
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-03-18T11:12:19+08:00">
-	
-		    18 3月 2016
-    	
-    </time>
-    
-</div>
+    </nav>
 
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">loannes&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
             </div>
-            
-                <div class="postShorten-content">
-                    <p>==================</p>
-<p>###前言</p>
-<p>使用SDWebImage这个第三方开源库也有一段时间了，一直没有机会去深入理解这个库为何如此强大。这次本着冒险的精神花了点时间去里面探索了一番。虽然过程有点痛苦结果也是弄的自己灰头土脸的，不过起码还是有收获的。所以在本blog做一次第一次探险的记录吧。</p>
-<hr>
-<p><a href="https://github.com/rs/SDWebImage" target="_blank" rel="noopener">SDWebImage github地址</a></p>
-<p>原文是这么说的：SDWebImage是一个图片的异步下载器并且支持缓存。<br>作者是 <a href="https://github.com/mythodeia" target="_blank" rel="noopener">Konstantinos<br>K.</a>,目前star数已超过1.3w。目前有很多著名的app都在使用这个库，如携程，Facebook等。<br>虽然它的主要功能就这2点，但是它无可厚非的成为了目前主流的iOS第三方开源库的王者之一。</p>
-<p>下面来看一下SDWebImage的类关系图</p>
-<p>PS: 图片来自于 <a href="http://www.jianshu.com/p/c07df06c60be" target="_blank" rel="noopener">http://www.jianshu.com/p/c07df06c60be</a></p>
-<hr>
-<p>自从更新iOS5.0之后，NSURLCache这个类已成为处理内存或者硬盘存储源数据的必需品。但是当你将原始缓存数据转换成UIImage的时候，这个举动其实是很浪费资源的，包括数据处理和内存拷贝等。<br>而SDWebImage就是为了解决这个问题而诞生的，SDWebImage会缓存UIimage的描述到内存中，并把经过压缩过的图片放到磁盘中（或者内存中），这样大大减小了在频繁从内存中获取图片的性能开销。<br>然后关于SDWebImage的压缩方式也很人性化的使用了后台线程的方式，避免了线程阻塞的问题。</p>
-<p>参考文章：<a href="https://github.com/rs/SDWebImage/wiki/How-is-SDWebImage-better-than-X%3F" target="_blank" rel="noopener">https://github.com/rs/SDWebImage/wiki/How-is-SDWebImage-better-than-X%3F</a></p>
-<p>以上2点是SDWebImage的优势所在，接下来为了论证它的这些特点我们详细分析下它的源码：</p>
-<ol>
-<li>SDWebImage 在缓存中进行写的操作是异步执行的，所以不会对UI造成延迟</li>
-<li>SDWebImage 会在后台解压缩图片</li>
-<li>异步下载图片，不会阻塞线程</li>
-<li>良好的缓存管理</li>
-<li>支持arm64位系统</li>
-</ol>
-<p>先来看一下SDWebImageDownloader，在SDWebImageDownloader类中</p>
-<p><code>- (id &lt;SDWebImageOperation&gt;)downloadImageWithURL:(NSURL *)url options:(SDWebImageDownloaderOptions)options progress:(SDWebImageDownloaderProgressBlock)progressBlock completed:(SDWebImageDownloaderCompletedBlock)completedBlock</code></p>
-<p>该接口中这么写到</p>
-<blockquote>
-<p>In order to prevent from potential duplicate caching (NSURLCache +<br>SDImageCache) we disable the cache for image requests if told<br>otherwise</p>
-</blockquote>
-<p>它为了不与SDImageCache类产生冲突造成重复缓存，所以在请求的时候并没有做图片的存储工作。它把下载图片和缓存全部都交由SDWebImageManager来管理了。</p>
-<dl><dt>然后关于URL的缓存策略不出乎意料的还是就常见的2中方式<code>NSURLRequestUseProtocolCachePolicy</code></dt><dd>默认的缓存策略，<br>如果缓存不存在，直接从服务端获取。如果缓存存在，会根据response中的Cache-Control字段判断下一步操作，如:<br>Cache-Control字段为must-revalidata,<br>则询问服务端该数据是否有更新，无更新的话直接返回给用户缓存数据，若已更新，则请求服务端.</dd></dl><p><code>NSURLRequestReloadIgnoringLocalCacheData</code> :<br>忽略本地缓存，直接向服务器请求数据。</p>
-<pre><code>- (id &lt;SDWebImageOperation&gt;)downloadImageWithURL:(NSURL*)url options:(SDWebImageDownloaderOptions)options progress:(SDWebImageDownloaderProgressBlock)progressBlock completed:(SDWebImageDownloaderCompletedBlock)completedBlock {
-__block SDWebImageDownloaderOperation *operation;
-__weak __typeof(self)wself = self;
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
 
-[self addProgressCallback:progressBlock completedBlock:completedBlock forURL:url createCallback:^{
-    NSTimeInterval timeoutInterval = wself.downloadTimeout;
-    if (timeoutInterval == 0.0) {
-        timeoutInterval = 15.0;
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
     }
-
-    // In order to prevent from potential duplicate caching (NSURLCache + SDImageCache) we disable the cache for image requests if told otherwise
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:(options &amp; SDWebImageDownloaderUseNSURLCache ? NSURLRequestUseProtocolCachePolicy : NSURLRequestReloadIgnoringLocalCacheData) timeoutInterval:timeoutInterval];
-    request.HTTPShouldHandleCookies = (options &amp; SDWebImageDownloaderHandleCookies);
-    request.HTTPShouldUsePipelining = YES;
-    if (wself.headersFilter) {
-        request.allHTTPHeaderFields = wself.headersFilter(url, [wself.HTTPHeaders copy]);
-    }
-    else {
-        request.allHTTPHeaderFields = wself.HTTPHeaders;
-    }
-    operation = [[wself.operationClass alloc] initWithRequest:request
-                                                      options:options
-                                                     progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                                                         SDWebImageDownloader *sself = wself;
-                                                         if (!sself) return;
-                                                         __block NSArray *callbacksForURL;
-                                                         dispatch_sync(sself.barrierQueue, ^{
-                                                             callbacksForURL = [sself.URLCallbacks[url] copy];
-                                                         });
-                                                         for (NSDictionary *callbacks in callbacksForURL) {
-                                                             dispatch_async(dispatch_get_main_queue(), ^{
-                                                                 SDWebImageDownloaderProgressBlock callback = callbacks[kProgressCallbackKey];
-                                                                 if (callback) callback(receivedSize, expectedSize);
-                                                             });
-                                                         }
-                                                     }
-                                                    completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
-                                                        SDWebImageDownloader *sself = wself;
-                                                        if (!sself) return;
-                                                        __block NSArray *callbacksForURL;
-                                                        dispatch_barrier_sync(sself.barrierQueue, ^{
-                                                            callbacksForURL = [sself.URLCallbacks[url] copy];
-                                                            if (finished) {
-                                                                [sself.URLCallbacks removeObjectForKey:url];
-                                                            }
-                                                        });
-                                                        for (NSDictionary *callbacks in callbacksForURL) {
-                                                            SDWebImageDownloaderCompletedBlock callback = callbacks[kCompletedCallbackKey];
-                                                            if (callback) callback(image, data, error, finished);
-                                                        }
-                                                    }
-                                                    cancelled:^{
-                                                        SDWebImageDownloader *sself = wself;
-                                                        if (!sself) return;
-                                                        dispatch_barrier_async(sself.barrierQueue, ^{
-                                                            [sself.URLCallbacks removeObjectForKey:url];
-                                                        });
-                                                    }];
-    operation.shouldDecompressImages = wself.shouldDecompressImages;
-
-    if (wself.urlCredential) {
-        operation.credential = wself.urlCredential;
-    } else if (wself.username &amp;&amp; wself.password) {
-        operation.credential = [NSURLCredential credentialWithUser:wself.username password:wself.password persistence:NSURLCredentialPersistenceForSession];
-    }
-
-    if (options &amp; SDWebImageDownloaderHighPriority) {
-        operation.queuePriority = NSOperationQueuePriorityHigh;
-    } else if (options &amp; SDWebImageDownloaderLowPriority) {
-        operation.queuePriority = NSOperationQueuePriorityLow;
-    }
-
-    [wself.downloadQueue addOperation:operation];
-    if (wself.executionOrder == SDWebImageDownloaderLIFOExecutionOrder) {
-        // Emulate LIFO execution order by systematically adding new operations as last operation&apos;s dependency
-        [wself.lastAddedOperation addDependency:operation];
-        wself.lastAddedOperation = operation;
-    }
-}];
-
-return operation;
-}</code></pre><p>SDWebImageDownLoader默认的缓存策略是<code>NSURLRequestReloadIgnoringLocalCacheData</code>，它会把已经设置好的request交由SDWebImageDownloaderOperation处理图片方向，标记标签等，它命名的标签就是URL。最终通过block返回给SDWebImageManager做本地存储工作。直到下次加载图片的时候会通过标签进行本地搜寻直接返回图片，如果本地没有该图片就会再通过NSURLConnection请求资源。</p>
-<p>在上面几个步骤中有几个问题需要讲一下：</p>
-<ul>
-<li><p>为什么SDWebImage不直接使用NSURLConection自己的缓存策略，反而还另外写了个SDImageCache类。那么麻烦的事情肯定有其中的原因在。</p>
-<ul>
-<li>因为NSURLConection的缓存方式是把图片以data的形式存在本地的，所以SDWebImage考虑到如果频繁使用图片的情况下会花很多的资源在处理data转成UIImage对象上，所以才避开了这个缓存方式改以用SDImageCache。</li>
-</ul>
-</li>
-<li><p>使用过程当中有什么值得注意的细节</p>
-<ul>
-<li><p>都知道压缩图片是一件很伤神伤力的事情，强大的SDWebImage也无法轻松承受多张图片同时解压缩过程，所以特地把这个过程放在了自动释放池中进行。但是在iOS7上面还是要记得通过调用<code>[SDImageCache sharedImageCache] clearMemory]</code>来清理缓存。详细可查看<code>SDWebImageDecoder</code>类。<br>PS:它是不会对gif格式的图片进行压缩的。</p>
-</li>
-<li><p>常用的图片格式有gif，jpg，png,tiff,bmp，webp等都是支持的。</p>
-</li>
-<li><p>目前使用的是NSURLConnection，所以还不支持后台运行。</p>
-</li>
-</ul>
-</li>
-</ul>
-<p>大致的缓存处理过程就是这么回事，核心思路就是这些，其他辅助类都不多做解释了。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>结构十分清晰，该避免的一些基础性的错误都避免了，类似retain<br>cycle，线程的管理。耗时长的请求都放在异步执行了。这个缓存策略是我以前从没想过的问题，为了追求性能的极致确实需要做到这份儿上。</p>
-<p>代码上面没有什么难度，大量的基础知识非常适合中级iOS程序员做提升自己的训练课程，以上。</p>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2016/03/18/SDWebImage%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Kommentieren und teilen
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
+</script>
+        <div class="main">
+            <div class="post-wrap archive">
+    
+    
         
-    </article>
+
+        
+            <h3>2016</h3>
+        
+
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2016/04/13/%E8%B0%88%E8%B0%88Http%E5%92%8CHttps%20/">谈谈Http和Https</a>
+            <span class="archive-item-date">四月 13, 2016</span>
+        </article>
+    
+        
+
+        
+
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2016/03/18/SDWebImage%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">SDWebImage源码分析</a>
+            <span class="archive-item-date">三月 18, 2016</span>
+        </article>
+    
+        
+
+        
+
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2016/02/13/%E5%88%9B%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89UIViewController%E8%BF%87%E6%B8%A1%E5%8A%A8%E7%94%BB/">创建自定义UIViewController过渡动画</a>
+            <span class="archive-item-date">二月 13, 2016</span>
+        </article>
+    
+        
+
+        
+            <h3>2015</h3>
+        
+
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2015/12/29/%E7%BB%86%E8%B0%88iOS8%E7%9A%84Self-Sizing%20Cells%20/">细谈iOS8的Self-Sizing Cells</a>
+            <span class="archive-item-date">十二月 29, 2015</span>
+        </article>
+    
+        
+
+        
+
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2015/07/14/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/">iOS8新特性 UIPresentationController</a>
+            <span class="archive-item-date">七月 14, 2015</span>
+        </article>
+    
+        
+
+        
+
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir%20/">用xctool打包ipa文件自动上传到fir</a>
+            <span class="archive-item-date">四月 14, 2015</span>
+        </article>
+    
+        
+
+        
+
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2015/04/05/%E9%85%8D%E5%90%88Autolayou+SizeClasses%E4%BB%BF%E6%94%AF%E4%BB%98%E5%AE%9D%E9%A6%96%E9%A1%B5%20/">配合Autolayou+SizeClasses仿支付宝首页</a>
+            <span class="archive-item-date">四月 5, 2015</span>
+        </article>
+    
+        
+
+        
+
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2015/03/25/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/">讲讲iOS的URL加载系统</a>
+            <span class="archive-item-date">三月 25, 2015</span>
+        </article>
+    
+        
+
+        
+
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2015/03/22/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20/">使用Autolayout实现动态高度的ScrollView</a>
+            <span class="archive-item-date">三月 22, 2015</span>
+        </article>
+    
+        
+
+        
+
+        <article class="archive-item">
+            <a class="archive-item-link" href="/2015/03/17/%E5%88%9D%E6%8E%A2Size%20Classes%E7%AC%94%E8%AE%B0%20/">初探Size Classes笔记</a>
+            <span class="archive-item-date">三月 17, 2015</span>
+        </article>
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2016/02/13/%E5%88%9B%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89UIViewController%E8%BF%87%E6%B8%A1%E5%8A%A8%E7%94%BB/"
-                            aria-label=": 创建自定义UIViewController过渡动画"
-                        >
-                            创建自定义UIViewController过渡动画
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-02-13T11:12:19+08:00">
-	
-		    13 2月 2016
-    	
-    </time>
-    
+    <nav class="pagination">
+        <a class="page-number" href="/archives/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/page/3/">3</a>
+    </nav>
+
 </div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p>原文来自<a href="http://www.raywenderlich.com/110536/custom-uiviewcontroller-transitions" target="_blank" rel="noopener">Creating Custom UIViewController<br>Transitions</a></p>
-<p><code>Push，pop，cover vertically...</code><br>你从iOS中学会了一些漂亮的视图过渡效果，但是如果让你自己制作的话也会很有趣。自定义<code>UIViewController</code>过渡效果能显著地增加用户体验并且让你的app与其他的与众不同。如果你以前没亲自做过自定义过渡，你会发现它的工作量比你预期的要少很多。</p>
-<p>在此次课程中，你将会制作一个带有一些自定义<code>UIViewController</code>过渡效果的猜测游戏。当你完成的时候，你将会获得以下技能：</p>
-<ul>
-<li>Transition的API是怎样的结构</li>
-<li>如何使用自定义过渡来实现呈现和消除view controller</li>
-<li>如何做有交互的过渡效果</li>
-</ul>
-<blockquote>
-<p>Note:<br>在此教程中所示的过渡效果是利用<code>UIView</code>动画，所以你必须熟悉关于此次主题的知识，至少需要熟悉基础知识。可以查看我们的教程<a href="http://www.raywenderlich.com/113674/ios-animation-tutorial-getting-started" target="_blank" rel="noopener">iOS<br>Animation</a>中的简介。</p>
-</blockquote>
-<h3 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h3><p>下载 <a href="http://www.raywenderlich.com/110536/custom-uiviewcontroller-transitions" target="_blank" rel="noopener">starter project for this<br>tutorial</a>.运行项目,你会看到如下效果：<br><img src="http://cdn1.raywenderlich.com/wp-content/uploads/2015/07/starter.gif" alt=""></p>
-<p><img src="http://cdn3.raywenderlich.com/wp-content/uploads/2015/08/cuteness-overload-322x320.jpg" alt=""></p>
-<hr>
-<p>你会看到app中一个page view<br>controller有好几张卡。每张卡都在形容一种动物，点击卡片会展示这张卡所描述的动物。</p>
-<p>而你的工作就是猜这个动物！是只猫，狗还是一条鱼？玩玩看，看你能玩的怎么样。</p>
-<p>大部分的导航逻辑做的已经蛮到位了，但是这个app还是感觉有点单调乏味。你来用自定义过渡来使这个app变的更加有趣吧。</p>
-<h3 id="探索Transitioning-API"><a href="#探索Transitioning-API" class="headerlink" title="探索Transitioning API"></a>探索Transitioning API</h3><p>具体的来说，就是过渡效果API大量的使用了协议。在本章节末尾，你会理解每个协议之间的联系和职责。下面这张示例图会告诉你API中分为那几个主要部分：<br><img src="http://cdn4.raywenderlich.com/wp-content/uploads/2015/07/parts.001-667x500.jpg" alt=""></p>
-<h3 id="参与者（The-Participants）"><a href="#参与者（The-Participants）" class="headerlink" title="参与者（The Participants）"></a>参与者（The Participants）</h3><p>（这个标题不知道怎么翻译，）<br>尽管这个示例图看起来很复杂，当你理解了其中各部分是如何工作之后你就会觉得它其实很简单。</p>
-<h3 id="Transitioning-Delegate"><a href="#Transitioning-Delegate" class="headerlink" title="Transitioning Delegate"></a>Transitioning Delegate</h3><p>每一个<code>view controller</code>都可能会有一个遵循<code>UIViewControllerTransitioningDelegate</code>协议的<code>transitioningDelegate</code></p>
-<p>当你去呈现或者消除一个<code>view controller</code>的时候，UIKit会向transitioning<br>delegate请求使用<code>animation controller</code>,把view controller的<br><code>transitioningDelegate</code>设置为你自己写的类并且返回给它，这样自定义的动画会替代默认动画。</p>
-<h3 id="Animation-Controller"><a href="#Animation-Controller" class="headerlink" title="Animation Controller"></a>Animation Controller</h3><p>对一个实现<code>UIViewControllerAnimatedTransitioning</code>协议的对象执行过渡动画。</p>
-<h3 id="过渡环境（Transitioning-Context）"><a href="#过渡环境（Transitioning-Context）" class="headerlink" title="过渡环境（Transitioning Context）"></a>过渡环境（Transitioning Context）</h3><p>你没有必要自己亲手去写代码来执行这协议。相反，当过渡开始时你的animation<br>controller会从UIKit得到一个完整的配置环境。</p>
-<h3 id="过渡过程（The-Transitioning-Process）"><a href="#过渡过程（The-Transitioning-Process）" class="headerlink" title="过渡过程（The Transitioning Process）"></a>过渡过程（The Transitioning Process）</h3><p>这里是几个在呈现过渡时的步骤：</p>
-<ol>
-<li>你用代码或者连接触发了过渡效果。</li>
-<li>然后UIKit向”to” view controller（将要被呈现的view<br>controller）请求transitioninig<br>delegate。如果它没有，UIKit会使用默认的那个，内置到过渡效果中。</li>
-<li>然后UIKit通过<code>animationControllerForPresentedController(_:presentingController:sourceController:)</code>向transitioninig<br>delegate请求一个animation<br>controller。如果它返回<code>nil</code>，将会使用默认过渡动画效果。</li>
-<li>一旦它有了一个有效的animation<br>controller,UIKIt就会构建出一个过渡环境。</li>
-<li>然后UIKit会从animation<br>controller使用<code>transitionDuration(_:)</code>查询动画的持续时间。</li>
-<li>然后UIKit会在animation<br>controller中唤醒<code>animateTransition(_:)</code>来执行过渡。</li>
-<li>最后，animation<br>controller会在过渡体系中调用<code>completeTransition(_:)</code>接口来表示动画已经结束。</li>
-</ol>
-<h3 id="创建一个自定义的呈现过渡效果（Creating-a-Custom-Presentation-Transition）"><a href="#创建一个自定义的呈现过渡效果（Creating-a-Custom-Presentation-Transition）" class="headerlink" title="创建一个自定义的呈现过渡效果（Creating a Custom Presentation Transition）"></a>创建一个自定义的呈现过渡效果（Creating a Custom Presentation Transition）</h3><p>是时候实践下你新学到的知识了！</p>
-<p>你的目标是执行以下动画：</p>
-<ul>
-<li>当用户点击一张卡片，快速翻转并呈现出一张缩小至和卡片一样大小的第二个界面。</li>
-<li>快速翻转之后，界面放大至整个屏幕一样大小。</li>
-</ul>
-<h3 id="创建动画"><a href="#创建动画" class="headerlink" title="创建动画"></a>创建动画</h3><p>你将开始制作animation controller。</p>
-<p>打开<code>File\New\File…</code>,选择<code>iOS\Source\Cocoa Touch Class</code>,然后点击<code>Next</code>。起名为<code>FlipPresentAnimationController</code>,设置它的超类为<code>NSObject</code>语言为<code>Swift</code>。点击<code>Next</code>然后设置群组为<code>Animation Controllers</code>。点击<code>Create</code>来创建你的新文件。</p>
-<p>Animation<br>controllers必须执行<code>UIViewControllerAnimatedTransitioning</code>的协议。打开<code>FlipPresentAnimationController.swift</code>,然后更新类的声明：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">import UIKit</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">class FlipPresentAnimationController: NSObject,     UIViewControllerAnimatedTransitioning &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
-<p>注意由于缺少接口你可能会遇到一些编译错误；不要慌-你正在解决这些问题。<br><img src="http://cdn4.raywenderlich.com/wp-content/uploads/2015/08/staring-at-pc-462x320.gif" alt=""></p>
-<p>Compiler errors…don’t panic…</p>
-<hr>
-<p>接下来你将要使用被点击的卡片的frame来当做动画的起始点。按照下面这句话写在类中来保存这个值。</p>
-<pre><code>var originFrame = CGRect.zeroRect</code></pre><p>为了满足<code>UIViewControllerAnimatedTransitioning</code>的需求，你还需要在类中加2个接口。</p>
-<p>在类的底部加接口：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -&gt; NSTimeInterval &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">      return 2.0</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
-<p>顾名思义，这个接口指的是过渡的持续时间。在开发期间先设置两秒,这样我们有足够的时间来观察动画。</p>
-<p>现在添加下面这条接口：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">func animateTransition(transitionContext: UIViewControllerContextTransitioning) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
-<p>这个协议是用来执行过渡动画的。接下来把下面这段代码插入接口顶部：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 1</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">guard let fromVC &#x3D; transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey),</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">let containerView &#x3D; transitionContext.containerView(),</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">let toVC &#x3D;     transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) else &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    return</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 2</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">let initialFrame &#x3D; originFrame</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">let finalFrame &#x3D; transitionContext.finalFrameForViewController(toVC)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 3</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">let snapshot &#x3D; toVC.view.snapshotViewAfterScreenUpdates(true)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">snapshot.frame &#x3D; initialFrame</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">snapshot.layer.cornerRadius &#x3D; 25</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">snapshot.layer.masksToBounds &#x3D; true</span></pre></td></tr></table></figure>
-<p>上面的代码发生了什么：</p>
-<ol>
-<li>过渡环境会提供需要用到的view<br>controllers并且它们的view会参与进过渡效果。你可以通过合适的key来获得它们。</li>
-<li>你接下来定义了”to”<br>view的frame开始和最后的大小。在这个例子中，frame由过渡开始的卡片大小到放大至整个屏幕。</li>
-<li><code>UIView</code> 快速翻转至”to”<br>view并且使它变成一个轻便的界面;这会把你的view和其层级结构做成动画。snapshot的frame刚开始为卡片的frame。你也可以修改它的corner<br>radius至卡片一样。</li>
-</ol>
-<p>继续在接口中添加鞋面几行代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">containerView.addSubview(toVC.view)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">containerView.addSubview(snapshot)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">toVC.view.hidden &#x3D; true</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">AnimationHelper.perspectiveTransformForContainerView(containerView)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">snapshot.layer.transform &#x3D; AnimationHelper.yRotation(M_PI_2)</span></pre></td></tr></table></figure>
-<p>一个新成员出现了：contriner<br>view。你可以把它想象成一块跳舞的地板而你的过渡正在上面扭。虽然container<br>view已经包含了”from” view，但是你还必须去添加”to”view。</p>
-<p>你现在已经添加了container的截图并且隐藏了真正的view。这个完整的动画会将截图旋转出view然后隐藏掉。</p>
-<blockquote>
-<p>注意：不要被<code>AnimationHelper</code><br>混淆。它是一个功能性的类，主要负责对view做变形动画和增加透视效果。随意看一下就行。</p>
-</blockquote>
-<p>此时，你已经具备了执行动画的所有条件。在接口底部添加最后的一部分代码吧：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 1</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">let duration &#x3D; transitionDuration(transitionContext)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">UIView.animateKeyframesWithDuration(</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">  duration,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">  delay: 0,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">  options: .CalculationModeCubic,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">  animations: &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 2</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">UIView.addKeyframeWithRelativeStartTime(0.0, relativeDuration: 1&#x2F;3, animations: &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">  fromVC.view.layer.transform &#x3D; AnimationHelper.yRotation(-M_PI_2)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">&#125;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 3</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">UIView.addKeyframeWithRelativeStartTime(1&#x2F;3, relativeDuration: 1&#x2F;3, animations: &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">  snapshot.layer.transform &#x3D; AnimationHelper.yRotation(0.0)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">&#125;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 4</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">UIView.addKeyframeWithRelativeStartTime(2&#x2F;3, relativeDuration: 1&#x2F;3, animations: &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">          snapshot.frame &#x3D; finalFrame</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">   &#125;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">  &#125;,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">  completion: &#123; _ in</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 5</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">    toVC.view.hidden &#x3D; false</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">    fromVC.view.layer.transform &#x3D;     AnimationHelper.yRotation(0.0)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">    snapshot.removeFromSuperview()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">transitionContext.completeTransition(!transitionContext.transitionWasCancelled())</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line">  &#125;)</span></pre></td></tr></table></figure>
-<p>现在来对每个部分进行讨论：</p>
-<ol>
-<li>首先，你确定了动画持续时间。注意到了<code>transitionDuration(_:)</code>接口的用法，在类的顶部实施。你必须确保你声明的过渡效果持续时间和动画的持续时间相匹配这样UIKit才能保持它们同步。</li>
-<li>在”from”view的y轴旋转到一半左右的时候你先把它隐藏起来。</li>
-<li>接下来你用同样的技术把截图呈现了出来。</li>
-<li>然后你对截图设置了frame并放大至整个屏幕大小。</li>
-<li>最后，才能把”to”view给呈现出来。当屏幕截图不再使用的时候把它给移除掉。然后你把”from”view旋转至原来的样子；还有，当过渡回来的时候它有可能是隐藏着的。调用<code>completeTransition</code>的时候会通知过渡环境动画已经结束。UIKit为了保证最后的状态不变会把”from”view从container中移除。</li>
-</ol>
-<p>现在你可以准备使用animation controller！</p>
-<h3 id="完整的写出动画"><a href="#完整的写出动画" class="headerlink" title="完整的写出动画"></a>完整的写出动画</h3><p>打开<code>CardViewController.swift</code>然后在类中声明这样的一个property：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">private let flipPresentAnimationController &#x3D; FlipPresentAnimationController()</span></pre></td></tr></table></figure>
-<p>UIKit认为transitioning delegate会为了过渡去声明animation<br>controller。这样的话你必须先提供给<code>UIViewControllerTransitioningDelegate</code>一个合理的对象。</p>
-<p>在此例子中，<code>CardViewController</code>将承担<code>transitioning delegate</code>的工作。在源文件底部添加下面的这个继承<code>UIViewControllerTransitioningDelegate</code>的扩展类。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">extension CardViewController: UIViewControllerTransitioningDelegate &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
-<p>接下来，只要在扩展类中添加如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -&gt; UIViewControllerAnimatedTransitioning? &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">  flipPresentAnimationController.originFrame &#x3D; cardView.frame</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">  return flipPresentAnimationController</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
-<p>这个时候你已经返回了你自己创建的自定义animation<br>controller。这个接口会保证过渡开始的时候使用的frame的正确性。</p>
-<p>最后一步把<code>CardViewController</code>标记为transitioning delegate。View<br>controllers<br>本身有一个<code>transitioningDelegate</code>属性，如果它可能使用了自定义过渡UIKit会请求去查看。</p>
-<p>添加<code>prepareForSeque(_:sender:)</code>,就在卡片指定的部分：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">destinationViewController.transitioningDelegate &#x3D; self</span></pre></td></tr></table></figure>
-<p>如果<code>view controller being presented</code>是需要transitioning<br>delegate这一点很重要，不是view controller 执行了呈现效果。</p>
-<p>编译项目，点击卡片你会看到如下效果：</p>
-<p><img src="http://cdn2.raywenderlich.com/wp-content/uploads/2015/07/frontflip-slow.gif" alt=""></p>
-<p>到了这里你有了自己的第一个自定义过渡效果。但是完成呈现新的view只解决了一般；你必须同样要一个华丽的消除效果！</p>
-<p><img src="http://cdn3.raywenderlich.com/wp-content/uploads/2015/08/yay.jpg" alt=""></p>
-<p>Showy? I got yer showy right here!</p>
-<hr>
-<h3 id="消除-View-Controller"><a href="#消除-View-Controller" class="headerlink" title="消除 View Controller"></a>消除 View Controller</h3><p>定位到<code>File\New\File…</code>,选择<code>iOS\Source\Cocoa Touch Class</code>,点击<code>Next</code>。设置名字为<code>FlipDismissAnimationController</code>，确保它继承NSObject设置语言为<code>Swift</code>，点击<code>Next</code>并且确保保存在<code>Animation Controllers</code>这个群组。点击<code>Create</code>创建文件。</p>
-<p>把新文件的内容替换成下面这些代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">import UIKit</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">class FlipDismissAnimationController: NSObject, UIViewControllerAnimatedTransitioning &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">  var destinationFrame &#x3D; CGRectZero</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">  func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -&gt; NSTimeInterval &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">    return 0.6</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">  &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">  func animateTransition(transitionContext: UIViewControllerContextTransitioning) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">      &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
-<p>其实这个类在本质上和presentation animation是相反的：</p>
-<ul>
-<li>把view缩回到和卡片一样大小；<code>destinationFrame</code>用来保存这个值。</li>
-<li>快速翻转view之后显示原来的那张卡片。</li>
-</ul>
-<p>在<code>animateTransition(_:):</code>接口中添加如下代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">guard let fromVC &#x3D; transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey),</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">let containerView &#x3D; transitionContext.containerView(),</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">let toVC &#x3D; transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) else &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">return</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 1</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">let initialFrame &#x3D; transitionContext.initialFrameForViewController(fromVC)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">let finalFrame &#x3D; destinationFrame</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 2</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">let snapshot &#x3D; fromVC.view.snapshotViewAfterScreenUpdates(false)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">snapshot.layer.cornerRadius &#x3D; 25</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">snapshot.layer.masksToBounds &#x3D; true</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 3</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">containerView.addSubview(toVC.view)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">containerView.addSubview(snapshot)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">fromVC.view.hidden &#x3D; true</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">AnimationHelper.perspectiveTransformForContainerView(containerView)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;4</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">toVC.view.layer.transform &#x3D; AnimationHelper.yRotation(-M_PI_2)</span></pre></td></tr></table></figure>
-<p>这是对每部分你做了什么做出的讨论：</p>
-<ol>
-<li>从view的缩小动画开始之后，你需要快速翻转所用到的initialFrame和finalFrame。</li>
-<li>因为这个时候你需要操作”from”view，所以你获取了它的截图。</li>
-<li>就像之前一样，你添加了”to”view 并且添加了之前获取的截图到container<br>view。然后隐藏”from”view，这样不会与截图产生冲突。</li>
-<li>最后，用同样的旋转方法把”to”view给隐藏掉。</li>
-</ol>
-<p>剩下的就是帮它自己添加动画。<br>直接把这段代码放入<code>animateTransition(_:):</code>底部：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">let duration &#x3D; transitionDuration(transitionContext)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">UIView.animateKeyframesWithDuration(</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"> duration,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"> delay: 0,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"> options: .CalculationModeCubic,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"> animations: &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">   &#x2F;&#x2F; 1</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">   UIView.addKeyframeWithRelativeStartTime(0.0, relativeDuration: 1&#x2F;3, animations: &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">     snapshot.frame &#x3D; finalFrame</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">   &#125;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">   UIView.addKeyframeWithRelativeStartTime(1&#x2F;3, relativeDuration: 1&#x2F;3, animations: &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">     snapshot.layer.transform &#x3D; AnimationHelper.yRotation(M_PI_2)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">   &#125;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">       UIView.addKeyframeWithRelativeStartTime(2&#x2F;3, relativeDuration: 1&#x2F;3, animations: &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">         toVC.view.layer.transform &#x3D; AnimationHelper.yRotation(0.0)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">       &#125;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line"> &#125;,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line"> completion: &#123; _ in</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">       &#x2F;&#x2F; 2</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">       fromVC.view.hidden &#x3D; false</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">       snapshot.removeFromSuperview()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">       transitionContext.completeTransition(!transitionContext.transitionWasCancelled())</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">&#125;)</span></pre></td></tr></table></figure>
-<p>这个效果差不多就是和反过来的presentation animation一样；</p>
-<ol>
-<li>你首先缩放了view，然后在旋转的同时隐藏了截图。接下来你通过往相反的方向并绕着y轴旋转”to”view<br>到一半后呈现出来。</li>
-<li>最后，在过渡结束的时候你移除了截图并通知过渡环境过渡已经结束。这样就允许了UIKit能够分层的刷新视图并且对过渡过程中的视图进行整理。</li>
-</ol>
-<p>打开<code>CardViewController.swift</code>,把下面这句代码声明在之前那个animation<br>controller右下方：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">private let flipDismissAnimationController &#x3D; FlipDismissAnimationController()</span></pre></td></tr></table></figure>
-<p>接下来，在类中创建一个如下所示的拓展类：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">func animationControllerForDismissedController(dismissed: UIViewController) -&gt; UIViewControllerAnimatedTransitioning? &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">      flipDismissAnimationController.destinationFrame &#x3D; cardView.frame</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">      return flipDismissAnimationController</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
-<p>通过这个接口把正确的frame给到dismissing animation controller并且返回它。</p>
-<p>跟最后一步一样，修改<code>transitionDuration</code>和<br><code>FlipPresentAnimationController</code>让动画变的更漂亮。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -&gt; NSTimeInterval &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">      return 0.6</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
-<p>编译app，点击卡片你会看到呈现和消除动画。</p>
-<p><img src="http://cdn3.raywenderlich.com/wp-content/uploads/2015/07/flip-ready.gif" alt=""></p>
-<p>你的自定义动画看上去有点尖锐，不过你可以通过为它添加用户交互动画来提升效果。</p>
-<h3 id="使它有交互性"><a href="#使它有交互性" class="headerlink" title="使它有交互性"></a>使它有交互性</h3><p>iOS中的设置就是一个典型的有交互动画的好例子：</p>
-<p><img src="http://cdn3.raywenderlich.com/wp-content/uploads/2015/07/settings.gif" alt=""></p>
-<p>你在这一章节的任务就是手势在屏幕左侧挥动的时候卡片导航回面朝下的状态。过渡过程会跟随用户的手指变化。</p>
-<h3 id="交互动画是如何工作的"><a href="#交互动画是如何工作的" class="headerlink" title="交互动画是如何工作的"></a>交互动画是如何工作的</h3><p>interaction controller<br>会对touch事件或者加速，减速甚至相反的过渡效果都会产生回应。<br>为了激活交互过渡效果，transition delegate还必须提供一个interaction<br>controller。<br>任何对象都可以执行<code>UIViewControllerInteractiveTransitioning</code>协议。你已经做完了过渡动画；interaction<br>controller会在对手势产生反馈的时候移动动画而不是播放视频。</p>
-<p>Apple<br>提供了了现成的<code>UIPercentDrivenInteractiveTransition</code>类，它就是interaction<br>controller的实体类。你可以通过这个类制作你的交互过渡效果。</p>
-<h3 id="创建一个交互过渡"><a href="#创建一个交互过渡" class="headerlink" title="创建一个交互过渡"></a>创建一个交互过渡</h3><p>你的第一个工作就是创建一个interaction<br>controller。定位到<code>File\New\File…</code>,然后选择<code>iOS\Source\Cocoa Touch Class.</code>。起名为<code>SwipeInteractionController</code>,选择它的超类为<code>UIPercentDrivenInteractiveTransition</code>。确保选中的语言为<code>Swift</code>然后点击<code>Next</code>。选择<code>Interaction Controllers</code>群组然后点击<code>Create</code>。</p>
-<p>打开<code>SwipeInteractionController.swift</code>，然后在类的顶部定义一下属性：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">var interactionInProgress &#x3D; false</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">private var shouldCompleteTransition &#x3D; false</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">private weak var viewController: UIViewController!</span></pre></td></tr></table></figure>
-<p>上面的代码十分简单:</p>
-<ol>
-<li>顾名思义，<code>interactionInProgress</code>指的是是否已经在交互过程中。</li>
-<li>你将会使用<code>shouldCompleteTransition</code>在内部控制过渡-你将会在后面看到它。</li>
-<li>interaction controller会直接呈现和消除view<br>controllers，所以你必须在<code>viewController</code>中捕获当前的view<br>controller。</li>
-</ol>
-<p>在类中添加一下接口：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">func wireToViewController(viewController: UIViewController!) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">      self.viewController &#x3D; viewController</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">      prepareGestureRecognizerInView(viewController.view)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
-<p>你所有的执行会依靠检测手势来控制过渡。在上面那个接口中，你获得了view<br>controller的引用，并且对它的view建立了手势识别器。</p>
-<p>如下面所示执行<code>prepareGestureRecognizerInView(_:)</code>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">private func prepareGestureRecognizerInView(view: UIView) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">      let gesture &#x3D; UIScreenEdgePanGestureRecognizer(target: self, action:     &quot;handleGesture:&quot;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">      gesture.edges &#x3D; UIRectEdge.Left</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">      view.addGestureRecognizer(gesture)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
-<p>这是你声明的手势识别器，当在左侧边缘滑动的时候它会被触发并添加到view上。</p>
-<p>最后一个谜题就是如下面所示添加<code>handleGesture(_:)</code>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">func handleGesture(gestureRecognizer: UIScreenEdgePanGestureRecognizer) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">  &#x2F;&#x2F; 1</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">  let translation &#x3D; gestureRecognizer.translationInView(gestureRecognizer.view!.superview!)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">  var progress &#x3D; (translation.x &#x2F; 200)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">  progress &#x3D; CGFloat(fminf(fmaxf(Float(progress), 0.0), 1.0))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">  switch gestureRecognizer.state &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">  case .Began:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">    &#x2F;&#x2F; 2</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">    interactionInProgress &#x3D; true</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">    viewController.dismissViewControllerAnimated(true, completion: nil)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">  case .Changed:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">        &#x2F;&#x2F; 3</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">    shouldCompleteTransition &#x3D; progress &gt; 0.5</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">    updateInteractiveTransition(progress)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">  case .Cancelled:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">    &#x2F;&#x2F; 4</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">    interactionInProgress &#x3D; false</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">    cancelInteractiveTransition()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">  case .Ended:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">    &#x2F;&#x2F; 5</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">    interactionInProgress &#x3D; false</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">    if !shouldCompleteTransition &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line">      cancelInteractiveTransition()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">      &#125; else &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line">      finishInteractiveTransition()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">34</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">35</span></pre></td><td class="code"><pre><span class="line">  default:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">36</span></pre></td><td class="code"><pre><span class="line">      println(&quot;Unsupported&quot;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">37</span></pre></td><td class="code"><pre><span class="line">      &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">38</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
-<p>解谜：</p>
-<ol>
-<li>你首先声明了一个本地变量当做动画过程的轨迹。你会记录下view的过渡并且计算动画过程。滑动200点的距离等于100%的完成度，所以你可以通过这个数字来计算过渡进度。</li>
-<li>当手势开始的时候，你适当的在view<br>controller中调整了<code>interactionInProgress</code>并且触发了消除事件。</li>
-<li>当手势开始移动的时候，你随着进度量连续的调用了<code>updateInteractiveTransition</code>。这是一个<code>UIPercentDrivenInteractiveTransition</code>的接口它沿着你传入的百分比值来移动过渡效果。</li>
-<li>如果手势被取消，你更新了<code>interactionInProgress</code>并且让过渡滚回到原来的状态。</li>
-<li>只要手势已经结束，你当前使用的过渡进度会给用户决定这个时候是取消过渡还是完成过渡。</li>
-</ol>
-<p>来把剩下的都写完</p>
-<p><img src="http://cdn1.raywenderlich.com/wp-content/uploads/2015/08/glory-pc-480x279.jpg" alt=""></p>
-<p>打开<code>CardViewController.swift</code>然后在interaction<br>controller中声明如下的属性：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">private let swipeInteractionController &#x3D; SwipeInteractionController()</span></pre></td></tr></table></figure>
-<p>UIKit会在<code>interactionControllerForDismissal(_:).</code>这个接口中向transitioning<br>delegate请求一个interaction controller。</p>
-<p>在文件底部加入如下的扩展类：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">func interactionControllerForDismissal(animator: UIViewControllerAnimatedTransitioning) -&gt; UIViewControllerInteractiveTransitioning? &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">          return swipeInteractionController.interactionInProgress ?        swipeInteractionController : nil</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
-<p>这里会去检查当前的view是否在检查手势，意思就是这里有个交互效果正在进行中。然后它会返回一个合适的view<br>controller。</p>
-<p>现在定位到<code>prepareForSegue(_:sender:)</code>,在<code>transitioningDelegate</code>下面添加如下代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">swipeInteractionController.wireToViewController(destinationViewController)</span></pre></td></tr></table></figure>
-<p>这个会给interaction controller一个被呈现的view controller的引用。</p>
-<p>编译项目，点击卡片，在左侧滑动你就会看到最终效果：</p>
-<p><img src="http://cdn3.raywenderlich.com/wp-content/uploads/2015/07/interactive.gif" alt=""></p>
-<p>恭喜-你创建了一个漂亮的交互动画！</p>
-<h3 id="接下来该怎么办"><a href="#接下来该怎么办" class="headerlink" title="接下来该怎么办?"></a>接下来该怎么办?</h3><p>你可以从<a href="http://cdn1.raywenderlich.com/wp-content/uploads/2015/12/GuessThePet-Finished.zip" target="_blank" rel="noopener">这里</a>下载本次教程的完整案例。</p>
-<p>去学习更多的知识，找到第3章，在<a href="http://www.raywenderlich.com/store/ios-7-by-tutorials" target="_blank" rel="noopener">iOS 7 by<br>Tutorials</a><br>“Custom View Controller Transitions”以及第19章，在<a href="http://www.raywenderlich.com/store/ios-animations-by-tutorials" target="_blank" rel="noopener">iOS Animations by<br>Tutorials</a>中的”Custom<br>Presentation Controller &amp; Device Orientation Animations”。</p>
-<p>本次教程针对了modal presentation 和 dismissal<br>transitions。指出使用container view<br>controllers的时候自定义UIViewController 交互动画也能使用是很重要的：</p>
-<ul>
-<li>当在使用navigation controller，声明animation<br>controllers是它的delegate的责任，一个遵循于<code>UINavigationControllerDelegate</code>的对象。这个delegate可以在<code>navigationController(_:animationControllerForOperation:fromViewController:toViewController:)</code>接口中提供一个animation<br>controller。</li>
-<li>tab bar<br>controller则是依赖于<code>tabBarController(_:animationControllerForTransitionFromViewController:toViewController:)</code>接口中执行<code>UITabBarControllerDelegate</code>协议来返回animation<br>controller的一个对象。</li>
-</ul>
-<p>我希望你能对本次教程感兴趣；如果你有什么问题或者建议，请加入我们的论坛！</p>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2016/02/13/%E5%88%9B%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89UIViewController%E8%BF%87%E6%B8%A1%E5%8A%A8%E7%94%BB/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Kommentieren und teilen
-                            </a>
-                        </p>
-                    
-                </div>
-            
         </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2015/12/29/%E7%BB%86%E8%B0%88iOS8%E7%9A%84Self-Sizing%20Cells%20/"
-                            aria-label=": 细谈iOS8的Self-Sizing Cells"
-                        >
-                            细谈iOS8的Self-Sizing Cells
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2015-12-29T11:12:19+08:00">
-	
-		    29 12月 2015
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p>===========================</p>
-<p>之前有篇文章介绍了<br>FDTemplateLayoutCell，对于UITableViewCell自动计算高度没有做详细的解释，最近用下来感觉自己不能老是依靠第三方控件，这次返回来讲解下iOS8的Working<br>with Self-Sizing Tableview cells 。</p>
-<p>对，我要使用Self-Sizing<br>Cells。虽然有点打脸，但身为一个合格的程序员你必须得学会靠自己来解决这些问题，最起码得理解。如果频繁依靠第三方控件我觉得并不是一个优秀程序员该做的事情。</p>
-<h1 id="我要使用Self-Sizing-Cells"><a href="#我要使用Self-Sizing-Cells" class="headerlink" title="我要使用Self-Sizing Cells"></a>我要使用Self-Sizing Cells</h1><hr>
-<p>首先有句话要说，这篇文章仅是个人观点，有不同意见的欢迎讨论。<br>都知道Self-Sizing是iOS8才更新的，最近又做了些调查，发现使用iOS8以前的用户占了8%左右。比我去年写的那篇文章iOS8一下的用户少了%2。这里先不详细分析这剩余的8%是什么样的用户，为什么不升级，对公司业务走向有什么影响。</p>
-<p>其实个人觉得还是得考虑这么几方面，8%的人中有多少是使用app的，为什么不升级系统。可能这之中有一些不会使用app的中老年人，有只是用来当做电话用的老年人，或者因为手机内存不够而不愿更新的，这是一点。第二点，如果是小公司，在人手不是很足的情况下最好还是不要去支持iOS8以下，不光是这一点，还有其他功能上面都会给开发团队造成大量的维护更新工作。</p>
-<h1 id="Self-Sizing-Cells"><a href="#Self-Sizing-Cells" class="headerlink" title="Self-Sizing Cells"></a>Self-Sizing Cells</h1><hr>
-<p>在iOS8以前，决定tableviewcell<br>的高度的接口都是<code>tableView:heightForRowAtIndexPath:</code>。也就是说你需要在这个接口中手动计算高度。当你把cell和self-sizing<br>绑定在一起的时候你就可以不必去管这个接口了，不用再去考虑计算这个高度了。我们只需要给<code>estimatedRowHeight</code>一个估算值，然后设置tableview的<code>rowHeight</code>属性为<br><code>UITableViewAutomaticDimension</code>就可以了，接下来就是设置约束了。</p>
-<p>只要设置标签与cell的高度保持一定的距离，那么这个约束就会完成cell的self-sizing。值得注意的是估高尽量设置的稍微贴切点，设置的越精确效率就更高。</p>
-<p>相关文章:</p>
-<p><a href="https://developer.apple.com/videos/" target="_blank" rel="noopener">WWDC 2014 Session 226 What’s New in Table and Collection<br>Views</a></p>
-<p><a href="http://useyourloaf.com/blog/self-sizing-table-view-cells/" target="_blank" rel="noopener">Self Sizing Table View<br>Cells</a></p>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2015/12/29/%E7%BB%86%E8%B0%88iOS8%E7%9A%84Self-Sizing%20Cells%20/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Kommentieren und teilen
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2015/07/14/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/"
-                            aria-label=": iOS8新特性 UIPresentationController"
-                        >
-                            iOS8新特性 UIPresentationController
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2015-07-14T11:12:19+08:00">
-	
-		    14 7月 2015
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p>================================</p>
-<p>先推荐几篇关于UIPresentationController的好文章</p>
-<ul>
-<li><a href="http://nonomori.farbox.com/post/ios-8-presentation-controller" target="_blank" rel="noopener">iOS8 Presentation<br>Controller</a></li>
-<li><a href="http://zappdesigntemplates.com/custom-presentations-using-uipresentationcontroller-swift/" target="_blank" rel="noopener">Custom presentations using UIPresentationController in<br>Swift</a><br>自从iOS8更新之后，swift成为了各个程序员平时议论的焦点，包括我。这几天回顾了下去年的WWDC发现了这次Apple更新了很多好玩的东西，其中我就发现了一个叫<code>UIPresentationController</code><br>以前一直都很想做一个比较酷炫的界面过渡效果，但一直没有花时间去研究，这次正好被我机缘巧合的碰到了就顺手拿来研究了一下。</li>
-</ul>
-<h3 id="什么是UIPresentationController"><a href="#什么是UIPresentationController" class="headerlink" title="什么是UIPresentationController"></a>什么是UIPresentationController</h3><p>其实从我上面说的话就可以知道<code>UIPresentationController</code>就是专门控制界面之间的过渡效果的类。<br>这是官方文档的原话</p>
-<blockquote>
-<p>A UIPresentationController object provides advanced view and<br>transition management for presented view controllers.</p>
-</blockquote>
-<p>意思就是<code>UIPresentationController</code>提供了对view<br>controllers的呈现和移动的管理，<br>你可以通过这个类来对<code>被跳转</code>和<br><code>将要呈现的</code>界面进行管理。你可以让他们缩小变大，翻转可以加上一些其他的动画效果。</p>
-<p>早在iOS7的时候其实苹果已经开放了类似的功能<code>UIViewControllerTransitioning</code>，而此次更新主要解决了自适应的问题，以前在<br>Compact<br>的宽度条件下如果要使用<code>popoverPresentationController</code>的话必须先判断iPhone和iPad设备，入下面的代码：</p>
-<pre><code>if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-    let popOverController = UIPopoverController(contentViewController: nextVC)
-popOverController.presentPopoverFromRect(aRect, inView: self.view,         permittedArrowDirections: .Any, animated: true)
-} else {
-    presentViewController(nextVC, animated: true, completion: nil)
-}</code></pre><p>现在有了<code>UIPresentationController</code>就不需要这样做了。从Size<br>Classes改革了.m文件中全是判断设备的代码之后，这次把这仅存的需要判断设备的代码也清除了，同时你也可以看到相关的判断设备的方法已经被弃用了。</p>
-<p>下面就用个实例来说明UIPensentationController是如何使用和工作的吧，就做一个模仿twitter分享效果的例子吧</p>
-<h3 id="UIViewControllerTransitioningDelegate"><a href="#UIViewControllerTransitioningDelegate" class="headerlink" title="UIViewControllerTransitioningDelegate"></a>UIViewControllerTransitioningDelegate</h3><p>先来看一下<code>UIViewControllerTransitioningDelegate</code><br>我们现在将要呈现的页面中实现<code>UIViewControllerTransitioningDelegate</code>的接口</p>
-<pre><code>func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController, sourceViewController source: UIViewController) -&gt; UIPresentationController? {
-    return CustomPresentationController(presentedViewController:presented,presentingViewController:presenting)
-}
-
-func animationControllerForDismissedController(dismissed: UIViewController) -&gt; UIViewControllerAnimatedTransitioning? {
-    return NormalDismissAnimation()
-}
-func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -&gt; UIViewControllerAnimatedTransitioning? {
-   return PresentationAnimation()
-}</code></pre><p>其中我对第二第三个接口返回了自定义的动画效果,对第一个接口返回了继承<code>UIPresentationController</code>的类并初始化。</p>
-<blockquote>
-<p>Initializes and returns a presentation controller for transitioning<br>between the specified view controllers</p>
-</blockquote>
-<h3 id="UIPresentationController"><a href="#UIPresentationController" class="headerlink" title="UIPresentationController"></a>UIPresentationController</h3><p>先看下<code>UIPresentationController</code>的4个接口</p>
-<ul>
-<li>presentationTransitionWillBegin</li>
-<li>presentationTransitionDidEnd</li>
-<li>dismissalTransitionWillBegin</li>
-<li>dismissalTransitionDidEnd</li>
-</ul>
-<p>顾名思义，想要创建一些效果的话就必须在<code>presentationTransitionWillBegin</code>实现,如果在init函数中实现的话会获取不到<code>containerView</code>。</p>
-<pre><code>import UIKit
-
-class CustomPresentationController: UIPresentationController {
-   lazy var dimmingView:UIView = {
-    let view = UIView(frame: self.containerView!.bounds)
-    view.backgroundColor = UIColor(red: 0.0, green: 0.0, blue:         0.0, alpha: 0.5)
-return view
-    }()
-override init(presentedViewController: UIViewController,     presentingViewController: UIViewController) {
-super.init(presentedViewController: presentedViewController,             presentingViewController: presentingViewController)
-}</code></pre><p>这里必须重写init方法，否则上面的四个接口不会执行。</p>
-<pre><code> override func presentationTransitionWillBegin() {
-
-        let containerView = self.containerView!
-        let presentedView = self.presentedView()!
-
-    //在containerView中加载dimmingView，dimmingView就是在界面过渡中的一个效果
-    dimmingView.frame = containerView.bounds
-    containerView.addSubview(dimmingView)
-    containerView.addSubview(presentedView)
-    self.dimmingView.alpha = 0
-
-    //对dimmingView做一个渐变效果
-    if let transitionCoordinator = self.presentingViewController.transitionCoordinator() {
-        transitionCoordinator.animateAlongsideTransition({(context: UIViewControllerTransitionCoordinatorContext!) -&gt; Void in
-            self.dimmingView.alpha = 0.7
-            }, completion:nil)
-    }
-}
-
-override func presentationTransitionDidEnd(completed: Bool) {
-
-}
-
-override func dismissalTransitionWillBegin() {
-    if let transitionCoordinator = self.presentingViewController.transitionCoordinator() {
-        transitionCoordinator.animateAlongsideTransition({(context: UIViewControllerTransitionCoordinatorContext!) -&gt; Void in
-            self.dimmingView.alpha = 0.0
-            }, completion:nil)
-    }
-}
-
-override func dismissalTransitionDidEnd(completed: Bool) {
-    if completed {
-        self.dimmingView.removeFromSuperview()
-    }
-}</code></pre><p>对这4个接口分别写上处理dimmingView的逻辑，动画效果基本就做好了。</p>
-<h3 id="UIViewControllerAnimatedTransitioning"><a href="#UIViewControllerAnimatedTransitioning" class="headerlink" title="UIViewControllerAnimatedTransitioning"></a>UIViewControllerAnimatedTransitioning</h3><p>接下来是2个自定义的动画，其实如果像方便点的话直接把这2个动画写在<code>UIPresentationController</code>里也是可以的。不过为了重用性，我选择把这2个动画拿出来</p>
-<pre><code>class PresentationAnimation: NSObject ,UIViewControllerAnimatedTransitioning{
-
-let duration = 0.7
-
-func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -&gt; NSTimeInterval {
-    return self.duration
-}
-
-func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-    //将呈现的视图
-    let presentedView = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-    let presentingView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-    let contrainerView = transitionContext.containerView()!
-    //被过渡的视图
-    let fromView = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)
-    let center = fromView!.view.center
-
-
-    let pSize = CGSizeMake(presentingView.frame.size.width*0.95, presentingView.frame.size.height*0.95)
-    presentingView.frame = transitionContext.finalFrameForViewController(presentedView)
-    presentingView.center.y += contrainerView.bounds.size.height
-    contrainerView.addSubview(presentingView)
-
-
-
-    UIView.animateWithDuration(self.duration, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-        fromView!.view.frame.size = pSize
-        fromView!.view.center = center
-        presentingView.center.y -= contrainerView.bounds.size.height
-        }, completion: {(completed: Bool) -&gt; Void in
-            transitionContext.completeTransition(completed)
-            contrainerView.insertSubview(fromView!.view, atIndex: 0)
-    })
-}</code></pre><p>我对fromView也就是被过渡的视图的宽高缩小到95%的动画效果，在dismiss动画就反过来。</p>
-<p>有一点要注意的是当dismiss动画结束之后，fromview会莫名其妙的被移除掉。这个问题很奇怪我也没找到很好的解释，解决方案可以参考stackoverflow上的一篇问答</p>
-<p><a href="http://stackoverflow.com/questions/24338700/from-view-controller-disappears-using-uiviewcontrollercontexttransitioning" target="_blank" rel="noopener">“From View Controller” disappears using<br>UIViewControllerContextTransitioning</a></p>
-<p>在动画结束后重新加载fromview就可以了。</p>
-<pre><code>UIApplication.sharedApplication().keyWindow!.addSubview(fromView.view)</code></pre><p>下面看下效果：</p>
-<p>附上源码</p>
-<p><a href="https://github.com/fuer4869/UIPresentationController.git" target="_blank" rel="noopener">UIPresentationControllerDemo</a></p>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2015/07/14/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Kommentieren und teilen
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir%20/"
-                            aria-label=": 用xctool打包ipa文件自动上传到fir"
-                        >
-                            用xctool打包ipa文件自动上传到fir
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2015-04-14T11:12:19+08:00">
-	
-		    14 4月 2015
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E8%87%AA%E5%8A%A8%E5%8C%96/">自动化</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p>================================</p>
-<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><ol>
-<li>HomeBrew 环境<br>在这里就不多介绍了，可以看我写的另外一篇<a href="http://fuer4869.github.io/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir/" target="_blank" rel="noopener">Mac安装记录</a>的文章</li>
-<li>安装xctool <a href="https://github.com/facebook/xctool" target="_blank" rel="noopener">xctool</a></li>
-<li>如何使用xctool</li>
-<li>安装fir<br><a href="https://github.com/FIRHQ/fir-cli/blob/master/README.md" target="_blank" rel="noopener">fir.im-cli</a></li>
-<li>创建.sh文件（本例用的是sh脚本）,如果想用php语言的就创建.php文件。</li>
-<li>自动上传fir</li>
-</ol>
-<hr>
-<h3 id="xctool"><a href="#xctool" class="headerlink" title="xctool"></a>xctool</h3><hr>
-<p>xctool<br>是facebook专门对xcode开发的构建工具，在苹果的xcodebuild限制条件种种的环境下很多人都选择了这款工具，并且它是开源的。</p>
-<h4 id="如何安装xctool"><a href="#如何安装xctool" class="headerlink" title="如何安装xctool"></a>如何安装xctool</h4><hr>
-<pre><code>brew update
-
-brew install xctool</code></pre><p>很方便，这就是为什么要装Homebrew的原因。</p>
-<hr>
-<p>下面简单介绍下xctool的命令：<br>先输入下面的命令</p>
-<ul>
-<li>xctool -help</li>
-<li>xctool [BASE OPTIONS] clean <code>清理工程,功能等同于Xcode中的clean</code></li>
-<li>xctool [BASE OPTIONS] build <code>Xcode中的build</code></li>
-<li>xctool [BASE OPTIONS] build-tests [-only TARGET] [-omit<br>TARGET] [-skip-deps]</li>
-<li>xctool [BASE OPTIONS] run-tests [-test-sdk SDK] [-only SPEC]<br>[-omit SPEC] [-freshSimulator] [-resetSimulator]<br>[-noResetSimulatorOnFailure] [-freshInstall] [-parallelize]<br>[-logicTestBucketSize N] [-appTestBucketSize N] [-bucketBy<br>BUCKETBY] [-failOnEmptyTestBundles] [-listTestsOnly]<br>[-targetedDeviceFamily FAMILY] [-testTimeout N] [-logicTest<br>BUNDLE] [-appTest BUNDLE:HOST_APP]</li>
-<li>xctool [BASE OPTIONS] test [-test-sdk SDK] [-only SPEC]<br>[-omit SPEC] [-skip-deps] [-freshSimulator]<br>[-resetSimulator] [-noResetSimulatorOnFailure] [-freshInstall]<br>[-parallelize] [-failOnEmptyTestBundles] [-logicTestBucketSize<br>N] [-appTestBucketSize N] [-bucketBy BUCKETBY]<br>[-listTestsOnly] [-testTimeout N]</li>
-<li>xctool [BASE OPTIONS] archive [-archivePath PATH]<br><code>生成编译文件,也是打包ipa核心命令</code></li>
-<li>xctool [BASE OPTIONS] analyze [-only TARGET] [-skip-deps]<br>[-failOnWarnings]<ul>
-<li>xctool [BASE OPTIONS] install</li>
-</ul>
-</li>
-</ul>
-<p>另外3个测试的暂时不讲。</p>
-<h3 id="如何使用xctool"><a href="#如何使用xctool" class="headerlink" title="如何使用xctool"></a>如何使用xctool</h3><h4 id="Base-Options"><a href="#Base-Options" class="headerlink" title="Base Options"></a>Base Options</h4><p>这个参数其实就是选择工程，为什么说是工程而不是项目，xctool很做的十分全面，它不但能帮你编译和清理项目更方便的是它能够帮你测试项目。所以这里需要明确的告诉xctool你要编译哪个工程或者测试哪个工程。具体看下面的命令：</p>
-<pre><code>-help                    show help
-
--workspace PATH          path to workspace---针对workspace项目的命令，如果你的项目集成了cocoapods，那么用这个命令就行了。
-
--project PATH            path to project----反之这个命令就是对没有集成cocoapods的
-
--scheme NAME             scheme to use for building or testing ----- scheme用来告诉xctool test 和 build的对象工程名称
-
--find-target TARGET      Search for the workspace/project/scheme to build the target                      ------也可以根据target名称来找到workspace或者project，但是这个太慢了不建议用来做这次测试，不过可以当做一个搜索工具来用。
-
--find-target-path PATH   Path to search for -find-target. 同上
-
--find-target-exclude-pathColon-separated list of paths to exclude for -find-target.
-
--sdk VERSION             sdk to use for building (e.g. 6.0, 6.1)
-
--configuration NAME      configuration to use (e.g. Debug, Release)
-
--jobs NUMBER             number of concurrent build operations to run
-
--arch ARCH               arch to build for (e.g. i386, armv7)
-
--toolchain PATH          path to toolchain
-
--xcconfig PATH           path to an xcconfig
-
--reporter TYPE[:FILE]    add reporter
-
--showBuildSettings       display a list of build settings and values
-
--version                 print version and exit
-
-SETTING=VALUE            Set the build &apos;setting&apos; to &apos;value&apos;</code></pre><p>其他都是些很简单的命令就不做解释了。<br>这里给大家一个小技巧，在编译工程的时候项目中的证书必须使用正确才能编译通过，但是我们的项目证书有时候一直在换的不可能为了编译一次项目再去换证书，这样很麻烦。所以可以在项目中增加个自定义的Configuration,如下图我添加了一个名为DailyBuild的Configuration</p>
-<p>![](./用xctool打包ipa文件自动上传到fir _<br>飞奔的蜗牛的博客_files/3344ggg.png)</p>
-<p>添加好后会在项目的Target-&gt;Build Setting-&gt;Code<br>Signing中多出一个DailyBuild选项，你可以在这里配置你需要打包的证书，这样就不用一直把证书换来换去了。<br>![](./用xctool打包ipa文件自动上传到fir _<br>飞奔的蜗牛的博客_files/2015-12-22-02.png)</p>
-<hr>
-<h3 id="编写-sh脚本并且上传到fir"><a href="#编写-sh脚本并且上传到fir" class="headerlink" title="编写.sh脚本并且上传到fir"></a>编写.sh脚本并且上传到fir</h3><p>安装完fir命令行工具后就可以开始编写脚本了</p>
-<pre><code><figure class="highlight plain"><figcaption><span>shtest.sh```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">最后在终端中输入命令：</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    &#96;&#96;&#96;.&#x2F;shtest.sh</span></pre></td></tr></table></figure></code></pre><p>然后你就可以去做其他事情了，让它帮你解决接下来的事情吧！</p>
-<p>上传成功</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在这个懒人程序猿繁多的时代中，这种能够帮我们解决很多繁琐工作的工具真是业界良心啊。有句话真没说错，facebook出品必属精品。后面我还稍微研究了下xctool，发现它的测试功能也很强大，比苹果自带的强大不少，log界面也十分清晰。</p>
-<p>本来想上传成功之后邮件通知的，查阅资料后本地发送邮件不是很靠谱。之后会尝试看看能不能通过服务器帮我们构建ipa上传和发送邮件。</p>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir%20/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Kommentieren und teilen
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2015/04/05/%E9%85%8D%E5%90%88Autolayou+SizeClasses%E4%BB%BF%E6%94%AF%E4%BB%98%E5%AE%9D%E9%A6%96%E9%A1%B5%20/"
-                            aria-label=": 配合Autolayou+SizeClasses仿支付宝首页"
-                        >
-                            配合Autolayou+SizeClasses仿支付宝首页
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2015-04-05T11:12:19+08:00">
-	
-		    05 4月 2015
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p>=============================</p>
-<h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><hr>
-<p>在开始之前先简单分析下界面。</p>
-<p>首页这个界面总共分为四大部分，最上面是扫一扫和付款码两个按钮，接下来一组按钮，再下面是一个轮播视图，最后是另外一组按钮。</p>
-<p>其中有2个难点<br>1.配合Autolayout实现四等分按钮<br>2.Scrollview动态修改内部尺寸</p>
-<p>这次主要讲的是Autolayout+SizeClasses，能够通过这次练习基本掌握Autolayout配合基本常用控件的特性，所以其他的地方不会讲的很细，而且素材是直接从支付宝8.6.3的ipa中拿的，所以和支付宝还是有些区别的。</p>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><hr>
-<h3 id="第一部分"><a href="#第一部分" class="headerlink" title="第一部分"></a>第一部分</h3><p>第一部分其实很简单，其实就是各自的横向坐标位于界面的左半边和右半边的中心,纵向坐标则是与背景底部呈固定距离。</p>
-<p>我选择的是把第一部分的背景分割成2个部分，左半边和右半边，这样方便2个按钮的居中。\</p>
-<p>在Storyboad强大的辅助线的帮助下，这个部分没有任何难处。</p>
-<h3 id="第二部分"><a href="#第二部分" class="headerlink" title="第二部分"></a>第二部分</h3><p>在做第二部分之前，可以先看一下<a href="http://fuer4869.github.io/2015/09/27/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView/" target="_blank" rel="noopener">这篇文章</a>,因为这里要涉及到ScrollView的内部自适应问题，这里就不再赘述了。</p>
-<p>这里先来讲下四等分大致实现思路，要实现四等分首先要满足以下几个条件，</p>
-<ol>
-<li>四个按钮顶部对齐</li>
-<li>四个按钮之间的间距相等</li>
-<li>四个按钮相互之间必须宽和高相等</li>
-</ol>
-<p>稍微讲一下这个按钮中的一些细节，因为这个本身是可点击的，一般情况是一个view里面放一个和view同样大小的透明button，这里因为还没涉及到点击，所以我没把按钮放进去，主要看一下icon和小标题是如何约束的。其实UIImageView和UILabel的约束都有一些特性，因为它本身是有内容的，UIImageView本身有图片在内，UILabel也有文字填充进去了，所以它的高度和宽度已经计算好了不用我们再另外进行约束，我们只要确定它的位置就可以了。所以我指给了这个icon添加了2条约束，横向居中对齐和底部与下面的”余额宝”之间保持8px的间距，”余额宝”的约束同上，底部与view的底部的间距为8。因为考虑到适配其他设备，所以我为view加了个比例，这样view的高度就不用做固定值了。</p>
-<p>这里我为了方便复制，为第一排单独做了个大view，然后把4个刚刚制作好的view放在这个大view中。链接好其他约束之后大致的效果就出来了。大view的宽度跟设备宽度一致，撑满整个屏幕就行。但是它的高度不能做成固定高度，否则适配到小尺寸屏幕上会变的很丑，所以我们要把view做成自适应内部高度。做法很简单，只要让内部的按钮顶部和底部与view的距离保持固定就可以了。</p>
-<p>view的约束</p>
-<p>第二部分完成效果图：</p>
-<h3 id="第三部分"><a href="#第三部分" class="headerlink" title="第三部分"></a>第三部分</h3><p>第三部分是一个滚动轮播视图，这个部分光靠Storyboard无法实现，还得需要代码，不在本文讨论范围内，就先不做了。其实要做的话也很简单，只要在Storyboard中放一个ScrollView，然后在实现文件当中去创建图片放入scrollview中，做好约束就可以了。轮播效果只要加个定时器，让ScrollView自动滚动。</p>
-<h3 id="第四部分"><a href="#第四部分" class="headerlink" title="第四部分"></a>第四部分</h3><p>第四部分UI效果和第二部分一样，值得注意的是这里因为是本页面的最后一个元素，也就是能确定整个ScrollView内容大小的关键。所以在做约束的时候要让ScrollView中的view和这个部分的底部保持距离，这样才能确定ScrollView的内容。</p>
-<p>###总结<br>对于初学Autolayout的同学来说，刚开始做四等分的时候可能会有点乱，看似简单其实里面的逻辑关系还是有点复杂的，既要让4个按钮保持等宽高，并且还要考虑到其他设备。所以个人建议可以如果觉得到后面约束会被自己弄乱的话可以按照这里的方法，把这些空间分组一组一组来做约束，这样会轻松很多。在这次练习当中我又再一次体会到了自适应ScrollView在Autolayout中的强大之处。</p>
-<p>PS:在设计界面的时候会遇到整个画板高度不够的情况，我这里用了很笨的方法，直接硬塞然后调整右边的坐标来做约束的，如果有更好的建议欢迎指出！</p>
-<p><a href="https://github.com/fuer4869/AutoLayoutZFB" target="_blank" rel="noopener">项目下载地址</a></p>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2015/04/05/%E9%85%8D%E5%90%88Autolayou+SizeClasses%E4%BB%BF%E6%94%AF%E4%BB%98%E5%AE%9D%E9%A6%96%E9%A1%B5%20/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Kommentieren und teilen
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2015/03/25/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/"
-                            aria-label=": 讲讲iOS的URL加载系统"
-                        >
-                            讲讲iOS的URL加载系统
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2015-03-25T11:12:19+08:00">
-	
-		    25 3月 2015
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <hr>
-<p>=============</p>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><hr>
-<p>最近打算开始做一些进阶训练，所以避免不了要去触碰这些以前想都没想过的东西。现在要做的第一步就是能够比以往更深入的去学习一些知识，这两天花功夫研究了下iOS的URL加载系统，听起来好像很陌生，但是这个东西是我平常用的最多比如SDWebImage，AFNetworking都用到这些知识。</p>
-<h3 id="URL加载系统"><a href="#URL加载系统" class="headerlink" title="URL加载系统"></a>URL加载系统</h3><hr>
-<p>URL加载系统就是由一套类和协议组成的，这个加载系统的作用就是从URL中加载内容，给服务器上传数据，管理cookies的存储，控制响应数据的缓存以及处理证书的存储和验证等，还可以定制协议扩展。看到这里应该对URL加载系统有一定的了解了吧，知道它到底是干嘛的，在我们平时使用那些涉及到整个系统的控件的时候也知道了它到底做了些什么事情。</p>
-<p>接下来再继续深入研究下去，关于上面提到的URL加载系统的功能，有下面几个辅助类是专门负责这些事情的：</p>
-<h3 id="URL-Loading"><a href="#URL-Loading" class="headerlink" title="URL Loading"></a>URL Loading</h3><p>在URL加载系统中大部分使用过的类都允许你的app去从网络资源中检索URL的内容，这也是你使用URL加载系统的第一步操作，拿到数据后你就可以把它存储到本地。</p>
-<p>在iOS7之后，如果你想执行URL请求的话那么NSURLSession肯定是首选的API，它与NSURLConnection相比较下有一个很明显的优势，详情可以看这几篇文章：</p>
-<ul>
-<li><a href="http://objccn.io/issue-5-4/" target="_blank" rel="noopener">从 NSURLConnection 到 NSURLSession</a></li>
-</ul>
-<p>如果是iOS7以前的版本，那还是乖乖用NSURLConnection吧。</p>
-<p>PS:目前AFNetworking中的网络加载部分已经换成NSURLSession这套API了，而SDWebImage还是使用NSURLConnection。</p>
-<h3 id="Fetching-Content-as-Data-In-Memory"><a href="#Fetching-Content-as-Data-In-Memory" class="headerlink" title="Fetching Content as Data (In Memory)"></a>Fetching Content as Data (In Memory)</h3><p>请求完URL之后接下来就是从URL中获取数据，这就是第二步。</p>
-<ul>
-<li>如果是简单的请求，只需要使用NSURLSession<br>API就能从NSURL对象或者NSData对象或者硬盘上的文件中获取内容。</li>
-<li>如果是复杂的请求，比如请求上传数据，这个时候需要提供一个NSURLRequest对象来当做NSURLSession或者NSURLConneciton的媒介。</li>
-</ul>
-<p>关于如何使用NSURLSession可以查看官方文档：<a href="http://fuer4869.github.io/2016/03/25/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F/" target="_blank" rel="noopener">Using<br>NSURLSession</a></p>
-<h4 id="Downloading-Content-as-a-File"><a href="#Downloading-Content-as-a-File" class="headerlink" title="Downloading Content as a File"></a>Downloading Content as a File</h4><p>除了从URL中获取数据之外还有下载文件：</p>
-<ul>
-<li>如果是简单的请求，你可以使用NSURLSession<br>API来从NSURL对象或者NSData对象或者硬盘上的文件中获取数据。</li>
-<li>如果是复杂的请求，类似请求上传数据，就需要提供一个NSURLRequest对象来给NSURLSession或者NSURLDownload来当媒介。</li>
-</ul>
-<p><strong>直接用NSURLDownload或者NSURLSession创建的实例它是不会做缓存的，这个时候你必须在使用完NSURLConnection<br>或者 NSURLSession之后把数据存储到本地。</strong></p>
-<p>但是光是有上面2个功能是完全不够的，可能在我们的业务拓展之后还需要增加更多的特性。</p>
-<h3 id="Helper-Classes"><a href="#Helper-Classes" class="headerlink" title="Helper Classes"></a>Helper Classes</h3><p>URL加载类会使用两种辅助类来提供额外的元数据—一个是数据请求本身(NSURLRequest)另外个是服务器的响应(NSURLResponse)。比方说如果你要做一个复杂的请求，你就需要用NSURLRequest来对元数据进行封装，同样如果是复杂的服务器响应的话也就需要NSURLResponse来封装。</p>
-<h3 id="URL-Requests"><a href="#URL-Requests" class="headerlink" title="URL Requests"></a>URL Requests</h3><p>一个NSURLRequest对象封装了一个URL和一些协议属性。还指定了关于使用本地缓存数据的策略，何时使用NSURLConnection或者NSURLDownload,并且提供了一个设置连接超时的接口。</p>
-<p>有些协议提供协议属性。比方说，Http协议向NSURLRequest添加了返回HTTP请求体，请求头和转换接口的接口。当然它也对NSMutableURLRequest添加了修改值的接口。</p>
-<h4 id="Response-Metadata"><a href="#Response-Metadata" class="headerlink" title="Response Metadata"></a>Response Metadata</h4><p>向服务器请求所返回的响应主要被视为2个部分：元数据描述的内容和内容数据本身。它的超类NSURLResponse能够提供额外的元数据，比如，NSHTTPURLResponse能够存储从web<br>server返回的headers和status<br>code。那些通用的协议会被NSURLResponse类封装然后构成MiME类型。</p>
-<p>比较重要的一点是：只有响应的元数据会被存在一个NSURLResponse对象中。各种URL<br>Loading类都通过block或者这个对象的delegate对你的app提供响应的数据。</p>
-<p>一个NSCacheURLResponse实例封装了一个NSURLResponse对象，URL内容数据和一些额外的信息提供给你的app。</p>
-<h4 id="Redirection-and-Other-Request-Changes"><a href="#Redirection-and-Other-Request-Changes" class="headerlink" title="Redirection and Other Request Changes"></a>Redirection and Other Request Changes</h4><p>当然URL重定向功能也是不可少的，这里先不详细解释什么是URL重定向。你在浏览器中输入<a href="http://www.google.xn--comhttp-oo5kl3uj8aq9hgv6poy6a2ke//www.google.com.hk" target="_blank" rel="noopener">http://www.google.com后会自动跳转到http://www.google.com.hk</a><br>这个就是URL重定向。</p>
-<p>某些协议，类似HTTP,会给服务器提供一个方法来告诉你的app内容已经转移到其他URL中了。这个时候URL<br>loading classes<br>能够修改委托。如果你的app提供一个合适的委托接口，那么你的app将会立即决定接下来该怎么做，是返回新的响应体还是返回一个error。</p>
-<h4 id="Authentication-and-Credentials"><a href="#Authentication-and-Credentials" class="headerlink" title="Authentication and Credentials"></a>Authentication and Credentials</h4><p>有些服务器会对部分内容限时权限，需要用户通过某些证书来进行认证-一份客户证书，用户名密码等都是为了获得授权。<br>证书也被用来获得其他方向（其他URL）的信任。<br>URL<br>加载系统会提供证书mode类并且在证书安全的情况下保护这块区域。你的app能够制定这些证书所持有的请求，持续时间为app的启动或者永久存储在用户的钥匙串中。<br>证书会保持存储在用户的钥匙串中并且分享给其他app。</p>
-<p>NSURLCredentialStorage<br>类管理证书的存储和提供一个为提供证明与NSURLCredential对象对应的NSURLProtectionSpace对象的绘图。</p>
-<p>NSURLAuthenticationChallenge 类<br>封装了NSURLProtocol去验证请求的必要信息：一份计划证书，涉及的保护区域，有必要的协议验证所产生的错误或者响应，和尝试证明的操作次数。NSURLAuthenticationChallenge实例也可以指定对象去初始化验证。而最初的对象，和sender的提交一样，必须遵从NSURLAuthenticationChallengeSender协议。</p>
-<p>NSURLAuthenticationChallenge实例可以被NSURLProtocol的子类使用来告诉URL<br>loading system<br>证明是有必要的。他们也提供了NSURLConnection和NSURLDownload的delegate来减轻定制授权操作的难度。</p>
-<p>####Cache Management<br>URL loading<br>system提供了一个在app里结合硬盘和内存的方案来减少依赖网络连接来获取数据的方法，并且提供了更快的读写响应。cache会去询问NSURLConnection按照缓存策略所实例化的NSULRequest对象。</p>
-<p><strong><em>缓存策略有很多种，具体情况具体选择，这里简单介绍下：</em></strong></p>
-<ul>
-<li><p>NSURLRequestUseProtocolCachePolicy — NSURLRequest默认的cache<br>policy，使用Protocol协议定义。</p>
-</li>
-<li><p>NSURLRequestReloadIgnoringCacheData — 忽略缓存直接从原始地址下载。</p>
-</li>
-<li><p>NSURLRequestReturnCacheDataElseLoad —<br>只有在cache中不存在data时才从原始地址下载。</p>
-</li>
-<li><p>NSURLRequestReturnCacheDataDontLoad —<br>只使用cache数据，如果不存在cache，请求失败;用于没有建立网络连接离线模式;</p>
-</li>
-<li><p>NSURLRequestReloadIgnoringLocalAndRemoteCacheData —<br>忽略本地和远程的缓存数据，直接从原始地址下载，与NSURLRequestReloadIgnoringCacheData类似。</p>
-</li>
-<li><p>NSURLRequestReloadRevalidatingCacheData —<br>验证本地数据与远程数据是否相同，如果不同则下载远程数据，否则使用本地数据。</p>
-</li>
-</ul>
-<p>然后这个NSURLCache类主要是提供了配置缓存大小和在磁盘中的位置的接口。也就是说它是对缓存进行配置的对象。它也提供了接口来管理一大堆的NSCachedURLReponse对象。</p>
-<p>一个NSCachedURLReponse对象对NSURLResponse对象和URL的数据进行了封装。而且NSCachedURLReponse也提供了一个用户信息的字典，这样可以使app能自由的缓存任何数据。</p>
-<h4 id="Cookie-Storage"><a href="#Cookie-Storage" class="headerlink" title="Cookie Storage"></a>Cookie Storage</h4><p>由于HTTP协议的特性，客户端通常使用cookies来为URL请求返回的数据提供长时间的存储。<br>URL loading<br>system提供接口来管理和创建cookies，发送cookies相当于HTTP请求的一部分，还有当服务器产生响应之后的接收cookies工作。</p>
-<p>OSX和iOS<br>提供了NSHTTPCookieStorage类，依次为一系列NSHTTPCookie对象提供管理接口。</p>
-<h4 id="Protocol-Support"><a href="#Protocol-Support" class="headerlink" title="Protocol Support"></a>Protocol Support</h4><p>URL loading system 天生支持http,https,file,ftp和data协议。但是，URL<br>loading<br>system也允许你的app去注册你自己的类来支持额外的应用层网络协议。你也能对URL请求和URL响应对象添加协议特性。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在还没深入了解URL Loading System前一直以为URL<br>loading就是iOS的整个URL加载系统，没想到里面还有那么多我不知道的内容。</p>
-<ol>
-<li><p>先来说说它的NSURL<br>loading部分，NSURLSession,NSURLConnection,NSURLDownload它们都具备了从NSURL中获取数据和内容的功能，NSURLRequest和NSURLResponse分别是请求和响应的对象形式，如果涉及到复杂的请求或者响应的时候就需要用到这2个对象。<br>在iOS7以前一直都是NSURLConnection的天下，iOS7之后苹果推出了更为优秀的NSURLSession。详情可参考：<br><a href="http://objccn.io/issue-5-4/" target="_blank" rel="noopener">从 NSURLConnection 到 NSURLSession</a></p>
-</li>
-<li><p>在协议方面，URL loading<br>system支持我们可以写自定义网络协议，NSURLProtocol就是为这个而存在的。</p>
-</li>
-<li><p>我们不可能一直都依赖网络来获取数据，而URL loading<br>system能够在请求数据的时候根据缓存策略采取不同的行动来解决这个问题。</p>
-</li>
-<li><p>NSHTTPURLResponse存储了从web server返回的headers和status code。</p>
-</li>
-</ol>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2015/03/25/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Kommentieren und teilen
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2015/03/22/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20/"
-                            aria-label=": 使用Autolayout实现动态高度的ScrollView"
-                        >
-                            使用Autolayout实现动态高度的ScrollView
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2015-03-22T11:12:19+08:00">
-	
-		    22 3月 2015
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p>=============================</p>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><hr>
-<p>自从改用Autolayout作为界面布局的主要核心技术之后一直都没有做这方面的技术总结，最近打算写一系列关于Autolayout的文章，从比较基础的界面到复杂的界面都会去写，就当做是Autolayout的教程吧。</p>
-<h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><hr>
-<ol>
-<li>首先你必须得先了解基本的Autolayout的使用方法和特性。</li>
-<li>理解ScrollView在Autolayout中的特别之处。</li>
-</ol>
-<h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><hr>
-<ol>
-<li>通过Autolayout实现ScrollView的动态布局。</li>
-<li>实现简单的动态界面，并且能够让ScrollView在各种设备上正常运行。</li>
-<li>步骤简单明确，不需要大量的布局代码。</li>
-</ol>
-<p>知道了自己要做什么之后就开始接下来的Autolayout实践过程吧。</p>
-<h3 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h3><hr>
-<p>首先创建一个支持Size Classes的界面,一般都选择Compact/Regular。</p>
-<p>添加一个Scrollview到ViewController的Container<br>View(也就是图中的View)中并且填满整个界面，然后添加上，下，左，右的约束。现在在添加一个UIView到Scrollview中同样撑满整个ScrollView，然后以Scrollview为父容器添加上下左右的约束，添加完成后会发现还是会有警告</p>
-<p>它提示我们ScrollView还未确定它的contentwidth和contentheight，这个问题就是在之前讲到的一个点，scrollview有一个特性就是当你使用autolayout确定了它的坐标的宽高是不够的，必须还要确定它的contentsize。那既然刚刚放入的UIView是ScrollView的子容器，那么它就有确定ScrollView的contentsize大小的功能，接下来我们要做的就是确定这个UIView的宽和高。</p>
-<p>现在我们让ScrollView中的View与Container View等高，与Scroll View等宽。</p>
-<p>接下来我们创建一个固定高度的界面，这个界面内容的高度是超过iPhone4的屏幕宽度的，我们要在不管理ScrollView的contentsize的情况下让ScrollView自动适配。</p>
-<p>我在界面中添加了一个label(toplabel)，一个棕色的uiview(colorview)，一个底部的label(bottomlabel)</p>
-<ul>
-<li>toplabel<ul>
-<li>距container view的顶约束：35pt</li>
-<li>位于container view横向居中的约束</li>
-<li>底部约束与colorview的顶部：Standard</li>
-</ul>
-</li>
-<li>colorview<ul>
-<li>顶部约束与toplabel的底部：Standard</li>
-<li>left:8</li>
-<li>right:8</li>
-<li>底部约束与bottomlabel的顶部:Standard</li>
-</ul>
-</li>
-<li>bottomlabel<ul>
-<li>顶部约束与colorview的底部：Standard</li>
-<li>left:8</li>
-<li>right:8</li>
-<li>bottom:Standard</li>
-</ul>
-</li>
-</ul>
-<p>上面是2张模拟器的效果图，一张是iPhone4的，另外一张是iPhone6的效果图。我们可以看到刚刚我们制作的界面已经完美适配成功了，由于本人水平有限不会做gif图，所以效果不是很明显。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><hr>
-<p>适配Scrollview的过程中只要搞懂了Scrollview中有一个特性，那就是需要让编译器知道Scrollview的contentsize，只有知道了这个才能够做好适配，接下来的适配工作都是围绕着这点出发的，相信知道了这一点之后的你只要稍加思考就能够轻松驾驭Scrollview的适配。<br>而且使用Autolayout制作界面会比用绝对坐标方便很多也快很多，也不容易出错。刚刚做的适配根本就没有写一句代码就做到了完美适配，是不是很方便。希望越来越多的人能喜欢上Autolayout</p>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2015/03/22/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Kommentieren und teilen
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2015/03/17/%E5%88%9D%E6%8E%A2Size%20Classes%E7%AC%94%E8%AE%B0%20/"
-                            aria-label=": 初探Size Classes笔记"
-                        >
-                            初探Size Classes笔记
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2015-03-17T11:12:19+08:00">
-	
-		    17 3月 2015
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p>====================</p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><hr>
-<p>自从苹果推出了iPhone6和plus，宣布苹果正式进入大屏时代。不单单设计师哭了，连我们这些苦逼的工程师也跟着要一起哭。因为本身iOS不需要和安卓那样考虑自适应的问题，原本这个只有做android的同学才会碰到的问题现在也终于轮到我们iOS开发工程师了。而且相信正在赶项目的同学，听到此消息估计是一口老血喷在屏幕上了。那我们该如何轻松的适配如此多的尺寸呢？</p>
-<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><hr>
-<p>查阅了官方文档，苹果给出了这样一个解决方案。</p>
-<blockquote>
-<p>Use size classes to enable a storyboard or xib file to work with all<br>available screen sizes. This enables the user interface of your app to<br>work on any iOS device.</p>
-</blockquote>
-<p>Size Classes<br>单从名字上我是这么理解的，apple把所有设备的尺寸分成了几种类型。以前我们一个页面需要创建多个xib来适配，现在我们不需要那么做了。这次iOS8的更新可以说是在设计界面上的一大突破。从iOS7更新的Auto<br>Layout之后，我们设计界面从以前的绝对坐标这种概念转换成了约束来指定视图的坐标和大小，致使我们不必再考虑设备的具体尺寸和方向了。但从iPhone6等新设备出来之后，我们不得不考虑Auto<br>Layout这种布局方案在不同设备上的体验还是有一些缺点的。可能你正在设计一个iPhone6的界面，但是你用的是一张4-inch的xib，这个时候你会明显的发现这样的界面完全设计不出你想要的效果。这个时候我们就需要用到Size<br>Classes了。<br>Size Classes有两种类型，compact（紧凑）和 regular（正常）。</p>
-<p>这样我们可以根据官方文档给出的介绍，可以针对不同的设备不同的方向采用不用的Size<br>Class。\</p>
-<p>看过这2张图之后相信能够很清晰的了解我们该如何使用Size<br>Classes了。总的来说iPad两个方向都是Regular，而iPhone的话，竖的是width-Compact,height-Regular。横向的话因为iPhone<br>6plus的屏幕尺寸比较特殊，所以就按照它的尺寸选择width-Regular，height-Compact。那也就是说Auto<br>Layout本身已经解决了我们在设计界面过程中确定视图的尺寸和坐标，而Size<br>Classes帮我们解决了Auto<br>Layout在布局方案对于不同设备的缺点也解决掉了，想想一套布局就可以完美解决所有设备的适配问题，那酸爽！</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><hr>
-<p>在iOS7时代，以为Auto<br>Layout会是设计界面的神器，没想到更新到了iOS8之后更新了Size<br>Classes这个革命性的功能。起初发布会一结束还被做android的同事开过玩笑，你们做iOS也来感受下我们做android的苦的时候Apple更新了如此人性化的功能。相信这个功能绝对是以后开发界面的核心！</p>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2015/03/17/%E5%88%9D%E6%8E%A2Size%20Classes%E7%AC%94%E8%AE%B0%20/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Kommentieren und teilen
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    <div class="pagination-bar">
-    <ul class="pagination">
-        
-          <li class="pagination-prev">
-            <a
-                class="btn btn--default btn--small"
-                href="/archives/"
-                aria-label="NEUERE BEITRÄGE"
-            >
-              <i class="fa fa-angle-left text-base icon-mr"></i>
-              <span>NEUERE BEITRÄGE</span>
-            </a>
-          </li>
-        
-        
-          <li class="pagination-next">
-            <a
-                class="btn btn--default btn--small"
-                href="/archives/page/3/"
-                aria-label="ÄLTERE BEITRÄGE"
-            >
-              <span>ÄLTERE BEITRÄGE</span>
-              <i class="fa fa-angle-right text-base icon-ml"></i>
-            </a>
-          </li>
-        
-        <li class="pagination-number">Seite 2 von 3</li>
-    </ul>
-</div>
-
-</section>
-
-
-
-                <footer id="footer" class="main-content-wrap">
-    <span class="copyrights">
-        Copyrights &copy; 2019 loannes. All Rights Reserved.
-    </span>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
 </footer>
 
-            </div>
-            
-        </div>
-        
-
-
-<div id="about">
-    <div id="about-card">
-        <div id="about-btn-close">
-            <i class="fa fa-times"></i>
-        </div>
-        
-            <h4 id="about-card-name">loannes</h4>
-        
-            <div id="about-card-bio"><p>author.bio</p>
-</div>
-        
-        
-            <div id="about-card-job">
-                <i class="fa fa-briefcase"></i>
-                <br/>
-                <p>author.job</p>
-
-            </div>
-        
-        
     </div>
-</div>
-
-        
-        
-<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
-        <!--SCRIPTS-->
-
-<script src="/assets/js/jquery.js"></script>
-
-
-<script src="/assets/js/jquery.fancybox.js"></script>
-
-
-<script src="/assets/js/thumbs.js"></script>
-
-
-<script src="/assets/js/tranquilpeak.js"></script>
-
-<!--SCRIPTS END-->
-
-
-
-
-
-    </body>
+</body>
 </html>

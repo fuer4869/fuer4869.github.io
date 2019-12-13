@@ -1,307 +1,199 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
-    
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="loannes&#39;s blog">
-    <title>用xctool打包ipa文件自动上传到fir - loannes&#39;s blog</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <meta name="author" content="loannes">
-    
-    
-    
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"loannes","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"================================\n准备工作\nHomeBrew 环境在这里就不多介绍了，可以看我写的另外一篇Mac安装记录的文章\n安装xctool xctool\n如何使用xctool\n安装firfir.im-cli\n创建.sh文件（本例用的是sh脚本）,如果想用php语言的就创建.php文件。\n自动上传fir\n\n\nxctool\nxctool是facebook专门对xcode开发的构建工具，在苹果的xcodebuild限制条件种种的环境下很多人都选择了这款工具，并且它是开源的。\n如何安装xctool\nbrew update\n\nbrew install xctool很方便，这就是为什么要装Homebrew的原因。\n\n下面简单介绍下xctool的命令：先输入下面的命令\n\nxctool -help\nxctool [BASE OPTIONS] clean 清理工程,功能等同于Xcode中的clean\nxctool [BASE OPTIONS] build Xcode中的build\nxctool [BASE OPTIONS] build-tests [-only TARGET] [-omitTARGET] [-skip-deps]\nxctool [BASE OPTIONS] run-tests [-test-sdk SDK] [-only SPEC][-omit SPEC] [-freshSimulator] [-resetSimulator][-noResetSimulatorOnFailure] [-freshInstall] [-parallelize][-logicTestBucketSize N] [-appTestBucketSize N] [-bucketByBUCKETBY] [-failOnEmptyTestBundles] [-listTestsOnly][-targetedDeviceFamily FAMILY] [-testTimeout N] [-logicTestBUNDLE] [-appTest BUNDLE:HOST_APP]\nxctool [BASE OPTIONS] test [-test-sdk SDK] [-only SPEC][-omit SPEC] [-skip-deps] [-freshSimulator][-resetSimulator] [-noResetSimulatorOnFailure] [-freshInstall][-parallelize] [-failOnEmptyTestBundles] [-logicTestBucketSizeN] [-appTestBucketSize N] [-bucketBy BUCKETBY][-listTestsOnly] [-testTimeout N]\nxctool [BASE OPTIONS] archive [-archivePath PATH]生成编译文件,也是打包ipa核心命令\nxctool [BASE OPTIONS] analyze [-only TARGET] [-skip-deps][-failOnWarnings]\nxctool [BASE OPTIONS] install\n\n\n\n另外3个测试的暂时不讲。\n如何使用xctoolBase Options这个参数其实就是选择工程，为什么说是工程而不是项目，xctool很做的十分全面，它不但能帮你编译和清理项目更方便的是它能够帮你测试项目。所以这里需要明确的告诉xctool你要编译哪个工程或者测试哪个工程。具体看下面的命令：\n-help                    show help\n\n-workspace PATH          path to workspace---针对workspace项目的命令，如果你的项目集成了cocoapods，那么用这个命令就行了。\n\n-project PATH            path to project----反之这个命令就是对没有集成cocoapods的\n\n-scheme NAME             scheme to use for building or testing ----- scheme用来告诉xctool test 和 build的对象工程名称\n\n-find-target TARGET      Search for the workspace/project/scheme to build the target                      ------也可以根据target名称来找到workspace或者project，但是这个太慢了不建议用来做这次测试，不过可以当做一个搜索工具来用。\n\n-find-target-path PATH   Path to search for -find-target. 同上\n\n-find-target-exclude-pathColon-separated list of paths to exclude for -find-target.\n\n-sdk VERSION             sdk to use for building (e.g. 6.0, 6.1)\n\n-configuration NAME      configuration to use (e.g. Debug, Release)\n\n-jobs NUMBER             number of concurrent build operations to run\n\n-arch ARCH               arch to build for (e.g. i386, armv7)\n\n-toolchain PATH          path to toolchain\n\n-xcconfig PATH           path to an xcconfig\n\n-reporter TYPE[:FILE]    add reporter\n\n-showBuildSettings       display a list of build settings and values\n\n-version                 print version and exit\n\nSETTING=VALUE            Set the build &apos;setting&apos; to &apos;value&apos;其他都是些很简单的命令就不做解释了。这里给大家一个小技巧，在编译工程的时候项目中的证书必须使用正确才能编译通过，但是我们的项目证书有时候一直在换的不可能为了编译一次项目再去换证书，这样很麻烦。所以可以在项目中增加个自定义的Configuration,如下图我添加了一个名为DailyBuild的Configuration\n![](./用xctool打包ipa文件自动上传到fir _飞奔的蜗牛的博客_files/3344ggg.png)\n添加好后会在项目的Target-&gt;Build Setting-&gt;CodeSigning中多出一个DailyBuild选项，你可以在这里配置你需要打包的证书，这样就不用一直把证书换来换去了。![](./用xctool打包ipa文件自动上传到fir _飞奔的蜗牛的博客_files/2015-12-22-02.png)\n\n编写.sh脚本并且上传到fir安装完fir命令行工具后就可以开始编写脚本了\nshtest.sh```123最后在终端中输入命令：45    &#96;&#96;&#96;.&#x2F;shtest.sh然后你就可以去做其他事情了，让它帮你解决接下来的事情吧！\n上传成功\n总结在这个懒人程序猿繁多的时代中，这种能够帮我们解决很多繁琐工作的工具真是业界良心啊。有句话真没说错，facebook出品必属精品。后面我还稍微研究了下xctool，发现它的测试功能也很强大，比苹果自带的强大不少，log界面也十分清晰。\n本来想上传成功之后邮件通知的，查阅资料后本地发送邮件不是很靠谱。之后会尝试看看能不能通过服务器帮我们构建ipa上传和发送邮件。\n","dateCreated":"2015-04-14T11:12:19+08:00","dateModified":"2019-12-12T11:25:37+08:00","datePublished":"2015-04-14T11:12:19+08:00","description":"","headline":"用xctool打包ipa文件自动上传到fir","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/http:/yoursite.com/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir%20/"},"publisher":{"@type":"Organization","name":"loannes","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"/http:/yoursite.com/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir%20/","keywords":"iOS"}</script>
-    <meta name="description" content="&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 准备工作 HomeBrew 环境在这里就不多介绍了，可以看我写的另外一篇Mac安装记录的文章 安装xctool xctool 如何使用xctool 安装firfir.im-cli 创建.sh文件（本例用的是sh脚本）,如果想用php语言的就创建.php文件。 自动上传fir   xctool xctool是facebook专门对xc">
-<meta property="og:type" content="blog">
-<meta property="og:title" content="用xctool打包ipa文件自动上传到fir">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2015&#x2F;04&#x2F;14&#x2F;%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir%20&#x2F;index.html">
-<meta property="og:site_name" content="loannes&#39;s blog">
-<meta property="og:description" content="&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 准备工作 HomeBrew 环境在这里就不多介绍了，可以看我写的另外一篇Mac安装记录的文章 安装xctool xctool 如何使用xctool 安装firfir.im-cli 创建.sh文件（本例用的是sh脚本）,如果想用php语言的就创建.php文件。 自动上传fir   xctool xctool是facebook专门对xc">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2015-04-14T03:12:19.000Z">
-<meta property="article:modified_time" content="2019-12-12T03:25:37.000Z">
-<meta property="article:author" content="loannes">
-<meta property="article:tag" content="iOS">
-<meta name="twitter:card" content="summary">
-    
-    
-        
-    
-    
-    
-    
-    
-    <!--STYLES-->
-    
-<link rel="stylesheet" href="/assets/css/all.css">
-
-    
-<link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
-
-    
-<link rel="stylesheet" href="/assets/css/thumbs.css">
-
-    
-<link rel="stylesheet" href="/assets/css/tranquilpeak.css">
-
-    <!--STYLES END-->
-    
-
-    
-
-    
-        
-    
-</head>
-
-    <body>
-        <div id="blog">
-            <!-- Define author's picture -->
 
 
+
+
+
+<title>用xctool打包ipa文件自动上传到fir | loannes&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
     
 
-<header id="header" data-behavior="4">
-    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-    <div class="header-title">
-        <a
-            class="header-title-link"
-            href="/%20"
-            aria-label=""
-        >
-            loannes&#39;s blog
-        </a>
-    </div>
+
+
+    <!-- scripts list from _config.yml -->
     
-        
-            <a
-                class="header-right-picture "
-                href="#about"
-                aria-label="Öffne den Link: /#about"
-            >
-        
-        
-        </a>
+    <script src="/js/script.js"></script>
     
-</header>
+    <script src="/js/tocbot.min.js"></script>
+    
 
-            <!-- Define author's picture -->
 
 
-<nav id="sidebar" data-behavior="4">
-    <div class="sidebar-container">
-        
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/%20"
-                            
-                            title="Home"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-categories"
-                            
-                            title="Kategorien"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Kategorien</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-tags"
-                            
-                            title="Tags"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Tags</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-archives"
-                            
-                            title="Archiv"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archiv</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link open-algolia-search"
-                             href="#search"
-                            
-                            title="Suche"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Suche</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="#about"
-                            
-                            title="Über"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Über</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://github.com/" target="_blank" rel="noopener" title="GitHub">
-                    
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
-                    
-                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Stack Overflow</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://twitter.com/" target="_blank" rel="noopener" title="Twitter">
-                    
-                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Twitter</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://facebook.com/" target="_blank" rel="noopener" title="Facebook">
-                    
-                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Facebook</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://plus.google.com/" target="_blank" rel="noopener" title="Google Plus">
-                    
-                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Google Plus</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://www.linkedin.com/profile/" target="_blank" rel="noopener" title="LinkedIn">
-                    
-                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">LinkedIn</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/mailto"
-                            title="E-Mail"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">E-Mail</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/atom.xml"
-                            
-                            title="RSS"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">RSS</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-    </div>
-</nav>
 
-            
-            <div id="main" data-behavior="4"
-                 class="
-                        hasCoverMetaIn
-                        ">
+<meta name="generator" content="Hexo 4.1.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">loannes&#39;s Blog</a></div>
+            <div class="menu navbar-right">
                 
-<article class="post">
-    
-    
-        <div class="post-header main-content-wrap text-left">
-    
-        <h1 class="post-title">
-            用xctool打包ipa文件自动上传到fir
-        </h1>
-    
-    
-        <div class="post-meta">
-    <time datetime="2015-04-14T11:12:19+08:00">
-	
-		    14 4月 2015
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E8%87%AA%E5%8A%A8%E5%8C%96/">自动化</a>
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
 
+        </div>
+    </nav>
 
     
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">loannes&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
 </div>
 
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
     
-</div>
 
     
-    <div class="post-content markdown">
-        <div class="main-content-wrap">
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">用xctool打包ipa文件自动上传到fir</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">loannes</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">四月 14, 2015&nbsp;&nbsp;11:12:19</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E8%87%AA%E5%8A%A8%E5%8C%96/">自动化</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
             <p>================================</p>
 <h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><ol>
 <li>HomeBrew 环境<br>在这里就不多介绍了，可以看我写的另外一篇<a href="http://fuer4869.github.io/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir/" target="_blank" rel="noopener">Mac安装记录</a>的文章</li>
@@ -377,333 +269,74 @@ SETTING=VALUE            Set the build &apos;setting&apos; to &apos;value&apos;<
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在这个懒人程序猿繁多的时代中，这种能够帮我们解决很多繁琐工作的工具真是业界良心啊。有句话真没说错，facebook出品必属精品。后面我还稍微研究了下xctool，发现它的测试功能也很强大，比苹果自带的强大不少，log界面也十分清晰。</p>
 <p>本来想上传成功之后邮件通知的，查阅资料后本地发送邮件不是很靠谱。之后会尝试看看能不能通过服务器帮我们构建ipa上传和发送邮件。</p>
 
-            
-
-
         </div>
-    </div>
-    <div id="post-footer" class="post-footer main-content-wrap">
-        
-            <div class="post-footer-tags">
-                <span class="text-color-light text-small">GETAGGT IN</span><br/>
-                
-    <a class="tag tag--primary tag--small t-link" href="/tags/iOS/" rel="tag">iOS</a>
 
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>loannes</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://yoursite.com/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir%20/">http://yoursite.com/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir%20/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/iOS/"># iOS</a>
+                    
+                        
+                </span>
             </div>
-        
-        
-            <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2015/07/14/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/"
-                    data-tooltip="iOS8新特性 UIPresentationController"
-                    aria-label="FRÜHER: iOS8新特性 UIPresentationController"
-                >
-                    
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">FRÜHER</span>
-                    </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2015/04/05/%E9%85%8D%E5%90%88Autolayou+SizeClasses%E4%BB%BF%E6%94%AF%E4%BB%98%E5%AE%9D%E9%A6%96%E9%A1%B5%20/"
-                    data-tooltip="配合Autolayou+SizeClasses仿支付宝首页"
-                    aria-label="NÄCHSTER: 配合Autolayou+SizeClasses仿支付宝首页"
-                >
-                    
-                        <span class="hide-xs hide-sm text-small icon-mr">NÄCHSTER</span>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a
-                class="post-action-btn btn btn--default btn-open-shareoptions"
-                href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
-            >
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2015/07/14/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/">iOS8新特性 UIPresentationController</a>
             
             
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir%20/"
-                    title="Teilen auf Facebook"
-                    aria-label="Teilen auf Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
+            <a class="next" rel="next" href="/2015/04/05/%E9%85%8D%E5%90%88Autolayou+SizeClasses%E4%BB%BF%E6%94%AF%E4%BB%98%E5%AE%9D%E9%A6%96%E9%A1%B5%20/">配合Autolayou+SizeClasses仿支付宝首页</a>
             
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir%20/"
-                    title="Teilen auf Twitter"
-                    aria-label="Teilen auf Twitter"
-                >
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir%20/"
-                    title="Teilen auf Google Plus"
-                    aria-label="Teilen auf Google Plus"
-                >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
+        </section>
+
+
+    </article>
 </div>
 
-
-        
-        
-            
-        
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
     </div>
-</article>
-
-
-
-                <footer id="footer" class="main-content-wrap">
-    <span class="copyrights">
-        Copyrights &copy; 2019 loannes. All Rights Reserved.
-    </span>
 </footer>
 
-            </div>
-            
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
-                    <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2015/07/14/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/"
-                    data-tooltip="iOS8新特性 UIPresentationController"
-                    aria-label="FRÜHER: iOS8新特性 UIPresentationController"
-                >
-                    
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">FRÜHER</span>
-                    </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2015/04/05/%E9%85%8D%E5%90%88Autolayou+SizeClasses%E4%BB%BF%E6%94%AF%E4%BB%98%E5%AE%9D%E9%A6%96%E9%A1%B5%20/"
-                    data-tooltip="配合Autolayou+SizeClasses仿支付宝首页"
-                    aria-label="NÄCHSTER: 配合Autolayou+SizeClasses仿支付宝首页"
-                >
-                    
-                        <span class="hide-xs hide-sm text-small icon-mr">NÄCHSTER</span>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a
-                class="post-action-btn btn btn--default btn-open-shareoptions"
-                href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
-            >
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir%20/"
-                    title="Teilen auf Facebook"
-                    aria-label="Teilen auf Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir%20/"
-                    title="Teilen auf Twitter"
-                    aria-label="Teilen auf Twitter"
-                >
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir%20/"
-                    title="Teilen auf Google Plus"
-                    aria-label="Teilen auf Google Plus"
-                >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
-
-
-                </div>
-                
-    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
-        <i id="btn-close-shareoptions" class="fa fa-times"></i>
-        <ul class="share-options">
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir%20/"
-                        aria-label="Teilen auf Facebook"
-                    >
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Teilen auf Facebook</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir%20/"
-                        aria-label="Teilen auf Twitter"
-                    >
-                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Teilen auf Twitter</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://plus.google.com/share?url=http://yoursite.com/2015/04/14/%E7%94%A8xctool%E6%89%93%E5%8C%85ipa%E6%96%87%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%88%B0fir%20/"
-                        aria-label="Teilen auf Google Plus"
-                    >
-                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Teilen auf Google Plus</span>
-                    </a>
-                </li>
-            
-        </ul>
     </div>
-
-
-            
-        </div>
-        
-
-
-<div id="about">
-    <div id="about-card">
-        <div id="about-btn-close">
-            <i class="fa fa-times"></i>
-        </div>
-        
-            <h4 id="about-card-name">loannes</h4>
-        
-            <div id="about-card-bio"><p>author.bio</p>
-</div>
-        
-        
-            <div id="about-card-job">
-                <i class="fa fa-briefcase"></i>
-                <br/>
-                <p>author.job</p>
-
-            </div>
-        
-        
-    </div>
-</div>
-
-        
-        
-<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
-        <!--SCRIPTS-->
-
-<script src="/assets/js/jquery.js"></script>
-
-
-<script src="/assets/js/jquery.fancybox.js"></script>
-
-
-<script src="/assets/js/thumbs.js"></script>
-
-
-<script src="/assets/js/tranquilpeak.js"></script>
-
-<!--SCRIPTS END-->
-
-
-    
-
-
-
-
-    </body>
+</body>
 </html>
