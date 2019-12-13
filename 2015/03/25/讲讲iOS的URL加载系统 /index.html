@@ -1,0 +1,700 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="loannes&#39;s blog">
+    <title>讲讲iOS的URL加载系统 - loannes&#39;s blog</title>
+    <meta name="author" content="loannes">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"loannes","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"\n=============\n前言\n最近打算开始做一些进阶训练，所以避免不了要去触碰这些以前想都没想过的东西。现在要做的第一步就是能够比以往更深入的去学习一些知识，这两天花功夫研究了下iOS的URL加载系统，听起来好像很陌生，但是这个东西是我平常用的最多比如SDWebImage，AFNetworking都用到这些知识。\nURL加载系统\nURL加载系统就是由一套类和协议组成的，这个加载系统的作用就是从URL中加载内容，给服务器上传数据，管理cookies的存储，控制响应数据的缓存以及处理证书的存储和验证等，还可以定制协议扩展。看到这里应该对URL加载系统有一定的了解了吧，知道它到底是干嘛的，在我们平时使用那些涉及到整个系统的控件的时候也知道了它到底做了些什么事情。\n接下来再继续深入研究下去，关于上面提到的URL加载系统的功能，有下面几个辅助类是专门负责这些事情的：\nURL Loading在URL加载系统中大部分使用过的类都允许你的app去从网络资源中检索URL的内容，这也是你使用URL加载系统的第一步操作，拿到数据后你就可以把它存储到本地。\n在iOS7之后，如果你想执行URL请求的话那么NSURLSession肯定是首选的API，它与NSURLConnection相比较下有一个很明显的优势，详情可以看这几篇文章：\n\n从 NSURLConnection 到 NSURLSession\n\n如果是iOS7以前的版本，那还是乖乖用NSURLConnection吧。\nPS:目前AFNetworking中的网络加载部分已经换成NSURLSession这套API了，而SDWebImage还是使用NSURLConnection。\nFetching Content as Data (In Memory)请求完URL之后接下来就是从URL中获取数据，这就是第二步。\n\n如果是简单的请求，只需要使用NSURLSessionAPI就能从NSURL对象或者NSData对象或者硬盘上的文件中获取内容。\n如果是复杂的请求，比如请求上传数据，这个时候需要提供一个NSURLRequest对象来当做NSURLSession或者NSURLConneciton的媒介。\n\n关于如何使用NSURLSession可以查看官方文档：UsingNSURLSession\nDownloading Content as a File除了从URL中获取数据之外还有下载文件：\n\n如果是简单的请求，你可以使用NSURLSessionAPI来从NSURL对象或者NSData对象或者硬盘上的文件中获取数据。\n如果是复杂的请求，类似请求上传数据，就需要提供一个NSURLRequest对象来给NSURLSession或者NSURLDownload来当媒介。\n\n直接用NSURLDownload或者NSURLSession创建的实例它是不会做缓存的，这个时候你必须在使用完NSURLConnection或者 NSURLSession之后把数据存储到本地。\n但是光是有上面2个功能是完全不够的，可能在我们的业务拓展之后还需要增加更多的特性。\nHelper ClassesURL加载类会使用两种辅助类来提供额外的元数据—一个是数据请求本身(NSURLRequest)另外个是服务器的响应(NSURLResponse)。比方说如果你要做一个复杂的请求，你就需要用NSURLRequest来对元数据进行封装，同样如果是复杂的服务器响应的话也就需要NSURLResponse来封装。\nURL Requests一个NSURLRequest对象封装了一个URL和一些协议属性。还指定了关于使用本地缓存数据的策略，何时使用NSURLConnection或者NSURLDownload,并且提供了一个设置连接超时的接口。\n有些协议提供协议属性。比方说，Http协议向NSURLRequest添加了返回HTTP请求体，请求头和转换接口的接口。当然它也对NSMutableURLRequest添加了修改值的接口。\nResponse Metadata向服务器请求所返回的响应主要被视为2个部分：元数据描述的内容和内容数据本身。它的超类NSURLResponse能够提供额外的元数据，比如，NSHTTPURLResponse能够存储从webserver返回的headers和statuscode。那些通用的协议会被NSURLResponse类封装然后构成MiME类型。\n比较重要的一点是：只有响应的元数据会被存在一个NSURLResponse对象中。各种URLLoading类都通过block或者这个对象的delegate对你的app提供响应的数据。\n一个NSCacheURLResponse实例封装了一个NSURLResponse对象，URL内容数据和一些额外的信息提供给你的app。\nRedirection and Other Request Changes当然URL重定向功能也是不可少的，这里先不详细解释什么是URL重定向。你在浏览器中输入http://www.google.com后会自动跳转到http://www.google.com.hk这个就是URL重定向。\n某些协议，类似HTTP,会给服务器提供一个方法来告诉你的app内容已经转移到其他URL中了。这个时候URLloading classes能够修改委托。如果你的app提供一个合适的委托接口，那么你的app将会立即决定接下来该怎么做，是返回新的响应体还是返回一个error。\nAuthentication and Credentials有些服务器会对部分内容限时权限，需要用户通过某些证书来进行认证-一份客户证书，用户名密码等都是为了获得授权。证书也被用来获得其他方向（其他URL）的信任。URL加载系统会提供证书mode类并且在证书安全的情况下保护这块区域。你的app能够制定这些证书所持有的请求，持续时间为app的启动或者永久存储在用户的钥匙串中。证书会保持存储在用户的钥匙串中并且分享给其他app。\nNSURLCredentialStorage类管理证书的存储和提供一个为提供证明与NSURLCredential对象对应的NSURLProtectionSpace对象的绘图。\nNSURLAuthenticationChallenge 类封装了NSURLProtocol去验证请求的必要信息：一份计划证书，涉及的保护区域，有必要的协议验证所产生的错误或者响应，和尝试证明的操作次数。NSURLAuthenticationChallenge实例也可以指定对象去初始化验证。而最初的对象，和sender的提交一样，必须遵从NSURLAuthenticationChallengeSender协议。\nNSURLAuthenticationChallenge实例可以被NSURLProtocol的子类使用来告诉URLloading system证明是有必要的。他们也提供了NSURLConnection和NSURLDownload的delegate来减轻定制授权操作的难度。\n####Cache ManagementURL loadingsystem提供了一个在app里结合硬盘和内存的方案来减少依赖网络连接来获取数据的方法，并且提供了更快的读写响应。cache会去询问NSURLConnection按照缓存策略所实例化的NSULRequest对象。\n缓存策略有很多种，具体情况具体选择，这里简单介绍下：\n\nNSURLRequestUseProtocolCachePolicy — NSURLRequest默认的cachepolicy，使用Protocol协议定义。\n\nNSURLRequestReloadIgnoringCacheData — 忽略缓存直接从原始地址下载。\n\nNSURLRequestReturnCacheDataElseLoad —只有在cache中不存在data时才从原始地址下载。\n\nNSURLRequestReturnCacheDataDontLoad —只使用cache数据，如果不存在cache，请求失败;用于没有建立网络连接离线模式;\n\nNSURLRequestReloadIgnoringLocalAndRemoteCacheData —忽略本地和远程的缓存数据，直接从原始地址下载，与NSURLRequestReloadIgnoringCacheData类似。\n\nNSURLRequestReloadRevalidatingCacheData —验证本地数据与远程数据是否相同，如果不同则下载远程数据，否则使用本地数据。\n\n\n然后这个NSURLCache类主要是提供了配置缓存大小和在磁盘中的位置的接口。也就是说它是对缓存进行配置的对象。它也提供了接口来管理一大堆的NSCachedURLReponse对象。\n一个NSCachedURLReponse对象对NSURLResponse对象和URL的数据进行了封装。而且NSCachedURLReponse也提供了一个用户信息的字典，这样可以使app能自由的缓存任何数据。\nCookie Storage由于HTTP协议的特性，客户端通常使用cookies来为URL请求返回的数据提供长时间的存储。URL loadingsystem提供接口来管理和创建cookies，发送cookies相当于HTTP请求的一部分，还有当服务器产生响应之后的接收cookies工作。\nOSX和iOS提供了NSHTTPCookieStorage类，依次为一系列NSHTTPCookie对象提供管理接口。\nProtocol SupportURL loading system 天生支持http,https,file,ftp和data协议。但是，URLloadingsystem也允许你的app去注册你自己的类来支持额外的应用层网络协议。你也能对URL请求和URL响应对象添加协议特性。\n总结在还没深入了解URL Loading System前一直以为URLloading就是iOS的整个URL加载系统，没想到里面还有那么多我不知道的内容。\n\n先来说说它的NSURLloading部分，NSURLSession,NSURLConnection,NSURLDownload它们都具备了从NSURL中获取数据和内容的功能，NSURLRequest和NSURLResponse分别是请求和响应的对象形式，如果涉及到复杂的请求或者响应的时候就需要用到这2个对象。在iOS7以前一直都是NSURLConnection的天下，iOS7之后苹果推出了更为优秀的NSURLSession。详情可参考：从 NSURLConnection 到 NSURLSession\n\n在协议方面，URL loadingsystem支持我们可以写自定义网络协议，NSURLProtocol就是为这个而存在的。\n\n我们不可能一直都依赖网络来获取数据，而URL loadingsystem能够在请求数据的时候根据缓存策略采取不同的行动来解决这个问题。\n\nNSHTTPURLResponse存储了从web server返回的headers和status code。\n\n\n","dateCreated":"2015-03-25T11:12:19+08:00","dateModified":"2019-12-12T11:40:57+08:00","datePublished":"2015-03-25T11:12:19+08:00","description":"","headline":"讲讲iOS的URL加载系统","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/http:/yoursite.com/2015/03/25/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/"},"publisher":{"@type":"Organization","name":"loannes","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"/http:/yoursite.com/2015/03/25/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/","keywords":"iOS"}</script>
+    <meta name="description" content="&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 前言 最近打算开始做一些进阶训练，所以避免不了要去触碰这些以前想都没想过的东西。现在要做的第一步就是能够比以往更深入的去学习一些知识，这两天花功夫研究了下iOS的URL加载系统，听起来好像很陌生，但是这个东西是我平常用的最多比如SDWebImage，AFNetworking都用到这些知识。 URL加载系统 URL加载系统就是由一套类和协议组成的，这个加载系统的作用就是">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="讲讲iOS的URL加载系统">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2015&#x2F;03&#x2F;25&#x2F;%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20&#x2F;index.html">
+<meta property="og:site_name" content="loannes&#39;s blog">
+<meta property="og:description" content="&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 前言 最近打算开始做一些进阶训练，所以避免不了要去触碰这些以前想都没想过的东西。现在要做的第一步就是能够比以往更深入的去学习一些知识，这两天花功夫研究了下iOS的URL加载系统，听起来好像很陌生，但是这个东西是我平常用的最多比如SDWebImage，AFNetworking都用到这些知识。 URL加载系统 URL加载系统就是由一套类和协议组成的，这个加载系统的作用就是">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-03-25T03:12:19.000Z">
+<meta property="article:modified_time" content="2019-12-12T03:40:57.000Z">
+<meta property="article:author" content="loannes">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/all.css">
+
+    
+<link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+
+    
+<link rel="stylesheet" href="/assets/css/thumbs.css">
+
+    
+<link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/%20"
+            aria-label=""
+        >
+            loannes&#39;s blog
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Öffne den Link: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/%20"
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Kategorien"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Kategorien</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archiv"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archiv</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link open-algolia-search"
+                             href="#search"
+                            
+                            title="Suche"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Suche</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="Über"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Über</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://facebook.com/" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://plus.google.com/" target="_blank" rel="noopener" title="Google Plus">
+                    
+                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Google Plus</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/profile/" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/mailto"
+                            title="E-Mail"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">E-Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/atom.xml"
+                            
+                            title="RSS"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            讲讲iOS的URL加载系统
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2015-03-25T11:12:19+08:00">
+	
+		    25 3月 2015
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <hr>
+<p>=============</p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><hr>
+<p>最近打算开始做一些进阶训练，所以避免不了要去触碰这些以前想都没想过的东西。现在要做的第一步就是能够比以往更深入的去学习一些知识，这两天花功夫研究了下iOS的URL加载系统，听起来好像很陌生，但是这个东西是我平常用的最多比如SDWebImage，AFNetworking都用到这些知识。</p>
+<h3 id="URL加载系统"><a href="#URL加载系统" class="headerlink" title="URL加载系统"></a>URL加载系统</h3><hr>
+<p>URL加载系统就是由一套类和协议组成的，这个加载系统的作用就是从URL中加载内容，给服务器上传数据，管理cookies的存储，控制响应数据的缓存以及处理证书的存储和验证等，还可以定制协议扩展。看到这里应该对URL加载系统有一定的了解了吧，知道它到底是干嘛的，在我们平时使用那些涉及到整个系统的控件的时候也知道了它到底做了些什么事情。</p>
+<p>接下来再继续深入研究下去，关于上面提到的URL加载系统的功能，有下面几个辅助类是专门负责这些事情的：</p>
+<h3 id="URL-Loading"><a href="#URL-Loading" class="headerlink" title="URL Loading"></a>URL Loading</h3><p>在URL加载系统中大部分使用过的类都允许你的app去从网络资源中检索URL的内容，这也是你使用URL加载系统的第一步操作，拿到数据后你就可以把它存储到本地。</p>
+<p>在iOS7之后，如果你想执行URL请求的话那么NSURLSession肯定是首选的API，它与NSURLConnection相比较下有一个很明显的优势，详情可以看这几篇文章：</p>
+<ul>
+<li><a href="http://objccn.io/issue-5-4/" target="_blank" rel="noopener">从 NSURLConnection 到 NSURLSession</a></li>
+</ul>
+<p>如果是iOS7以前的版本，那还是乖乖用NSURLConnection吧。</p>
+<p>PS:目前AFNetworking中的网络加载部分已经换成NSURLSession这套API了，而SDWebImage还是使用NSURLConnection。</p>
+<h3 id="Fetching-Content-as-Data-In-Memory"><a href="#Fetching-Content-as-Data-In-Memory" class="headerlink" title="Fetching Content as Data (In Memory)"></a>Fetching Content as Data (In Memory)</h3><p>请求完URL之后接下来就是从URL中获取数据，这就是第二步。</p>
+<ul>
+<li>如果是简单的请求，只需要使用NSURLSession<br>API就能从NSURL对象或者NSData对象或者硬盘上的文件中获取内容。</li>
+<li>如果是复杂的请求，比如请求上传数据，这个时候需要提供一个NSURLRequest对象来当做NSURLSession或者NSURLConneciton的媒介。</li>
+</ul>
+<p>关于如何使用NSURLSession可以查看官方文档：<a href="http://fuer4869.github.io/2016/03/25/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F/" target="_blank" rel="noopener">Using<br>NSURLSession</a></p>
+<h4 id="Downloading-Content-as-a-File"><a href="#Downloading-Content-as-a-File" class="headerlink" title="Downloading Content as a File"></a>Downloading Content as a File</h4><p>除了从URL中获取数据之外还有下载文件：</p>
+<ul>
+<li>如果是简单的请求，你可以使用NSURLSession<br>API来从NSURL对象或者NSData对象或者硬盘上的文件中获取数据。</li>
+<li>如果是复杂的请求，类似请求上传数据，就需要提供一个NSURLRequest对象来给NSURLSession或者NSURLDownload来当媒介。</li>
+</ul>
+<p><strong>直接用NSURLDownload或者NSURLSession创建的实例它是不会做缓存的，这个时候你必须在使用完NSURLConnection<br>或者 NSURLSession之后把数据存储到本地。</strong></p>
+<p>但是光是有上面2个功能是完全不够的，可能在我们的业务拓展之后还需要增加更多的特性。</p>
+<h3 id="Helper-Classes"><a href="#Helper-Classes" class="headerlink" title="Helper Classes"></a>Helper Classes</h3><p>URL加载类会使用两种辅助类来提供额外的元数据—一个是数据请求本身(NSURLRequest)另外个是服务器的响应(NSURLResponse)。比方说如果你要做一个复杂的请求，你就需要用NSURLRequest来对元数据进行封装，同样如果是复杂的服务器响应的话也就需要NSURLResponse来封装。</p>
+<h3 id="URL-Requests"><a href="#URL-Requests" class="headerlink" title="URL Requests"></a>URL Requests</h3><p>一个NSURLRequest对象封装了一个URL和一些协议属性。还指定了关于使用本地缓存数据的策略，何时使用NSURLConnection或者NSURLDownload,并且提供了一个设置连接超时的接口。</p>
+<p>有些协议提供协议属性。比方说，Http协议向NSURLRequest添加了返回HTTP请求体，请求头和转换接口的接口。当然它也对NSMutableURLRequest添加了修改值的接口。</p>
+<h4 id="Response-Metadata"><a href="#Response-Metadata" class="headerlink" title="Response Metadata"></a>Response Metadata</h4><p>向服务器请求所返回的响应主要被视为2个部分：元数据描述的内容和内容数据本身。它的超类NSURLResponse能够提供额外的元数据，比如，NSHTTPURLResponse能够存储从web<br>server返回的headers和status<br>code。那些通用的协议会被NSURLResponse类封装然后构成MiME类型。</p>
+<p>比较重要的一点是：只有响应的元数据会被存在一个NSURLResponse对象中。各种URL<br>Loading类都通过block或者这个对象的delegate对你的app提供响应的数据。</p>
+<p>一个NSCacheURLResponse实例封装了一个NSURLResponse对象，URL内容数据和一些额外的信息提供给你的app。</p>
+<h4 id="Redirection-and-Other-Request-Changes"><a href="#Redirection-and-Other-Request-Changes" class="headerlink" title="Redirection and Other Request Changes"></a>Redirection and Other Request Changes</h4><p>当然URL重定向功能也是不可少的，这里先不详细解释什么是URL重定向。你在浏览器中输入<a href="http://www.google.xn--comhttp-oo5kl3uj8aq9hgv6poy6a2ke//www.google.com.hk" target="_blank" rel="noopener">http://www.google.com后会自动跳转到http://www.google.com.hk</a><br>这个就是URL重定向。</p>
+<p>某些协议，类似HTTP,会给服务器提供一个方法来告诉你的app内容已经转移到其他URL中了。这个时候URL<br>loading classes<br>能够修改委托。如果你的app提供一个合适的委托接口，那么你的app将会立即决定接下来该怎么做，是返回新的响应体还是返回一个error。</p>
+<h4 id="Authentication-and-Credentials"><a href="#Authentication-and-Credentials" class="headerlink" title="Authentication and Credentials"></a>Authentication and Credentials</h4><p>有些服务器会对部分内容限时权限，需要用户通过某些证书来进行认证-一份客户证书，用户名密码等都是为了获得授权。<br>证书也被用来获得其他方向（其他URL）的信任。<br>URL<br>加载系统会提供证书mode类并且在证书安全的情况下保护这块区域。你的app能够制定这些证书所持有的请求，持续时间为app的启动或者永久存储在用户的钥匙串中。<br>证书会保持存储在用户的钥匙串中并且分享给其他app。</p>
+<p>NSURLCredentialStorage<br>类管理证书的存储和提供一个为提供证明与NSURLCredential对象对应的NSURLProtectionSpace对象的绘图。</p>
+<p>NSURLAuthenticationChallenge 类<br>封装了NSURLProtocol去验证请求的必要信息：一份计划证书，涉及的保护区域，有必要的协议验证所产生的错误或者响应，和尝试证明的操作次数。NSURLAuthenticationChallenge实例也可以指定对象去初始化验证。而最初的对象，和sender的提交一样，必须遵从NSURLAuthenticationChallengeSender协议。</p>
+<p>NSURLAuthenticationChallenge实例可以被NSURLProtocol的子类使用来告诉URL<br>loading system<br>证明是有必要的。他们也提供了NSURLConnection和NSURLDownload的delegate来减轻定制授权操作的难度。</p>
+<p>####Cache Management<br>URL loading<br>system提供了一个在app里结合硬盘和内存的方案来减少依赖网络连接来获取数据的方法，并且提供了更快的读写响应。cache会去询问NSURLConnection按照缓存策略所实例化的NSULRequest对象。</p>
+<p><strong><em>缓存策略有很多种，具体情况具体选择，这里简单介绍下：</em></strong></p>
+<ul>
+<li><p>NSURLRequestUseProtocolCachePolicy — NSURLRequest默认的cache<br>policy，使用Protocol协议定义。</p>
+</li>
+<li><p>NSURLRequestReloadIgnoringCacheData — 忽略缓存直接从原始地址下载。</p>
+</li>
+<li><p>NSURLRequestReturnCacheDataElseLoad —<br>只有在cache中不存在data时才从原始地址下载。</p>
+</li>
+<li><p>NSURLRequestReturnCacheDataDontLoad —<br>只使用cache数据，如果不存在cache，请求失败;用于没有建立网络连接离线模式;</p>
+</li>
+<li><p>NSURLRequestReloadIgnoringLocalAndRemoteCacheData —<br>忽略本地和远程的缓存数据，直接从原始地址下载，与NSURLRequestReloadIgnoringCacheData类似。</p>
+</li>
+<li><p>NSURLRequestReloadRevalidatingCacheData —<br>验证本地数据与远程数据是否相同，如果不同则下载远程数据，否则使用本地数据。</p>
+</li>
+</ul>
+<p>然后这个NSURLCache类主要是提供了配置缓存大小和在磁盘中的位置的接口。也就是说它是对缓存进行配置的对象。它也提供了接口来管理一大堆的NSCachedURLReponse对象。</p>
+<p>一个NSCachedURLReponse对象对NSURLResponse对象和URL的数据进行了封装。而且NSCachedURLReponse也提供了一个用户信息的字典，这样可以使app能自由的缓存任何数据。</p>
+<h4 id="Cookie-Storage"><a href="#Cookie-Storage" class="headerlink" title="Cookie Storage"></a>Cookie Storage</h4><p>由于HTTP协议的特性，客户端通常使用cookies来为URL请求返回的数据提供长时间的存储。<br>URL loading<br>system提供接口来管理和创建cookies，发送cookies相当于HTTP请求的一部分，还有当服务器产生响应之后的接收cookies工作。</p>
+<p>OSX和iOS<br>提供了NSHTTPCookieStorage类，依次为一系列NSHTTPCookie对象提供管理接口。</p>
+<h4 id="Protocol-Support"><a href="#Protocol-Support" class="headerlink" title="Protocol Support"></a>Protocol Support</h4><p>URL loading system 天生支持http,https,file,ftp和data协议。但是，URL<br>loading<br>system也允许你的app去注册你自己的类来支持额外的应用层网络协议。你也能对URL请求和URL响应对象添加协议特性。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在还没深入了解URL Loading System前一直以为URL<br>loading就是iOS的整个URL加载系统，没想到里面还有那么多我不知道的内容。</p>
+<ol>
+<li><p>先来说说它的NSURL<br>loading部分，NSURLSession,NSURLConnection,NSURLDownload它们都具备了从NSURL中获取数据和内容的功能，NSURLRequest和NSURLResponse分别是请求和响应的对象形式，如果涉及到复杂的请求或者响应的时候就需要用到这2个对象。<br>在iOS7以前一直都是NSURLConnection的天下，iOS7之后苹果推出了更为优秀的NSURLSession。详情可参考：<br><a href="http://objccn.io/issue-5-4/" target="_blank" rel="noopener">从 NSURLConnection 到 NSURLSession</a></p>
+</li>
+<li><p>在协议方面，URL loading<br>system支持我们可以写自定义网络协议，NSURLProtocol就是为这个而存在的。</p>
+</li>
+<li><p>我们不可能一直都依赖网络来获取数据，而URL loading<br>system能够在请求数据的时候根据缓存策略采取不同的行动来解决这个问题。</p>
+</li>
+<li><p>NSHTTPURLResponse存储了从web server返回的headers和status code。</p>
+</li>
+</ol>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">GETAGGT IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/iOS/" rel="tag">iOS</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2015/04/05/%E9%85%8D%E5%90%88Autolayou+SizeClasses%E4%BB%BF%E6%94%AF%E4%BB%98%E5%AE%9D%E9%A6%96%E9%A1%B5%20/"
+                    data-tooltip="配合Autolayou+SizeClasses仿支付宝首页"
+                    aria-label="FRÜHER: 配合Autolayou+SizeClasses仿支付宝首页"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">FRÜHER</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2015/03/22/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20/"
+                    data-tooltip="使用Autolayout实现动态高度的ScrollView"
+                    aria-label="NÄCHSTER: 使用Autolayout实现动态高度的ScrollView"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NÄCHSTER</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2015/03/25/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/"
+                    title="Teilen auf Facebook"
+                    aria-label="Teilen auf Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2015/03/25/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/"
+                    title="Teilen auf Twitter"
+                    aria-label="Teilen auf Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2015/03/25/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/"
+                    title="Teilen auf Google Plus"
+                    aria-label="Teilen auf Google Plus"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 loannes. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2015/04/05/%E9%85%8D%E5%90%88Autolayou+SizeClasses%E4%BB%BF%E6%94%AF%E4%BB%98%E5%AE%9D%E9%A6%96%E9%A1%B5%20/"
+                    data-tooltip="配合Autolayou+SizeClasses仿支付宝首页"
+                    aria-label="FRÜHER: 配合Autolayou+SizeClasses仿支付宝首页"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">FRÜHER</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2015/03/22/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20/"
+                    data-tooltip="使用Autolayout实现动态高度的ScrollView"
+                    aria-label="NÄCHSTER: 使用Autolayout实现动态高度的ScrollView"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NÄCHSTER</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2015/03/25/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/"
+                    title="Teilen auf Facebook"
+                    aria-label="Teilen auf Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2015/03/25/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/"
+                    title="Teilen auf Twitter"
+                    aria-label="Teilen auf Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2015/03/25/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/"
+                    title="Teilen auf Google Plus"
+                    aria-label="Teilen auf Google Plus"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2015/03/25/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/"
+                        aria-label="Teilen auf Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Teilen auf Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2015/03/25/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/"
+                        aria-label="Teilen auf Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Teilen auf Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2015/03/25/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/"
+                        aria-label="Teilen auf Google Plus"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Teilen auf Google Plus</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">loannes</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/jquery.js"></script>
+
+
+<script src="/assets/js/jquery.fancybox.js"></script>
+
+
+<script src="/assets/js/thumbs.js"></script>
+
+
+<script src="/assets/js/tranquilpeak.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>

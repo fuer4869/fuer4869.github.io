@@ -1,0 +1,646 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="loannes&#39;s blog">
+    <title>UITableViewCell自动计算高度优化 - loannes&#39;s blog</title>
+    <meta name="author" content="loannes">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"loannes","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"=======================\n之前有段时间一直被UITableViewCell的自动计算高度困扰着，查阅过很多资料试过很多种方法，有些勉强能用，有些计算高度不是很稳定会有错误，有些方法太过复杂影响开发效率,再加上苹果的2次发布会推出了2次针对UITableViewCell自动计算高度的改进，但效果都不是很好。所以这次正好有空就在这里统一整理出来，做一次总结，找出我个人觉得目前最好的方法出来。\n在这之前我做过一些调查，发现iOS7和iOS6的市场占有比还是有一点的，这个是iOS9发布三周后的数据\n发现现在还使用iOS7和iOS6的还是蛮多的，占了10%，所以接下来要做的适配起码要兼容iOS7甚至兼容iOS6。\nestimatedRowHeight这个是在iOS7发布会上推出的一个UITableView的属性：\n\nIf the table contains variable height rows, it might be expensive tocalculate all their heights when the table loads. Using estimationallows you to defer some of the cost of geometry calculation from loadtime to scrolling time.\n\n官方文档是这么解释这个属性的。\n一开始以为这个方法好像蛮有道理的，但仔细一想其实这个方法并不好。首先我们给了tableview一个估高确实能减少一部分开销，在tableview初次加载的时候没有对每个cell的高度去计算，它会对没出现的cell做估算，给了它们一个估算值，然后通过这个估算值计算出contentsize，从而决定tableview是否可以滑动以及滚动条的长度。但是经过我几次测试之后我发现了几个很重要的问题，就是当tableview在持续滚动的时候它会去不断的重新计算cell的高度，因为这个时候需要精确计算了，所以你会发现tableview的滚动条的长度会在不停的跳动，并且下面这个回调函数在不断的被执行。\n对的，这部分的开销一样很大，并且旁边的滚动条的跳动的情况十分影响体验。这次iOS7的改动并不是十分完美，纰漏之处还是很明显的，这也是我不使用这个方法的原因。\nself-sizing celliOS8 WWDC 中推出了 self-sizing cell 的概念，旨在让 cell自己负责自己的高度计算，使用 frame layout 和 auto layout 都可以享受到：\n看来苹果也确实发现了iOS7的estimatedRowHeight的问题确实太明显了，果然还是在iOS8的时候解决了这个问题。这个方法推出后我也用了一段时间，虽然它对约束的要求及其严格，在使用的时候需要先确定内容的宽度，所以会用到这个preferredMaxLayoutWidth，但是如果你的约束稍微有点问题的话，这个方法就会返回0造成计算错误。但是这个新特性的要求是iOS8，低于iOS8是不能使用这种功能的，那也就是说我们在开发过程中还要另外再做一套针对低于iOS8系统的方法，也就是上面那个方案。一次适配要写2套代码，太麻烦，所以我个人认为也不是最好的方案。\nUITableView + FDTemplateLayoutCell这个是我在逛github时无意发现的，抱着好奇的态度看了下介绍发现出乎意料的满足了我现在对自动计算UITableViewCell高度的所有需求，能够解决我之前提到的所有困惑。抱着试一试的态度fork下来简单使用了下，确实解决了算高的问题，滑动也十分流畅，同时也支持iOS6。其实它主要是综合了以前3个版本的计算高度的优点，既有一个单独计算cell高度的TemplateLayourCell,也有不影响cell动态变化的自动缓存机制和自动缓存清理机制，也有iOS8的self-sizing的特性。\n总结：据可靠数据统计，使用该工具之后再效率上面也有了明显的提升，因为使用了预缓存的机制大大缩短了计算高度的所消耗的时间。使用方法完全整合了iOS6，iOS7，iOS8三中计算高度的优点并做了缓存的优化，使用方法也很简单不会有想iOS8那种对约束十分严格的情况出现，并且支持的最低系统是iOS6.所以本人还是很提倡使用这个工具的，并且该工具的开发者是著名的sunnyxx,相信不会突然烂尾不管这个项目，肯定还会持续更新维护项目，完全可以放心使用。\ngithub：https://github.com/forkingdog/UITableView-FDTemplateLayoutCell\n使用 cocoapods：\npod search UITableView+FDTemplateLayoutCell","dateCreated":"2015-03-04T11:12:19+08:00","dateModified":"2019-12-12T11:19:59+08:00","datePublished":"2015-03-04T11:12:19+08:00","description":"","headline":"UITableViewCell自动计算高度优化","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/http:/yoursite.com/2015/03/04/UITableViewCell%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97%E9%AB%98%E5%BA%A6%E4%BC%98%E5%8C%96%20/"},"publisher":{"@type":"Organization","name":"loannes","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"/http:/yoursite.com/2015/03/04/UITableViewCell%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97%E9%AB%98%E5%BA%A6%E4%BC%98%E5%8C%96%20/","keywords":"iOS"}</script>
+    <meta name="description" content="&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 之前有段时间一直被UITableViewCell的自动计算高度困扰着，查阅过很多资料试过很多种方法，有些勉强能用，有些计算高度不是很稳定会有错误，有些方法太过复杂影响开发效率,再加上苹果的2次发布会推出了2次针对UITableViewCell自动计算高度的改进，但效果都不是很好。所以这次正好有空就在这里统一整理出来，做一次总结，找出我个人觉得目前最好">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="UITableViewCell自动计算高度优化">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2015&#x2F;03&#x2F;04&#x2F;UITableViewCell%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97%E9%AB%98%E5%BA%A6%E4%BC%98%E5%8C%96%20&#x2F;index.html">
+<meta property="og:site_name" content="loannes&#39;s blog">
+<meta property="og:description" content="&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 之前有段时间一直被UITableViewCell的自动计算高度困扰着，查阅过很多资料试过很多种方法，有些勉强能用，有些计算高度不是很稳定会有错误，有些方法太过复杂影响开发效率,再加上苹果的2次发布会推出了2次针对UITableViewCell自动计算高度的改进，但效果都不是很好。所以这次正好有空就在这里统一整理出来，做一次总结，找出我个人觉得目前最好">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-03-04T03:12:19.000Z">
+<meta property="article:modified_time" content="2019-12-12T03:19:59.000Z">
+<meta property="article:author" content="loannes">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/all.css">
+
+    
+<link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+
+    
+<link rel="stylesheet" href="/assets/css/thumbs.css">
+
+    
+<link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/%20"
+            aria-label=""
+        >
+            loannes&#39;s blog
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Öffne den Link: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/%20"
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Kategorien"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Kategorien</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archiv"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archiv</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link open-algolia-search"
+                             href="#search"
+                            
+                            title="Suche"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Suche</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="Über"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Über</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://facebook.com/" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://plus.google.com/" target="_blank" rel="noopener" title="Google Plus">
+                    
+                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Google Plus</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/profile/" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/mailto"
+                            title="E-Mail"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">E-Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/atom.xml"
+                            
+                            title="RSS"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            UITableViewCell自动计算高度优化
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2015-03-04T11:12:19+08:00">
+	
+		    04 3月 2015
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>=======================</p>
+<p>之前有段时间一直被UITableViewCell的自动计算高度困扰着，查阅过很多资料试过很多种方法，有些勉强能用，有些计算高度不是很稳定会有错误，有些方法太过复杂影响开发效率,再加上苹果的2次发布会推出了2次针对UITableViewCell自动计算高度的改进，但效果都不是很好。所以这次正好有空就在这里统一整理出来，做一次总结，找出我个人觉得目前最好的方法出来。</p>
+<p>在这之前我做过一些调查，发现iOS7和iOS6的市场占有比还是有一点的，这个是iOS9发布三周后的数据</p>
+<p>发现现在还使用iOS7和iOS6的还是蛮多的，占了10%，所以接下来要做的适配起码要兼容iOS7甚至兼容iOS6。</p>
+<h3 id="estimatedRowHeight"><a href="#estimatedRowHeight" class="headerlink" title="estimatedRowHeight"></a>estimatedRowHeight</h3><p>这个是在iOS7发布会上推出的一个UITableView的属性：</p>
+<blockquote>
+<p>If the table contains variable height rows, it might be expensive to<br>calculate all their heights when the table loads. Using estimation<br>allows you to defer some of the cost of geometry calculation from load<br>time to scrolling time.</p>
+</blockquote>
+<p>官方文档是这么解释这个属性的。</p>
+<p>一开始以为这个方法好像蛮有道理的，但仔细一想其实这个方法并不好。首先我们给了tableview一个估高确实能减少一部分开销，在tableview初次加载的时候没有对每个cell的高度去计算，它会对没出现的cell做估算，给了它们一个估算值，然后通过这个估算值计算出contentsize，从而决定tableview是否可以滑动以及滚动条的长度。<br>但是经过我几次测试之后我发现了几个很重要的问题，就是当tableview在持续滚动的时候它会去不断的重新计算cell的高度，因为这个时候需要精确计算了，所以你会发现tableview的滚动条的长度会在不停的跳动，并且下面这个回调函数在不断的被执行。</p>
+<p>对的，这部分的开销一样很大，并且旁边的滚动条的跳动的情况十分影响体验。这次iOS7的改动并不是十分完美，纰漏之处还是很明显的，这也是我不使用这个方法的原因。</p>
+<h3 id="self-sizing-cell"><a href="#self-sizing-cell" class="headerlink" title="self-sizing cell"></a>self-sizing cell</h3><p>iOS8 WWDC 中推出了 self-sizing cell 的概念，旨在让 cell<br>自己负责自己的高度计算，使用 frame layout 和 auto layout 都可以享受到：</p>
+<p>看来苹果也确实发现了iOS7的estimatedRowHeight<br>的问题确实太明显了，果然还是在iOS8的时候解决了这个问题。这个方法推出后我也用了一段时间，虽然它对约束的要求及其严格，在使用的时候需要先确定内容的宽度，所以会用到这个<code>preferredMaxLayoutWidth</code>，但是如果你的约束稍微有点问题的话，这个方法就会返回0造成计算错误。<br>但是这个新特性的要求是iOS8，低于iOS8是不能使用这种功能的，那也就是说我们在开发过程中还要另外再做一套针对低于iOS8系统的方法，也就是上面那个方案。一次适配要写2套代码，太麻烦，所以我个人认为也不是最好的方案。</p>
+<h3 id="UITableView-FDTemplateLayoutCell"><a href="#UITableView-FDTemplateLayoutCell" class="headerlink" title="UITableView + FDTemplateLayoutCell"></a>UITableView + FDTemplateLayoutCell</h3><p>这个是我在逛github时无意发现的，抱着好奇的态度看了下介绍发现出乎意料的满足了我现在对自动计算UITableViewCell高度的所有需求，能够解决我之前提到的所有困惑。抱着试一试的态度fork下来简单使用了下，确实解决了算高的问题，滑动也十分流畅，同时也支持iOS6。<br>其实它主要是综合了以前3个版本的计算高度的优点，既有一个单独计算cell高度的TemplateLayourCell,也有不影响cell动态变化的自动缓存机制和自动缓存清理机制，也有iOS8的self-sizing的特性。</p>
+<p>总结：据可靠数据统计，使用该工具之后再效率上面也有了明显的提升，因为使用了预缓存的机制大大缩短了计算高度的所消耗的时间。使用方法完全整合了iOS6，iOS7，iOS8三中计算高度的优点并做了缓存的优化，使用方法也很简单不会有想iOS8那种对约束十分严格的情况出现，并且支持的最低系统是iOS6.所以本人还是很提倡使用这个工具的，并且该工具的开发者是著名的sunnyxx,相信不会突然烂尾不管这个项目，肯定还会持续更新维护项目，完全可以放心使用。</p>
+<p>github：<a href="https://github.com/forkingdog/UITableView-FDTemplateLayoutCell" target="_blank" rel="noopener">https://github.com/forkingdog/UITableView-FDTemplateLayoutCell</a></p>
+<p>使用 cocoapods：</p>
+<pre><code>pod search UITableView+FDTemplateLayoutCell</code></pre>
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">GETAGGT IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/iOS/" rel="tag">iOS</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2015/03/16/%E4%BD%BF%E7%94%A8Cocoapods%E5%81%9AiOS%E9%A1%B9%E7%9B%AE%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%20/"
+                    data-tooltip="使用Cocoapods做iOS项目依赖管理"
+                    aria-label="FRÜHER: 使用Cocoapods做iOS项目依赖管理"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">FRÜHER</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2015/02/16/%E4%BD%BF%E7%94%A8Cocoapods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93podspec%20/"
+                    data-tooltip="使用Cocoapods创建私有库podspec"
+                    aria-label="NÄCHSTER: 使用Cocoapods创建私有库podspec"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NÄCHSTER</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2015/03/04/UITableViewCell%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97%E9%AB%98%E5%BA%A6%E4%BC%98%E5%8C%96%20/"
+                    title="Teilen auf Facebook"
+                    aria-label="Teilen auf Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2015/03/04/UITableViewCell%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97%E9%AB%98%E5%BA%A6%E4%BC%98%E5%8C%96%20/"
+                    title="Teilen auf Twitter"
+                    aria-label="Teilen auf Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2015/03/04/UITableViewCell%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97%E9%AB%98%E5%BA%A6%E4%BC%98%E5%8C%96%20/"
+                    title="Teilen auf Google Plus"
+                    aria-label="Teilen auf Google Plus"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 loannes. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2015/03/16/%E4%BD%BF%E7%94%A8Cocoapods%E5%81%9AiOS%E9%A1%B9%E7%9B%AE%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%20/"
+                    data-tooltip="使用Cocoapods做iOS项目依赖管理"
+                    aria-label="FRÜHER: 使用Cocoapods做iOS项目依赖管理"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">FRÜHER</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2015/02/16/%E4%BD%BF%E7%94%A8Cocoapods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93podspec%20/"
+                    data-tooltip="使用Cocoapods创建私有库podspec"
+                    aria-label="NÄCHSTER: 使用Cocoapods创建私有库podspec"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NÄCHSTER</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2015/03/04/UITableViewCell%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97%E9%AB%98%E5%BA%A6%E4%BC%98%E5%8C%96%20/"
+                    title="Teilen auf Facebook"
+                    aria-label="Teilen auf Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2015/03/04/UITableViewCell%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97%E9%AB%98%E5%BA%A6%E4%BC%98%E5%8C%96%20/"
+                    title="Teilen auf Twitter"
+                    aria-label="Teilen auf Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2015/03/04/UITableViewCell%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97%E9%AB%98%E5%BA%A6%E4%BC%98%E5%8C%96%20/"
+                    title="Teilen auf Google Plus"
+                    aria-label="Teilen auf Google Plus"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2015/03/04/UITableViewCell%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97%E9%AB%98%E5%BA%A6%E4%BC%98%E5%8C%96%20/"
+                        aria-label="Teilen auf Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Teilen auf Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2015/03/04/UITableViewCell%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97%E9%AB%98%E5%BA%A6%E4%BC%98%E5%8C%96%20/"
+                        aria-label="Teilen auf Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Teilen auf Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2015/03/04/UITableViewCell%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97%E9%AB%98%E5%BA%A6%E4%BC%98%E5%8C%96%20/"
+                        aria-label="Teilen auf Google Plus"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Teilen auf Google Plus</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">loannes</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/jquery.js"></script>
+
+
+<script src="/assets/js/jquery.fancybox.js"></script>
+
+
+<script src="/assets/js/thumbs.js"></script>
+
+
+<script src="/assets/js/tranquilpeak.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>

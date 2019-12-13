@@ -1,0 +1,676 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="loannes&#39;s blog">
+    <title>使用Autolayout实现动态高度的ScrollView - loannes&#39;s blog</title>
+    <meta name="author" content="loannes">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"loannes","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"=============================\n前言\n自从改用Autolayout作为界面布局的主要核心技术之后一直都没有做这方面的技术总结，最近打算写一系列关于Autolayout的文章，从比较基础的界面到复杂的界面都会去写，就当做是Autolayout的教程吧。\n准备\n\n首先你必须得先了解基本的Autolayout的使用方法和特性。\n理解ScrollView在Autolayout中的特别之处。\n\n目的\n\n通过Autolayout实现ScrollView的动态布局。\n实现简单的动态界面，并且能够让ScrollView在各种设备上正常运行。\n步骤简单明确，不需要大量的布局代码。\n\n知道了自己要做什么之后就开始接下来的Autolayout实践过程吧。\n实践\n首先创建一个支持Size Classes的界面,一般都选择Compact/Regular。\n添加一个Scrollview到ViewController的ContainerView(也就是图中的View)中并且填满整个界面，然后添加上，下，左，右的约束。现在在添加一个UIView到Scrollview中同样撑满整个ScrollView，然后以Scrollview为父容器添加上下左右的约束，添加完成后会发现还是会有警告\n它提示我们ScrollView还未确定它的contentwidth和contentheight，这个问题就是在之前讲到的一个点，scrollview有一个特性就是当你使用autolayout确定了它的坐标的宽高是不够的，必须还要确定它的contentsize。那既然刚刚放入的UIView是ScrollView的子容器，那么它就有确定ScrollView的contentsize大小的功能，接下来我们要做的就是确定这个UIView的宽和高。\n现在我们让ScrollView中的View与Container View等高，与Scroll View等宽。\n接下来我们创建一个固定高度的界面，这个界面内容的高度是超过iPhone4的屏幕宽度的，我们要在不管理ScrollView的contentsize的情况下让ScrollView自动适配。\n我在界面中添加了一个label(toplabel)，一个棕色的uiview(colorview)，一个底部的label(bottomlabel)\n\ntoplabel\n距container view的顶约束：35pt\n位于container view横向居中的约束\n底部约束与colorview的顶部：Standard\n\n\ncolorview\n顶部约束与toplabel的底部：Standard\nleft:8\nright:8\n底部约束与bottomlabel的顶部:Standard\n\n\nbottomlabel\n顶部约束与colorview的底部：Standard\nleft:8\nright:8\nbottom:Standard\n\n\n\n上面是2张模拟器的效果图，一张是iPhone4的，另外一张是iPhone6的效果图。我们可以看到刚刚我们制作的界面已经完美适配成功了，由于本人水平有限不会做gif图，所以效果不是很明显。\n总结\n适配Scrollview的过程中只要搞懂了Scrollview中有一个特性，那就是需要让编译器知道Scrollview的contentsize，只有知道了这个才能够做好适配，接下来的适配工作都是围绕着这点出发的，相信知道了这一点之后的你只要稍加思考就能够轻松驾驭Scrollview的适配。而且使用Autolayout制作界面会比用绝对坐标方便很多也快很多，也不容易出错。刚刚做的适配根本就没有写一句代码就做到了完美适配，是不是很方便。希望越来越多的人能喜欢上Autolayout\n","dateCreated":"2015-03-22T11:12:19+08:00","dateModified":"2019-12-12T11:39:01+08:00","datePublished":"2015-03-22T11:12:19+08:00","description":"","headline":"使用Autolayout实现动态高度的ScrollView","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"/http:/yoursite.com/2015/03/22/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20/"},"publisher":{"@type":"Organization","name":"loannes","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"/http:/yoursite.com/2015/03/22/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20/","keywords":"iOS"}</script>
+    <meta name="description" content="&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 前言 自从改用Autolayout作为界面布局的主要核心技术之后一直都没有做这方面的技术总结，最近打算写一系列关于Autolayout的文章，从比较基础的界面到复杂的界面都会去写，就当做是Autolayout的教程吧。 准备  首先你必须得先了解基本的Autolayout的使用方法和特性。 理解ScrollView在Autolayout中">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="使用Autolayout实现动态高度的ScrollView">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2015&#x2F;03&#x2F;22&#x2F;%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20&#x2F;index.html">
+<meta property="og:site_name" content="loannes&#39;s blog">
+<meta property="og:description" content="&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 前言 自从改用Autolayout作为界面布局的主要核心技术之后一直都没有做这方面的技术总结，最近打算写一系列关于Autolayout的文章，从比较基础的界面到复杂的界面都会去写，就当做是Autolayout的教程吧。 准备  首先你必须得先了解基本的Autolayout的使用方法和特性。 理解ScrollView在Autolayout中">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-03-22T03:12:19.000Z">
+<meta property="article:modified_time" content="2019-12-12T03:39:01.000Z">
+<meta property="article:author" content="loannes">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/all.css">
+
+    
+<link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+
+    
+<link rel="stylesheet" href="/assets/css/thumbs.css">
+
+    
+<link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/%20"
+            aria-label=""
+        >
+            loannes&#39;s blog
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Öffne den Link: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/%20"
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Kategorien"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Kategorien</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archiv"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archiv</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link open-algolia-search"
+                             href="#search"
+                            
+                            title="Suche"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Suche</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="Über"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Über</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://facebook.com/" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://plus.google.com/" target="_blank" rel="noopener" title="Google Plus">
+                    
+                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Google Plus</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/profile/" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/mailto"
+                            title="E-Mail"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">E-Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/atom.xml"
+                            
+                            title="RSS"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            使用Autolayout实现动态高度的ScrollView
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2015-03-22T11:12:19+08:00">
+	
+		    22 3月 2015
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>=============================</p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><hr>
+<p>自从改用Autolayout作为界面布局的主要核心技术之后一直都没有做这方面的技术总结，最近打算写一系列关于Autolayout的文章，从比较基础的界面到复杂的界面都会去写，就当做是Autolayout的教程吧。</p>
+<h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><hr>
+<ol>
+<li>首先你必须得先了解基本的Autolayout的使用方法和特性。</li>
+<li>理解ScrollView在Autolayout中的特别之处。</li>
+</ol>
+<h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><hr>
+<ol>
+<li>通过Autolayout实现ScrollView的动态布局。</li>
+<li>实现简单的动态界面，并且能够让ScrollView在各种设备上正常运行。</li>
+<li>步骤简单明确，不需要大量的布局代码。</li>
+</ol>
+<p>知道了自己要做什么之后就开始接下来的Autolayout实践过程吧。</p>
+<h3 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h3><hr>
+<p>首先创建一个支持Size Classes的界面,一般都选择Compact/Regular。</p>
+<p>添加一个Scrollview到ViewController的Container<br>View(也就是图中的View)中并且填满整个界面，然后添加上，下，左，右的约束。现在在添加一个UIView到Scrollview中同样撑满整个ScrollView，然后以Scrollview为父容器添加上下左右的约束，添加完成后会发现还是会有警告</p>
+<p>它提示我们ScrollView还未确定它的contentwidth和contentheight，这个问题就是在之前讲到的一个点，scrollview有一个特性就是当你使用autolayout确定了它的坐标的宽高是不够的，必须还要确定它的contentsize。那既然刚刚放入的UIView是ScrollView的子容器，那么它就有确定ScrollView的contentsize大小的功能，接下来我们要做的就是确定这个UIView的宽和高。</p>
+<p>现在我们让ScrollView中的View与Container View等高，与Scroll View等宽。</p>
+<p>接下来我们创建一个固定高度的界面，这个界面内容的高度是超过iPhone4的屏幕宽度的，我们要在不管理ScrollView的contentsize的情况下让ScrollView自动适配。</p>
+<p>我在界面中添加了一个label(toplabel)，一个棕色的uiview(colorview)，一个底部的label(bottomlabel)</p>
+<ul>
+<li>toplabel<ul>
+<li>距container view的顶约束：35pt</li>
+<li>位于container view横向居中的约束</li>
+<li>底部约束与colorview的顶部：Standard</li>
+</ul>
+</li>
+<li>colorview<ul>
+<li>顶部约束与toplabel的底部：Standard</li>
+<li>left:8</li>
+<li>right:8</li>
+<li>底部约束与bottomlabel的顶部:Standard</li>
+</ul>
+</li>
+<li>bottomlabel<ul>
+<li>顶部约束与colorview的底部：Standard</li>
+<li>left:8</li>
+<li>right:8</li>
+<li>bottom:Standard</li>
+</ul>
+</li>
+</ul>
+<p>上面是2张模拟器的效果图，一张是iPhone4的，另外一张是iPhone6的效果图。我们可以看到刚刚我们制作的界面已经完美适配成功了，由于本人水平有限不会做gif图，所以效果不是很明显。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><hr>
+<p>适配Scrollview的过程中只要搞懂了Scrollview中有一个特性，那就是需要让编译器知道Scrollview的contentsize，只有知道了这个才能够做好适配，接下来的适配工作都是围绕着这点出发的，相信知道了这一点之后的你只要稍加思考就能够轻松驾驭Scrollview的适配。<br>而且使用Autolayout制作界面会比用绝对坐标方便很多也快很多，也不容易出错。刚刚做的适配根本就没有写一句代码就做到了完美适配，是不是很方便。希望越来越多的人能喜欢上Autolayout</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">GETAGGT IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/iOS/" rel="tag">iOS</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2015/03/25/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/"
+                    data-tooltip="讲讲iOS的URL加载系统"
+                    aria-label="FRÜHER: 讲讲iOS的URL加载系统"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">FRÜHER</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2015/03/17/%E5%88%9D%E6%8E%A2Size%20Classes%E7%AC%94%E8%AE%B0%20/"
+                    data-tooltip="初探Size Classes笔记"
+                    aria-label="NÄCHSTER: 初探Size Classes笔记"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NÄCHSTER</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2015/03/22/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20/"
+                    title="Teilen auf Facebook"
+                    aria-label="Teilen auf Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2015/03/22/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20/"
+                    title="Teilen auf Twitter"
+                    aria-label="Teilen auf Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2015/03/22/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20/"
+                    title="Teilen auf Google Plus"
+                    aria-label="Teilen auf Google Plus"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 loannes. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2015/03/25/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/"
+                    data-tooltip="讲讲iOS的URL加载系统"
+                    aria-label="FRÜHER: 讲讲iOS的URL加载系统"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">FRÜHER</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2015/03/17/%E5%88%9D%E6%8E%A2Size%20Classes%E7%AC%94%E8%AE%B0%20/"
+                    data-tooltip="初探Size Classes笔记"
+                    aria-label="NÄCHSTER: 初探Size Classes笔记"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NÄCHSTER</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2015/03/22/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20/"
+                    title="Teilen auf Facebook"
+                    aria-label="Teilen auf Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2015/03/22/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20/"
+                    title="Teilen auf Twitter"
+                    aria-label="Teilen auf Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2015/03/22/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20/"
+                    title="Teilen auf Google Plus"
+                    aria-label="Teilen auf Google Plus"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2015/03/22/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20/"
+                        aria-label="Teilen auf Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Teilen auf Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2015/03/22/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20/"
+                        aria-label="Teilen auf Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Teilen auf Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2015/03/22/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20/"
+                        aria-label="Teilen auf Google Plus"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Teilen auf Google Plus</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">loannes</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/jquery.js"></script>
+
+
+<script src="/assets/js/jquery.fancybox.js"></script>
+
+
+<script src="/assets/js/thumbs.js"></script>
+
+
+<script src="/assets/js/tranquilpeak.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>
