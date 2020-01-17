@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="loannes">
+
+
+
+
+
+<title>Python数据分析之Pandas-数据文件加载与存储（二） | loannes&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+
+<meta name="generator" content="Hexo 4.1.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">loannes&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">loannes&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Python数据分析之Pandas-数据文件加载与存储（二）</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">loannes</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">四月 30, 2019&nbsp;&nbsp;18:30:25</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p><img src="http://upload-images.jianshu.io/upload_images/1515206-0a0bffaaf9ee20fc.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="pandas-read-file"></p>
+<h2 id="读取Microsoft-Excel文件"><a href="#读取Microsoft-Excel文件" class="headerlink" title="读取Microsoft  Excel文件"></a>读取Microsoft  Excel文件</h2><p><strong>Excel作为最典型的表格型数据，我们需要用到<code>ExcelFile</code>对象，首先需要下载安装<code>xlrd</code>和<code>openpyxl</code>包</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">In [11]: xls_file &#x3D; pd.ExcelFile(&#39;ex1.xlsx&#39;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">In [12]: table &#x3D; xls_file.parse(&#39;Sheet1&#39;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">In [13]: table</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">Out[13]:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">   Unnamed: 0  a   b   c   d message</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">0           0  1   2   3   4   hello</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">1           1  5   6   7   8   world</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">2           2  9  10  11  12     foo</span></pre></td></tr></table></figure>
+
+<h2 id="用requests与Web-API做交互"><a href="#用requests与Web-API做交互" class="headerlink" title="用requests与Web API做交互"></a>用requests与Web API做交互</h2><p>Python中最常用也是最方便的访问API的库<code>requests</code><br><a href="http://docs.python-requests.org" target="_blank" rel="noopener">requests官方文档</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"> In [19]: url &#x3D; &#39;https:&#x2F;&#x2F;api.github.com&#x2F;search&#x2F;repositories?q&#x3D;language:python&amp;sort&#x3D;stars&#39;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">In [20]: resp &#x3D; requests.get(url)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">In [21]: resp</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">Out[21]: &lt;Response [200]&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">In [30]: data &#x3D; resp.json()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">In [32]: frame &#x3D; DataFrame(data)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">In [33]: frame</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">Out[33]:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">    total_count  incomplete_results                                              items</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">0       3747517               False  &#123;&#39;id&#39;: 21289110, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvc...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">1       3747517               False  &#123;&#39;id&#39;: 83222441, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvc...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">2       3747517               False  &#123;&#39;id&#39;: 54346799, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvc...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">3       3747517               False  &#123;&#39;id&#39;: 51117837, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvc...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">4       3747517               False  &#123;&#39;id&#39;: 1039520, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvcn...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">5       3747517               False  &#123;&#39;id&#39;: 596892, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvcnk...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">6       3747517               False  &#123;&#39;id&#39;: 33614304, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvc...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">7       3747517               False  &#123;&#39;id&#39;: 4164482, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvcn...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">8       3747517               False  &#123;&#39;id&#39;: 3544424, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvcn...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">9       3747517               False  &#123;&#39;id&#39;: 33015583, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvc...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">10      3747517               False  &#123;&#39;id&#39;: 21872392, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvc...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">11      3747517               False  &#123;&#39;id&#39;: 1362490, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvcn...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">12      3747517               False  &#123;&#39;id&#39;: 3638964, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvcn...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">13      3747517               False  &#123;&#39;id&#39;: 843222, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvcnk...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">14      3747517               False  &#123;&#39;id&#39;: 529502, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvcnk...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line">15      3747517               False  &#123;&#39;id&#39;: 63476337, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvc...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">16      3747517               False  &#123;&#39;id&#39;: 40416236, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvc...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line">17      3747517               False  &#123;&#39;id&#39;: 4086616, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvcn...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line">18      3747517               False  &#123;&#39;id&#39;: 29290473, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvc...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">34</span></pre></td><td class="code"><pre><span class="line">19      3747517               False  &#123;&#39;id&#39;: 26516210, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvc...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">35</span></pre></td><td class="code"><pre><span class="line">20      3747517               False  &#123;&#39;id&#39;: 5483330, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvcn...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">36</span></pre></td><td class="code"><pre><span class="line">21      3747517               False  &#123;&#39;id&#39;: 81598961, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvc...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">37</span></pre></td><td class="code"><pre><span class="line">22      3747517               False  &#123;&#39;id&#39;: 83844720, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvc...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">38</span></pre></td><td class="code"><pre><span class="line">23      3747517               False  &#123;&#39;id&#39;: 12888993, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvc...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">39</span></pre></td><td class="code"><pre><span class="line">24      3747517               False  &#123;&#39;id&#39;: 136328388, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRv...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">40</span></pre></td><td class="code"><pre><span class="line">25      3747517               False  &#123;&#39;id&#39;: 70905478, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvc...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">41</span></pre></td><td class="code"><pre><span class="line">26      3747517               False  &#123;&#39;id&#39;: 139824423, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRv...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">42</span></pre></td><td class="code"><pre><span class="line">27      3747517               False  &#123;&#39;id&#39;: 41058054, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvc...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">43</span></pre></td><td class="code"><pre><span class="line">28      3747517               False  &#123;&#39;id&#39;: 15019962, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvc...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">44</span></pre></td><td class="code"><pre><span class="line">29      3747517               False  &#123;&#39;id&#39;: 873328, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRvcnk...</span></pre></td></tr></table></figure>
+
+<h2 id="使用数据库"><a href="#使用数据库" class="headerlink" title="使用数据库"></a>使用数据库</h2><p>在存储大量数据的情况中，使用SQL数据库无疑是个最佳的选择。<br>通过<code>sqlite3</code>创建一个数据库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">In [34]: import sqlite3</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">In [35]: query &#x3D; &quot;&quot;&quot;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    ...: CREATE TABLE test</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    ...: (a VARCHAR(20), b VARCHAR(20),</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">    ...: c REAL, d INTERGER);&quot;&quot;&quot;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">In [36]: con &#x3D; sqlite3.connect(&#39;testdata.sqlite&#39;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">In [37]: con.execute(query)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">Out[37]: &lt;sqlite3.Cursor at 0x12042d490&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">In [38]: con.commit()</span></pre></td></tr></table></figure>
+<p><strong>然后插入几行数据</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">In [40]: data &#x3D; [(&#39;Atlanta&#39;, &#39;Georgia&#39;, 1.25, 6),(&#39;Tallahassee&#39;,&#39;Florida&#39;,2.6, 3),(&#39;Sacramento&#39;,&#39;Cali</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    ...: fornia&#39;,1.7, 5)]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">In [41]: stmt &#x3D; &quot;INSERT INTO test VALUES(?,?,?,?)&quot;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">In [42]: con.executemany(stmt, data)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">Out[42]: &lt;sqlite3.Cursor at 0x12042d960&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">In [43]: con.commit()</span></pre></td></tr></table></figure>
+<p><strong>接下来从数据库中选取数据，大部分Python SQL驱动器都会返回一个元组列表：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">In [44]: cursor &#x3D; con.execute(&#39;select *from test&#39;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">In [45]: rows &#x3D; cursor.fetchall()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">In [46]: rows</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">Out[46]:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">[(&#39;Atlanta&#39;, &#39;Georgia&#39;, 1.25, 6),</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"> (&#39;Tallahassee&#39;, &#39;Florida&#39;, 2.6, 3),</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"> (&#39;Sacramento&#39;, &#39;California&#39;, 1.7, 5)]</span></pre></td></tr></table></figure>
+<p><strong>将这个元组传给<code>DataFrame</code>，还需要列名（在<code>description</code>属性中）</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">In [47]: cursor.description</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">Out[47]:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">((&#39;a&#39;, None, None, None, None, None, None),</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"> (&#39;b&#39;, None, None, None, None, None, None),</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"> (&#39;c&#39;, None, None, None, None, None, None),</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"> (&#39;d&#39;, None, None, None, None, None, None))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">In [53]: frame &#x3D; DataFrame(rows, columns&#x3D;[x[0] for x in cursor.description])</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">In [54]: frame</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">Out[54]:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">             a           b     c  d</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">0      Atlanta     Georgia  1.25  6</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">1  Tallahassee     Florida  2.60  3</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">2   Sacramento  California  1.70  5</span></pre></td></tr></table></figure>
+
+<p>**操作步骤略显繁琐，其实<code>SQLALchemy</code>项目可以解决这个问题（安装之）。pandas中的<code>read_sql</code>函数可以结合它一起使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">In [61]: db &#x3D; sqla.create_engine(&#39;sqlite:&#x2F;&#x2F;&#x2F;testdata.sqlite&#39;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">In [62]: pd.read_sql(&#39;select * from test&#39;,db)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">Out[62]:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">            a            b      c  d</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">0      Atlanta      Gerogia  1.25  6</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">1  Tallahassee      Florida  2.60  3</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">2   Sacramento   California  1.70  5</span></pre></td></tr></table></figure>
+
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>本章中学习了如何加载与存储常用的文件格式，在Python中不同的文件格式需要用到不同的包，有些需要配合Python自带的函数一起使用。</p>
+<p><strong>处理Html文件</strong>  需要pandas结合<code>beautifulsoup</code>可很方便的读取html文件并转换成<code>DataFrame</code>格式<br><strong>处理XML文件</strong> 需要用到<code>lxml</code>库中的<code>objectify</code>对象，通过<code>objectify.parse</code>函数直接解析，解析后可直接获取xml的根节点<code>root</code><br>利用<code>StringIO</code>也可以解析字符串形式的html<br><strong>处理Excel文件</strong> 配合<code>xlrd</code>和<code>openpyxl</code>包，<code>ExcelFile</code>对象也可以直接解析Excel文件并转成<code>DataFrame</code>。<br><strong>与WebAPI交互</strong> <code>requests</code>包完美解决了Python与WebAPI交互的问题，使用方便效率高。<br><strong>使用数据库</strong>  Python的<code>sqlite3</code>包含了数据库操作的基本功能，缺点是操作繁琐。而比较流行的项目<code>SQLALchemy</code>则非常适合作为Python的数据库操作工具。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>loannes</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://yoursite.com/2019/04/30/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas-%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%AD%98%E5%82%A8%EF%BC%88%E4%BA%8C%EF%BC%89/">http://yoursite.com/2019/04/30/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas-%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%AD%98%E5%82%A8%EF%BC%88%E4%BA%8C%EF%BC%89/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Python-Pandas/"># Python, Pandas</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/05/05/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas-%E6%95%B0%E6%8D%AE%E6%B8%85%E7%90%86/">Python数据分析之Pandas-数据清理</a>
+            
+            
+            <a class="next" rel="next" href="/2019/04/29/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas-%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%AD%98%E5%82%A8%EF%BC%88%E4%B8%80%EF%BC%89/">Python数据分析之Pandas-数据文件加载与存储（一）</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

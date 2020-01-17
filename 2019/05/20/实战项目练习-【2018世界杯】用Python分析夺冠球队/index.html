@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="loannes">
+
+
+
+
+
+<title>实战项目练习-【2018世界杯】用Python分析夺冠球队 | loannes&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+
+<meta name="generator" content="Hexo 4.1.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">loannes&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">loannes&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">实战项目练习-【2018世界杯】用Python分析夺冠球队</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">loannes</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">五月 20, 2019&nbsp;&nbsp;19:22:24</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p><img src="http://upload-images.jianshu.io/upload_images/1515206-214ebdbf1561743b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="2018世界杯"></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在网上找到了个用Python分析2018世界杯夺冠热门的项目，感觉很有意思准备拿来练练手。<br>因为目前还没有学到图形可视化部分，所以这部分内容会完全借鉴网上的教程。</p>
+<h2 id="分析目的"><a href="#分析目的" class="headerlink" title="分析目的"></a>分析目的</h2><p>通过数据分析找出哪些队伍是这次世界杯的夺冠热门球队</p>
+<h2 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h2><ul>
+<li>Python 3.7</li>
+<li>SublimeText2</li>
+</ul>
+<h2 id="初步分析数据情况"><a href="#初步分析数据情况" class="headerlink" title="初步分析数据情况"></a>初步分析数据情况</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">import numpy as np</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">import pandas as pd</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">import matplotlib.pyplot as plt</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">from pandas import DataFrame,Series</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">df &#x3D; pd.read_csv(&#39;results.csv&#39;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">print(df.head())</span></pre></td></tr></table></figure>
+
+<p><em>由于sublimetext上打印数据显示不全，所以打印数据放在ipython中了</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">In [39]: df.head()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">Out[39]:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">         date home_team away_team  home_score  away_score tournament     city   country  neutral</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">0  1872-11-30  Scotland   England           0           0   Friendly  Glasgow  Scotland    False</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">1  1873-03-08   England  Scotland           4           2   Friendly   London   England    False</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">2  1874-03-07  Scotland   England           2           1   Friendly  Glasgow  Scotland    False</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">3  1875-03-06   England  Scotland           2           2   Friendly   London   England    False</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">4  1876-03-04  Scotland   England           3           0   Friendly  Glasgow  Scotland    False</span></pre></td></tr></table></figure>
+
+<p>目前包含有9种数据：日期、主队名、客队名、主队进球数、客队进球数、比赛类型、所在城市、所在国家、是否中立。<br>但是想要知道夺冠热门球队，光这些数据还不够。</p>
+<h2 id="分析思路"><a href="#分析思路" class="headerlink" title="分析思路"></a>分析思路</h2><ul>
+<li>因为我们这次分析的是世界杯的夺冠热门，首先需要排除掉像友谊赛，亚洲杯等比赛数据。</li>
+<li>这批数据是从1873年至2014年的比赛数据，所以一个国家队肯定换过好多批阵容了，早年强的队伍近期不一定强，需要以时间段对它们进行分析。</li>
+<li>想要分析黑马球队，需要一个球队的胜率以及进球数。目前数据中缺少胜利队伍的变量，需要我们加进去。</li>
+</ul>
+<h2 id="获取世界杯相关数据"><a href="#获取世界杯相关数据" class="headerlink" title="获取世界杯相关数据"></a>获取世界杯相关数据</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"># 通过在比赛类型中抓取包含&#39;FIFA&#39;字符来获取世界杯数据</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">df_FIFA_all &#x3D; df[df[&#39;tournament&#39;].str.contains(&#39;FIFA&#39;, regex&#x3D;True)]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"># 其中世界杯类型的数据也蛮乱的，‘FIFA World Cup’以及‘FIFA World Cup qualification’都有，只提取‘FIFA World Cup’部分</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">df_FIFA &#x3D; df_FIFA_all[df_FIFA_all[&#39;tournament&#39;]&#x3D;&#x3D;&#39;FIFA World Cup&#39;]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">print(df_FIFA.head())</span></pre></td></tr></table></figure>
+
+<h2 id="整理数据"><a href="#整理数据" class="headerlink" title="整理数据"></a>整理数据</h2><ul>
+<li>要分析球队的获胜场数，需要添加一个获胜队伍的字段。</li>
+<li>为了方便分割年份，添加一个‘届数’的字段。</li>
+<li>统一时间数据格式</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"># 在做数据修改以前，先做拷贝</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">df_FIFA_COPY &#x3D; df.copy()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">df_FIFA_COPY.loc[:,&#39;date&#39;] &#x3D; pd.to_datetime(df_FIFA_COPY.loc[:,&#39;date&#39;])</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">df_FIFA_COPY[&#39;session&#39;] &#x3D; df_FIFA_COPY[&#39;date&#39;].dt.year</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"># 添加分差值，方便后面确定获胜队伍</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">df_FIFA_COPY[&#39;diff_score&#39;] &#x3D; df_FIFA_COPY[&#39;home_score&#39;]-df_FIFA_COPY[&#39;away_score&#39;]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">df_FIFA_COPY[&#39;win_team&#39;] &#x3D; &#39;&#39;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">df_FIFA_COPY[&#39;diff_score&#39;] &#x3D; pd.to_numeric(df_FIFA_COPY[&#39;diff_score&#39;])</span></pre></td></tr></table></figure>
+<p>上面部分添加了年份这个参数，添加了获胜队伍的参数还未填入数据，还确定了分差值。</p>
+<p><strong>确认获胜队伍，填入<code>win_team</code>参数中</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">df_FIFA_COPY.loc[df_FIFA_COPY[&#39;diff_score&#39;]&gt; 0, &#39;win_team&#39;] &#x3D; df_FIFA_COPY.loc[df_FIFA_COPY[&#39;diff_score&#39;]&gt; 0, &#39;home_team&#39;]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">df_FIFA_COPY.loc[df_FIFA_COPY[&#39;diff_score&#39;]&lt; 0, &#39;win_team&#39;] &#x3D; df_FIFA_COPY.loc[df_FIFA_COPY[&#39;diff_score&#39;]&lt; 0, &#39;away_team&#39;]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">df_FIFA_COPY.loc[df_FIFA_COPY[&#39;diff_score&#39;]&#x3D;&#x3D; 0, &#39;win_team&#39;] &#x3D; &#39;Draw&#39;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">print(df_FIFA_COPY.head())</span></pre></td></tr></table></figure>
+<p>结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">           date  home_team   away_team  ...  session  diff_score    win_team</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">1277 1930-07-13    Belgium         USA  ...     1930          -3         USA</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">1278 1930-07-13     France      Mexico  ...     1930           3      France</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">1279 1930-07-14     Brazil  Yugoslavia  ...     1930          -1  Yugoslavia</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">1280 1930-07-14       Peru     Romania  ...     1930          -2     Romania</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">1281 1930-07-15  Argentina      France  ...     1930           1   Argentina</span></pre></td></tr></table></figure>
+<p>现在已经获得了获胜队伍的数据，接下来通过对获胜队伍这个参数的统计来分析出前20强队伍：</p>
+<h2 id="获取获胜场数最多的前20强比赛队伍"><a href="#获取获胜场数最多的前20强比赛队伍" class="headerlink" title="获取获胜场数最多的前20强比赛队伍"></a>获取获胜场数最多的前20强比赛队伍</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">s &#x3D; df_FIFA_COPY.groupby(&#39;win_team&#39;)[&#39;win_team&#39;].count()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">s.drop(labels&#x3D;[&#39;Draw&#39;], inplace&#x3D;True)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">s.sort_values(ascending&#x3D;False, inplace&#x3D;True)</span></pre></td></tr></table></figure>
+<p>显示柱形图</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">s.head(20).plot(kind&#x3D;&#39;bar&#39;, figsize&#x3D;(10,6), title&#x3D;&#39;Top 20 Winner of World&#39;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">plt.show()</span></pre></td></tr></table></figure>
+
+<p><img src="https://upload-images.jianshu.io/upload_images/1515206-e13ca9312f922fe1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1.png"></p>
+<p>柱状图中已经明确显示了前20强的队伍，其中巴西、德国、意大利、阿根廷、西班牙、法国等最为突出，他们的胜场占比非常的高。</p>
+<p>再来查看下饼图情况：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">#</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">s &#x3D; df_FIFA_COPY.groupby(&#39;win_team&#39;)[&#39;win_team&#39;].count()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">s.drop(labels&#x3D;[&#39;Draw&#39;], inplace&#x3D;True)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">s.sort_values(ascending&#x3D;True,inplace&#x3D;True)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"># 饼图</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">s_percentage &#x3D; s&#x2F;s.sum()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">s_percentage</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">s_percentage.tail(20).plot(kind&#x3D;&#39;pie&#39;, figsize&#x3D;(10,10), autopct&#x3D;&#39;%.1f%%&#39;,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">                           startangle&#x3D;173, title&#x3D;&#39;Top 20 Winners of World Cup&#39;, label&#x3D;&#39;&#39;)</span></pre></td></tr></table></figure>
+
+<p><img src="https://upload-images.jianshu.io/upload_images/1515206-56aceca0eb9a01e7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WechatIMG37.png"></p>
+<p>通过百分比更能清晰的看到强队在整个世界杯历史中胜场比数。初步分析下来，从赢球场数来看，巴西、德国、意大利、阿根廷四支球队实力最强。</p>
+<h2 id="接下来在分析下各队的进球数情况"><a href="#接下来在分析下各队的进球数情况" class="headerlink" title="接下来在分析下各队的进球数情况"></a>接下来在分析下各队的进球数情况</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"># 进球数统计</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">df_score_home &#x3D; df_FIFA[[&#39;home_team&#39;,&#39;home_score&#39;]]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">column_update &#x3D; [&#39;team&#39;,&#39;score&#39;]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">df_score_home.columns &#x3D; column_update</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">df_score_away &#x3D; df_FIFA[[&#39;away_team&#39;,&#39;away_score&#39;]]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">df_score_away.columns &#x3D; column_update</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">df_score &#x3D; pd.concat([df_score_home,df_score_away], ignore_index&#x3D;True)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">s_score &#x3D; df_score.groupby(&#39;team&#39;)[&#39;score&#39;].sum()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">s_score.sort_values(ascending&#x3D;False, inplace&#x3D;True)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">s_score.sort_values(ascending&#x3D;True, inplace&#x3D;True)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">s_score.tail(20).plot(kind&#x3D;&#39;barh&#39;, figsize&#x3D;(10,6), title&#x3D;&#39;Top 20 in Total Scores of World Cup&#39;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">plt.show()</span></pre></td></tr></table></figure>
+
+<p><img src="https://upload-images.jianshu.io/upload_images/1515206-7cd53a901614466f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WechatIMG38.png"></p>
+<p>从进球数的分析结果来看，德国、巴西、阿根廷、意大利这四支球队最强，结合上面的胜场数分析同样也是这四支球队排名最靠前。</p>
+<p>开篇准备的分析思路里第一条和第三条已经完成了。</p>
+<h2 id="分析1872年以来按胜场数排名的32强数据情况"><a href="#分析1872年以来按胜场数排名的32强数据情况" class="headerlink" title="分析1872年以来按胜场数排名的32强数据情况"></a>分析1872年以来按胜场数排名的32强数据情况</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">df_top32 &#x3D; df_FIFA_COPY.copy()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">s_32 &#x3D; df_top32.groupby(&#39;win_team&#39;)[&#39;win_team&#39;].count()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">s_32.sort_values(ascending&#x3D;False, inplace&#x3D;True)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">s_32.drop(labels&#x3D;[&#39;Draw&#39;], inplace&#x3D;True)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">s_32.sort_values(ascending&#x3D;True,inplace&#x3D;True)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">s_32.plot(kind&#x3D;&#39;barh&#39;, figsize&#x3D;(8,12), title&#x3D;&#39;Top 32 of World Cup since year 1872&#39;)</span></pre></td></tr></table></figure>
+
+<p><img src="https://upload-images.jianshu.io/upload_images/1515206-ea51b7bc47677d45.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WechatIMG40.png"></p>
+<h3 id="再看看从1978年至今的胜场排名前32队伍数据"><a href="#再看看从1978年至今的胜场排名前32队伍数据" class="headerlink" title="再看看从1978年至今的胜场排名前32队伍数据"></a>再看看从1978年至今的胜场排名前32队伍数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">df_since1978 &#x3D; df_FIFA_COPY.loc[df_FIFA_COPY[&#39;session&#39;] &gt;&#x3D; 1978]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">s_32 &#x3D; df_since1978.groupby(&#39;win_team&#39;)[&#39;win_team&#39;].count()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">s_32.sort_values(ascending&#x3D;False, inplace&#x3D;True)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">s_32 &#x3D; s_32[:32]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">s_32.drop(labels&#x3D;[&#39;Draw&#39;], inplace&#x3D;True)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">s_32.sort_values(ascending&#x3D;True,inplace&#x3D;True)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">s_32.plot(kind&#x3D;&#39;barh&#39;, figsize&#x3D;(8,12), title&#x3D;&#39;Top 32 of World Cup since year 1978&#39;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">plt.show()</span></pre></td></tr></table></figure>
+
+<p><img src="https://upload-images.jianshu.io/upload_images/1515206-f74256993b167681.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WechatIMG41.png"></p>
+<h3 id="然后是自1978年以来的进球数排名前32队伍相关数据："><a href="#然后是自1978年以来的进球数排名前32队伍相关数据：" class="headerlink" title="然后是自1978年以来的进球数排名前32队伍相关数据："></a>然后是自1978年以来的进球数排名前32队伍相关数据：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">df_score_home &#x3D; df_since1978[[&#39;home_team&#39;,&#39;home_score&#39;]]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">column_update &#x3D; [&#39;team&#39;,&#39;score&#39;]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">df_score_home.columns &#x3D; column_update</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">df_score_away &#x3D; df_FIFA[[&#39;away_team&#39;,&#39;away_score&#39;]]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">df_score_away.columns &#x3D; column_update</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">df_score &#x3D; pd.concat([df_score_home,df_score_away], ignore_index&#x3D;True)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">s_score &#x3D; df_score.groupby(&#39;team&#39;)[&#39;score&#39;].sum()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">s_score.sort_values(ascending&#x3D;False, inplace&#x3D;True)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">s_score&#x3D;s_score[:32]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">s_score.sort_values(ascending&#x3D;True, inplace&#x3D;True)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">s_score.tail(32).plot(kind&#x3D;&#39;barh&#39;, figsize&#x3D;(10,6), title&#x3D;&#39;Top 32 in Total Scores of World Cup since year 1978&#39;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">plt.show()</span></pre></td></tr></table></figure>
+<p>代码都差不多就不再重复解释了<br><img src="https://upload-images.jianshu.io/upload_images/1515206-226db6b80fa0e1fd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WechatIMG42.png"></p>
+<p>在这两组数据中，巴西、阿根廷、德国、意大利排名稳坐前四。</p>
+<h3 id="再分析下从2002年以来的相关数据情况："><a href="#再分析下从2002年以来的相关数据情况：" class="headerlink" title="再分析下从2002年以来的相关数据情况："></a>再分析下从2002年以来的相关数据情况：</h3><p>自2002以来胜场排名数据：<br><img src="https://upload-images.jianshu.io/upload_images/1515206-0236c335ecb851f4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="2002-winteam.png"></p>
+<p>自2002以来得分排名数据：<br><img src="https://upload-images.jianshu.io/upload_images/1515206-837122343dae7028.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="2002-score.png"></p>
+<p>个人分析总结：<br>从这两组数据中可以看到，德国队在胜场和得分数上有很大的优势。虽然个人不大懂如何分析球队，但是光看这个数据觉得德国队在2018世界杯的赢面还是蛮大的。而排名第二、三的巴西、阿根廷、意大利在数据上明显差了德国队一截。</p>
+<p>最终结论：2018世界杯冠军应该在前四强德国、巴西、意大利、阿根廷中产出。此次数据分析当做练习来用，而且2018年世界杯老早已经过了。</p>
+<p>#技术总结<br>在这里主要涉及到了一些基础功能点：</p>
+<ul>
+<li>读取csv文件</li>
+<li>数据整理：去除了和世界杯无关的数据、添加新变量获胜队伍<code>win_team</code>，<code>diff_score</code>分差值、</li>
+<li>按关键字对数据排序</li>
+<li>matplotlib库的初步使用，生成柱形图和饼图</li>
+<li>数据分割与截取</li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>loannes</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://yoursite.com/2019/05/20/%E5%AE%9E%E6%88%98%E9%A1%B9%E7%9B%AE%E7%BB%83%E4%B9%A0-%E3%80%902018%E4%B8%96%E7%95%8C%E6%9D%AF%E3%80%91%E7%94%A8Python%E5%88%86%E6%9E%90%E5%A4%BA%E5%86%A0%E7%90%83%E9%98%9F/">http://yoursite.com/2019/05/20/%E5%AE%9E%E6%88%98%E9%A1%B9%E7%9B%AE%E7%BB%83%E4%B9%A0-%E3%80%902018%E4%B8%96%E7%95%8C%E6%9D%AF%E3%80%91%E7%94%A8Python%E5%88%86%E6%9E%90%E5%A4%BA%E5%86%A0%E7%90%83%E9%98%9F/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Python-Pandas/"># Python, Pandas</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/05/23/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas-matplotlib%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD%EF%BC%88%E4%B8%80%EF%BC%89/">Python数据分析之Pandas-matplotlib基础功能（一）</a>
+            
+            
+            <a class="next" rel="next" href="/2019/05/11/%E5%AE%9E%E6%88%98%E9%A1%B9%E7%9B%AE%E7%BB%83%E4%B9%A0-%E9%93%BE%E5%AE%B6%E4%BA%8C%E6%89%8B%E6%88%BF%E6%95%B0%E6%8D%AE%EF%BC%88%E6%B8%85%E6%B4%97%E4%B8%8E%E5%90%88%E5%B9%B6%EF%BC%89/">实战项目练习-链家二手房数据（清洗与合并）</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

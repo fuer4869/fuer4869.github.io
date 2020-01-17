@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="loannes">
+
+
+
+
+
+<title>iOS逆向工程之破解Pokemon Go | loannes&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+
+<meta name="generator" content="Hexo 4.1.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">loannes&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">loannes&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">iOS逆向工程之破解Pokemon Go</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">loannes</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">八月 16, 2016&nbsp;&nbsp;14:44:09</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p><img src="http://nos.netease.com/edu-image/EEDE6A300B4F82986FFA4C94326B54E1.jpg?imageView&thumbnail=426y240&quality=100" alt=""></p>
+<blockquote>
+<p>期待了很久的精灵宝可梦总算发布了，出于对它的热爱特地问朋友借了个美区的Apple ID下下来准备试玩一番。可是万万没想到的是，我大天朝居然被锁区了。<br>本着迫切想要玩到它的心情，想了片刻。试试看破解吧，把自己的地理位置改到美国去不就行了嘛！其实这是我第一次尝试iOS逆向，其中过程也是各种心酸，尝试过的人都懂的。</p>
+</blockquote>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>这次主要是想讲下重签名的问题，我直接拿了虾神的半成品，就接下去做了后面的部分。其实前面的部分也很简单，就只是利用Method Swizzle对CLLocation类做了重载，修改了地理位置。接下来就是把该类打包成dylib动态库之后重新注入到app中就可以了。</p>
+<p>把项目下载下来我们可以看到这么一个类:</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/1515206-46b4b2f8ca17f945.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="地理位置修改部分"></p>
+<p>接下来我们需要做这么几步</p>
+<p>1.对动态库进行签名，编译后把动态文件注入到pokemongo.app文件中</p>
+<p>2.修改pokemongo.app中的bundle id和描述文件mobileprovision</p>
+<p>3.然后对修改好的app文件重新签名</p>
+<ol>
+<li>签名 dylib<br>找到下载好的项目，打开LocationFaker这个项目，把虾神的签名和bundle id改成自己的签名之后编译，也就是修改target中的Code sign和描述文件。这个时候会碰到个问题，会遇到iOSOpenDev权限的问题。很简单，在命令行中输入sudo xcodebuild-license，之后一直往下看然后同意该协议就行了。</li>
+</ol>
+<p><a href="http://stackoverflow.com/a/14797884" target="_blank" rel="noopener">http://stackoverflow.com/a/14797884</a></p>
+<p>还没完，等你做到这一步的时候又会碰到个麻烦，如果你使用的是最新版本的xcode的话会发现苹果已经把private framework给去掉了，这意味着你不能编译动态库了。一番研究后得知这个是苹果更新了iOS9.3之后才把这个framework给去掉的，也就是说在iOS9.2的时候还是有的。接下来就跑到这里去下载iOS9.2的SDK，解压后找到里面的PrivateFrameworks复制到/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/PrivateFrameworks 。这个时候再重新编译就OK了。记住我们设置的签名和描述文件，等下会派上用场。</p>
+<p>总算编译成功了，在Product文件夹中会生成一个dylib文件，这个就是我们最终生成的动态库。为了确保是否已经把签名打进去了，我们可以用codesign 工具做检查。</p>
+<p>命令如下： <code>codesign -vv -d LocationFaker.dylib</code></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/1515206-44fb4813abcc58b7.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>签名已经成功了！如果不成功的话可以用codesign再签一次，具体codesign的用法可以去看这篇文章</p>
+<p><a href="http://www.cocoachina.com/ios/20141017/9949.html" target="_blank" rel="noopener">iOS Code Signing 学习笔记</a></p>
+<ol start="2">
+<li>注入到pokemongo.app<br>找到pokemon_unsigned压缩包进行解压</li>
+</ol>
+<p><img src="https://upload-images.jianshu.io/upload_images/1515206-057e8c39c681a7d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>得到Payload这个文件夹，里面有一个虾神帮我们准备好的app文件，右键查看包内容：</p>
+<p>接下来我们需要修改下面三个文件，</p>
+<p>1.描述文件</p>
+<p>2.plist文件，修改bundle id</p>
+<p>3.替换动态文件库</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/1515206-1e2561a74f6850a2.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>知道了接下来该做什么就简单了，找到刚刚签名时用到的描述文件</p>
+<p>在哪里？（在Xcode–Preference–Account–右下角detail–找到描述文件）。替换app里的描述文件，记得名字一定要一样。之后再修改Info.plist中的bundle id，再把我们刚刚签名成功的动态库，名字也必须和app中的一样。</p>
+<p>PS: 这里值得注意的是各个文件的名称必须一致，bundle id和描述文件必须相匹配。</p>
+<p>好，注入动态库的操作就完成了！接下来就是重签ipa文件了</p>
+<ol start="3">
+<li>重签ipa文件<br>重签名工具推荐使用codesign，或者iReSign。我比较偷懒用的是iReSign，</li>
+</ol>
+<p>重签名需要用到3个文件，</p>
+<p>1.已签名好的pokemongo.app 并且转成ipa。其实就是把所在的Payload文件夹压缩成zip，之后把后缀改成ipa就行了。</p>
+<p>2.签名所对应的描述文件</p>
+<p>3.签名所对应的证书</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/1515206-19e1003dbcd13b96.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>重签名成功后会都出来一个Payload-resigned的zip文件，之后再重复上面的第一步把Payload转成ipa后就是我们最终的ipa文件了。</p>
+<p>然后通过iTools安装即可！或者直接通过Xcode安装app文件也是可以的。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/1515206-540d9e519febb752.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>loannes</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://yoursite.com/2016/08/16/iOS%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E4%B9%8B%E7%A0%B4%E8%A7%A3Pokemon-Go/">http://yoursite.com/2016/08/16/iOS%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E4%B9%8B%E7%A0%B4%E8%A7%A3Pokemon-Go/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/ios%E9%80%86%E5%90%91/"># ios逆向</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2017/01/08/%E5%AF%B9%E4%BA%8E%20iOS10%20%E4%B8%AD%20ATS%20%E7%9A%84%E7%90%86%E8%A7%A3%20/">对于 iOS10 中 ATS 的理解</a>
+            
+            
+            <a class="next" rel="next" href="/2016/06/22/WWDC15%20%E6%80%BB%E7%BB%93%20/">WWDC15 总结</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

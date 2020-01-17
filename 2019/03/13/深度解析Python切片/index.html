@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="loannes">
+
+
+
+
+
+<title>深度解析Python切片 | loannes&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+
+<meta name="generator" content="Hexo 4.1.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">loannes&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">loannes&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">深度解析Python切片</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">loannes</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">三月 13, 2019&nbsp;&nbsp;20:57:57</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Python%E5%9F%BA%E7%A1%80/">Python基础</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p><img src="https://upload-images.jianshu.io/upload_images/1515206-a692f25fea72b9da.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/850/format/webp" alt=""></p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在平时是否会遇到这样的场景，需要分离出 <strong>列表（List）</strong>中的部分数据。很多初学者都会想到用<strong>while循环</strong>去取，很显然这么做肯定是不可取的而且违背了Python之禅中的最重要的一条:</p>
+<blockquote>
+<p>Beautiful is better than ugly.<br> 设计高效且漂亮的解决方案是每个程序员的必备素质</p>
+</blockquote>
+<p>那这个时候<strong>Python切片</strong>就是我们的不二之选，<strong>Python切片</strong>的表达式十分简单，但是如果不彻底理解它的话很容易出错，这也是为什么本人特地专门为此写一篇文章的原因。</p>
+<h1 id="Python切片语法表达式"><a href="#Python切片语法表达式" class="headerlink" title="Python切片语法表达式"></a>Python切片语法表达式</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">List[start_index : end_index : step]</span></pre></td></tr></table></figure>
+<p>先简单解释下这个表达式：</p>
+<ul>
+<li><strong>start_index</strong> : 起始索引值，一般默认为0，表示从列表的初始点开始取值。另外，如果<strong>step</strong>为负数的话则默认为列表的终点，表示从列表的末端开始取值。</li>
+<li><strong>end_index</strong> : 表示取值的终点，一般默认为取到列表的最后一个数据。另外一种情况和上面相同，会取决于<strong>step</strong>的正负情况，如果为负数则取值到列表的第一个数值。如果为正数，则取到第”end_index”个值。如果为负数，“列表的长度 + 负数”即为 <strong>end_index</strong> 最终的值。<strong><em>(参考下面example04)</em></strong></li>
+<li><strong>step</strong> : 可以把它理解为取值的频率（每step个数据取一个），它的正负情况决定着<strong>start_index</strong>和<strong>end_index</strong>的默认取值情况，是一个极容易出现错误的地方。默认为1，意思就是从左至右以1为间隔进行取值。</li>
+</ul>
+<p>看了理论可能会有点不明白，接下来写几个例子看一下就会清楚多了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; data &#x3D; [0,1,2,3,4,5,6,7,8,9]</span></pre></td></tr></table></figure>
+<ul>
+<li><p>example01- 默认索引值和取值频率</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; data[::] #等同于 data[:],data</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; [0,1,2,3,4,5,6,7,8,9]</span></pre></td></tr></table></figure></li>
+<li><p>example02- 修改索引值，默认取值频率</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; data[0:5]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; [0,1,2,3,4]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; data[3:7]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; [3,4,5,6]</span></pre></td></tr></table></figure>
+</li>
+<li><p>example03- 修改起始索引值为负数，默认取值频率</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; data[-1]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; 9</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; data[-1:5] #起始值为-1，也就是从列表末端开始从左往右至列表第5个值的所有数据</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; []#结果为空，也就是在例子中，以从左往右的方向取9-5的数据是不存在的</span></pre></td></tr></table></figure></li>
+<li><p>example04- 修改最终索引值为负数，默认取值频率</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; data[:-1] # 起点为0，终点为列表长度 + （-1）&#x3D; 0  data[0:9]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; [0,1,2,3,4,5,6,7,8]</span></pre></td></tr></table></figure></li>
+<li><p>example05- 修改取值频率</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; data[::2] #取值频率为2，将以0为起始点从左往右的方向以2为单位来取值</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; [0,2,4,6,8]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; data[::-2]  #取值频率为-2，将以列表的终点为起始点从右往左的方向以2为单位来取值</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; [9,7,5,3,1]</span></pre></td></tr></table></figure></li>
+<li><p>example06- step正负混合</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; data[-1:8:1] #起点为-1，确定了从右往左的取值方向。但是频率为1，方向为从左往右。这种情况是不存在的，所以结果为空</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; []</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; data[-1:5:-2] #起点为-1，确定了从右往左的取值方向。step为-2，方向也是从右往左。情况合理，结果为[9,7]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; [9,7]</span></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="其他对象的切片操作"><a href="#其他对象的切片操作" class="headerlink" title="其他对象的切片操作"></a>其他对象的切片操作</h1><p>其实不单单是List，Python中还有其他对象也支持切片操作。如元组，字符串等</p>
+<ul>
+<li>不接受修改的元组却可以进行切片操作<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; data &#x3D; (0,1,2,3,4,5,6)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; data[0:4]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; (0,1,2,3)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; s &#x3D; &#39;123456&#39;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; s[2:4]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; &#39;23&#39;</span></pre></td></tr></table></figure></li>
+<li>切片的拷贝操作<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a &#x3D; [1,2,3,4,5]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; b &#x3D; a[:]  # 这里等同于 b &#x3D; a.copy()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; print(b)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; [1,2,3,4,5]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; print(id(a)) #4436816072</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; print(id(b)) #4437860040</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"># 可以看到a,b的内存地址不同，已经被分配在两个内存里了</span></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>关于Python的切片的知识差不多这些了，学习到了它的基本表达式理解了<strong>start_index</strong>、<strong>end_index</strong>、<strong>step</strong>这三个参数的含义已经特性。理解了这三个参数在正负数情况下的特性。<strong>start_index</strong>和<strong>step</strong>在正数情况下取值方向是从左往右，在负数情况下则是从右往左。<strong>end_index</strong>它的正负数情况决定了取值终点的位置，结果和其它参数一样但是它不会决定取值方向。</p>
+<p>在遇到切片有正负数混合的情况下要时刻注意取值方向，起始点以及终点的情况，避免出现起始点和终点的问题导致取值范围不合理而导致结果为空。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>loannes</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://yoursite.com/2019/03/13/%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90Python%E5%88%87%E7%89%87/">http://yoursite.com/2019/03/13/%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90Python%E5%88%87%E7%89%87/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Python/"># Python</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/04/11/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BNumpy-%E5%85%A5%E9%97%A8%E5%AE%89%E8%A3%85%E4%BB%8B%E7%BB%8D/">Python数据分析之Numpy---入门安装介绍</a>
+            
+            
+            <a class="next" rel="next" href="/2019/02/03/iOS%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E9%82%A3%E4%BA%9B%E4%BA%8B%20/">iOS内存管理那些事</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

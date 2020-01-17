@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="loannes">
+
+
+
+
+
+<title>Python数据分析之Numpy-ndarray及数据类型 | loannes&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+
+<meta name="generator" content="Hexo 4.1.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">loannes&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">loannes&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Python数据分析之Numpy-ndarray及数据类型</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">loannes</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">四月 12, 2019&nbsp;&nbsp;11:39:50</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p><img src="http://upload-images.jianshu.io/upload_images/1515206-52378f7408b16ff6.b7GJ6Crjo8S1cCY_ii1ETQHaEJ&pid=Api&rs=1&p=0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="NumPy"></p>
+<h2 id="NumPy的ndarray"><a href="#NumPy的ndarray" class="headerlink" title="NumPy的ndarray"></a>NumPy的ndarray</h2><p>ndarray作为NumPy中最重要的特点，你可以利用这个对数组进行数学运算。<br>下面来看一个简单的例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">In [1]: import numpy as np</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">In [2]: data  &#x3D; [1, 2, 3, 4, 5]  # 创建一个普通的数组</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">In [3]: data2  &#x3D; np.array(data) # 通过np.array函数把data转为ndarray对象</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">In [4]: data2</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">Out[4]: array([1, 2, 3, 4, 5])</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">In [5]: data</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">Out[5]: [1, 2, 3, 4, 5]  # 粗略一看发现没什么特别大的区别</span></pre></td></tr></table></figure>
+<p>继续往下看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">In [6]: data2 * 10</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">Out[6]: array([10, 20, 30, 40, 50])  # ndarray可以很方便的对数组中的每个元素进行数学计算</span></pre></td></tr></table></figure>
+<p>当然它也可以对多维数组进行运算</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">In [19]: data &#x3D; [[1, 2, 3, 4, 5],[5, 4, 3, 2, 1]]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">In [20]: data2 &#x3D; np.array(data)  # 发现创建ndarray的过程太过麻烦，有没有更简便点的（继续往下看）</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">In [21]: data2 * 10</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">Out[21]:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">     array([[10, 20, 30, 40, 50],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">       [50, 40, 30, 20, 10]])</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">In [22]: data2 + data2</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">Out[22]:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">      array([[ 2,  4,  6,  8, 10],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">        [10,  8,  6,  4,  2]])</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">In [23]:</span></pre></td></tr></table></figure>
+
+<h2 id="常用的几种创建ndarray方式"><a href="#常用的几种创建ndarray方式" class="headerlink" title="常用的几种创建ndarray方式"></a>常用的几种创建ndarray方式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">In [25]: np.zeros(5)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">Out[25]: array([0., 0., 0., 0., 0.])</span></pre></td></tr></table></figure>
+<p>有创建全是0的数组，当然也可以创建全1的数组</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">In [13]: np.ones(5)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">Out[13]: array([1., 1., 1., 1., 1.])</span></pre></td></tr></table></figure>
+
+<p>如果想要创建多维数组的话，在参数中传入一个元组即可，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">In [26]: np.zeros((3,2))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">Out[26]:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">array([[0., 0.],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">       [0., 0.],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">       [0., 0.]])</span></pre></td></tr></table></figure>
+<p>同样，python中的range在NumPy中也有类似的函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">In [3]: np.arange(10)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">Out[3]: array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])</span></pre></td></tr></table></figure>
+<p>这里分享一个不常用但是很有趣的一个函数<strong>eye</strong>，它能够创建一个正方的N×N的矩阵，对角线为1其余为0的一个数组，它的方程式为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&#96;&#96;&#96;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">In [7]: np.eye(10)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">Out[7]:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">array([[1., 0., 0., 0., 0., 0., 0., 0., 0., 0.],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">       [0., 1., 0., 0., 0., 0., 0., 0., 0., 0.],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">       [0., 0., 1., 0., 0., 0., 0., 0., 0., 0.],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">       [0., 0., 0., 1., 0., 0., 0., 0., 0., 0.],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">       [0., 0., 0., 0., 1., 0., 0., 0., 0., 0.],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">       [0., 0., 0., 0., 0., 1., 0., 0., 0., 0.],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">       [0., 0., 0., 0., 0., 0., 1., 0., 0., 0.],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">       [0., 0., 0., 0., 0., 0., 0., 1., 0., 0.],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">       [0., 0., 0., 0., 0., 0., 0., 0., 1., 0.],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">       [0., 0., 0., 0., 0., 0., 0., 0., 0., 1.]])</span></pre></td></tr></table></figure>
+<p>方程式中的k决定了对角线1的起始点，如果为正整数则往右移，如果为负整数则往下移</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">In [14]: np.eye(10, dtype&#x3D;int, k&#x3D;2)  #在这里k为2，对角线1往右移动了2个单位</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">Out[14]:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">array([[0, 0, 1, 0, 0, 0, 0, 0, 0, 0],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">       [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">       [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">       [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">       [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">       [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">       [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">       [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])</span></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">In [15]: np.eye(10, dtype&#x3D;int, k&#x3D;-2)  #如果为-2，则对角线往下移动了2个单位</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">Out[15]:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">       [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">       [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">       [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">       [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">       [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">       [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">       [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">       [0, 0, 0, 0, 0, 0, 0, 1, 0, 0]])</span></pre></td></tr></table></figure>
+
+<h3 id="ndarray的数据类型dtype"><a href="#ndarray的数据类型dtype" class="headerlink" title="ndarray的数据类型dtype"></a>ndarray的数据类型dtype</h3><p>数据类型<strong>dtype</strong>是一个特殊的对象，它们会直接映射到相应的机器上来表示，这样使得我们在以后操作大数据集的读写上数据类型显得尤为重要。</p>
+<p>NumPy中常见的数据类型，<em>括号中为类型代码</em></p>
+<ul>
+<li><strong>int8（i1）</strong>  有符号和无符号的8位整型</li>
+<li><strong>int16（i2）</strong> 有符号和无符号的16位整型  </li>
+<li><strong>int32（i4）</strong> 有符号和无符号的32位整型</li>
+<li><strong>int64（i8）</strong> 有符号和无符号的64位整型</li>
+<li><strong>float16（f2）</strong> 半精度浮点数</li>
+<li><strong>float32（f4或f）</strong> 标准的单精度浮点数</li>
+<li><strong>float64（f8或d）</strong> 标准的双精度浮点数</li>
+<li><strong>bool（?）</strong> 存储True和False的布尔值</li>
+<li><strong>Object（O）</strong> python对象</li>
+<li><strong>string_（S）</strong> 固定长度的字符串类型,如创建一个长度为10的字符串，应使用S10</li>
+</ul>
+<p>下面简单看几个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">In [21]: arr1 &#x3D; np.array([1,2,3],dtype&#x3D;np.float64)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">In [22]: arr1.dtype</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">Out[22]: dtype(&#39;float64&#39;)</span></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">In [21]: arr1 &#x3D; np.array([1,2,3],dtype&#x3D;&#39;d&#39;) #直接通过类型代码来表示数据类型更为简洁</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">In [22]: arr1.dtype</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">Out[22]: dtype(&#39;float64&#39;)</span></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">In [23]: arr &#x3D; np.array([&#39;Bob&#39;,&#39;Jams&#39;,&#39;Wiliam&#39;,&#39;Joe&#39;],dtype&#x3D;np.string_)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">In [24]: arr.dtype</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">Out[24]: dtype(&#39;S6&#39;)</span></pre></td></tr></table></figure>
+<h3 id="数据类型的转换"><a href="#数据类型的转换" class="headerlink" title="数据类型的转换"></a>数据类型的转换</h3><p>我们可以通过ndarray的<strong>astype</strong>方法来转换其dtype</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">In [25]: arr &#x3D; np.array([1, 2, 3])</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">In [26]: arr.dtype</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">Out[26]: dtype(&#39;int64&#39;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">In [27]: arr2 &#x3D; arr.astype(np.float64)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">In [28]: arr2.dtype</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">Out[28]: dtype(&#39;float64&#39;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">In [29]: arr2</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">Out[29]: array([1., 2., 3.])</span></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>今天学习了NumPy中<strong>ndarray</strong>的几种常见的创建方式，可以将Python的array通过NumPy下的<strong>array</strong>函数来转换，也可以通过NumPy的zeros、empty、ones等函数来创建。了解了<strong>ndarray</strong>中比较常见的数据类型，数据类型在未来做大数据集中十分重要，它直接影响到数据的读写速度和内存大小等问题，这一点千万不能忽视。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>loannes</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://yoursite.com/2019/04/12/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BNumpy-ndarray%E5%8F%8A%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">http://yoursite.com/2019/04/12/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BNumpy-ndarray%E5%8F%8A%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Python-NumPy/"># Python, NumPy</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/04/15/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BNumpy-%E5%9F%BA%E6%9C%AC%E7%9A%84%E7%B4%A2%E5%BC%95%E4%B8%8E%E5%88%87%E7%89%87/">Python数据分析之Numpy-基本的索引与切片</a>
+            
+            
+            <a class="next" rel="next" href="/2019/04/11/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BNumpy-%E5%85%A5%E9%97%A8%E5%AE%89%E8%A3%85%E4%BB%8B%E7%BB%8D/">Python数据分析之Numpy---入门安装介绍</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
