@@ -12,7 +12,7 @@
 
 
 
-<title>Python爬虫之Scrapy-入门篇 | loannes&#39;s blog</title>
+<title>Python爬虫之Scrapy-框架原理 | loannes&#39;s blog</title>
 
 
 
@@ -169,7 +169,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Python爬虫之Scrapy-入门篇</h1>
+            <h1 class="post-title">Python爬虫之Scrapy-框架原理</h1>
             
                 <div class="post-meta">
                     
@@ -178,7 +178,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">一月 16, 2020&nbsp;&nbsp;16:39:12</a>
+                        Date: <a href="#">六月 8, 2019&nbsp;&nbsp;16:39:12</a>
                         </span>
                     
                     
@@ -194,31 +194,8 @@
         </header>
 
         <div class="post-content">
-            <p><img src="https://pic3.zhimg.com/v2-be4f976b8f2b06be9633904752531e72_b.jpg" alt=""></p>
-<p>Scrapy是一个为了爬取网站数据，提取结构性数据而编写的应用框架。可以应用在包括数据挖掘， 信息处理或存储历史数据等一系列的程序中。其最初是为了页面抓取(更确切来说,网络抓取)所设计的， 也可以应用在获取API所返回的数据(比如Web Services)或者通用的网络爬虫。</p>
-<p>Scrapy作为一款强大的爬虫框架，当然要好好学习一番，本文便是本人学习和使用scrapy过后的一个总结，内容比较基础，算是入门笔记吧，主要讲述scrapy的基本概念和使用方法</p>
-<h3 id="Scrapy安装"><a href="#Scrapy安装" class="headerlink" title="Scrapy安装"></a>Scrapy安装</h3><p>先安装一些依赖软件<br>第一步：安装pip</p>
-<p><code>sudo python get-pip.py</code></p>
-<p>第二步：安装Scrapy</p>
-<p><code>sudo pip install Scrapy</code><br>这里可能会遇到<code>pip</code>安装太慢的问题，大天朝的长城对我程序员实在是太不友好了。解决方法也很简单，修改<code>pip</code>的镜像源就好了，这里推荐中科大的，清华的也不靠谱。<a href="https://lug.ustc.edu.cn/wiki/server/mirrors/start" target="_blank" rel="noopener">中科大LUG</a></p>
-<p>镜像源地址：<a href="https://pypi.mirrors.ustc.edu.cn/simple/" target="_blank" rel="noopener">https://pypi.mirrors.ustc.edu.cn/simple/</a><br><strong>解决办法</strong></p>
-<ol>
-<li>在HOME下创建.pip目录</li>
-<li>创建配置文件pip.conf</li>
-<li>编辑配置文件，修改index-url</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">mkdir .pip</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">touch pip.conf</span></pre></td></tr></table></figure>
-
-<p>打开pip.conf<br>修改：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">[global]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">index-url &#x3D; http:&#x2F;&#x2F;pypi.mirrors.ustc.edu.cn&#x2F;simple</span></pre></td></tr></table></figure>
-
-<p>安装完成后查看Scrapy版本：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">$ scrapy</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">Scrapy 1.4.0 - no active project</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">Usage:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">   scrapy &lt;command&gt; [options] [args]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">Available commands:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">   bench         Run quick benchmark test</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">   fetch         Fetch a URL using the Scrapy downloader</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">   genspider     Generate new spider using pre-defined templates</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">   runspider     Run a self-contained spider (without creating a project)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">   settings      Get settings values</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">   shell         Interactive scraping console</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">   startproject  Create new project</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">   version       Print Scrapy version</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">   view          Open URL in browser, as seen by Scrapy</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">   [ more ]      More commands available when run from project directory</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line"> Use &quot;scrapy &lt;command&gt; -h&quot; to see more info about a command</span></pre></td></tr></table></figure>
-
-<p>ok!安装成功</p>
-<hr>
-<h3 id="Scrapy介绍"><a href="#Scrapy介绍" class="headerlink" title="Scrapy介绍"></a>Scrapy介绍</h3><p>先从Scrapy的框架说起</p>
-<p>scrapy框架包含以下几个部分</p>
+            <p><img src="https://upload-images.jianshu.io/upload_images/1515206-2c1987b74ec20905.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="Scrapy介绍"><a href="#Scrapy介绍" class="headerlink" title="Scrapy介绍"></a>Scrapy介绍</h3><p>scrapy框架包含以下几个部分</p>
 <ul>
 <li>Scrapy Engine 引擎</li>
 <li>Spiders 爬虫</li>
@@ -283,7 +260,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="http://yoursite.com/2020/01/16/Python%E7%88%AC%E8%99%AB%E4%B9%8BScrapy-%E5%85%A5%E9%97%A8%E7%AF%87/">http://yoursite.com/2020/01/16/Python%E7%88%AC%E8%99%AB%E4%B9%8BScrapy-%E5%85%A5%E9%97%A8%E7%AF%87/</a></span>
+                        <span><a href="http://yoursite.com/2019/06/08/Python%E7%88%AC%E8%99%AB%E4%B9%8BScrapy-%E6%A1%86%E6%9E%B6%E5%8E%9F%E7%90%86/">http://yoursite.com/2019/06/08/Python%E7%88%AC%E8%99%AB%E4%B9%8BScrapy-%E6%A1%86%E6%9E%B6%E5%8E%9F%E7%90%86/</a></span>
                     </p>
                 
                 
@@ -320,10 +297,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2020/04/25/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas-Series%E4%B8%8EDataFrame%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD%EF%BC%88%E5%9B%9B%EF%BC%89/">Python数据分析之Pandas-Series与DataFrame基本功能（四）</a>
+                <a class="prev" rel="prev" href="/2019/10/22/leetcode%E7%AC%AC%E4%B8%80%E5%91%A8%E5%88%B7%E9%A2%98%E6%80%BB%E7%BB%93/">leetcode第一周刷题总结</a>
             
             
-            <a class="next" rel="next" href="/2020/01/16/%E3%80%90MySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%91%E4%BA%86%E8%A7%A3MySQL/">【MySQL必知必会】了解MySQL</a>
+            <a class="next" rel="next" href="/2019/06/05/Python%E7%88%AC%E8%99%AB%E4%B9%8BScrapy-%E5%AE%89%E8%A3%85%E5%8F%8A%E5%85%A5%E9%97%A8/">Python爬虫之Scrapy-安装及入门</a>
             
         </section>
 
