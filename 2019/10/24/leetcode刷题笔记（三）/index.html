@@ -12,7 +12,7 @@
 
 
 
-<title>Python爬虫之Scrapy-框架原理 | loannes&#39;s blog</title>
+<title>leetcode刷题笔记（三） | loannes&#39;s blog</title>
 
 
 
@@ -169,7 +169,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Python爬虫之Scrapy-框架原理</h1>
+            <h1 class="post-title">leetcode刷题笔记（三）</h1>
             
                 <div class="post-meta">
                     
@@ -178,7 +178,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">六月 8, 2019&nbsp;&nbsp;16:39:12</a>
+                        Date: <a href="#">十月 24, 2019&nbsp;&nbsp;13:22:19</a>
                         </span>
                     
                     
@@ -194,58 +194,17 @@
         </header>
 
         <div class="post-content">
-            <p><img src="https://upload-images.jianshu.io/upload_images/1515206-2c1987b74ec20905.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<h3 id="Scrapy介绍"><a href="#Scrapy介绍" class="headerlink" title="Scrapy介绍"></a>Scrapy介绍</h3><p>scrapy框架包含以下几个部分</p>
-<ul>
-<li>Scrapy Engine 引擎</li>
-<li>Spiders 爬虫</li>
-<li>Scheduler 调度器</li>
-<li>Downloader 下载器</li>
-<li>Item Pipeline 项目管道</li>
-<li>Downloader Middlewares 下载器中间件</li>
-<li>Spider Middlewares 爬虫中间件</li>
-</ul>
-<p>框架中有那么多部分组成，那每个部件都是用来做什么的？查阅官方文档后我有了以下结论</p>
-<p><strong>Scrapy Engine引擎</strong></p>
-<p>它是负责整个框架中信号，数据等传递功能。相当于是军队中的主公，任何事情必须经过它的手由它来决定这件事情由谁来负责。</p>
-<p><strong>Spiders爬虫</strong></p>
-<p>是这个框架中的军师，负责处理所有的Response，返回封装在Item中的数据包。如果有更深层的URL，它将返回给Scrapy Engine，再次调度。</p>
-<p><strong>Scheduler调度器</strong></p>
-<p>它是整个框架的秩序管理者，要想爬取URL必须得经过它的同意。它负责将引擎调度过来的请求整理在队列当中，当引擎需要时依次输出。相当于是主公的助手，负责整理军情。</p>
-<p><strong>Downloader下载器</strong></p>
-<p>相当于是军队中的探子，负责刺探军情。在框架中负责把请求下载下来，然后将Response交给引擎，再由引擎传递给Spider来处理。</p>
-<p><strong>Item Pipeline项目管道</strong></p>
-<p>负责将Spider返回过来的Item进行进一步处理，细节分析，存储，过滤等。做一些收尾工作，相当于是顾问，比军师还厉害的人物。</p>
-<p><strong>Download Middlewares下载中间件</strong></p>
-<p>下载功能的扩展包，可以理解成探子助手。</p>
-<p><strong>Spider Middlewares爬虫中间件</strong></p>
-<p>爬虫扩展包，理解为军师外援团。</p>
-<p>再结合这张图片来梳理下框架的整个爬取过程是怎么样的</p>
-<p><img src="https://user-gold-cdn.xitu.io/2018/5/30/163acad15d163809?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
-<p><strong>框架爬取过程</strong></p>
-<ol>
-<li>引擎从爬虫获取首个待爬取的链接url，并传递给调度器</li>
-<li>调度器将链接存入队列</li>
-<li>引擎向调度器请求要爬取的链接，并将请求得到的链接经下载器中间件传递给下载器</li>
-<li>下载器从网上下载网页，下载后的网页经下载器中间件传递给引擎</li>
-<li>引擎将网页通过爬虫中间件传递给爬虫</li>
-<li>爬虫对网页进行解析，将得到的Items和新的链接经爬虫中间件交给引擎</li>
-<li>引擎将从爬虫得到的Items交给项目管道，将新的链接请求requests交给调度器</li>
-<li>此后循环直到没有待爬取的链接为止</li>
-</ol>
-<p>分析到这里可能还是会有点不清楚，再结合上面军队的例子，我做了个文字版的军队情报处理的流程。相信能加深对Scrapy框架的理解。</p>
-<hr>
-<ul>
-<li>某天主公（Engine）收到了一封开战信（我们在执行Scrapy的请求:yeild)</li>
-<li>主公（Engine)安排助手（Scheduler)给他敌方的情报</li>
-<li>助手(Scheduler)把最新的情报以request的形式交给主公(Engine),主公看了后发现不够，还需要了解敌方有多少粮草，兵力多少，主将是谁等等。</li>
-<li>主公（Engine) 将需要探查的军情经过探子助手（Download Middlewares）交给了在前线的探子（Downloader)</li>
-<li>探子（Downloader)刺探玩军情后，以response的形式交给探子助手（Download Middlewares)跑回军营中交给主公（Engine)</li>
-<li>主公（Engine)得知军情后，需要对军情进行分析商讨战术，所以将情报经过军师外援团（Spider Middlewares)跑腿给到军师（Spider)</li>
-<li>军师（Spider)分析完情报后钻研出了战术，将战术以Items的形式经过军师外援团（Spider Middlewares)跑腿给到主公（Engine）</li>
-<li>主公（Engine)看了后觉得这份战术还需要完善，然后将Items交给了顾问（Item Pipeline),由它来做最后的细节处理，然后交给主公助手（Scheduler)保管好。</li>
-</ul>
-<p>下一篇对Scrapy常用命令做一些分析。</p>
+            <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>给定一个排序数组，你需要在原地删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。</p>
+<p>不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。</p>
+<p>示例 1:</p>
+<p>给定数组 nums = [1,1,2],</p>
+<p>函数应该返回新的长度 2, 并且原数组 nums 的前两个元素被修改为 1, 2。</p>
+<p>你不需要考虑数组中超出新长度后面的元素。<br>示例 2:</p>
+<p>给定 nums = [0,0,1,1,1,2,2,3,3,4],</p>
+<p>函数应该返回新的长度 5, 并且原数组 nums 的前五个元素被修改为 0, 1, 2, 3, 4。</p>
+<h3 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h3><p><strong>解题思路</strong><br>因为nums是一个排序数组，所以重复项只会出现在相邻的位置。可以通过双指针的方式来指定其中的元素，<br>然后逐步往后移动进行比对，直到找到相邻且相等的元素删除即可。有一点要注意的是，如果连续出现三个<br>重复的元素，用两两比对会漏掉一个，这个时候需以第一个重复元素为参照物进行比对，直到删除了所有的<br>重复项后再往后移动。</p>
+<p><strong>实现代码：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">class Solution:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    def removeDuplicates(self, nums: List[int]) -&gt; int:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">        left, right &#x3D; 0, 1</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">        while right &lt; len(nums):</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">            if nums[left] &#x3D;&#x3D; nums[right]:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">                nums.pop(right)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">            else:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">                left +&#x3D; 1</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">                right +&#x3D; 1</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">        return len(nums)</span></pre></td></tr></table></figure>
 
         </div>
 
@@ -260,7 +219,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="http://yoursite.com/2019/06/08/Python%E7%88%AC%E8%99%AB%E4%B9%8BScrapy-%E6%A1%86%E6%9E%B6%E5%8E%9F%E7%90%86/">http://yoursite.com/2019/06/08/Python%E7%88%AC%E8%99%AB%E4%B9%8BScrapy-%E6%A1%86%E6%9E%B6%E5%8E%9F%E7%90%86/</a></span>
+                        <span><a href="http://yoursite.com/2019/10/24/leetcode%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/">http://yoursite.com/2019/10/24/leetcode%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/</a></span>
                     </p>
                 
                 
@@ -284,7 +243,7 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/Python-Scrapy/"># Python, Scrapy</a>
+                        <a href="/tags/%E7%AE%97%E6%B3%95-leetcode/"># 算法, leetcode</a>
                     
                         
                 </span>
@@ -297,10 +256,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2019/10/22/leetcode%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/">leetcode刷题笔记(一)</a>
+                <a class="prev" rel="prev" href="/2019/11/08/%E5%A4%A7%E8%AF%9D%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%20/">大话数据结构第一章 数据结构</a>
             
             
-            <a class="next" rel="next" href="/2019/06/05/Python%E7%88%AC%E8%99%AB%E4%B9%8BScrapy-%E5%AE%89%E8%A3%85%E5%8F%8A%E5%85%A5%E9%97%A8/">Python爬虫之Scrapy-安装及入门</a>
+            <a class="next" rel="next" href="/2019/10/23/leetcode%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/">leetcode刷题笔记（二）</a>
             
         </section>
 
