@@ -197,7 +197,10 @@
             <h3 id="分层"><a href="#分层" class="headerlink" title="分层"></a>分层</h3><p>网络协议通常分为不同的层次进行开发，每一层分别负责不同分通信功能。</p>
 <p>TCP/IP协议族分为四层</p>
 <p><img src="https://s2.ax1x.com/2020/01/21/1FTA7d.png" alt=""></p>
-<h4 id="链路层："><a href="#链路层：" class="headerlink" title="链路层："></a>链路层：</h4><p>与硬件相关，通常用来处理计算机中的网卡，设备驱动等。<br>####网络层：<br>处理分组在网络中的活动。IP协议，ICMP协议都是网络层<br>####运输层：<br>有两个不同的传输协议— TCP(传输控制协议) 和 UDP（用户数据报协议）。<br>平时开发中与数据库交互的接口用到的就是运输层<br>####应用层：<br>任何TCP/IP都会实现这些应用程序，相当于是捆绑在TCP/IP上的程序</p>
+<h4 id="链路层："><a href="#链路层：" class="headerlink" title="链路层："></a>链路层：</h4><p>与硬件相关，通常用来处理计算机中的网卡，设备驱动等。</p>
+<p>####运输层：<br>有两个不同的传输协议— TCP(传输控制协议) 和 UDP（用户数据报协议）。<br>平时开发中与数据库交互的接口用到的就是运输层</p>
+<p>####网络层：<br>处理分组在网络中的活动。IP协议，ICMP协议都是网络层。IP协议不可靠，传输不稳定，不一定能接收到而且可能是无序的。</p>
+<p>####应用层：<br>任何TCP/IP都会实现这些应用程序，相当于是捆绑在TCP/IP上的程序</p>
 <ol>
 <li>Telnet远程登录</li>
 <li>FTP文件传输协议</li>
@@ -216,8 +219,8 @@
 <h4 id="为什么要把网络层和运输层分开？区别是什么？"><a href="#为什么要把网络层和运输层分开？区别是什么？" class="headerlink" title="为什么要把网络层和运输层分开？区别是什么？"></a>为什么要把网络层和运输层分开？区别是什么？</h4><p>由于网络层提供的是一种不可靠的服务，它的目的是把分组从源结点送到目标结点。所以在某些有安全需求的应用程序中光靠网络层是不行的，这时候需要用到传输层。传输层采用了超时重发，发送端与接收端的确认分组等机制确保了传输的可靠性。</p>
 <p>所以它们之间还是有不同之处的，运输层相较于网络层会更可靠。</p>
 <h3 id="TCPIP的分层"><a href="#TCPIP的分层" class="headerlink" title="TCPIP的分层"></a>TCPIP的分层</h3><p><img src="https://s2.ax1x.com/2020/01/21/1FqUIJ.png" alt=""></p>
-<p><strong>TCP</strong><br>使用不可靠的IP服务，但是有可靠的传输服务</p>
-<p><strong>UDP</strong><br>为应用程序接收和发送数据报，但是不可靠没有确定性。</p>
+<p><strong>TCP</strong><br>使用不可靠的IP服务，但是有可靠的传输服务。会经过确认，接收方会发送确认收到的消息，如果没收到会请求重发。</p>
+<p><strong>UDP</strong><br>为应用程序接收和发送数据报，但是不可靠没有确定性。但是效率高，传输速度快，比方说语音视频流。</p>
 <p><strong>ICMP</strong><br>是IP协议的附属协议，用来与其他主机或路由器交换错误信息</p>
 <p><strong>IGMP</strong><br>是Internet组管理协议，用来把一个UDP数据报多发到其他主机</p>
 <p><strong>ARP(地址解析协议) 和 RARP(逆地址解析协议)</strong><br>用来转换IP层和网络接口层使用的地址</p>
@@ -286,7 +289,7 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2019/10/22/leetcode%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/">leetcode刷题笔记(一)</a>
+                <a class="prev" rel="prev" href="/2019/08/03/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91TCP-IP-IP%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AE/">【笔记】TCP/IP---IP:网际协议</a>
             
             
             <a class="next" rel="next" href="/2019/06/08/Python%E7%88%AC%E8%99%AB%E4%B9%8BScrapy-%E6%A1%86%E6%9E%B6%E5%8E%9F%E7%90%86/">Python爬虫之Scrapy-框架原理</a>
