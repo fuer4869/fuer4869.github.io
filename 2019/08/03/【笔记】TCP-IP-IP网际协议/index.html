@@ -194,8 +194,79 @@
         </header>
 
         <div class="post-content">
-            <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>所有TCP、UDP、ICMP和IGMP数据都以IP数据报格式传输。</p>
+            <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>IP是TCP/IP协议族中最核心的协议。所有的TCP、UDP、ICMP和IGMP数据都以IP数据报格式传输。IP也决定了接收到的数据将被分发到哪个网络进程。</p>
+<h3 id="IP地址"><a href="#IP地址" class="headerlink" title="IP地址"></a>IP地址</h3><p>IP地址（Internet Protocol Address），缩写为IP Adress，是一种在Internet上的给主机统一编址的地址格式，也称为网络协议（IP协议）地址。它为互联网上的每一个网络和每一台主机分配一个逻辑地址，常见的IP地址，分为IPv4与IPv6两大类，当前广泛应用的是IPv4，目前IPv4几乎耗尽IPv6号称可以为世界上每一粒沙子都编上地址；如无特别注明，一般讲的的IP地址所指的是IPv4。</p>
+<h3 id="MAC地址"><a href="#MAC地址" class="headerlink" title="MAC地址"></a>MAC地址</h3><p>MAC（Media Access Control，介质访问控制）地址，或称为物理地址，也叫硬件地址，用来定义网络设备的位置，MAC地址是网卡出厂时设定的，是固定的（但可以通过在设备管理器中或注册表等方式修改，同一网段内的MAC地址必须唯一）。MAC地址采用十六进制数表示，长度是6个字节（48位），分为前24位和后24位。</p>
 <h3 id="IP首部"><a href="#IP首部" class="headerlink" title="IP首部"></a>IP首部</h3><p>IP首部长为20个字节，除非含有选项字段<br><img src="https://s2.ax1x.com/2020/02/08/1WpWsx.png" alt=""></p>
+<p><strong>其中TOS（Type OF Service)指的是什么？</strong><br>TOS总共8bit（即8位）。</p>
+<ul>
+<li>其中前三位（0、1、2）指的是IP优先级（IP Precedence)</li>
+<li>中间三位（3、4、5、6）指的是IP的服务类型。<ul>
+<li>第三位（3）— 0：正常延迟。 为1：低延迟</li>
+<li>第四位（4）— 0：正常吞吐量  1：高吞吐量</li>
+<li>第五位（5）— 0：正常可靠性  1：高可靠性</li>
+<li>第六位（6）— 0：正常开销    1：低开销<br>最后一位保留</li>
+</ul>
+</li>
+</ul>
+<p>前三位有一些常用格式：</p>
+<ul>
+<li>111 - Network Control</li>
+<li>110 - Internetwork Control</li>
+<li>101 - CRITIC/ECP</li>
+<li>100 - Flash Override</li>
+<li>011 - Flash</li>
+<li>010 - Immediate</li>
+<li>001 - Priority</li>
+<li>000 – Routine</li>
+</ul>
+<p>中间四位的常用格式：</p>
+<ul>
+<li>1000   –   minimize delay</li>
+<li>0100   –   maximize throughput</li>
+<li>0010   –   maximize reliability</li>
+<li>0001   –   minimize monetary cost</li>
+<li>0000   –   normal service</li>
+</ul>
+<p><strong>DSCP</strong><br>使用8位中的前6位,取值范围是十进制的0~63。最后以二进制表达<br>如十进制的0 = 二进制的000000</p>
+<p><img src="https://bkimg.cdn.bcebos.com/pic/30adcbef76094b36886b605aa0cc7cd98c109d8f?x-bce-process=image/resize,m_lfit,w_250,h_250,limit_1" alt=""></p>
+<p><strong>16位首部校验和</strong><br>用来检验数据是否被篡改过，类似哈希散列表</p>
+<h3 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h3><p><img src="https://s2.ax1x.com/2020/02/13/1bL7Lj.png" alt=""></p>
+<p>分割作用，将一个网络分割成多个小网络，从而起到节省IP地址的作用。一般IP地址以点分十进制方法表示，而子网掩码用十六进制来表示。</p>
+<p><strong>作用：</strong><br>在给定IP地址和子网掩码后，主机可以确定IP数据报的目的：</p>
+<ul>
+<li>本子网上的主机</li>
+<li>本网络中其他子网的主机</li>
+<li>其他网络上的主机，如果知道了IP地址就知道了它的类型，A类还是B类等，也就知道了网络号和子网号的分界线。而根据子网掩码就可以知道子网号和主机号之间的分界线</li>
+</ul>
+<p>举例：假设我们的主机地址是140.252.1.1(B类地址),而子网掩码是255.255.255.0(其中8bit为子网号，8bit为主机号)</p>
+<ul>
+<li>如果目的IP地址为140.252.4.5，那么我们知道B类的网络号是相同的(140.252)，但是子网号是不同的(1和4)。</li>
+<li>如果目的IP地址为140.252.1.22,它是B类网络号，子网号是1与我们主机的子网号相同，但是主机号不同（1，22）</li>
+<li>如果目的IP地址为192.43.235.6,它是C类网络号，子网是235与我们主机的子网号不同，所以不必再比较下去了。</li>
+</ul>
+<p>子网掩码相当于是ip地址中的子网号+主机号转成十六进制的值。</p>
+<h3 id="ifconfig命令"><a href="#ifconfig命令" class="headerlink" title="ifconfig命令"></a>ifconfig命令</h3><p><code>ifconfig -a</code>    显示所有接口情况</p>
+<p><strong>参数</strong></p>
+<ul>
+<li>add&lt;地址&gt;：设置网络设备IPv6的ip地址；</li>
+<li>del&lt;地址&gt;：删除网络设备IPv6的IP地址；</li>
+<li>down：关闭指定的网络设备；</li>
+<li>&lt;hw&lt;网络设备类型&gt;&lt;硬件地址&gt;：设置网络设备的类型与硬件地址；</li>
+<li>io_addr&lt;I/O地址&gt;：设置网络设备的I/O地址；</li>
+<li>irq&lt;IRQ地址&gt;：设置网络设备的IRQ；</li>
+<li>media&lt;网络媒介类型&gt;：设置网络设备的媒介类型；</li>
+<li>mem_start&lt;内存地址&gt;：设置网络设备在主内存所占用的起始地址；</li>
+<li>metric&lt;数目&gt;：指定在计算数据包的转送次数时，所要加上的数目；</li>
+<li>mtu&lt;字节&gt;：设置网络设备的MTU；</li>
+<li>netmask&lt;子网掩码&gt;：设置网络设备的子网掩码；</li>
+<li>tunnel&lt;地址&gt;：建立IPv4与IPv6之间的隧道通信地址；</li>
+<li>up：启动指定的网络设备；</li>
+<li>-broadcast&lt;地址&gt;：将要送往指定地址的数据包当成广播数据包来处理；</li>
+<li>-pointopoint&lt;地址&gt;：与指定地址的网络设备建立直接连线，此模式具有保密功能；</li>
+<li>-promisc：关闭或启动指定网络设备的promiscuous模式；</li>
+</ul>
+<h3 id="netstat命令"><a href="#netstat命令" class="headerlink" title="netstat命令"></a>netstat命令</h3><p>netstat命令提供系统上的接口信息。<code>-i</code>参数将打印出接口信息， -n参数将打印出ip地址，而不是主机名字</p>
 
         </div>
 
