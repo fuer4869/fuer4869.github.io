@@ -206,7 +206,7 @@
 <li><code>GROUP BY</code>子句中列出的每个列都必须是检索列或有效的表达式。如果在<code>SELECT</code>中使用表达式，则必须在<code>GROUP BY</code>子句中指定相同的表达式。</li>
 <li>在进行分组计算时，除聚集计算语句外，<code>SELECT</code>语句中的每个列都必须在<code>GROUP BY</code>子句中给出。</li>
 <li>如果分组列中具有<code>NULL</code>值，则<code>NULL</code>将作为一个分组返回。如果列中有多行<code>NULL</code>值，它们将分为一组。</li>
-<li><code>GROUP BY</code>子句必须出现的<code>WHERE</code>子句之后，<code>ORDER BY</code>子句之前。</li>
+<li><code>GROUP BY</code>子句必须出现在<code>WHERE</code>子句之后，<code>ORDER BY</code>子句之前。</li>
 </ul>
 <p><strong>HAVING</strong><br><code>HAVING</code>关键词将对<code>GROUP_BY</code>进行过滤，类似于<code>WHERE</code>。</p>
 <h3 id="HAVING-和-WHERE的区别"><a href="#HAVING-和-WHERE的区别" class="headerlink" title="HAVING 和 WHERE的区别"></a>HAVING 和 WHERE的区别</h3><p><code>WHERE</code>在数据分组前进行过滤，而<code>HAVING</code>在数据分组后进行过滤。严格意义上讲，<code>WHERE</code>没有分组的概念，它无法和分组混用。</p>

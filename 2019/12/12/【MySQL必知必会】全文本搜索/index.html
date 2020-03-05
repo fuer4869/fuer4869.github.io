@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="loannes">
+
+
+
+
+
+<title>【MySQL必知必会】全文本搜索 | loannes&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+
+<meta name="generator" content="Hexo 4.1.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">loannes&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">loannes&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">【MySQL必知必会】全文本搜索</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">loannes</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十二月 12, 2019&nbsp;&nbsp;19:26:44</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p><img src="https://upload.wikimedia.org/wikipedia/en/thumb/6/62/MySQL.svg/1200px-MySQL.svg.png" alt=""></p>
+<h3 id="理解全文本搜索"><a href="#理解全文本搜索" class="headerlink" title="理解全文本搜索"></a>理解全文本搜索</h3><p>之前学习到了用LIKE关键字，利用通配符来匹配文本，还有通过正则表达式来匹配文本。不过这些匹配都有些缺点：</p>
+<ul>
+<li>性能：通配符和正则表达式匹配通常要求MySQL尝试匹配表中所有行。如果搜索行越长匹配就越耗时。</li>
+<li>明确控制：通配符和正则表达式很难做到精细的控制，控制在匹配过程中哪些需要匹配哪些需要不匹配，这样会影响性能无法做到优化。</li>
+<li>智能化结果：基于通配符和正则表达式的匹配得到的结果你无法控制匹配数量，比方说匹配的关键词是<code>#</code>，在匹配的全文中有多个<code>#</code>,但是我无法控制结果中只返回一个或者n个。<br>而这些限制都能通过全文本搜索来解决。</li>
+</ul>
+<h3 id="使用全文本搜索"><a href="#使用全文本搜索" class="headerlink" title="使用全文本搜索"></a>使用全文本搜索</h3><p>一般在建表时启用全文本搜索。<br>MySQL最常用的两个引擎为MyISAM和InnoDB<br>MyISAM：支持全文索引<br>InnoDB：不支持全文索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">CREATE TABLE books(</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">  id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">  title varchar(200),</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">  content text,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">  FULLTEXT(content) WITH PARSER ngram)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">  ENGINE&#x3D;InnoDB DEFAULT CHARSET&#x3D;utf8mb4 COMMENT&#x3D;&#39;书籍表&#39;;</span></pre></td></tr></table></figure>
+<p>插入数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">INSERT INTO books(</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">  id,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">  title,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">  content) VALUES(</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    0,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">    &#39;Love of Life&#39;,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">    &#39;The house of Blencarrow, which, without being one of the great houses of the county, was as comfortable and handsome as a country gentleman not exactly of the highest importance could desire&#39;);</span></pre></td></tr></table></figure>
+<p><strong>执行全文本搜索</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">SELECT * FROM books WHERE MATCH(content) AGAINST(&#39;county&#39;);</span></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">+----+--------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">| id | title        | content                                                                                                                                                                                        |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">+----+--------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">|  1 | Love of Life | The house of Blencarrow, which, without being one of the great houses of the county, was as comfortable and handsome as a country gentleman not exactly of the highest importance could desire |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">+----+--------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span></pre></td></tr></table></figure>
+<p>在执行全文本搜索时有几点需要注意：</p>
+<ul>
+<li>在执行全文本搜索语句时，MATCH()中需要传入该表所有支持全文搜索的字段。</li>
+<li>有些常用关键词不能用作检索，否则将返回空。</li>
+<li>目前新版本的MySQL，InnDB引擎已经支持了全文本搜索并且能识别中文。</li>
+</ul>
+<h3 id="匹配结果排序"><a href="#匹配结果排序" class="headerlink" title="匹配结果排序"></a>匹配结果排序</h3><p>同时全文本搜索会对表中的匹配结果进行排序，它们的优先级按照匹配词的总数以及包含该词的行的数目，还有匹配词的越靠前优先级越高。<br>可以通过以下命令查询权重：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">SELECT body, MATCH(title,body) AGAINST(&#39;two&#39;) AS q FROM articles;</span></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2020/02/29/UT63fMenqsDCjPN.png" alt="WechatIMG69.png"></p>
+<h3 id="使用查询扩展"><a href="#使用查询扩展" class="headerlink" title="使用查询扩展"></a>使用查询扩展</h3><p>查询扩展的意思是放宽查询结果的范围。什么意思？就是指查询除了包含关键词的行之外还可以另外找出与搜索有关的其他行。该功能普遍用于联想搜索等，当然现在有了推荐算法会比这个好很多。<br>在查询扩展过程中，MySQL对数据进行了两遍扫描：</p>
+<ul>
+<li>首先进行最基本的扫描来搜索条件匹配的所有行。</li>
+<li>随后MySQL会对这些匹配行做过滤选择游泳的行</li>
+<li>最后再进行全文本搜索，这次不仅匹配关键词，还匹配与关键词所在行有关的行。</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">SELECT * FROM articles WHERE MATCH(title,body) AGAINST(&#39;database&#39; WITH QUERY EXPANSION);</span></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">+----+-----------------------+------------------------------------------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">| id | title                 | body                                     |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">+----+-----------------------+------------------------------------------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">|  5 | MySQL vs. YourSQL     | In the following database comparison ... |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">|  1 | MySQL Tutorial        | DBMS stands for DataBase ...             |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">|  3 | Optimizing MySQL      | In this tutorial we will show ...        |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">|  6 | MySQL Security        | When configured properly, MySQL ...      |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">|  2 | How To Use MySQL Well | After you went through a ...             |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">|  4 | 1001 MySQL Tricks     | 1. Never run mysqld as root. 2. ...      |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">+----+-----------------------+------------------------------------------+</span></pre></td></tr></table></figure>
+<p>看到这组数据会很奇怪，为什么会把没有包含<code>database</code>的行也匹配到了。这个就是查询扩展的特性，它除了匹配关键词所在的行之外还会从匹配到的行（id=5,1)这两条数据中找到合适的关联词<code>MySQL</code>，再对表进行一次匹配，从而查找到了（id=3,6,2,4)的行。</p>
+<h3 id="Boolean全文本搜索"><a href="#Boolean全文本搜索" class="headerlink" title="Boolean全文本搜索"></a>Boolean全文本搜索</h3><p>MySQL可以使用<code>IN BOOLEAN MODE</code>修饰符来执行全文本搜索。它的作用是能够通过<code>+</code>和<code>-</code>来表示匹配中哪些单词必须存在，哪些单词不能存在。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">SELECT * FROM articles WHERE MATCH(title,body) AGAINST(&#39;+MySQL -YourSQL&#39; IN BOOLEAN MODE);</span></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">+----+-----------------------+-------------------------------------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">| id | title                 | body                                |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">+----+-----------------------+-------------------------------------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">|  6 | MySQL Security        | When configured properly, MySQL ... |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">|  1 | MySQL Tutorial        | DBMS stands for DataBase ...        |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">|  2 | How To Use MySQL Well | After you went through a ...        |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">|  3 | Optimizing MySQL      | In this tutorial we will show ...   |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">|  4 | 1001 MySQL Tricks     | 1. Never run mysqld as root. 2. ... |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">+----+-----------------------+-------------------------------------+</span></pre></td></tr></table></figure>
+
+<ul>
+<li><code>+</code>等同于<code>AND</code></li>
+<li><code>-</code>等同于<code>NOT</code></li>
+</ul>
+<p>Boolean全文本搜索具有以下特征：</p>
+<ul>
+<li>这种搜索不会改变相关性顺序，优先级仍旧与默认搜索相同</li>
+<li>InnoDB与MyISAM在全文本搜索的不同点在于，前者的Boolean查询需要使用全文本索引，而后者则不需要。当然这样的话效率会低很多。</li>
+<li>最小和最大字长 <code>full-text</code> 参数适用于使用 <code>built-in</code> FULLTEXT解析器和 <code>MeCab</code> 解析器插件创建的FULLTEXT索引。 <code>innodb_ft_min_token_size</code>和<code>innodb_ft_max_token_size</code>用于InnoDB搜索索引。 <code>ft_min_word_len</code>和<code>ft_max_word_len</code>用于MyISAM搜索索引。</li>
+</ul>
+<p><strong>全文本布尔操作符</strong><br>|布尔操作符|说明|<br>|—|—|<br>|+|包含，词必须存在|<br>|-|排除，词必须不出现|<br>|&gt;|包含并且增加等级值|<br>|&lt;|包含且减少等级值|<br>|()|把词组成子表达式|<br>|~|取消一个词的排序值|<br>|*|词尾的通配符|<br>|“”|定义一个短语(与单个词的列表不一样，它匹配整个短语)|</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">SELECT * FROM articles WHERE MATCH(title,body) AGAINST(&#39;MySQL use&#39; IN BOOLEAN MODE);</span></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">+----+-----------------------+------------------------------------------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">| id | title                 | body                                     |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">+----+-----------------------+------------------------------------------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">|  2 | How To Use MySQL Well | After you went through a ...             |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">|  6 | MySQL Security        | When configured properly, MySQL ...      |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">|  1 | MySQL Tutorial        | DBMS stands for DataBase ...             |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">|  3 | Optimizing MySQL      | In this tutorial we will show ...        |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">|  4 | 1001 MySQL Tricks     | 1. Never run mysqld as root. 2. ...      |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">|  5 | MySQL vs. YourSQL     | In the following database comparison ... |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">+----+-----------------------+------------------------------------------+</span></pre></td></tr></table></figure>
+<p>这种没有添加操作符的Boolean搜索，会匹配<code>MySQL</code>与<code>use</code>中至少一个关键词。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">SELECT * FROM articles WHERE MATCH(title,body) AGAINST(&#39;&lt;DBMS &gt;Well&#39; IN BOOLEAN MODE);</span></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">+----+-----------------------+------------------------------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">| id | title                 | body                         |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">+----+-----------------------+------------------------------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">|  2 | How To Use MySQL Well | After you went through a ... |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">|  1 | MySQL Tutorial        | DBMS stands for DataBase ... |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">+----+-----------------------+------------------------------+</span></pre></td></tr></table></figure>
+<p>匹配<code>DBMS</code>与<code>Well</code>,同时降低前者等级，提高后者等级</p>
+<h3 id="全文本搜索使用说明"><a href="#全文本搜索使用说明" class="headerlink" title="全文本搜索使用说明"></a>全文本搜索使用说明</h3><ul>
+<li>在索引全文本数据时，短词被忽略且从索引中删除。短词定义为那些具有3个或3个以下字符的词。（指的是英文，如果需要可以更改限制）</li>
+<li>MySQL带有一个内建的非用词列表，这些词在索引群文本数据时会被忽略。如果有需要可以覆盖这个列表。（中文的不清楚有没有这样的表）</li>
+<li>许多词出现的频率高，如果出现频率高于50%，那么MySQL将忽略它。（In Boolean Mode模式除外）</li>
+<li>如果表中的行数少于3行，则全文本搜索不返回结果。</li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>loannes</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/MySQL/"># MySQL</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/12/13/%E3%80%90MySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%91%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE/">【MySQL必知必会】插入数据</a>
+            
+            
+            <a class="next" rel="next" href="/2019/12/11/%E3%80%90MySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%91%E7%BB%84%E5%90%88%E6%9F%A5%E8%AF%A2/">【MySQL必知必会】组合查询</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
