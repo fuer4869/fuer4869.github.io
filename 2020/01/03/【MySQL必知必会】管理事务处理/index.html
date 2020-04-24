@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="loannes">
+
+
+
+
+
+<title>【MySQL必知必会】管理事务处理 | loannes&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+
+<meta name="generator" content="Hexo 4.1.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">loannes&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">loannes&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">【MySQL必知必会】管理事务处理</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">loannes</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">一月 3, 2020&nbsp;&nbsp;22:55:20</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p><img src="https://upload.wikimedia.org/wikipedia/en/thumb/6/62/MySQL.svg/1200px-MySQL.svg.png" alt=""></p>
+<h3 id="什么是事务处理"><a href="#什么是事务处理" class="headerlink" title="什么是事务处理"></a>什么是事务处理</h3><p>事务处理是为了维护数据的完整性的技术手段，是对数据库数据安全的一种保证。它能确保成批的MySQL语句要么完全执行要么完全不执行，不会存在执行部分语句而造成该处理的数据没有被处理导致数据的错乱。</p>
+<p>举例来说：公司某位员工离职了，除了要删除职员表中的数据还需要删除财务数据表中的相关数据以及其他业务上的数据，客户关系数据等。这些操作都需要全部一起执行，否则会造成很严重的问题。</p>
+<h3 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h3><p>事务是DBMS的执行单位。它由有限个数据库操作语句组成。但不是任意的数据库操作序列都能成为事务。一般来说，事务是必须满足4个条件（ACID）</p>
+<p><strong>原子性（Atomicity）</strong><br>原子性是指事务包含的所有操作要么全部成功，要么全部失败回滚。</p>
+<p><strong>一致性（Consistency）</strong><br>一致性是指事务必须使数据库从一个一致的状态变到另外一个一致的状态，也就是执行事务之前和之后的状态都必须处于一致的状态。</p>
+<blockquote>
+<p>在事务T开始时，此时数据库有一种状态，这个状态是所有的MySQL对象处于一致的状态，例如数据库完整性约束正确，日志状态一致等，当事务T提交后，这时数据库又有了一个新的状态，不同的数据，不同的索引，不同的日志等，但此时，约束，数据，索引，日志等MySQL各种对象还是要保持一致性（正确性）。 这就是 从一个一致性的状态，变到另一个一致性的状态。也就是事务执行后，并没有破坏数据库的完整性约束（一切都是对的）<br><a href="https://www.zhihu.com/question/31346392?sort=created" target="_blank" rel="noopener">来自知乎</a></p>
+</blockquote>
+<p><strong>隔离性(Isolation)</strong><br>隔离性是指当多个用户并发访问数据库时，比如操作同一张表时，数据库为每一个用户开启的事务，不能被其他事务的操作所干扰，多个并发事务之间要相互隔离</p>
+<blockquote>
+<p>即要达到这么一种效果：对于任意两个并发的事务T1和T2，在事务T1看来，T2要么在T1开始之前就已经结束，要么在T1结束之后才开始，这样每个事务都感觉不到有其他事务在并发地执行。</p>
+</blockquote>
+<p><strong>持久性(Durability)</strong><br>持久性是指一个事务一旦被提交了，那么对于数据库中的数据改变就是永久性的，即便是在数据库系统遭遇到故障的情况下也不会丢失提交事务的操作。</p>
+<blockquote>
+<p>例如我们在使用JDBC操作数据库时，在提交事务方法后，提示用户事务操作完成，当我们程序执行完成直到看到提示后，就可以认定事务以及正确提交，即使这时候数据库出现了问题，也必须要将我们的事务完全执行完成，否则就会造成我们看到提示事务处理完毕，但是数据库因为故障而没有执行事务的重大错误。</p>
+</blockquote>
+<h4 id="支持事务处理的引擎"><a href="#支持事务处理的引擎" class="headerlink" title="支持事务处理的引擎"></a>支持事务处理的引擎</h4><p>目前只有InnoDB支持事务处理，而MyISAM不支持</p>
+<h3 id="MySQL中使用事务"><a href="#MySQL中使用事务" class="headerlink" title="MySQL中使用事务"></a>MySQL中使用事务</h3><p><strong>提交事务</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&gt;set autocommit &#x3D; 0 禁止自动提交</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">&gt;start transaction;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">&gt;select * FROM students;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">&gt;commit;</span></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">+------+-----------+------------+------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">| s_id | name      | birth      | sex  |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">+------+-----------+------------+------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">|    1 | 赵雷      | 1990-01-01 |    0 |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">|    2 | 赵三      | 1990-02-02 |    0 |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">|    3 | 赵二      | 1990-02-03 |    0 |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">|    4 | 王菊      | 1989-12-03 |    1 |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">|    5 | 陈百祥    | 1992-10-03 |    1 |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">|    6 | 王志鹏    | 1991-05-12 |    0 |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">|    7 | 欧阳      | 1991-07-11 |    1 |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">|    8 | 王兴      | 1989-04-27 |    0 |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">+------+-----------+------------+------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">8 rows in set (0.00 sec)</span></pre></td></tr></table></figure>
+
+<p><strong>回退事务</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">start transaction;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">delete from student; &#x2F;&#x2F;删除表中数据</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">select * from student;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">rollback;  &#x2F;&#x2F;回滚</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">select * from student;</span></pre></td></tr></table></figure>
+
+<p>这里显式地展示了回退命令，事务的回退特性只能在事务处理内使用。通常在事务过程中某行mysql语句出现崩溃会导致整个事务取消提交，这个时候之前执行的语句将会被自动回退，当然<code>create</code>和<code>drop</code>语句将不会被回退，所以千万不要在事务中使用<code>drop</code>语句。当然我们也可以写好条件来回退。</p>
+<h3 id="使用保留点"><a href="#使用保留点" class="headerlink" title="使用保留点"></a>使用保留点</h3><p>如果在事务过程中发生错误，我们不想在自动回退的时候撤销的某部分语句这个时候可以使用保留点。这个功能可以理解为存档，这样可以不用<code>rollback</code>到起点而是<code>rollback savepoint</code>。</p>
+<p><strong>创建保留点占位符</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">savepoint delete1;</span></pre></td></tr></table></figure>
+<p><strong>回退到保留点</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">ROLLBACK TO delete1;</span></pre></td></tr></table></figure>
+
+<h3 id="事务的隔离性"><a href="#事务的隔离性" class="headerlink" title="事务的隔离性"></a>事务的隔离性</h3><p>由于事务的原子性，当多个线程都启用了事务的时候数据库系统必须进行隔离操作以确保各个线程的数据准确性。</p>
+<p>如果没有隔离，会出现以下几种情况：<br><strong>脏读（Dirty Read）</strong><br>一个事务处理过程里读取了另一个未提交的事务中的数据</p>
+<p><strong>不可重复读（NonRepeatable Read）</strong><br>对于数据库中的某个数据，一个事务范围内多次查询却返回了不同的数据值，这是由于在查询的间隔期间，另外一个事务修改并提交了该数据</p>
+<blockquote>
+<p>不可重复读和脏读的区别是，脏读是某一事务读取了另一个事务未提交的脏数据，而不可重复读则是读取了前一事务提交的数据。<br>　　在某些情况下，不可重复读并不是问题，比如我们多次查询某个数据当然以最后查询得到的结果为主。但在另一些情况下就有可能发生问题，例如对于同一个数据A和B依次查询就可能不同，A和B就可能打起来了……</p>
+</blockquote>
+<p><strong>幻读（Phantom Read）</strong><br>在一个事务中读取到了别的事务插入的数据，导致前后不一致</p>
+<p>总结来说就是多个线程中如果没有做事务隔离，那么不管其中一个事务有没有提交。修改或者插入数据都会影响到另外一条事务。</p>
+<h3 id="不同级别的隔离问题"><a href="#不同级别的隔离问题" class="headerlink" title="不同级别的隔离问题"></a>不同级别的隔离问题</h3><p><img src="https://user-gold-cdn.xitu.io/2017/4/14/a92a7b4620661b1e69a14822b03ba896?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<p><strong>READ-UNCOMMITTED 读未提交—脏读</strong><br>顾名思义就是会读取未提交事务的数据，此现象也称为脏读。以下面这个例子来说明：</p>
+<ol>
+<li>准备两个终端，终端A和终端B并且调整隔离级别为<code>READ-UNCOMMITTED</code>,任意一终端执行:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">mysql&gt; SET @@session.transaction_isolation &#x3D; &#39;READ-UNCOMMITTED&#39;;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">mysql&gt; update teacher set name&#x3D;&quot;赵老师&quot; where teacher_number&#x3D;2;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from teacher;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">| teacher_number | name      |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">|              1 | 王老师    |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">|              2 | 赵老师    |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">|              3 | 刘老师    |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr></table></figure></li>
+<li>登录终端B, 开启事务后查看表中数据:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from teacher;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">| teacher_number | name      |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">|              1 | 王老师    |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">|              2 | 赵老师    |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">|              3 | 刘老师    |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr></table></figure>
+此时终端A的事务并没有提交但是终端B却读取到了该数据，即脏读。</li>
+</ol>
+<p><strong>READ-COMMITTED 读已提交</strong><br>一个事务可以读取另一个已提交的事务，多次读取会造成不同的结果，这种现象称为不可重复读。</p>
+<ol>
+<li>同样准备两个终端，调整隔离级别为<code>READ-COMMITTED</code>:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">mysql&gt; SET @@session.transaction_isolation &#x3D; &#39;READ-COMMITTED&#39;;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">mysql&gt; begin;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">mysql&gt; update teacher set name&#x3D;&quot;李老师&quot; where teacher_number&#x3D;2;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from teacher;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">| teacher_number | name      |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">|              1 | 王老师    |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">|              2 | 李老师    |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">|              3 | 刘老师    |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr></table></figure>
+此时在终端A中看到数据更改为‘李老师’，切换到终端B,查询数据为未更改之前：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">select * from teacher;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">| teacher_number | name      |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">|              1 | 王老师    |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">|              2 | 赵老师    |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">|              3 | 刘老师    |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr></table></figure>
+接着登录终端A去提交：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">commit;</span></pre></td></tr></table></figure>
+切换到终端B,一定要加begin开启事务:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">mysql&gt; begin;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from teacher;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">| teacher_number | name      |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">|              1 | 王老师    |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">|              2 | 李老师    |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">|              3 | 刘老师    |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr></table></figure>
+终端B在开启事务后，第一次未能查询到最新的数据，在终端A中提交事务后才能读取到。这也说明了在此隔离级别下能查询到已提交的事务。</li>
+</ol>
+<p><strong>REPEATABLE-READ 可重复读</strong><br>这个是MySQL的默认隔离级别，在同一个事务里，select的结果是事务开始时的状态。因此，同样的select操作读到的结果是一致的，但是会有幻读效果。<br>但是MySQL 的 InnoDB 引擎可以通过 next-key locks机制来避免幻读。</p>
+<ol>
+<li>同样准备两个终端，设定隔离级别为<code>REPEATABLE-READ</code>并且开启事务。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">mysql&gt; SET @@session.transaction_isolation &#x3D; &#39;REPEATABLE-READ&#39;;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">mysql&gt; begin;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from teacher;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">| teacher_number | name      |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">|              1 | 王老师     |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">|              2 | 蔡老师     |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">|              3 | 刘老师     |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr></table></figure>
+<ol start="2">
+<li>在另外一个终端也同样开启事务：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">mysql&gt; begin;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from teacher;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">| teacher_number | name      |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">|              1 | 王老师     |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">|              2 | 蔡老师     |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">|              3 | 刘老师     |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr></table></figure></li>
+<li>在终端A中修改数据并提交：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">mysql&gt; update teacher set name &quot;张老师&quot; where teacher_number&#x3D;2;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">mysql&gt; commit;</span></pre></td></tr></table></figure></li>
+<li>登录终端B查询数据：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from teacher;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">| teacher_number | name      |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">|              1 | 王老师     |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">|              2 | 蔡老师     |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">|              3 | 刘老师     |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr></table></figure>
+通过这一步可以证明，在该隔离级别下已经读取不到别的已提交的事务，如果想看到 mysql 终端 A 提交的事务，在 mysql 终端 B 将当前事务提交后或者再重新开启事务然后查询就可以读取到 mysql 终端 A 提交的事务。我们接着实验，看看在该隔离级别下是否会存在别的问题。</li>
+</ol>
+<p>同样的情况不是发生在修改数据而是插入数据的时候,会遇到主键冲突的错误。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">insert into teacher(teacher_number, name) values(4, &#39;龚老师&#39;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">Lock wait timeout exceeded; try restarting transaction</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from teacher;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">| teacher_number | name      |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">|              1 | 王老师    |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">|              2 | 金老师    |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">|              3 | 刘老师    |</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">+----------------+-----------+</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">3 rows in set (0.00 sec)</span></pre></td></tr></table></figure>
+<p>此时在终端B中明明没有查询到第4条数据为什么会出现主键冲突呢？这个就是在可重复读隔离级别下可能产生的幻读。这种情况只在MySQL中出现，Oracle则不会。</p>
+<p><strong>序列化 SERIALIZABLE</strong><br>在该隔离级别下事务都是串行顺序执行的，MySQL数据库的InnoDB引擎会给读操作隐式加一把读共享锁，从而避免了脏读、不可重读复读和幻读问题。</p>
+<ol>
+<li>准备两个终端，设置隔离级别为<code>SERIALIZABLE</code>,开启事务并且插入数据<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">SET @@session.transaction_isolation &#x3D; &#39;SERIALIZABLE&#39;;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">mysql&gt; begin;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into teacher(teacher_number,name) values(4, &#39;李老师&#39;);</span></pre></td></tr></table></figure></li>
+<li>先不提交，登录终端B打开事务，查询数据:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">mysql&gt; begin;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from teacher;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">Lock wait timeout exceeded; try restarting transaction</span></pre></td></tr></table></figure></li>
+<li>会发现事务会被锁住，出现这种情况就说明我们的事务没有提交导致，切换到终端A去提交：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">commit;</span></pre></td></tr></table></figure>
+一旦事务提交后，终端B会立即解锁返回相应的数据。否则会一直卡住，直到超时，其中超时参数是由<code>innodb_lock_wait_timeout</code>控制。由于每条select语句都会加锁，所以该隔离级别的数据库并发能力最弱，但是有些资料表明该结论也不一定对，如果感兴趣，您可以自行做个压力测试。</li>
+</ol>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>loannes</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/MySQL/"># MySQL</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/01/17/Django%E6%A1%86%E6%9E%B6%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/">Django框架流程分析</a>
+            
+            
+            <a class="next" rel="next" href="/2019/12/25/%E7%AE%97%E6%B3%95%E5%9B%BE%E8%A7%A3%E4%B9%8B%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/">算法图解之广度优先搜索</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
