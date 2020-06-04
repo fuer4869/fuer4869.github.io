@@ -12,7 +12,7 @@
 
 
 
-<title>算法图解笔记(一) \-\-- 选择排序、二分查找 | loannes&#39;s blog</title>
+<title>算法图解笔记（四）---哈希表 | loannes&#39;s blog</title>
 
 
 
@@ -169,7 +169,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">算法图解笔记(一) \-\-- 选择排序、二分查找</h1>
+            <h1 class="post-title">算法图解笔记（四）---哈希表</h1>
             
                 <div class="post-meta">
                     
@@ -178,7 +178,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">十一月 9, 2019&nbsp;&nbsp;11:12:19</a>
+                        Date: <a href="#">十一月 16, 2019&nbsp;&nbsp;14:56:26</a>
                         </span>
                     
                     
@@ -187,25 +187,35 @@
         </header>
 
         <div class="post-content">
-            <p>=========================================</p>
-<p><img src="https://image.fundebug.com/2019-03-27-data_structure.png" alt=""></p>
-<h3 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h3><p>是一个在有序元素列表中的查找的算法<br>原理：如这个列表长度是10000，通过算法排除不满足条件的另一半来查找。</p>
-<p>比如从100个数字中找到某个数字的索引，可以先找到50进行比较来缩小范围。如果大于50就再拿75做比较，以此类推，直到找到该数字。</p>
-<p>这样的二分算法能从原先的暴力查找（最坏情况下）100次减少到7次。</p>
-<p>记做公式：<br>$$log_2 n$$</p>
-<h3 id="算法运行时间"><a href="#算法运行时间" class="headerlink" title="算法运行时间"></a>算法运行时间</h3><p>运行时间的增速:随着数据量的增加，运行时间会出现递增的情况。优秀的算法增速越少，比如二分查找和简单查找在10亿个算法的情况下，简单查找需要11天才能查找玩，而二分查找只需要32毫秒。</p>
-<p>算法的速度指的的操作数的增速。也就是时间复杂度</p>
-<h5 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h5><p>缺点：添加新元素如果遇到内存空间被占用，需要额外申请空间，效率会降低。频繁插入和删除操作不适合数组。</p>
-<h5 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h5><p>优点：每个元素都存储着下一个元素的地址，如果是有序的读取那读取速度将快于数组。适合大批量列表</p>
-<p>如果是有序读取，插入操作频繁的话是链表占优<br>如果是无序读取，插入操作比较少的话是数组占优</p>
-<p>数组：<br>读取：O(1)<br>插入：O(n)<br>删除：O(n)</p>
-<p>链表：<br>读取：O(n)<br>插入：O(1)<br>删除：O(1)</p>
-<h4 id="选择排序例题"><a href="#选择排序例题" class="headerlink" title="选择排序例题"></a>选择排序例题</h4><p>对一个数组进行从小到大排列<br>思路就是遍历整个数组，将每个数字与其他数字进行比较。选择排序的优化在于第一轮被拿出来做比较确定为最小的数字将会被踢出数组，不会参与到下一轮的比较。</p>
-<p>+———————————–+———————————–+<br>|     1                             |     def smallest(list):           |<br>|     2                             |       small_value = list[0]       |<br>|     3                             |      small_index = 0              |<br>|     4                             |                                   |<br>|     5                             |      for i in range(1,len(list)): |<br>|     6                             |                                   |<br>|     7                             |         if list[i] &lt; small_value: |<br>|     8                             |                                   |<br>|     9                             |             small_value = list[i] |<br>|     10                            |              small_index = i      |<br>|     11                            |        return small_index         |<br>|     12                            |                                   |<br>|     13                            |     # 选择排序                    |<br>|     14                            |     def select_sort(list):        |<br>|     15                            |       newlist = []                |<br>|     16                            |       for i in range(len(list)):  |<br>|                                   |                                   |<br>|                                   |            small = smallest(list) |<br>|                                   |                                   |<br>|                                   |   newlist.append(list.pop(small)) |<br>|                                   |        return newlist             |<br>+———————————–+———————————–+</p>
-<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><ul>
-<li>需要存储多个元素时可以考虑使用数组或者链表，时刻记得他们之间的优缺点。</li>
-<li>数组的读取速度很快</li>
-<li>链表的插入和删除速度很快</li>
+            <p><img src="https://image.fundebug.com/2019-03-27-data_structure.png" alt=""></p>
+<h3 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h3><p>哈希表又称为散列表，是一种key-value表结构。由哈希函数和数组组成，它的原理是通过哈希函数将传入的key值计算出索引，最后从数组中通过索引快速获取数据。</p>
+<p><strong>哈希表结构图</strong></p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/HASHTB12.svg/300px-HASHTB12.svg.png" alt=""></p>
+<p>一般情况下它的时间复杂度为O(1)，相比较于有序列表，它的时间复杂度为O(logn)。</p>
+<p>哈希表与列表最大的区别在于哈希表需要通过哈希函数中的算法来将key值换算成列表的索引，并且同一个key只能指向与同一个索引，也就是说一旦某个key换算成了一个索引后任何其他key都无法换算成该索引。如果出现重复的索引就称之为哈希碰撞。</p>
+<p><img src="https://www.kawabangga.com/wp-content/uploads/2017/12/Hash_function.svg_-300x203.png" alt=""></p>
+<p>在常用的语言中，哈希表通常以字典（dict）的形式表现。</p>
+<h3 id="哈希函数"><a href="#哈希函数" class="headerlink" title="哈希函数"></a>哈希函数</h3><p>构造哈希函数有多种方式，比如直接寻址法、数字分析法、平方取中法、折叠法、随机数法、除留余数法。</p>
+<p>由于哈希函数有可能会出现不同的输入值会输出相同的输出值的情况，这种情况称为碰撞。<br>所以一个好的哈希算法需要具备以下几点：</p>
+<ul>
+<li>抗碰撞性，尽量避免冲突。</li>
+<li>抗篡改性，只要改动一个字节，其哈希值也会很大不同。</li>
+<li>查找效率</li>
+</ul>
+<h3 id="碰撞处理"><a href="#碰撞处理" class="headerlink" title="碰撞处理"></a>碰撞处理</h3><p>再好的哈希算法都有可能会有碰撞的可能，越好的算法碰撞几率越小，如<code>x1!=x2</code>,结果输出：<code>f(x1)=f(x2)</code>这种情况出现，所以我们必须得处理碰撞的情况。<br>常用的碰撞处理方式有以下几种：</p>
+<ul>
+<li><strong>线性探测（Linear probing）</strong> 如果有冲突就找下一个位置直到找到空位为止。线性探测是以x+1,x+2…x+n的方式进行查找</li>
+<li><strong>二次探测</strong> 二次探测是以x+1^2, x+2^2以这种方程进行查找</li>
+<li><strong>链表法</strong> 在每个索引出都指向一个链表，把碰撞的数据存储在链表中</li>
+<li><strong>双重散列</strong> 如果出现碰撞会用第二个散列函数重新计算以此类推</li>
+</ul>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
+<li>哈希表的核心就是哈希函数，哈希函数写的好就是个好的哈希表</li>
+<li>哈希表最怕的就是冲突，一旦遇到冲突最坏情况会造成时间复杂度为O(n)</li>
+<li>哈希表的查找，插入和删除都很快</li>
+<li>哈希表中有一个填装因子，如果该系数超过了一定量就需要对数组进行扩容了，系数调整的低也是一种避免冲突的方式，但是会牺牲空间</li>
+<li>哈希表可用于缓存数据，Redis的数据格式就是哈希表</li>
+<li>哈希表非常适合用于避免重复</li>
 </ul>
 
         </div>
@@ -248,10 +258,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2019/11/09/%E5%A4%A7%E8%AF%9D%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E7%AE%97%E6%B3%95%20/">大话数据结构第二章 算法</a>
+                <a class="prev" rel="prev" href="/2019/12/04/%E3%80%90MySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%91%E4%BA%86%E8%A7%A3MySQL/">【MySQL必知必会】了解MySQL</a>
             
             
-            <a class="next" rel="next" href="/2019/11/08/%E5%A4%A7%E8%AF%9D%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%20/">大话数据结构第一章 数据结构</a>
+            <a class="next" rel="next" href="/2019/11/16/%E7%AE%97%E6%B3%95%E5%9B%BE%E8%A7%A3%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89---%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%20/">算法图解笔记（三）\-\--快速排序</a>
             
         </section>
 
