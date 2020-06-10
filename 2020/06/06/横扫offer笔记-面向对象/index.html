@@ -1,0 +1,30 @@
+<ol>
+<li>不可变数据类型是永远不会被改变的。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"> const int i &#x3D; 0; &#x2F;&#x2F;指定变量i为不可变常量</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"> int * j &#x3D; (int *)&amp;i; &#x2F;&#x2F;强行将j的指针指向常变量i, &amp;i指的是得到变量i的内存地址</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"> * j &#x3D; 1;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">printf(&quot;%d %d&quot;, i, *j) 最终得到0，1</span></pre></td></tr></table></figure>
+因为i是常变量（不可改变的变量），所以即使指针变量j指向了i的地址之后重新赋值。这个时候内存会为常变量开辟一个新的内存地址来存储原始值0，并且在输出的时候使用的还是原来的值。</li>
+</ol>
+<p><code>*j</code>指的是这个指针变量所指向的值，也就是它所存储的内存地址，通过该地址找到的值<br>如果这个时候输出<code>j</code>,那么将打印出<code>*j</code>中存储的内存地址</p>
+<ol start="2">
+<li>在16位机器上，下面这段代码输出结果：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">int i &#x3D; 65536;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    std::cout &lt;&lt;i;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    i &#x3D; 65535;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    std::cout&lt;&lt;i;</span></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>65536部分</strong><br>在c语言中int类型是带符号的32位整型。题中i=65536,我们把它转为2进制</p>
+<p>1,0000,0000,0000,0000, 超过了16位二进制的范围，所以会把第一位去掉变成0000,0000,0000,0000，结果为0</p>
+<p><strong>65535部分</strong><br>补码的表示方法是: 正数的补码就是其本身, 负数的补码是在其原码的基础上, 符号位不变, 其余各位取反, 最后 +1. (即在反码的基础上 +1)<br>65535 转换成二进制位1111 1111 1111 1111. int类型采用补码形式，所以最后会通过补码变为-1。</p>
+<p>计算方式：<br>原码：</p>
+<p>[+1]原 = 0000 0001<br>[-1]原 = 1000 0001</p>
+<p>反码<br>反码的表示方法是: 正数的反码是其本身，负数的反码是在其原码的基础上, 符号位不变，其余各个位取反。<br>[+1] = [00000001]原 = [00000001]反<br>[-1] = [10000001]原 = [11111110]反</p>
+<p>补码<br>补码的表示方法是: 正数的补码就是其本身, 负数的补码是在其原码的基础上, 符号位不变, 其余各位取反, 最后 +1. (即在反码的基础上 +1)<br>[+1] = [00000001]原 = [00000001]反 = [00000001]补<br>[-1] = [10000001]原 = [11111110]反 = [11111111]补</p>
+<p><a href="https://juejin.im/entry/58e597dada2f60005fe947af" target="_blank" rel="noopener">参考资料</a></p>
+<ol start="3">
+<li>下面这段代码输出d为：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">int a&#x3D;1, b&#x3D;0, c&#x3D;-1,d&#x3D;0;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">	d &#x3D; ++a || ++b &amp;&amp; ++c;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">	std::cout&lt;&lt;d&lt;&lt;endl;</span></pre></td></tr></table></figure>
+<code>++a</code>的结果为2，但是在逻辑运算中它就是真值True, 所以为1。 根据短路效应，||运算中左边如果为True则右边的无须再计算了。所以结果为1</li>
+</ol>
+<ol start="4">
+<li>在C++程序中调用被C编译器编译后的函数，为什么要加extern “C”声明？</li>
+</ol>
+<ol start="5">
+<li><p>extern int a;<br>指的是告诉编译器在其他地方已经定义了变量a,需要从另外的内存中去找。</p>
+</li>
+<li><p><code>typedef void(*FUN)()</code><br>定义以个名为FUN的类型，参数为空，返回值是void.</p>
+</li>
+<li></li>
+</ol>
