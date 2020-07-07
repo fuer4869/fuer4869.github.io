@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="loannes">
+
+
+
+
+
+<title>浅谈MySQL中的锁 | loannes&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+
+<meta name="generator" content="Hexo 4.1.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">loannes&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">loannes&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">浅谈MySQL中的锁</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">loannes</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">二月 5, 2020&nbsp;&nbsp;10:19:33</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p><img src="https://i.loli.net/2020/07/05/oMUgV5L8tjmBFbD.jpg" alt=""></p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>之前学习了MySQL的事务管理<a href="https://fuer4869.github.io/2020/01/03/%E3%80%90MySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%91%E7%AE%A1%E7%90%86%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86/" target="_blank" rel="noopener">MySQL管理事务处理</a><br>在数据库处理高并发的时候需要涉及到事务管理和锁的机制问题这两块知识。对于锁的处理一直是一个老生常谈的话题，内容太过复杂。这次借助这篇文章分享下我对Innodb中的锁的机制的理解。</p>
+<h1 id="锁的类型"><a href="#锁的类型" class="headerlink" title="锁的类型"></a>锁的类型</h1><p>从大分类来讲锁可以分为 <strong>乐观锁</strong> 和 <strong>悲观锁</strong>，</p>
+<p>InnoDB为了实现多粒度锁的机制，将锁分为</p>
+<ul>
+<li><strong>共享锁（S锁）</strong>  </li>
+<li><strong>独占锁（X锁）</strong></li>
+<li><strong>意向共享锁（IS锁）</strong></li>
+<li><strong>意向独占锁（IX锁）</strong></li>
+</ul>
+<p>什么是粒度，粒度分为 <strong>行锁</strong> 和 <strong>表锁</strong> 。关系还是蛮复杂的，接下来我们来一点一点捋清楚。</p>
+<p><strong>本篇文章主要是对MySQL的锁的机制做一个详解，所以接下来会把大量篇幅偏向于分析悲观锁</strong></p>
+<h1 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h1><p>乐观锁是以数据版本来实现的机制。使用乐观锁的时候会在数据表中加一个版本号字段如version。当读取数据的时候也会读取version，如果其他事务更新了数据后version值会加1，根据version值来判断是否是最新的数据。</p>
+<p>乐观锁与悲观锁最大的区别就是对于数据库性能开销上会节省很多，悲观锁中粒度越小开销越大。</p>
+<h1 id="悲观锁"><a href="#悲观锁" class="headerlink" title="悲观锁"></a>悲观锁</h1><p>悲观锁的实现主要是依靠数据库的锁机制，其核心目的为了保证事务的隔离性。在操作数据的时候会担心数据产生冲突，为了避免冲突常常需要获取锁来对操作相同。</p>
+<p>悲观锁中主要以两种形式来对数据进行加加锁，一种是<strong>表锁</strong>一种是<strong>行锁</strong>。顾名思义，表锁就是对整张表进行加锁，执行效率会比行锁快，但是并发能力会大大降低。而行锁就是对一行或多行进行加锁，执行效率会比表锁差，但是并发能力强。</p>
+<h2 id="共享锁（S锁）"><a href="#共享锁（S锁）" class="headerlink" title="共享锁（S锁）"></a>共享锁（S锁）</h2><p>悲观锁中的一种，用于对行数据加锁，允许其他事务读取数据，但是不允许其他事务对其修改直到释放该锁，否则会造成阻塞。想要解决阻塞必须等加锁的事务提交。</p>
+<p><img src="https://s1.ax1x.com/2020/07/06/UPQq4U.png" alt="UPQq4U.png"></p>
+<h2 id="独占锁（X锁）"><a href="#独占锁（X锁）" class="headerlink" title="独占锁（X锁）"></a>独占锁（X锁）</h2><p>独占锁又称为写锁，意思就是如果一个事务对某一行数据加了X锁，其他事务将不能对该数据进行任何加锁操作，不能再加<strong>X锁</strong>也不能再加<strong>S锁</strong>，其他事务只能读取该数据。所以这种锁也有个说法叫排他锁，是一种非常悲观的锁。</p>
+<p><img src="https://s1.ax1x.com/2020/07/06/UPGv0s.png" alt="UPGv0s.png"></p>
+<p><strong>到这里可能有个疑问，S锁与X锁是互相排斥的，那么它们之间是如何知道对方目标数据是否加了锁，加的又是何种锁？</strong></p>
+<h1 id="冲突时如何产生的"><a href="#冲突时如何产生的" class="headerlink" title="冲突时如何产生的"></a>冲突时如何产生的</h1><p>在我们为某行数据申请了S锁或者X锁之后，InnoDB会对该数据所在的表申请意向锁，同时其他事务想对这张表申请X锁，这个时候意向锁告知了其他事务这张表中的某行数据加了某种锁，至此冲突就产生了。意向锁分为：</p>
+<ul>
+<li>意向共享锁</li>
+<li>意向独占锁</li>
+</ul>
+<h2 id="意向共享锁（IS锁）"><a href="#意向共享锁（IS锁）" class="headerlink" title="意向共享锁（IS锁）"></a>意向共享锁（IS锁）</h2><p>所有意向锁都是一种不与行级产生冲突的锁，意向共享锁指的是事务有意向对表中的某些行加共享锁（S锁），在我们申请S锁的时候由InnoDB自动帮我们添加。这里我们可以理解为是一种标志，表示着该表中有些行被共享锁锁住了。</p>
+<h2 id="意向独占锁（IX锁）"><a href="#意向独占锁（IX锁）" class="headerlink" title="意向独占锁（IX锁）"></a>意向独占锁（IX锁）</h2><p>事务有意向对表中的某些行加独占锁（X锁）。同意向共享锁，在我们申请X锁的时候InnoDB会自动帮我们添加这层锁，表示这个表中的某些行被锁上了独占锁。</p>
+<h2 id="意向锁的作用是什么"><a href="#意向锁的作用是什么" class="headerlink" title="意向锁的作用是什么"></a>意向锁的作用是什么</h2><p>比如现在一个场景：事务A对数据表中的某行加上了S锁，然后事务B打算给数据表加上一个X锁，由于S锁与X锁本身存在冲突，所以事务B在加上X锁之前必须对整个表进行检查：</p>
+<ul>
+<li>检查该表是否加上了S锁</li>
+<li>检查该表中的某行数据是否加上了S锁</li>
+</ul>
+<p>要知道这两项检查是十分吃性能的，特别是第二条需要遍历整个表才能知道是否存在某行数据加上了S锁。整个时候意向锁就起到了作用，它类似于给该数据表贴上了标签，在事务B打算给这个表添加X锁的时候告诉了事务B，数据表中的某行存在S锁麻烦等它解锁后再加上X锁，这个时候事务B就立即产生了阻塞，而不会像以前需要等一段时间才阻塞。如果不阻塞的话会出现不可重复的的情况，这样就违背了事务的隔离性。</p>
+<p><strong>所以产生冲突时因为意向锁与其他锁产生了冲突，而不是S锁与X锁直接的冲突</strong></p>
+<h2 id="意向锁与S锁和X锁的冲突关系表"><a href="#意向锁与S锁和X锁的冲突关系表" class="headerlink" title="意向锁与S锁和X锁的冲突关系表"></a>意向锁与S锁和X锁的冲突关系表</h2><p><strong>（S锁与X锁都是表锁的情况下）</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">锁类型</th>
+<th align="center">S</th>
+<th align="center">X</th>
+<th align="center">IS</th>
+<th align="center">IX</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">S</td>
+<td align="center">兼容</td>
+<td align="center">冲突</td>
+<td align="center">兼容</td>
+<td align="center">冲突</td>
+</tr>
+<tr>
+<td align="center">X</td>
+<td align="center">冲突</td>
+<td align="center">冲突</td>
+<td align="center">冲突</td>
+<td align="center">冲突</td>
+</tr>
+<tr>
+<td align="center">IS</td>
+<td align="center">兼容</td>
+<td align="center">冲突</td>
+<td align="center">兼容</td>
+<td align="center">兼容</td>
+</tr>
+<tr>
+<td align="center">IX</td>
+<td align="center">冲突</td>
+<td align="center">冲突</td>
+<td align="center">兼容</td>
+<td align="center">兼容</td>
+</tr>
+</tbody></table>
+<p>如果S锁与X锁都是行锁的话，那意向锁将与它们互相兼容，因为InnoDB不会对行添加意向锁只会对该行所在的表添加意向锁。</p>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="行锁"><a href="#行锁" class="headerlink" title="行锁"></a>行锁</h1>
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>loannes</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/MySQL-MySQL%E9%94%81%EF%BC%8CInnoDB/"># MySQL, MySQL锁，InnoDB</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/02/19/python%E8%BF%AD%E4%BB%A3%E5%99%A8%E3%80%81%E7%94%9F%E6%88%90%E5%99%A8%E7%9C%8B%E5%AE%8C%E8%BF%99%E7%AF%87%E4%BD%A0%E5%B0%B1%E6%87%82%E4%BA%86/">python迭代器、生成器看完这篇你就懂了</a>
+            
+            
+            <a class="next" rel="next" href="/2020/01/17/Django%E6%A1%86%E6%9E%B6%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/">Django框架流程分析</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
