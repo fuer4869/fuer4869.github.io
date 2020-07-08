@@ -189,6 +189,24 @@
         <div class="post-content">
             <p><img src="https://i.loli.net/2020/07/05/oMUgV5L8tjmBFbD.jpg" alt=""></p>
 <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>之前学习了MySQL的事务管理<a href="https://fuer4869.github.io/2020/01/03/%E3%80%90MySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%91%E7%AE%A1%E7%90%86%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86/" target="_blank" rel="noopener">MySQL管理事务处理</a><br>在数据库处理高并发的时候需要涉及到事务管理和锁的机制问题这两块知识。对于锁的处理一直是一个老生常谈的话题，内容太过复杂。这次借助这篇文章分享下我对Innodb中的锁的机制的理解。</p>
+<h1 id="快照读与当前读"><a href="#快照读与当前读" class="headerlink" title="快照读与当前读"></a>快照读与当前读</h1><p>在了解锁的机制前我们得先了解快照读与当前读的区别。</p>
+<p>一般我们常用的<code>select * from ...</code>也是读，共享锁那也是读，它们之间有什么区别呢？其实MySQL中的读与事务隔离级别中的读是不同的读。</p>
+<p>在 MVCC 并发控制中，读操作可以分成两类:快照读 (snapshot read)与当前读 (current read)。 快照读，读取的是记录的可见版本 (有可能是历史版本)，不用加锁。当前读，读取的是记录的最新版本，并且，当前读返回的记录，都会加上锁，保证其他事务不会再并发修改这条记录。</p>
+<ul>
+<li><p>我们常用的<code>select * from table where ...</code>后面没有加锁的话那就属于快照读。</p>
+</li>
+<li><p>当前读是一种特殊的读操作，像插入、更新、删除都属于当前读。</p>
+<ul>
+<li><code>select * from table where ? lock in share mode;</code></li>
+<li><code>select * from table where ? for update;</code></li>
+<li><code>insert into table values(...);</code></li>
+<li><code>update table set ? where ?;</code></li>
+<li><code>delete from table where ?;</code></li>
+</ul>
+</li>
+</ul>
+<p>为什么insert、update、delete也属于当前读，<strong>高性能MySQL</strong>中有提到一个update的操作流程首先会把sql语句发送给MySQL，MySQL server会根据where条件查询到满足条件的第一条数据，然后InnoDB引擎会将该条数据返回并加锁。MySQL server收到这条加锁的数据后对其进行更新，再执行下一条数据。同样delete也是这种流程，只有insert流程会和它们不一样但是也会有当前读的环节。</p>
+<hr>
 <h1 id="锁的类型"><a href="#锁的类型" class="headerlink" title="锁的类型"></a>锁的类型</h1><p>从大分类来讲锁可以分为 <strong>乐观锁</strong> 和 <strong>悲观锁</strong>，</p>
 <p>InnoDB为了实现多粒度锁的机制，将锁分为</p>
 <ul>
@@ -208,7 +226,7 @@
 <h2 id="独占锁（X锁）"><a href="#独占锁（X锁）" class="headerlink" title="独占锁（X锁）"></a>独占锁（X锁）</h2><p>独占锁又称为写锁，意思就是如果一个事务对某一行数据加了X锁，其他事务将不能对该数据进行任何加锁操作，不能再加<strong>X锁</strong>也不能再加<strong>S锁</strong>，其他事务只能读取该数据。所以这种锁也有个说法叫排他锁，是一种非常悲观的锁。</p>
 <p><img src="https://s1.ax1x.com/2020/07/06/UPGv0s.png" alt="UPGv0s.png"></p>
 <p><strong>到这里可能有个疑问，S锁与X锁是互相排斥的，那么它们之间是如何知道对方目标数据是否加了锁，加的又是何种锁？</strong></p>
-<h1 id="冲突时如何产生的"><a href="#冲突时如何产生的" class="headerlink" title="冲突时如何产生的"></a>冲突时如何产生的</h1><p>在我们为某行数据申请了S锁或者X锁之后，InnoDB会对该数据所在的表申请意向锁，同时其他事务想对这张表申请X锁，这个时候意向锁告知了其他事务这张表中的某行数据加了某种锁，至此冲突就产生了。意向锁分为：</p>
+<h1 id="冲突时如何产生的（意向锁）"><a href="#冲突时如何产生的（意向锁）" class="headerlink" title="冲突时如何产生的（意向锁）"></a>冲突时如何产生的（意向锁）</h1><p>在我们为某行数据申请了S锁或者X锁之后，InnoDB会对该数据所在的表申请意向锁，同时其他事务想对这张表申请X锁，这个时候意向锁告知了其他事务这张表中的某行数据加了某种锁，至此冲突就产生了。意向锁分为：</p>
 <ul>
 <li>意向共享锁</li>
 <li>意向独占锁</li>
@@ -263,7 +281,138 @@
 </tr>
 </tbody></table>
 <p>如果S锁与X锁都是行锁的话，那意向锁将与它们互相兼容，因为InnoDB不会对行添加意向锁只会对该行所在的表添加意向锁。</p>
-<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="行锁"><a href="#行锁" class="headerlink" title="行锁"></a>行锁</h1>
+<h1 id="行锁"><a href="#行锁" class="headerlink" title="行锁"></a>行锁</h1><p>行锁是基于<code>索引</code>实现的，所以一旦某个加锁操作没有使用索引，那么该锁就会退化为<code>表锁</code>。还有另外一种情况也会退化为表锁，当数据表数据太少或者当前锁的记录数接近数据表的记录数就会退化为表锁。</p>
+<p>行锁有分三种算法：</p>
+<ul>
+<li>记录锁</li>
+<li>间隙锁</li>
+<li>临键锁（Next-Key Lock)</li>
+</ul>
+<h2 id="记录锁"><a href="#记录锁" class="headerlink" title="记录锁"></a>记录锁</h2><p>记录锁是对某行记录加锁，如<code>SELECT c1 FROM t WHERE c1 = 10</code>，可以防止其他事务对该记录<code>c1=10</code>的插入、更新和删除操作。其中<code>c1</code>必须是<strong>主键</strong>或者<strong>唯一索引列</strong>，查询条件也必须是<strong>=</strong>精准匹配，不能为<strong>&lt;</strong>，<strong>&gt;</strong>，<strong>like</strong>等，否则会退化成临建锁（Next-Key Lock)</p>
+<h2 id="间隙锁"><a href="#间隙锁" class="headerlink" title="间隙锁"></a>间隙锁</h2><p>而间隙锁则与记录锁相反，它是基于<strong>非唯一索引</strong>的记录，它将锁定<strong>一定范围内的索引记录</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">SELECT * FROM student WHERE score BETWEEN 90 AND 100 FOR UPDATE;</span></pre></td></tr></table></figure>
+
+<p>这段sql语句的作用可以理解为它能防止其他事务将score为95的记录插入进去，意思就是在（90,100]这个区间内是不能插入数据的，但是不包括90。</p>
+<p>如果像下面这条sql在查询的时候没有设定范围，那么它的区间就是（1，10]。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">SELECT * FROM student WHERE id &#x3D; 10 FOR UPDATE;</span></pre></td></tr></table></figure>
+
+<p>如果，上面语句中id列没有建立索引或者是非唯一索引时，则语句会产生间隙锁。</p>
+<p>如果，搜索条件里有多个查询条件(即使每个列都有唯一索引)，也是会有间隙锁的。</p>
+<h2 id="临键锁"><a href="#临键锁" class="headerlink" title="临键锁"></a>临键锁</h2><p><strong>临键锁</strong>是记录锁和<strong>间隙锁</strong>（记录锁的防止插入、更改和删除 以及 <strong>间隙锁</strong>的索引前面间隙的区间锁定）的组合。因为<strong>间隙锁</strong>只能防止插入，结合了<strong>记录锁</strong>之后就能彻底的防止<strong>幻读</strong>了。（<strong>幻读</strong>并不是只有插入才产生<strong>幻读</strong>，删除操作也会造成幻读）。</p>
+<p><code>InnoDB</code>执行行级锁定，以使其在搜索或扫描表索引时对遇到的索引记录设置<strong>共享</strong>或<strong>排他锁</strong>。因此，行级锁实际上是索引<strong>记录锁</strong>。</p>
+<p><strong>临键锁</strong>只与<code>非唯一索引列</code>有关，在<code>唯一索引列</code>（包括<code>主键列</code>）上不存在<strong>临键锁</strong>。</p>
+<p>以下面这张表为例：</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>t_id</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>3</td>
+<td>四年一班</td>
+<td>10</td>
+</tr>
+<tr>
+<td>4</td>
+<td>四年一班</td>
+<td>22</td>
+</tr>
+<tr>
+<td>5</td>
+<td>四年一班</td>
+<td>30</td>
+</tr>
+</tbody></table>
+<p>索引<code>t_id</code>包含值10，22，30，<code>t_id</code>被锁上<strong>临建锁</strong>之后潜在的区间为：</p>
+<ul>
+<li><p>(-∞,10]</p>
+</li>
+<li><p>(10,22]</p>
+</li>
+<li><p>(22,30]</p>
+</li>
+<li><p>(30,+∞)</p>
+</li>
+</ul>
+<p>现在我们在事务A中执行（其中t_id是非唯一索引，id是唯一索引）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> t_id = <span class="number">22</span> <span class="keyword">FOR</span> <span class="keyword">UPDATE</span>;</span></pre></td></tr></table></figure>
+
+<p>这个时候InnoDB会将<code>t_id=22</code>这一行加上<strong>X锁</strong>,然后对它所在的区间以及下一个区间加上间隙锁。最终被锁住的区间为[10,30) 。</p>
+<h1 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h1><p><strong>死锁</strong>是指两个或两个以上的进程在执行过程中，由于竞争资源或者由于彼此通信而造成的一种阻塞的现象，若无外力作用，它们都将无法推进下去。此时称系统处于死锁状态或系统产生了死锁，这些永远在互相等待的进程称为死锁进程。</p>
+<p>InnoDB 引擎采取的是 <code>wait-for graph</code> 等待图的方法来自动检测死锁，如果发现死锁会自动回滚一个事务。</p>
+<table>
+<thead>
+<tr>
+<th align="center">step</th>
+<th align="center">事务A</th>
+<th align="center">事务B</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">begin;</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center"></td>
+<td align="center">begin;</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">SELECT * FROM table WHERE id = 1 FOR UPDATE;</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center"></td>
+<td align="center">SELECT * FROM table WHERE id=2 FOR UPDATE;</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">（此时事务A并不知道id=2这条索引被加上了X锁）<br>SELECT * FROM table WHERE id = 2 FOR UPDATE;<br>(发生了阻塞)</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center"></td>
+<td align="center">同样事务B也不知道事务A做了什么<br>SELECT  * FROM table WHERE id = 1 FOR UPDATE;<br>(造成了死锁)</td>
+</tr>
+</tbody></table>
+<p>我们对每一步操作分析以下：</p>
+<ol>
+<li><p>第三步开始我们在事务A中对索引<code>id</code>为1的记录加上了<strong>X型记录锁</strong></p>
+</li>
+<li><p>第三步我们在事务B中对索引<code>id</code>为2的记录加上了<strong>X型记录锁</strong></p>
+</li>
+<li><p>第五步在事务A中对索引<code>id</code>为2的记录加上<strong>X型记录锁</strong>，但是由于索引<code>id</code>为2的记录已经被加上了<strong>X锁</strong>，又由于<strong>X锁</strong>的排他性导致无法对其加锁所以发生了阻塞。</p>
+</li>
+<li><p>第六步，这个时候事务B又想对<code>id</code>为1的记录加上X锁，由于<code>id</code>为1的记录已经加上了<strong>X锁</strong>也造成了阻塞。</p>
+</li>
+<li><p>此时搞笑的事情就发生了，事务A在等待事务B中第四步的锁的释放，而事务B又在等待事务A在第三步加上的锁的释放，从而就产生循环等待导致了死锁。</p>
+</li>
+<li><p>死锁一旦发生后会被<code>MySQL</code>服务器的死锁检测机制检测到了，所以选择了一个事务进行回滚，并向客户端发送一条消息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">ERROR 1213 (40001): Deadlock found when trying to get lock; try restarting transaction</span></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p><strong>那么如何避免死锁呢？我会在下一篇文章中介绍死锁的分析思路以及如何解决死锁问题</strong></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li>InnoDB为记录加锁是基于索引的，如果索引是唯一索引（如主键）那么会为其加上记录锁。如果是非唯一索引则会给该记录加上间隙锁。如果是非索引列，则会退化为表锁。另外如果sql`语句中的查询范围接近于表中的总行数，那也会退化成表锁。</li>
+<li>并不是间隙锁解决了幻读问题，而是间隙锁加上记录锁的组合（Next-Key Lock）才是真正解决幻读问题的方案。</li>
+<li>在RR隔离级别下，不是只有插入操作才会造成幻读删除也会。这也是为什么很多人都错认为间隙锁解决了幻读问题。</li>
+</ul>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ul>
+<li><a href="https://juejin.im/post/5cd8283ae51d453a907b4b29" target="_blank" rel="noopener">聊聊MVCC和Next-key Locks</a></li>
+<li><a href="https://juejin.im/post/5b8577c26fb9a01a143fe04e" target="_blank" rel="noopener">详解 MySql InnoDB 中的三种行锁（记录锁、间隙锁与临键锁）</a></li>
+<li><a href="https://juejin.im/post/5b82e0196fb9a019f47d1823#heading-5" target="_blank" rel="noopener">全面了解mysql锁机制（InnoDB）与问题排查</a></li>
+<li>Baron Scbwartz等 著，王小东等 译；高性能MySQL（High Performance MySQL）；电子工业出版社，2010</li>
+<li><a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-locking.html" target="_blank" rel="noopener">MySQL 8.0参考手册</a></li>
+</ul>
+
         </div>
 
         
