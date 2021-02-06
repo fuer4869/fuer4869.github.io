@@ -1,0 +1,370 @@
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>计算机的基本组成</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">计算机的基本组成</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%AE%BA"><span class="toc-text">一、计算机系统概论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA"><span class="toc-text">二、数据表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E8%BF%90%E7%AE%97%E6%96%B9%E6%B3%95%E4%B8%8E%E8%BF%90%E7%AE%97%E5%99%A8"><span class="toc-text">三、运算方法与运算器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F"><span class="toc-text">四、存储系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%8C%87%E4%BB%A4%E7%B3%BB%E7%BB%9F"><span class="toc-text">五、指令系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E7%A7%8D%E6%8C%87%E4%BB%A4%E6%A0%BC%E5%BC%8F"><span class="toc-text">三种指令格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%80%BB%E7%BA%BF"><span class="toc-text">七、总线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E7%B3%BB%E7%BB%9F"><span class="toc-text">八、输入输出系统</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90"><i class="tag post-item-tag">计算机组成</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">计算机的基本组成</h1><time class="has-text-grey" datetime="2020-06-08T04:56:16.000Z">2020-06-08</time><article class="mt-2 post-content"><h3 id="一、计算机系统概论">一、计算机系统概论</h3>
+<ol>
+<li>冯诺依曼计算机组成</li>
+</ol>
+<p>主机（cpu+内存），外设（输入设备+输出设备+外存），总线（地址总线+数据总线+控制总线）</p>
+<ol start="2">
+<li>计算机层次结构</li>
+</ol>
+<p>应用程序-高级语言-汇编语言-操作系统-指令集架构层-微代码层-硬件逻辑层</p>
+<ol start="3">
+<li>计算机性能指标</li>
+</ol>
+<p>非时间指标</p>
+<p>【字长】机器一次能处理的二进制位数 ，常见的有32位或64位<br>
+【总线宽度】数据总线一次能并行处理的最大信息位数，一般指运算器与存储器之间的数据总线的位数<br>
+【主存容量】主存的大小<br>
+【存储带宽】单位时间内与主存交换的二进制位数 B/s<br>
+时间指标</p>
+<p>【主频f】时钟震荡的频率 Hz；【时钟周期T】时钟震荡一次的时间 t<br>
+【外频】cpu与主板之间同步的时钟频率，系统总线的工作频率；【倍频】主频与外频的倍数 =主频/外频<br>
+【CPI】clock cycles per instruction，执行一条指令需要的周期数（平均）<br>
+【MIPS】million instructions per second，每秒执行的指令总条数 MIPS= f / CPI （忽略单位）</p>
+<h3 id="二、数据表示">二、数据表示</h3>
+<ol>
+<li>基本概念</li>
+</ol>
+<p>真值：+0101，-0100<br>
+机器数： [x]原=0101<br>
+2. 几种机器数</p>
+<p>原码：x = -0101，[x]原 = 1101<br>
+反码：x = -0101，[x]反 = 1010<br>
+补码：x = -0101，[x]补 = 1011<br>
+移码：x = -0101，[x]移 = 2^n + x = 0011<br>
+PS：这里说说对补码与移码自己的理解。补码是为了化减法为加法方便计算机设计运算，移码是为了方便比较大小，用在浮点数的阶码中。<br>
+补码——任何一个有模的系统中，减法都可以通过加其补码来表示。最简单的例子就是以12为模的钟表，比如现在是3点，那么-5个小时就等于+7个小时，都是10点。这里7就是5的补码。<br>
+移码——数据对应关系一次挪动一下位置，使得看起来小的数真值也小。比如原本0000表示0，现在表示-128，然后0001表示-127，一直到1111表示+127，这样就方便比较了。<br>
+3. 定点数与浮点数</p>
+<p>定点数：小数点固定 x.xxxxxx，表示范围受限，忘掉它吧</p>
+<p>浮点数：数的范围和精度分别表示。</p>
+<p>一般格式 ：EEEE…EMMM…M，E部分是阶码（数的范围i），M部分是尾数（数的精度）。缺点：阶码和尾数位数不固定，太灵活了</p>
+<p>IEEE754格式：跟我背下来----</p>
+<p>32位的是（单精度）：1位符号位S + 8位偏指数E + 23位有效尾数M，偏移值为127。</p>
+<p>64位的是（双精度）：1位符号位S + 11位偏指数E + 52位有效尾数M，偏移值为1023。</p>
+<p>真值就是（32位为例） N = (-1)^S * 2^(E-127) * 1.M</p>
+<p>浮点数的特殊情况：</p>
+<p>E=0,M=0：机器零</p>
+<p>E=255,M=0：无穷大，对应于x/0</p>
+<p>E=255,M!=0：非数值NaN，对应0/0</p>
+<p>ps：附上一份IEEE754文档：<a target="_blank" rel="noopener" href="https://files.cnblogs.com/files/flashsun/7542008-2008.pdf">https://files.cnblogs.com/files/flashsun/7542008-2008.pdf</a></p>
+<ol start="4">
+<li>数据校验</li>
+</ol>
+<p>基本原理：增加冗余码</p>
+<p>码距：合法编码之间不同二进制位数的最小值</p>
+<p>码距与检错、纠错能力：</p>
+<p>码距 d&gt;=e+1：检查e个错误<br>
+码距 d&gt;=2t+1：纠正t个错误<br>
+码距 d&gt;=e+t+1：同时检查e个错误，并纠正t个错误。（e&gt;=t）<br>
+PS：这里说下我的理解，增加码距就是增加非法编码的数量，看到非法编码就算检查出错误了，而非法编码距离哪个合法编码比较进就认为正确的应该是什么（简单理解，可参考下面的图），也就是可以纠正错误。这里看到过一个好的几何理解图，仔细品味下：</p>
+<p>举个例子：比如一共有8位，码距为1则检查不出任何错误，因为所有编码都是合法编码。如果码距为2，那合法编码应该像 00000000，00000011，00001100，00001111这样，那如果出现00000001这样的非法编码就出错了，可检查一位错，但如果两位同时错了，则有可能又跳到另一个合法编码上了，就检查不出2位错。</p>
+<p>那如果码距是3，那合法编码应该像 00000000，00000111，00111000，00111111 这样，那如果出现一位错 00000001，或者两位错00000011，都是非法编码，都能检查出错误，并且此时可以纠正00000001为00000000，纠正00000011为00000111。但是三位同时错就检查不出了。</p>
+<p>常见校验策略：奇偶校验，CRC校验，海明校验</p>
+<p>ps：海明编码最强视频演示教程：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=373FUw-2U2k">https://www.youtube.com/watch?v=373FUw-2U2k</a></p>
+<h3 id="三、运算方法与运算器">三、运算方法与运算器</h3>
+<ol>
+<li>定点数运算及溢出</li>
+</ol>
+<p>定点数加减法：减法化加法，用补码直接相加，忽略进位</p>
+<p>溢出：运算结果超出了某种数据类型的表示范围</p>
+<p>溢出检测方法：统一思想概括为正正得负或负负得正则溢出，正负或负正不可能溢出</p>
+<p>方法1：V = XYS + XYS（XY为两个加数的符号位，S为结果的符号位，<code>_</code>表示非），那么V = 1则为溢出</p>
+<p>方法2：V = C0 ⊕ C1（C0是最高数据位产生的进位，C1是符号位产生的进位），那么V = 1则为溢出</p>
+<p>方法3：V = Xf1 ⊕ Xf2（数据采用变型补码 Xf1Xf2 X0X1X2X3… ）</p>
+<p>PS：以上方法都是利用正正得负负负得正则溢出为出发点的电路设计</p>
+<ol start="2">
+<li>补码一位乘法——Booth算法</li>
+</ol>
+<p>[x·y]补 = [x]补·( -y0＋∑ yi2-i )</p>
+<p>= [x]补·[ - y0 + y12-1 + y22-2 + … + yn2-n]</p>
+<p>= [x]补·[ - y0 + (y1 - y12-1) + (y22-1 - y22-2) + … + (yn2-(n-1) - yn2-n)]</p>
+<p>= [x]补·[(y1 - y0) + (y2 - y1) 2-1 + … + (yn - yn-1) 2-(n-1) + (0 - yn)2-n]</p>
+<p>总结起来设计数字电路的规则就是：</p>
+<p>为00或者为11的时候，直接右移一位<br>
+为01的时候，加x的补，然后右移一位<br>
+为10的时候，加-x的补，然后右移一位<br>
+PS：其实第一行和最后一行都能设计数字电路，为什么要从第一个式子推到最后一个式子呢？原因有两点：</p>
+<p>1）二进制中如果有0，可以不进行运算</p>
+<p>2）如果有连续的1可以减少计算次数，比如 a * 001111100 = a * (010000000 - 0000000100)</p>
+<p>所以每次判断 yn+1 - yn就可以减少计算次数了</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xisheng/p/9260861.html">https://www.cnblogs.com/xisheng/p/9260861.html</a></p>
+<ol start="3">
+<li>
+<p>定点数除法 — 略，没找到好的资料</p>
+</li>
+<li>
+<p>浮点数加减法</p>
+</li>
+</ol>
+<p>（1）求阶差，阶码小的对齐大的</p>
+<p>（2）尾数加减</p>
+<p>（3）结果规格化</p>
+<h3 id="四、存储系统">四、存储系统</h3>
+<ol>
+<li>存储系统层次结构</li>
+</ol>
+<p>主存速度缓慢的原因：主存增速与CPU不同步，执行指令期间多次访问主存</p>
+<p>主存容量不足的原因：</p>
+<p>存在制约主存容量的技术因素：如由CPU、主板等相关技术指标规定了主存容量<br>
+应用对主存容量需求不断扩大：window98 – 8M，windows 8 – 1G<br>
+-----&gt; 存储体系结构化层次： CPU – Cache1 – Cache2（解决速度） – 主存 – 辅存（解决容量）</p>
+<p>存储体系结构化层次理论基础：</p>
+<p>时间局部性：程序体现为循环结构<br>
+空间局部性：程序体现为顺序结构<br>
+2. 主存中的数据组织</p>
+<p>存储字长：主存的一个存储单元所包含的二进制位数，目前大多数计算机主存按字节编址，主要由32为和64位</p>
+<p>数据存储与边界的关系：</p>
+<p>按边界对齐的数据存储，未按边界对齐的数据存储<br>
+边界对齐与存储地址的关系：（32位为例）<br>
+双字长边界对齐：起始地址最末三位为000（8字节整数倍）<br>
+单字长边界对齐：起始地址最末二位为00（4字节整数倍）<br>
+半字长边界对齐：起始地址最末一位为0（2字节整数倍）<br>
+大端与小端存储方式：</p>
+<p>大端：最高字节地址是数据地址（0123存成0123）<br>
+小端：最低字节地址是数据地址（0123存成3210）<br>
+3. 存储器分类</p>
+<p>SRAM存储器：存取速度快，但集成度低，功耗大，做缓存<br>
+DRAM存储器：存取速度慢，但集成度高，功耗低，做主存<br>
+DRAM刷新方式：集中刷新、分散刷新、异步刷新</p>
+<ol start="4">
+<li>主存容量的扩展</li>
+</ol>
+<p>位扩展法：8K * 8位 --&gt; 8K * 32位<br>
+字扩展法：8K * 8位 --&gt; 32K * 8位<br>
+字位同时扩展法：8K * 8位 --&gt; 32K * 32位<br>
+5. Cache的基本原理</p>
+<p>cache的工作过程</p>
+<p>数据：cpu与cache交换字，cache与内存交换块<br>
+读：命中，不命中<br>
+写：写穿策略，写回策略<br>
+写策略</p>
+<p>写穿策略（write through）：同时写缓存和内存，好像穿过缓存一样。若不命中，先写到主存中，并选择性地同时分配到缓存中（写分配/非写分配）<br>
+写回策略（write back）：写到缓存后不管了，只有当缓存的内容替换回主存时再管，需有脏位。好像隔段时间后再写回到主存中一样<br>
+地址映射机制</p>
+<p>相联存储器：地址本身包含着位置啊可比较的信息啊等内容信息，可根据区分地址内容进行寻址<br>
+主存地址 = 块地址 + 块内偏移地址 = （Tag + Index） + 块内偏移地址<br>
+cache结构<br>
+好多行，每行与主存块大小相等<br>
+每行 = tag + data + valid + dirty<br>
+三种映射方式<br>
+全相联：cache行号 = random（内存块号）<br>
+直接相联：cache行号 = 内存块号 % cache行数<br>
+组相联：两者结合。8行1路组相联就是全相联，8行8路组相联就是直接相联<br>
+替换算法</p>
+<p>先进先出法-FIFO<br>
+最近最不经常使用法-LFU<br>
+近期最少使用法-LRU<br>
+随机替换法<br>
+6. 虚拟存储器</p>
+<p>解决问题：主存容量不足。希望向程序员提供更大（比主存大）的编程空间</p>
+<p>分类：页式，段式，段页式</p>
+<p>页式实现方式：MMU（Memory Management Unit） + 页表 + TLB（Transaction Lookaside Buffer：地址转换后备缓冲器）</p>
+<p>页式转换过程：虚拟地址 = 虚拟页号 + 页内偏移 ==&gt; 物理页号 + 页内偏移</p>
+<ol start="7">
+<li>RAID</li>
+</ol>
+<p>概念：独立磁盘构成的具有冗余能力的阵列（Redundant Arrays Independent Disks）</p>
+<p>核心技术：使用异或运算恢复数据 （x⊕y = z --&gt; x = y⊕z）</p>
+<p>分类：</p>
+<p>RAID0：条带均匀分布<br>
+RAID1：以镜像为冗余方式<br>
+RAID3/4：有校验盘<br>
+RAID5：校验信息分布式<br>
+RAID10/01：10是先镜像再条带化，01是先条带化再镜像<br>
+RAID50：先RAID5，再条带化</p>
+<h3 id="五、指令系统">五、指令系统</h3>
+<ol>
+<li>指令系统基本概念</li>
+</ol>
+<p>指令集：一台机器所有指令的集合。系列机（同一公司不同时期生产）；兼容机（不同公司生产）</p>
+<p>指令字长：指令中包含的二进制位数，有等长指令、变长指令。</p>
+<p>指令分类</p>
+<p>根据层次结构：高级、汇编、机器、微指令<br>
+根据地址码字段个数：零、一、二、三地址指令<br>
+根据操作数物理位置<br>
+存储器-存储器（SS）<br>
+寄存器-寄存器（RR）<br>
+寄存器-存储器（RS）<br>
+根据指令功能：传送、算术运算、位运算、控制转移<br>
+指令格式：操作码+数据源+寻址方式</p>
+<ol start="2">
+<li>寻址方式</li>
+</ol>
+<p>指令寻址方式：顺序寻址，跳跃寻址</p>
+<p>操作数寻址方式：</p>
+<p>立即数寻址：地址码字段是操作数本身 MOV AX, 200H<br>
+寄存器寻址：地址码字段是寄存器地址 MOV AX, BX<br>
+直接寻址：地址码字段是内存地址 MOV AX, [200H]<br>
+间接寻址：地址码字段是内存地址的地址 MOV AX, I[200H]<br>
+寄存器间接寻址：地址码字段是存内存地址的寄存器地址 MOV AX, [BX]<br>
+相对寻址：操作数地址 + 当前PC的值<br>
+基址寻址：操作数地址 + 基址寄存器的值（一段程序中不变） MOV AX, 32[B]<br>
+变址寻址：操作数地址 + 变址寄存器的值（随程序不断变化） MOV AX, 32[SI]<br>
+3. MIPS</p>
+<h3 id="三种指令格式">三种指令格式</h3>
+<p>R型指令<br>
+I型指令<br>
+J型指令<br>
+六、中央处理器</p>
+<ol>
+<li>
+<p>CPU的组成与功能</p>
+</li>
+<li>
+<p>数据通路</p>
+</li>
+</ol>
+<p>概念：执行部件间传送信息的路径，分共享通路（总线）和专用通路</p>
+<p>抽象模型：时钟驱动下，A --&gt; 组合逻辑 --&gt; B</p>
+<p>D触发器定时模型：</p>
+<p>时钟触发前要稳定一段时间：建立时间（Setup Time）<br>
+时钟触发后要稳定一段时间：保持时间（Hold Time）<br>
+时钟触发到输出稳定的时间：触发器延迟（Clk_to_Q）<br>
+与时钟周期的关系：<br>
+时钟周期 &gt; Clk_to_Q + 关键路径时延 + Setup Time<br>
+Clk_to_Q + 最短路径时延 &gt; Hold Time<br>
+3. 指令周期</p>
+<p>指令执行的一般流程</p>
+<p>基本概念</p>
+<p>时钟周期 = 节拍脉冲 = 震荡周期<br>
+机器周期 = CPU周期 = 从主存读取一条指令的最短时间<br>
+指令周期 = 从主存读指令并执行指令的时间</p>
+<p>指令时间控制：</p>
+<p>机器周期数节拍数同步方式实践定长指令周期不变不变按机器周期mips单周期变长指令周期变变按时钟周期mips多周期</p>
+<ol start="4">
+<li>CPU设计</li>
+</ol>
+<p>略，详情请参见《自制CPU系列》</p>
+<h3 id="七、总线">七、总线</h3>
+<ol>
+<li>系统总线的特性及应用</li>
+</ol>
+<p>总线概念：将计算机系统中各部件连接起来</p>
+<p>总线分类：（外部/内部，系统/非系统，串行/并行，同步/异步…）</p>
+<p>①. 按用途分类：</p>
+<p>存储总线：cpu与存储器<br>
+系统总线：连接存储总线和IO总线的中间总线<br>
+IO总线：连接外部设备<br>
+②. 按位置分类：</p>
+<p>外部总线：USB，火线（IEEE1394）<br>
+内部总线：PCI（连网卡），AGB（连显卡）<br>
+（芯）片内总线：AMBA（ARM处理器）<br>
+③. 按组成分类</p>
+<p>数据总线：传数据，双向三态<br>
+地址总线：传地址，单向三态<br>
+控制总线：控制信号和时序信号<br>
+电源线和地线：略<br>
+2. 总线性能和总线事物</p>
+<p>总线的性能参数</p>
+<p>总线频率：总线工作速率f，单位是MHz<br>
+总线宽度：数据总线的宽度w，单位是bit<br>
+总线传输速率：总线传输数据量BW，单位是MB/s。BW = w / 8 * f<br>
+总线事务</p>
+<p>概念：从请求总线到完成使用的操作序列（请求 - 裁决 - 地址传输 - 数据传输 - 总线释放）<br>
+角色：主设备（CPU，DMA）和从设备<br>
+四个阶段：请求与仲裁 - 传输 - 寻址 - 结束<br>
+常见总线操作：读，写，读修改写，写后读，块操作<br>
+3. 总线连接方式</p>
+<p>单总线结构</p>
+<p>双总线结构</p>
+<p>多总线结构</p>
+<p>总线桥：不同速率总线之间的连接，起速度缓冲、电平转换、控制协议转换的作用<br>
+多级总线结构（南北桥）</p>
+<p>单总线结构</p>
+<p>总线结构对系统性能的影响<br>
+多总线单总线对最大存储容量不影响因要与io共享内存，影响对指令系统增加IO指令无IO指令对吞吐量大小</p>
+<ol start="4">
+<li>总线仲裁和数据传输方式</li>
+</ol>
+<p>菊花链式串行总线仲裁：简单，只要有一个主设备占用总线，其他就占不了</p>
+<p>集中式并行总线仲裁：</p>
+<p>固定优先级策略：优先级高的主设备，总会优先控制总线权<br>
+轮叫式策略：皇帝轮流做<br>
+LRG策略：最近获得控制权的，再获得控制权的优先级高（经常用的就更容易获得总线控制权）<br>
+5. 总线标准</p>
+<p>概念：计算机各部件之间利用总线传输信息应遵守的协议和规范，包括硬件和软件两部分</p>
+<p>常见的总线标准</p>
+<p>机箱内部总线：<br>
+ISA - EISA - VESA<br>
+ISA（Industrial Standard Architecture）：最早指定的总线技术标准，总线宽度8/16位，频率5-8MHz，带宽5-8MB/s<br>
+EISA：宽度变成32位<br>
+VESA：宽度变成64位<br>
+PCI（PCIe） - AGP<br>
+主要用于系统总线和IO总线，取代ISA<br>
+地址总线和数据总线分时复用，支持即插即用（自动寻找驱动程序）<br>
+32/64位，133/264MB/s<br>
+机箱外部总线：<br>
+USB等…</p>
+<h3 id="八、输入输出系统">八、输入输出系统</h3>
+<ol>
+<li>输入输出系统概述</li>
+</ol>
+<p>组成：外设、接口、总线、管理软件</p>
+<p>基本功能</p>
+<p>完成计算机内外的信息传递<br>
+保证CPU正确选择输出设备<br>
+利用缓冲等，实现主机与外设的速度匹配<br>
+特点：异步性、实时性、设备无关性</p>
+<p>输入过程：CPU把地址值放入总线 --&gt; CPU等候设备数据有效 --&gt; CPU从总线读入数据存入寄存器</p>
+<p>输出过程：CPU把地址值放入总线 --&gt; CPU把数据值放入总线 --&gt; 设备等数据有效取走数据</p>
+<p>IO系统性能：存储IO、通信IO</p>
+<p>连接特性：哪些设备可以和IO相连<br>
+IO系统容量：IO系统可以容纳的设备数<br>
+响应时间：从用户输入命令到得到结果所花的时间（s）<br>
+吞吐率：单位时间完成的IO操作次数（用IOP表示）<br>
+2. 输入输出方式</p>
+<p>无条件IO方式：执行IO指令时，CPU默认外设已经准备就绪，外设很难满足这一点</p>
+<p>程序控制IO方式：执行IO指令时，先获取设备状态（设备状态寄存器），决定下一步操作（程序决定）</p>
+<p>数据要经过CPU，CPU还要浪费大量时间查询设备状态<br>
+中断IO方式：外设主动通知CPU接收或输出数据，有实时性</p>
+<p>DMA方式：由硬件执行IO，外设准备好后通知DMA，DMA接管总线，完成数据交换</p>
+<p>既有中断的优点，又降低了服务的开销<br>
+通道和IO处理机方式：外设种类很多速度差别很大，将外设管理工作从CPU总分离出来</p>
+<p>通道本身就是个简单的CPU，执行IO指令的处理机<br>
+IO处理机是通道的进一步发展，更像一个CPU了<br>
+3. 中断请求与响应</p>
+<p>概念：CPU由内部外部事件引起CPU中断正在运行的程序，具有随机性（符合输入输出系统特性）</p>
+<p>作用：主机与外设并行；故障处理；实时处理</p>
+<p>类型：</p>
+<p>内部中断（软件、异常）<br>
+外部中断（可屏蔽中断INTR、不可屏蔽中断NMI）<br>
+基本功能：</p>
+<p>中断信号的保持与清除：通过寄存器存起来，处理完清零<br>
+中断优先级：硬件响应优先序、软件服务优先序（中断服务程序开头，设置自己的中断屏蔽位）<br>
+中断源识别：系统分配给每个中断源的代号（中断号），中断号获取可以用硬件或软件方式<br>
+中断处理：<br>
+响应：每执行完一条指令，就会判断是否有中断请求<br>
+处理：保存断点（返回地址）、执行中断程序、返回断点<br>
+中断控制：<br>
+中断触发方式：指外设以什么逻辑信号去申请中断（边沿触发、电平触发）<br>
+中断排队方式：按优先级、循环轮流排队<br>
+中断嵌套：中断正在执行的中断程序，不可屏蔽中断不能嵌套<br>
+中断屏蔽：处理器内部有个触发器，“1”时才会响应外部中断</p>
+<ol start="4">
+<li>DMA方式</li>
+</ol>
+<p>原理：数据传送不经过CPU，由DMA控制器实现内存和外设、外设和外设之间的直接快速传递</p>
+<p>系统构成：</p>
+<p>DMA作为主设备之一</p>
+<p>DMA与IO接口集成</p>
+<p>DMA提供专门IO总线</p>
+<p>DMA的两种工作状态：被动态（未获得总线控制权，受CPU控制）、主动态（获得总线控制权）</p>
+<p>传输步骤：</p>
+<p>申请：一个设备接口试图通过总线向另一个设备发送数据，先向CPU发送DMA信号<br>
+响应：CPU收到DMA信号，当前总线周期结束后，按DMA信号优先级响应相应的DMA控制器<br>
+数据传送：DMA收到CPU响应，获得总线控制权，开始直接数据传送<br>
+传送结束：设备向CPU发送DMA结束信号，交换总线控制权<br>
+DMA操作类型：</p>
+<p>数据传送：源地址数据传到目的地址<br>
+数据校验：不传输，只校验某数据块内部的每个字节<br>
+数据检索：不传输，只在制定内存区域内查找某个关键字或某几个数据位是否存在<br>
+DMA操作方式：</p>
+<p>单字节传输模式：每次DMA操作传送一个字节<br>
+块传输模式：每次传送多个字节，有个当前字节计数器，+1 +1 +1<br>
+请求传输模式：DMA控制器询问外设，当外设请求信号无效时，暂停传输（不释放总线）；再次有效再继续传输<br>
+级联传输模式：多个DMA级联，分布式<br>
+DMA传输模式：</p>
+<p>停止CPU访问内存：传输速率高的设备传输时有优势<br>
+周期挪用：DMA挪用一个或几个内存周期。若此时CPU不需要访存则不冲突，若冲突则DMA优先<br>
+DMA与CPU交替访存：直接交替访存，不需要浪费时间</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/leetcode/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/" title="LRU缓存机制算法详解"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: LRU缓存机制算法详解</span></a><a class="button is-default" href="/notes/%E6%A8%AA%E6%89%ABoffer%E7%AC%94%E8%AE%B0-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" title="横扫offer笔记 面向对象"><span class="has-text-weight-semibold">下一页: 横扫offer笔记 面向对象</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="fuer4869/fuer4869.github.io" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>

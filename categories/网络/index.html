@@ -1,189 +1,80 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>loannes's blog</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/widget-post-list.css"><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><span>分类 · 网络</span></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><article class="post-container is-flex is-justify-content-center section container is-max-widescreen pt-4 px-2"><div class="columns is-variable is-1-tablet is-3-desktop-only is-2-widescreen is-full-width"><section class="column"><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://s2.ax1x.com/2020/02/10/14mGCR.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/notes/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91TCP-IP-%E9%93%BE%E8%B7%AF%E5%B1%82/"><img class="post-cover-img js-img-fadeIn" src="https://s2.ax1x.com/2020/02/10/14mGCR.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/TCP/IP"><i class="tag post-item-tag">TCP/IP</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/notes/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91TCP-IP-%E9%93%BE%E8%B7%AF%E5%B1%82/">【笔记】TCP/IP---链路层</a></h2><time class="has-text-grey" datetime="2019-08-05T15:37:49.000Z">2019-08-05</time><p class="is-flex-grow-2 mt-2">以太网
+是当今现有局域网采用的最通用的通信协议标准。以太网络使用CSMA/CD（载波监听多路访问及冲突检测）技术，并以10M/S的速率（仅指标准以太网的速率而已）运行在多种类型的电缆上。以太网与IEEE802.3系列标准相类似
+数据封装
+上一篇笔记有讲到过封装，数据封装过程是由应用程序开始发送数据,经过传输层和网络层并被封装最后到数据链路层封装后转换成比特流。
 
-    <meta name="author" content="loannes">
+封装格式
+最常用的封装格式为RFC 894（以太网的封装格式）。下图是RFC 894与另外一种封装格式RFC 1042（IEEE802.2/802.3)的区别
 
+目的地址：也就是网卡的硬件地址，6个字节，指明帧的接受者
+源M地址：网卡的硬件地址，6个字节，指明帧的发送者
+长度：2个字节，指明该帧数据字段的长度，但不代表数据字段长度能够达到（2^16..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/notes/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91TCP-IP-%E9%93%BE%E8%B7%AF%E5%B1%82/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://s2.ax1x.com/2020/02/08/1WpWsx.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/notes/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91TCP-IP-IP%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AE/"><img class="post-cover-img js-img-fadeIn" src="https://s2.ax1x.com/2020/02/08/1WpWsx.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/TCP/IP"><i class="tag post-item-tag">TCP/IP</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/notes/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91TCP-IP-IP%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AE/">【笔记】TCP/IP---IP:网际协议</a></h2><time class="has-text-grey" datetime="2019-08-03T08:55:46.000Z">2019-08-03</time><p class="is-flex-grow-2 mt-2">简介
+IP是TCP/IP协议族中最核心的协议。所有的TCP、UDP、ICMP和IGMP数据都以IP数据报格式传输。IP也决定了接收到的数据将被分发到哪个网络进程。
+IP地址
+IP地址（Internet Protocol Address），缩写为IP Adress，是一种在Internet上的给主机统一编址的地址格式，也称为网络协议（IP协议）地址。它为互联网上的每一个网络和每一台主机分配一个逻辑地址，常见的IP地址，分为IPv4与IPv6两大类，当前广泛应用的是IPv4，目前IPv4几乎耗尽IPv6号称可以为世界上每一粒沙子都编上地址；如无特别注明，一般讲的的IP地址所指的是IPv4。
+MAC地址
+MAC（Media Access Control，介质访问控制）地址，或称为物理地址，也叫硬件地址，用来定义网..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/notes/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91TCP-IP-IP%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AE/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://s2.ax1x.com/2020/01/21/1FTA7d.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/notes/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91TCP-IP-%E7%AE%80%E4%BB%8B/"><img class="post-cover-img js-img-fadeIn" src="https://s2.ax1x.com/2020/01/21/1FTA7d.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/TCP/IP"><i class="tag post-item-tag">TCP/IP</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/notes/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91TCP-IP-%E7%AE%80%E4%BB%8B/">【笔记】TCP/IP---简介 </a></h2><time class="has-text-grey" datetime="2019-08-01T05:56:40.000Z">2019-08-01</time><p class="is-flex-grow-2 mt-2">分层
+网络协议通常分为不同的层次进行开发，每一层分别负责不同分通信功能。
+TCP/IP协议族分为四层
 
+链路层：
+与硬件相关，通常用来处理计算机中的网卡，设备驱动等。
+####运输层：
+有两个不同的传输协议— TCP(传输控制协议) 和 UDP（用户数据报协议）。
+平时开发中与数据库交互的接口用到的就是运输层
+####网络层：
+处理分组在网络中的活动。IP协议，ICMP协议都是网络层。IP协议不可靠，传输不稳定，不一定能接收到而且可能是无序的。
+####应用层：
+任何TCP/IP都会实现这些应用程序，相当于是捆绑在TCP/IP上的程序
 
+Telnet远程登录
+FTP文件传输协议
+SMTP简单邮件传输协议
+SNMP简单网络管理协议
 
+一个局域网内有两台主机，都运行ftp协议。其中涉及到哪些网络层？
 
-<title>Category: 网络 | loannes&#39;s blog</title>
+图中是一..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/notes/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91TCP-IP-%E7%AE%80%E4%BB%8B/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/iOS%EF%BC%8CATS"><i class="tag post-item-tag">iOS，ATS</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/ios/%E5%AF%B9%E4%BA%8E%20iOS10%20%E4%B8%AD%20ATS%20%E7%9A%84%E7%90%86%E8%A7%A3%20/">对于 iOS10 中 ATS 的理解</a></h2><time class="has-text-grey" datetime="2017-01-08T03:12:19.000Z">2017-01-08</time><p class="is-flex-grow-2 mt-2">WWDC 15 后，对其中有一项新引入的 features 特别在意，那就是苹果将在 2017
+年初即将强制实施的一项隐私保护功能 ATS(App Transport Security)。
+在 WWDC 16 中也提到了 ATS，当时声明了 ATS 安全功能与 iOS 9 和 OS X 10.11
+一同发布，旨在强制性地使用
+HTTPS，以保护应用程序可安全地接入服务器。所有提交到 App Store
+的应用程序都需要在 2016 年底执行 ATS 协议。
 
-
-
-    <link rel="icon" href="/favicon.ico">
-
-
-
-
-    <!-- stylesheets list from _config.yml -->
-    
-    <link rel="stylesheet" href="/css/style.css">
-    
-
-
-
-    <!-- scripts list from _config.yml -->
-    
-    <script src="/js/script.js"></script>
-    
-    <script src="/js/tocbot.min.js"></script>
-    
-
-
-
-
-<meta name="generator" content="Hexo 4.1.0"></head>
-<body>
-    <div class="wrapper">
-        <header>
-    <nav class="navbar">
-        <div class="container">
-            <div class="navbar-header header-logo"><a href="/">loannes&#39;s Blog</a></div>
-            <div class="menu navbar-right">
-                
-                    <a class="menu-item" href="/archives">Posts</a>
-                
-                    <a class="menu-item" href="/category">Categories</a>
-                
-                    <a class="menu-item" href="/tag">Tags</a>
-                
-                    <a class="menu-item" href="/about">About</a>
-                
-                <input id="switch_default" type="checkbox" class="switch_default">
-                <label for="switch_default" class="toggleBtn"></label>
-            </div>
-
-        </div>
-    </nav>
-
-    
-    <nav class="navbar-mobile" id="nav-mobile">
-        <div class="container">
-            <div class="navbar-header">
-                <div>
-                    <a href="/">loannes&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
-                </div>
-                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
-            </div>
-            <div class="menu" id="mobile-menu">
-                
-                    <a class="menu-item" href="/archives">Posts</a>
-                
-                    <a class="menu-item" href="/category">Categories</a>
-                
-                    <a class="menu-item" href="/tag">Tags</a>
-                
-                    <a class="menu-item" href="/about">About</a>
-                
-            </div>
-        </div>
-    </nav>
-
-</header>
-<script>
-    var mobileBtn = function f() {
-        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
-        var mobileMenu = document.getElementById("mobile-menu");
-        if(toggleMenu.classList.contains("active")){
-           toggleMenu.classList.remove("active")
-            mobileMenu.classList.remove("active")
-        }else{
-            toggleMenu.classList.add("active")
-            mobileMenu.classList.add("active")
-        }
-    }
-</script>
-        <div class="main">
-            
+此处更新于 2016 年 12 月 21 日。
 
 
-    
-<div class="container">
-    <div class="post-wrap categories">
-        <h2 class="post-title">-&nbsp;Categories&nbsp;·&nbsp;网络-</h2>
-    </div>
-    <div class="post-wrap archive">
-    
-    
-        
+收到消息称苹果将延后强制加入 HTTPS
+服务，原因各说纷纭就不详细说明了。至于延期到什么时候还未曾有消息。
 
-        
-            <h3>2019</h3>
-        
+ATS（NSAppTransportSecurity）
 
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2019/08/05/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91TCP-IP-%E9%93%BE%E8%B7%AF%E5%B1%82/">【笔记】TCP/IP---链路层</a>
-            <span class="archive-item-date">八月 5, 2019</span>
-        </article>
-    
-        
 
-        
+It improves pr..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/ios/%E5%AF%B9%E4%BA%8E%20iOS10%20%E4%B8%AD%20ATS%20%E7%9A%84%E7%90%86%E8%A7%A3%20/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/iOS"><i class="tag post-item-tag">iOS</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/%E8%B0%88%E8%B0%88Http%E5%92%8CHttps%20/">谈谈Http和Https</a></h2><time class="has-text-grey" datetime="2016-04-13T03:12:19.000Z">2016-04-13</time><p class="is-flex-grow-2 mt-2">===============
+前言
+继续上一篇文章深入研究网络相关的知识，因为上一篇还是有很多没有解释很清楚的地方，所以在这里想讲讲自己对http和https的理解。
+自从苹果更新了iOS9.0之后一直没机会研究它为什么把所以的请求都改为了https，第一反应肯定是考虑安全方面，那到底http和https有什么区别，https改善了http的哪些安全方面的不足呢？
+Http的缺点
+Http从1990年正式推出到后面更新到Http/2之后就再也没更新。而在安全方面它只是更新到了1.1，也就是说这么多年来Http一直都没有解决安全方面的问题。
+1.因为Http的通信是明文的，所以存在被窃听的风险。2.无法确认身份。3.无法验证报文的完整性。
+通信明文因为Http本身没有加密功能，所以在通信过程中都是明文通信的..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/%E8%B0%88%E8%B0%88Http%E5%92%8CHttps%20/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/iOS,%20URL"><i class="tag post-item-tag">iOS, URL</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/ios/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/">讲讲iOS的URL加载系统</a></h2><time class="has-text-grey" datetime="2015-03-25T03:12:19.000Z">2015-03-25</time><p class="is-flex-grow-2 mt-2">
+=============
+前言
 
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2019/08/03/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91TCP-IP-IP%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AE/">【笔记】TCP/IP---IP:网际协议</a>
-            <span class="archive-item-date">八月 3, 2019</span>
-        </article>
-    
-        
+最近打算开始做一些进阶训练，所以避免不了要去触碰这些以前想都没想过的东西。现在要做的第一步就是能够比以往更深入的去学习一些知识，这两天花功夫研究了下iOS的URL加载系统，听起来好像很陌生，但是这个东西是我平常用的最多比如SDWebImage，AFNetworking都用到这些知识。
+URL加载系统
 
-        
+URL加载系统就是由一套类和协议组成的，这个加载系统的作用就是从URL中加载内容，给服务器上传数据，管理cookies的存储，控制响应数据的缓存以及处理证书的存储和验证等，还可以定制协议扩展。看到这里应该对URL加载系统有一定的了解了吧，知道它到底是干嘛的，在我们平时使用那些涉及到整个系统的控件的时候也知道了它到底做了些什么事情。
+接下来再继续深入研究下去，关于上面提到的..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/ios/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/">更多</a></section></article></section><aside class="column is-hidden-mobile is-4-tablet is-3-widescreen"><div style="position: sticky; top: 50px;"><main class="aside-card-container categories-widget category-page"><h3>分类</h3><section><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Django/">Django</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OOP/">OOP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode%E5%88%B7%E9%A2%98%E9%A2%98%E8%A7%A3/">leetcode刷题题解</a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python%E5%9F%BA%E7%A1%80/">python基础</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">源码分析</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%A1%E7%90%86/">管理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%87%AA%E5%8A%A8%E5%8C%96/">自动化</a><span class="category-list-count">1</span></li></ul></section></main></div></aside></div></article><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
 
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2019/08/01/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91TCP-IP-%E7%AE%80%E4%BB%8B/">【笔记】TCP/IP---简介 </a>
-            <span class="archive-item-date">八月 1, 2019</span>
-        </article>
-    
-        
+window.addEventListener('resize', $claudia.throttle(function () {
+    var images = document.querySelectorAll('.js-img-fadeIn')
 
-        
-            <h3>2017</h3>
-        
+    images.forEach($claudia.blurBackdropImg)
+}, 150))</script></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
 
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2017/01/08/%E5%AF%B9%E4%BA%8E%20iOS10%20%E4%B8%AD%20ATS%20%E7%9A%84%E7%90%86%E8%A7%A3%20/">对于 iOS10 中 ATS 的理解</a>
-            <span class="archive-item-date">一月 8, 2017</span>
-        </article>
-    
-        
+window.addEventListener('resize', $claudia.throttle(function () {
+    var images = document.querySelectorAll('.js-img-fadeIn')
 
-        
-            <h3>2016</h3>
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2016/04/13/%E8%B0%88%E8%B0%88Http%E5%92%8CHttps%20/">谈谈Http和Https</a>
-            <span class="archive-item-date">四月 13, 2016</span>
-        </article>
-    
-        
-
-        
-            <h3>2015</h3>
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2015/03/25/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/">讲讲iOS的URL加载系统</a>
-            <span class="archive-item-date">三月 25, 2015</span>
-        </article>
-    
-    
-</div>
-</div>
-
-        </div>
-        <footer id="footer" class="footer">
-    <div class="copyright">
-        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
-    </div>
-</footer>
-
-    </div>
-</body>
-</html>
+    images.forEach($claudia.blurBackdropImg)
+}, 150))</script></body></html>

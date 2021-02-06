@@ -1,0 +1,185 @@
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>实战项目练习-链家二手房数据（清洗与合并）</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">实战项目练习-链家二手房数据（清洗与合并）</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></div><div class="column is-9"><header class="my-4"><a href="/tags/Python,%20Pandas"><i class="tag post-item-tag">Python, Pandas</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">实战项目练习-链家二手房数据（清洗与合并）</h1><time class="has-text-grey" datetime="2019-05-11T08:09:00.000Z">2019-05-11</time><article class="mt-2 post-content"><h3 id="前言">前言</h3>
+<p>现在已经学到了数据规整与合并这一章，为了加深对数据分析的理解接下来需要做个小项目练习一下。</p>
+<p><strong>目的</strong></p>
+<ul>
+<li>通过项目能够真实的了解到数据分析是做什么的</li>
+<li>加深对pandas的熟悉程度</li>
+<li>重新梳理一下目前学到的那些基础知识，查缺补漏</li>
+</ul>
+<p><strong>前期准备</strong><br>
+此次项目准备对2018年北京链家网的二手房数据做一次分析<br>
+数据来源：<strong>Python数据科学</strong>的公众号<br>
+工具：暂时还是使用iTerm2，还未找到更合适的开发工具。<strong>Sublime Text2</strong>目前也在用，这次项目小不打算用这个。</p>
+<p><strong>导入数据文件并进行初步观察</strong><br>
+这些观察包括了解数据特征的缺失值，异常值，以及大概的描述性统计。</p>
+<pre><code>In [10]: lianjia_df = pd.read_csv('lianjia/lianjia.csv')
+
+# 先查看前5行数据
+In [11]: lianjia_df.head(n=5)
+
+In [12]: display(lianjia_df.head(5))
+  Direction District Elevator  Floor    Garden            Id Layout   Price Region Renovation   Size  Year
+0        东西      灯市口      NaN      6  锡拉胡同21号院  101102647043   3室1厅   780.0     东城         精装   75.0  1988
+1        南北       东单      无电梯      6     东华门大街  101102650978   2室1厅   705.0     东城         精装   60.0  1988
+2        南西      崇文门      有电梯     16     新世界中心  101102672743   3室1厅  1400.0     东城         其他  210.0  1996
+3         南      崇文门      NaN      7    兴隆都市馨园  101102577410   1室1厅   420.0     东城         精装   39.0  2004
+4         南      陶然亭      有电梯     19    中海紫御公馆  101102574696   2室2厅   998.0     东城         精装   90.0  2010
+</code></pre>
+<pre><code>In [14]: lianjia_df.info()
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 23677 entries, 0 to 23676
+Data columns (total 12 columns):
+Direction     23677 non-null object
+District      23677 non-null object
+Elevator      15440 non-null object
+Floor         23677 non-null int64
+Garden        23677 non-null object
+Id            23677 non-null int64
+Layout        23677 non-null object
+Price         23677 non-null float64
+Region        23677 non-null object
+Renovation    23677 non-null object
+Size          23677 non-null float64
+Year          23677 non-null int64
+dtypes: float64(2), int64(3), object(7)
+memory usage: 2.2+ MB
+</code></pre>
+<p>可以很直接的看到<code>Elevator</code>的值存在着大量的缺失，那先对缺失数据做处理。这里其实可以做填充，因为正常情况下楼层高于6层的都会有电梯，相反则没有。</p>
+<pre><code>In [71]: lianjia_df['Elevator'].value_counts()
+Out[71]:
+有电梯    9342
+无电梯    6078
+精装       11
+毛坯        7
+简装        2
+</code></pre>
+<p>看到在<code>Elevator</code>中存在精装、毛培等异常值，先删除</p>
+<pre><code>In [75]: lianjia_df['Elevator'] = lianjia_df.loc[(lianjia_df['Elevator'] == '有电梯') | (lianjia_df['Elevator']=='无电梯'), 'Elevator']
+
+In [76]: lianjia_df['Elevator'].value_counts()
+Out[76]:
+有电梯    9342
+无电梯    6078   # 总共23000多条数据，这里明显不够，说明有大量空缺值
+Name: Elevator, dtype: int64
+</code></pre>
+<p>再填充电梯情况：</p>
+<pre><code># 这里要直接修改数据了，所以先copy一下
+In [90]: df = lianjia_df.copy()
+
+In [91]: df.loc[(df['Floor'] &gt; 6) &amp; (df['Elevator'].isnull()), 'Elevator'] = '有电梯'
+
+In [92]: df.loc[(df['Floor'] &lt;=6) &amp; (df['Elevator'].isnull()), 'Elevator'] = '无电梯'
+
+In [96]: df['Elevator'].value_counts()
+Out[96]:
+有电梯    14025
+无电梯     9652
+# 现在
+</code></pre>
+<p>现在空缺值处理完成了，接下来检查下有没有异常值情况：</p>
+<pre><code>In [14]: lianjia_df_dorped.describe()
+Out[14]:
+              Floor            Id         Price          Size          Year
+count  15440.000000  1.544000e+04  15440.000000  15440.000000  15440.000000
+mean      13.037435  1.011023e+11    622.969326     99.059909   2001.132124
+std        7.651691  5.934382e+05    411.791294     47.552860      8.804468
+min        1.000000  1.010886e+11     68.500000      2.000000   1950.000000
+25%        6.000000  1.011022e+11    378.000000     66.000000   1997.000000
+50%       11.000000  1.011024e+11    510.000000     89.000000   2003.000000
+75%       18.000000  1.011026e+11    730.000000    119.250000   2007.000000
+max       57.000000  1.011028e+11   6000.000000   1019.000000   2016.000000
+</code></pre>
+<p>虽然不大清楚北京有没有价值6000万的房子，但是2平方以及1019平方的房子这个肯定是不现实的。看一下数据情况：</p>
+<pre><code>In [17]: df.loc[df['Size'] &lt; 20]
+Out[17]:
+      Direction District Elevator  Floor   Garden            Id Layout   Price Region Renovation  Size  Year
+134           西       沙河      有电梯     17   北街家园七区  101102651491   1室1厅   180.0     昌平         简装  19.0  2010
+1168   240.97平米       长阳       毛坯      5     世茂维拉  101102253577   叠拼别墅  1080.0     房山         南北   5.0  2015
+1458   242.78平米       长阳       毛坯      5     世茂维拉  101102217569   叠拼别墅  1100.0     房山         南北   5.0  2015
+1797   242.96平米       长阳       精装      5     世茂维拉  101101911559   叠拼别墅   980.0     房山         南北   5.0  2015
+2268   295.88平米     顺义其它       精装      4    龙湖好望山  101102431983   叠拼别墅  1000.0     顺义         南北   4.0  2014
+2274   295.01平米     顺义其它       精装      4     鹭峯国际  101102300614   叠拼别墅  1450.0     顺义         南北   5.0  2014
+2276   292.31平米     顺义其它       毛坯      3    龙湖好望山  101102013095   叠拼别墅   860.0     顺义         南北   4.0  2014
+2432   294.42平米     顺义其它       精装      5    龙湖好望山  101101141445   叠拼别墅   980.0     顺义         南北   6.0  2013
+4078    427.5平米      西红门       精装      3    鸿坤林语墅  101102023530   叠拼别墅  3150.0     大兴         南北   4.0  2015
+4079    361.8平米      西红门       精装      4    鸿坤林语墅  101102460862   叠拼别墅  2380.0     大兴         南北   4.0  2015
+4761   386.83平米      西红门       精装      3    鸿坤林语墅  101102411099   叠拼别墅  2700.0     大兴         南北   5.0  2015
+7533   107.93平米      回龙观       简装      4   龙城花园N区  101101993058   叠拼别墅   620.0     昌平         南北   2.0  1997
+8765   195.32平米     通州其它       毛坯      6     旭辉御锦  101102638903   叠拼别墅   780.0     通州         南北   5.0  2014
+9020   259.87平米     通州其它       精装      6     旭辉御锦  101101801342   叠拼别墅  1120.0     通州         南北   4.0  2014
+9080   259.76平米     通州其它       毛坯      6     旭辉御锦  101102046256   叠拼别墅  1050.0     通州         南北   4.0  2014
+9203   260.07平米     通州其它       精装      6     旭辉御锦  101102490792   叠拼别墅  1050.0     通州         南北   4.0  2014
+9254    264.6平米     通州其它       毛坯      6     旭辉御锦  101102440907   叠拼别墅  1100.0     通州         南北   4.0  2014
+11531  335.51平米       丽泽       毛坯      6     西宸原著  101102306757   叠拼别墅  4000.0     丰台         南北   4.0  2016
+14298  266.61平米       西山       精装      3   中间建筑一区  101101869900   叠拼别墅  1350.0     海淀         南北   8.0  2007
+15334  203.73平米       西山       简装      4  西山美墅馆F区  101102520575   叠拼别墅  2200.0     海淀         南北   4.0  2004
+17311   523.4平米      大望路       精装      5     首府官邸  101102432328   叠拼别墅  4500.0     朝阳         南北   5.0  2007
+22350         南       东四      有电梯      3    华人一品阁  101101915230  1房间1卫    90.0     东城         简装  16.0  2006
+22393         南       东四      有电梯      3    华人一品阁  101101915213  1房间1卫    90.0     东城         简装  16.0  2006
+</code></pre>
+<p>我觉得16平的房子应该会有，但是小于10平方的房子肯定是异常数据，删掉！</p>
+<pre><code>In [30]: df = df[df['Size'] &gt; 10]
+
+In [32]: df.describe()
+Out[32]:
+              Floor            Id         Price          Size          Year
+count  15420.000000  1.542000e+04  15420.000000  15420.000000  15420.000000
+mean      13.048314  1.011023e+11    621.608067     99.182490   2001.117639
+std        7.650579  5.936816e+05    408.445645     47.461617      8.799356
+min        1.000000  1.010886e+11     68.500000     16.000000   1950.000000
+25%        6.000000  1.011022e+11    377.750000     66.000000   1997.000000
+50%       11.000000  1.011024e+11    510.000000     89.000000   2003.000000
+75%       18.000000  1.011026e+11    730.000000    120.000000   2007.000000
+max       57.000000  1.011028e+11   6000.000000   1019.000000   2016.000000
+</code></pre>
+<p>同样平方大的离谱的异常值也要删除</p>
+<pre><code>In [34]: df.loc[df['Size'] &gt; 1000]
+Out[34]:
+     Direction District Elevator  Floor   Garden            Id Layout   Price Region Renovation    Size  Year
+8754         南     通州其它      有电梯      8  新华联科技大厦  101102019411  1房间0卫  1700.0     通州         简装  1019.0  2009
+</code></pre>
+<p>发现这个大于1000平的是个办公楼，属于异常删掉</p>
+<pre><code>In [35]: df = df.loc[df['Size'] &lt; 1000]
+</code></pre>
+<p><code>Size</code>数据异常的也清理掉了</p>
+<pre><code>In [36]: df.describe()
+Out[36]:
+              Floor            Id         Price          Size          Year
+count  15420.000000  1.542000e+04  15420.000000  15420.000000  15420.000000
+mean      13.048314  1.011023e+11    621.608067     99.182490   2001.117639
+std        7.650579  5.936816e+05    408.445645     47.461617      8.799356
+min        1.000000  1.010886e+11     68.500000     16.000000   1950.000000
+25%        6.000000  1.011022e+11    377.750000     66.000000   1997.000000
+50%       11.000000  1.011024e+11    510.000000     89.000000   2003.000000
+75%       18.000000  1.011026e+11    730.000000    120.000000   2007.000000
+max       57.000000  1.011028e+11   6000.000000   1019.000000   2016.000000
+</code></pre>
+<p>再看看其他数据有异常或者空缺情况</p>
+<pre><code>In [101]: df['Renovation'].value_counts()
+Out[101]:
+精装    11345
+简装     8497
+其他     3239
+毛坯      576
+南北       20
+Name: Renovation, dtype: int64
+</code></pre>
+<p>发现在<code>Renovation</code>变量上多了“南北”这种异常数据，删除掉</p>
+<pre><code>In [105]: df= df.loc[(df['Renovation'] != '南北')]
+
+In [106]: df['Renovation'].value_counts()
+Out[106]:
+精装    11345
+简装     8497
+其他     3239
+毛坯      576
+Name: Renovation, dtype: int64
+</code></pre>
+<p>检查过后已经没有任何异常数据和空缺值了。</p>
+<h2 id="总结">总结</h2>
+<ul>
+<li>最大的感触是还是得使用个编辑器，否则一不小心改错数据后又得重头再来</li>
+<li>检查数据的过程中有很多异常数据会隐藏的很深，光查看概览是不够的还需要去查看变量的统计</li>
+<li>有些数据是可以通过其他数据来做填充，如果出现大量数据空缺的情况尽量优先考虑填充而不是清除</li>
+</ul>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/data-analyst/%E5%AE%9E%E6%88%98%E9%A1%B9%E7%9B%AE%E7%BB%83%E4%B9%A0-%E3%80%902018%E4%B8%96%E7%95%8C%E6%9D%AF%E3%80%91%E7%94%A8Python%E5%88%86%E6%9E%90%E5%A4%BA%E5%86%A0%E7%90%83%E9%98%9F/" title="实战项目练习-【2018世界杯】用Python分析夺冠球队"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 实战项目练习-【2018世界杯】用Python分析夺冠球队</span></a><a class="button is-default" href="/data-analyst/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas-%E8%BF%87%E6%BB%A4%E4%B8%8E%E6%B8%85%E7%90%86/" title="Python数据分析之Pandas-过滤与清理"><span class="has-text-weight-semibold">下一页: Python数据分析之Pandas-过滤与清理</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="fuer4869/fuer4869.github.io" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>

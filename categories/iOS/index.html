@@ -1,223 +1,119 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>loannes's blog</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/widget-post-list.css"><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><span>分类 · iOS</span></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><article class="post-container is-flex is-justify-content-center section container is-max-widescreen pt-4 px-2"><div class="columns is-variable is-1-tablet is-3-desktop-only is-2-widescreen is-full-width"><section class="column"><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><i class="tag post-item-tag">内存管理</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/ios/iOS%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E9%82%A3%E4%BA%9B%E4%BA%8B%20/">iOS内存管理那些事</a></h2><time class="has-text-grey" datetime="2019-02-03T03:12:19.000Z">2019-02-03</time><p class="is-flex-grow-2 mt-2">=================
+前言
 
-    <meta name="author" content="loannes">
+今天在网上看到一道蛮有趣的问题，内容是&amp;quot;对于已经会使用ARC的iOS开发者来说还有必要学习手动内存管理吗？&amp;quot;
+。换做一年前的我可能会觉得那必须不用学啊，手动管理内存管理太麻烦了而且很容易出错。ARC现在用下来完全能够解决我日常开发中的所有内存管理的问题，而且苹果在WWDC2011上已经强烈推荐开发者使用ARC，为什么不用ARC呢?
+直到我有一次使用了第三方组件，当时这个组件是不支持ARC的。有一天在我做新功能的时候突然出现了一个没有任何踪迹的崩溃，经过了1个通宵的排查和网友的帮助最后才得知原来是非ARC和ARC的代码混用出现的问题，后来还是自己重新写了个非ARC的功能才解决了这个问题。
+引用计数
 
+每当一个对象被创建的时候它的引用计数为1，为保..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/ios/iOS%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E9%82%A3%E4%BA%9B%E4%BA%8B%20/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="http://nos.netease.com/edu-image/EEDE6A300B4F82986FFA4C94326B54E1.jpg?imageView&amp;amp;thumbnail=426y240&amp;amp;quality=100" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/ios/iOS%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E4%B9%8B%E7%A0%B4%E8%A7%A3Pokemon-Go/"><img class="post-cover-img js-img-fadeIn" src="http://nos.netease.com/edu-image/EEDE6A300B4F82986FFA4C94326B54E1.jpg?imageView&amp;amp;thumbnail=426y240&amp;amp;quality=100" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/ios%E9%80%86%E5%90%91"><i class="tag post-item-tag">ios逆向</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/ios/iOS%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E4%B9%8B%E7%A0%B4%E8%A7%A3Pokemon-Go/">iOS逆向工程之破解Pokemon Go</a></h2><time class="has-text-grey" datetime="2016-08-16T06:44:09.000Z">2016-08-16</time><p class="is-flex-grow-2 mt-2">
 
+期待了很久的精灵宝可梦总算发布了，出于对它的热爱特地问朋友借了个美区的Apple ID下下来准备试玩一番。可是万万没想到的是，我大天朝居然被锁区了。
+本着迫切想要玩到它的心情，想了片刻。试试看破解吧，把自己的地理位置改到美国去不就行了嘛！其实这是我第一次尝试iOS逆向，其中过程也是各种心酸，尝试过的人都懂的。
 
+前言
+这次主要是想讲下重签名的问题，我直接拿了虾神的半成品，就接下去做了后面的部分。其实前面的部分也很简单，就只是利用Method Swizzle对CLLocation类做了重载，修改了地理位置。接下来就是把该类打包成dylib动态库之后重新注入到app中就可以了。
+把项目下载下来我们可以看到这么一个类:
 
+接下来我们需要做这么几步
+1.对动态库进行签名，编译后把动态文件注入到pokemongo..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/ios/iOS%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E4%B9%8B%E7%A0%B4%E8%A7%A3Pokemon-Go/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://cdn1.raywenderlich.com/wp-content/uploads/2012/09/Skeuomorph-480x147.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/ios/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/"><img class="post-cover-img js-img-fadeIn" src="https://cdn1.raywenderlich.com/wp-content/uploads/2012/09/Skeuomorph-480x147.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E5%8A%A8%E7%94%BB"><i class="tag post-item-tag">动画</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/ios/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/">学习如何制作一个像Clear的时髦的手势驱动的备忘录app</a></h2><time class="has-text-grey" datetime="2016-05-18T03:12:19.000Z">2016-05-18</time><p class="is-flex-grow-2 mt-2">==================================================
+原文链接：https://www.raywenderlich.com/21842/how-to-make-a-gesture-driven-to-do-list-app-part-13
+[译]如何制作一个类似Clear支持手势驱动的备忘录App (一)
+学习如何制作一个像Clear的时髦的手势驱动的备忘录app
+这是由教程组的成员Colin
+Eberhardt,
+ShinobiControls的CTO,
+一名会打造有趣又强大的iOS控件的开发者。看看他们的app，ShinobiPlay。你还能在Google+
+和 Twitter上找到Colin的踪迹。
+这三部分教程将会带你通过开发一个简单的备忘录应用，并且..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/ios/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="http://cdn1.raywenderlich.com/wp-content/uploads/2015/07/starter.gif" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/ios/%E5%88%9B%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89UIViewController%E8%BF%87%E6%B8%A1%E5%8A%A8%E7%94%BB/"><img class="post-cover-img js-img-fadeIn" src="http://cdn1.raywenderlich.com/wp-content/uploads/2015/07/starter.gif" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/iOS,%20%E5%8A%A8%E7%94%BB"><i class="tag post-item-tag">iOS, 动画</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/ios/%E5%88%9B%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89UIViewController%E8%BF%87%E6%B8%A1%E5%8A%A8%E7%94%BB/">创建自定义UIViewController过渡动画</a></h2><time class="has-text-grey" datetime="2016-02-13T03:12:19.000Z">2016-02-13</time><p class="is-flex-grow-2 mt-2">原文来自Creating Custom UIViewController
+Transitions
+Push，pop，cover vertically...
+你从iOS中学会了一些漂亮的视图过渡效果，但是如果让你自己制作的话也会很有趣。自定义UIViewController过渡效果能显著地增加用户体验并且让你的app与其他的与众不同。如果你以前没亲自做过自定义过渡，你会发现它的工作量比你预期的要少很多。
+在此次课程中，你将会制作一个带有一些自定义UIViewController过渡效果的猜测游戏。当你完成的时候，你将会获得以下技能：
 
-<title>Category: iOS | loannes&#39;s blog</title>
-
-
-
-    <link rel="icon" href="/favicon.ico">
-
-
-
-
-    <!-- stylesheets list from _config.yml -->
-    
-    <link rel="stylesheet" href="/css/style.css">
-    
-
-
-
-    <!-- scripts list from _config.yml -->
-    
-    <script src="/js/script.js"></script>
-    
-    <script src="/js/tocbot.min.js"></script>
-    
-
-
+Transition的API是怎样的结构
+如何使用自定义过渡来实现呈现和消除view controller
+如何做有交互的过渡效果
 
 
-<meta name="generator" content="Hexo 4.1.0"></head>
-<body>
-    <div class="wrapper">
-        <header>
-    <nav class="navbar">
-        <div class="container">
-            <div class="navbar-header header-logo"><a href="/">loannes&#39;s Blog</a></div>
-            <div class="menu navbar-right">
-                
-                    <a class="menu-item" href="/archives">Posts</a>
-                
-                    <a class="menu-item" href="/category">Categories</a>
-                
-                    <a class="menu-item" href="/tag">Tags</a>
-                
-                    <a class="menu-item" href="/about">About</a>
-                
-                <input id="switch_default" type="checkbox" class="switch_default">
-                <label for="switch_default" class="toggleBtn"></label>
-            </div>
+Note:
+在此教程中所示的过渡效果是利..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/ios/%E5%88%9B%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89UIViewController%E8%BF%87%E6%B8%A1%E5%8A%A8%E7%94%BB/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E9%80%82%E9%85%8D"><i class="tag post-item-tag">适配</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/ios/%E7%BB%86%E8%B0%88iOS8%E7%9A%84Self-Sizing%20Cells%20/">细谈iOS8的Self-Sizing Cells</a></h2><time class="has-text-grey" datetime="2015-12-29T03:12:19.000Z">2015-12-29</time><p class="is-flex-grow-2 mt-2">===========================
+之前有篇文章介绍了
+FDTemplateLayoutCell，对于UITableViewCell自动计算高度没有做详细的解释，最近用下来感觉自己不能老是依靠第三方控件，这次返回来讲解下iOS8的Working
+with Self-Sizing Tableview cells 。
+对，我要使用Self-Sizing
+Cells。虽然有点打脸，但身为一个合格的程序员你必须得学会靠自己来解决这些问题，最起码得理解。如果频繁依靠第三方控件我觉得并不是一个优秀程序员该做的事情。
+我要使用Self-Sizing Cells
 
-        </div>
-    </nav>
+首先有句话要说，这篇文章仅是个人观点，有不同意见的欢迎讨论。
+都知道Self-Sizing是iOS8才更新的，最近又做了些调查，发现使用iO..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/ios/%E7%BB%86%E8%B0%88iOS8%E7%9A%84Self-Sizing%20Cells%20/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E5%8A%A8%E7%94%BB"><i class="tag post-item-tag">动画</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/ios/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/">iOS8新特性 UIPresentationController</a></h2><time class="has-text-grey" datetime="2015-07-14T03:12:19.000Z">2015-07-14</time><p class="is-flex-grow-2 mt-2">================================
+先推荐几篇关于UIPresentationController的好文章
 
-    
-    <nav class="navbar-mobile" id="nav-mobile">
-        <div class="container">
-            <div class="navbar-header">
-                <div>
-                    <a href="/">loannes&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
-                </div>
-                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
-            </div>
-            <div class="menu" id="mobile-menu">
-                
-                    <a class="menu-item" href="/archives">Posts</a>
-                
-                    <a class="menu-item" href="/category">Categories</a>
-                
-                    <a class="menu-item" href="/tag">Tags</a>
-                
-                    <a class="menu-item" href="/about">About</a>
-                
-            </div>
-        </div>
-    </nav>
+iOS8 Presentation
+Controller
+Custom presentations using UIPresentationController in
+Swift
+自从iOS8更新之后，swift成为了各个程序员平时议论的焦点，包括我。这几天回顾了下去年的WWDC发现了这次Apple更新了很多好玩的东西，其中我就发现了一个叫UIPresentationController
+以前一直都很想做一个比较酷炫的界面过渡效果，但一直没有花时间去研究，这次正好被我机缘巧合的碰到了就顺手拿来研究了一下。
 
-</header>
-<script>
-    var mobileBtn = function f() {
-        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
-        var mobileMenu = document.getElementById("mobile-menu");
-        if(toggleMenu.classList.contains("active")){
-           toggleMenu.classList.remove("active")
-            mobileMenu.classList.remove("active")
-        }else{
-            toggleMenu.classList.add("active")
-            mobileMenu.classList.add("active")
-        }
-    }
-</script>
-        <div class="main">
-            
+什么是UIPresentationController
+其实从..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/ios/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/iOS"><i class="tag post-item-tag">iOS</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/ios/%E9%85%8D%E5%90%88Autolayou+SizeClasses%E4%BB%BF%E6%94%AF%E4%BB%98%E5%AE%9D%E9%A6%96%E9%A1%B5%20/">配合Autolayou+SizeClasses仿支付宝首页</a></h2><time class="has-text-grey" datetime="2015-04-05T03:12:19.000Z">2015-04-05</time><p class="is-flex-grow-2 mt-2">=============================
+准备
+
+在开始之前先简单分析下界面。
+首页这个界面总共分为四大部分，最上面是扫一扫和付款码两个按钮，接下来一组按钮，再下面是一个轮播视图，最后是另外一组按钮。
+其中有2个难点
+1.配合Autolayout实现四等分按钮
+2.Scrollview动态修改内部尺寸
+这次主要讲的是Autolayout+SizeClasses，能够通过这次练习基本掌握Autolayout配合基本常用控件的特性，所以其他的地方不会讲的很细，而且素材是直接从支付宝8.6.3的ipa中拿的，所以和支付宝还是有些区别的。
+实现
+
+第一部分
+第一部分其实很简单，其实就是各自的横向坐标位于界面的左半边和右半边的中心,纵向坐标则是与背景底部呈固定距离。
+我选择的是把第一部分的背景分割成..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/ios/%E9%85%8D%E5%90%88Autolayou+SizeClasses%E4%BB%BF%E6%94%AF%E4%BB%98%E5%AE%9D%E9%A6%96%E9%A1%B5%20/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E9%80%82%E9%85%8D"><i class="tag post-item-tag">适配</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/ios/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20/">使用Autolayout实现动态高度的ScrollView</a></h2><time class="has-text-grey" datetime="2015-03-22T03:12:19.000Z">2015-03-22</time><p class="is-flex-grow-2 mt-2">=============================
+前言
+
+自从改用Autolayout作为界面布局的主要核心技术之后一直都没有做这方面的技术总结，最近打算写一系列关于Autolayout的文章，从比较基础的界面到复杂的界面都会去写，就当做是Autolayout的教程吧。
+准备
 
 
-    
-<div class="container">
-    <div class="post-wrap categories">
-        <h2 class="post-title">-&nbsp;Categories&nbsp;·&nbsp;iOS-</h2>
-    </div>
-    <div class="post-wrap archive">
-    
-    
-        
+首先你必须得先了解基本的Autolayout的使用方法和特性。
+理解ScrollView在Autolayout中的特别之处。
 
-        
-            <h3>2019</h3>
-        
+目的
 
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2019/02/03/iOS%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E9%82%A3%E4%BA%9B%E4%BA%8B%20/">iOS内存管理那些事</a>
-            <span class="archive-item-date">二月 3, 2019</span>
-        </article>
-    
-        
 
-        
-            <h3>2016</h3>
-        
+通过Autolayout实现ScrollView的动态布局。
+实现简单的动态界面，并且能够让ScrollView在各种设备上正常运行。
+步骤简单明确，不需要大量的布局代码。
 
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2016/08/16/iOS%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E4%B9%8B%E7%A0%B4%E8%A7%A3Pokemon-Go/">iOS逆向工程之破解Pokemon Go</a>
-            <span class="archive-item-date">八月 16, 2016</span>
-        </article>
-    
-        
+知道了自己要做什么之后就开始接下来的Autolayout实践过程吧。
+实践
 
-        
+首先创建一个支持Size Cla..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/ios/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/iOS"><i class="tag post-item-tag">iOS</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/ios/%E5%88%9D%E6%8E%A2Size%20Classes%E7%AC%94%E8%AE%B0%20/">初探Size Classes笔记</a></h2><time class="has-text-grey" datetime="2015-03-17T03:12:19.000Z">2015-03-17</time><p class="is-flex-grow-2 mt-2">====================
+前言
 
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2016/05/18/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/">学习如何制作一个像Clear的时髦的手势驱动的备忘录app</a>
-            <span class="archive-item-date">五月 18, 2016</span>
-        </article>
-    
-        
+自从苹果推出了iPhone6和plus，宣布苹果正式进入大屏时代。不单单设计师哭了，连我们这些苦逼的工程师也跟着要一起哭。因为本身iOS不需要和安卓那样考虑自适应的问题，原本这个只有做android的同学才会碰到的问题现在也终于轮到我们iOS开发工程师了。而且相信正在赶项目的同学，听到此消息估计是一口老血喷在屏幕上了。那我们该如何轻松的适配如此多的尺寸呢？
+基本概念
 
-        
+查阅了官方文档，苹果给出了这样一个解决方案。
 
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2016/02/13/%E5%88%9B%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89UIViewController%E8%BF%87%E6%B8%A1%E5%8A%A8%E7%94%BB/">创建自定义UIViewController过渡动画</a>
-            <span class="archive-item-date">二月 13, 2016</span>
-        </article>
-    
-        
+Use size classes to enable a storyboard or xib file to work with all
+available screen sizes. This enables the user interfac..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/ios/%E5%88%9D%E6%8E%A2Size%20Classes%E7%AC%94%E8%AE%B0%20/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/iOS,%E9%80%82%E9%85%8D"><i class="tag post-item-tag">iOS,适配</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/ios/UITableViewCell%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97%E9%AB%98%E5%BA%A6%E4%BC%98%E5%8C%96%20/">UITableViewCell自动计算高度优化</a></h2><time class="has-text-grey" datetime="2015-03-04T03:12:19.000Z">2015-03-04</time><p class="is-flex-grow-2 mt-2">=======================
+之前有段时间一直被UITableViewCell的自动计算高度困扰着，查阅过很多资料试过很多种方法，有些勉强能用，有些计算高度不是很稳定会有错误，有些方法太过复杂影响开发效率,再加上苹果的2次发布会推出了2次针对UITableViewCell自动计算高度的改进，但效果都不是很好。所以这次正好有空就在这里统一整理出来，做一次总结，找出我个人觉得目前最好的方法出来。
+在这之前我做过一些调查，发现iOS7和iOS6的市场占有比还是有一点的，这个是iOS9发布三周后的数据
+发现现在还使用iOS7和iOS6的还是蛮多的，占了10%，所以接下来要做的适配起码要兼容iOS7甚至兼容iOS6。
+estimatedRowHeight
+这个是在iOS7发布会上推出的一个UITab..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/ios/UITableViewCell%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97%E9%AB%98%E5%BA%A6%E4%BC%98%E5%8C%96%20/">更多</a></section></article></section><aside class="column is-hidden-mobile is-4-tablet is-3-widescreen"><div style="position: sticky; top: 50px;"><main class="aside-card-container categories-widget category-page"><h3>分类</h3><section><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Django/">Django</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OOP/">OOP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode%E5%88%B7%E9%A2%98%E9%A2%98%E8%A7%A3/">leetcode刷题题解</a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python%E5%9F%BA%E7%A1%80/">python基础</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">源码分析</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%A1%E7%90%86/">管理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%87%AA%E5%8A%A8%E5%8C%96/">自动化</a><span class="category-list-count">1</span></li></ul></section></main></div></aside></div></article><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
 
-        
-            <h3>2015</h3>
-        
+window.addEventListener('resize', $claudia.throttle(function () {
+    var images = document.querySelectorAll('.js-img-fadeIn')
 
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2015/12/29/%E7%BB%86%E8%B0%88iOS8%E7%9A%84Self-Sizing%20Cells%20/">细谈iOS8的Self-Sizing Cells</a>
-            <span class="archive-item-date">十二月 29, 2015</span>
-        </article>
-    
-        
+    images.forEach($claudia.blurBackdropImg)
+}, 150))</script></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
 
-        
+window.addEventListener('resize', $claudia.throttle(function () {
+    var images = document.querySelectorAll('.js-img-fadeIn')
 
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2015/07/14/iOS8%E6%96%B0%E7%89%B9%E6%80%A7%20UIPresentationController%20/">iOS8新特性 UIPresentationController</a>
-            <span class="archive-item-date">七月 14, 2015</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2015/04/05/%E9%85%8D%E5%90%88Autolayou+SizeClasses%E4%BB%BF%E6%94%AF%E4%BB%98%E5%AE%9D%E9%A6%96%E9%A1%B5%20/">配合Autolayou+SizeClasses仿支付宝首页</a>
-            <span class="archive-item-date">四月 5, 2015</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2015/03/22/%E4%BD%BF%E7%94%A8Autolayout%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E9%AB%98%E5%BA%A6%E7%9A%84ScrollView%20/">使用Autolayout实现动态高度的ScrollView</a>
-            <span class="archive-item-date">三月 22, 2015</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2015/03/17/%E5%88%9D%E6%8E%A2Size%20Classes%E7%AC%94%E8%AE%B0%20/">初探Size Classes笔记</a>
-            <span class="archive-item-date">三月 17, 2015</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2015/03/04/UITableViewCell%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97%E9%AB%98%E5%BA%A6%E4%BC%98%E5%8C%96%20/">UITableViewCell自动计算高度优化</a>
-            <span class="archive-item-date">三月 4, 2015</span>
-        </article>
-    
-    
-</div>
-</div>
-
-        </div>
-        <footer id="footer" class="footer">
-    <div class="copyright">
-        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
-    </div>
-</footer>
-
-    </div>
-</body>
-</html>
+    images.forEach($claudia.blurBackdropImg)
+}, 150))</script></body></html>

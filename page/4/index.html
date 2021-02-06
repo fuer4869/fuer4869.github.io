@@ -1,144 +1,178 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>loannes's blog</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/widget-post-list.css"><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><article class="post-container is-flex is-justify-content-center section container is-max-widescreen pt-4 px-2"><div class="columns is-variable is-1-tablet is-3-desktop-only is-2-widescreen is-full-width"><section class="column"><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2020/09/11/xkQBdTafmZAnj9r.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/leetcode/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2020/09/11/xkQBdTafmZAnj9r.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/LRU"><i class="tag post-item-tag">LRU</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/">LRU缓存机制算法详解</a></h2><time class="has-text-grey" datetime="2020-06-11T06:44:48.000Z">2020-06-11</time><p class="is-flex-grow-2 mt-2">
+前言
+今天在刷leetcode的时候，遇到了LRU缓存机制的问题。觉得很有意思，就准备把这道题的题解以及相关知识点记录下来。
+原题是这样的
 
-    <meta name="author" content="loannes">
+运用你所掌握的数据结构，设计和实现一个  LRU (最近最少使用) 缓存机制。它应该支持以下操作： 获取数据 get 和 写入数据 put 。
+获取数据 get(key) - 如果关键字 (key) 存在于缓存中，则获取关键字的值（总是正数），否则返回 -1。
+写入数据 put(key, value) - 如果关键字已经存在，则变更其数据值；如果关键字不存在，则插入该组「关键字/值」。当缓存容量达到上限时，它应该在写入新数据之前删除最久未使用的数据值，从而为新的数据值留出空间。
 
+结合实际场景来分析这道题的话就是我们现在有一个空间有限的缓存池，为了保证缓存不会溢出我..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90"><i class="tag post-item-tag">计算机组成</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/notes/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%84%E6%88%90/">计算机的基本组成</a></h2><time class="has-text-grey" datetime="2020-06-08T04:56:16.000Z">2020-06-08</time><p class="is-flex-grow-2 mt-2">一、计算机系统概论
 
+冯诺依曼计算机组成
 
+主机（cpu+内存），外设（输入设备+输出设备+外存），总线（地址总线+数据总线+控制总线）
 
+计算机层次结构
 
-<title>loannes&#39;s blog</title>
+应用程序-高级语言-汇编语言-操作系统-指令集架构层-微代码层-硬件逻辑层
 
+计算机性能指标
 
+非时间指标
+【字长】机器一次能处理的二进制位数 ，常见的有32位或64位
+【总线宽度】数据总线一次能并行处理的最大信息位数，一般指运算器与存储器之间的数据总线的位数
+【主存容量】主存的大小
+【存储带宽】单位时间内与主存交换的二进制位数 B/s
+时间指标
+【主频f】时钟震荡的频率 Hz；【时钟周期T】时钟震荡一次的时间 t
+【外频】cpu与主板之间同步的时钟频率，系统总线的工作频率；【倍频】主频与外频的倍数 =主频/外频
+【CPI】clock cycles p..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/notes/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%84%E6%88%90/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><h2 class="mt-4 mb-0 is-family-serif"><a href="/notes/%E6%A8%AA%E6%89%ABoffer%E7%AC%94%E8%AE%B0-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/">横扫offer笔记 面向对象</a></h2><time class="has-text-grey" datetime="2020-06-06T07:36:00.000Z">2020-06-06</time><p class="is-flex-grow-2 mt-2">
+不可变数据类型是永远不会被改变的。
 
-    <link rel="icon" href="/favicon.ico">
+const int i = 0; //指定变量i为不可变常量
+int * j = (int *)&amp;amp;i; //强行将j的指针指向常变量i, &amp;amp;i指的是得到变量i的内存地址
+* j = 1;
+printf(&amp;quot;%d %d&amp;quot;, i, *j) 最终得到0，1
 
+因为i是常变量（不可改变的变量），所以即使指针变量j指向了i的地址之后重新赋值。这个时候内存会为常变量开辟一个新的内存地址来存储原始值0，并且在输出的时候使用的还是原来的值。
+*j指的是这个指针变量所指向的值，也就是它所存储的内存地址，通过该地址找到的值
+如果这个时候输出j,那么将打印出*j中存储的内存地址
 
+在16位机器上，下面这段代码输出结果：
 
+int i = 65536;
+  ..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/notes/%E6%A8%AA%E6%89%ABoffer%E7%AC%94%E8%AE%B0-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><h2 class="mt-4 mb-0 is-family-serif"><a href="/notes/%E6%A8%AA%E6%89%ABoffer%E7%AC%94%E8%AE%B0%20C++%E5%9F%BA%E7%A1%80/">横扫offer笔记 C++基础</a></h2><time class="has-text-grey" datetime="2020-06-05T06:05:53.000Z">2020-06-05</time><p class="is-flex-grow-2 mt-2">基本运算
 
-    <!-- stylesheets list from _config.yml -->
-    
-    <link rel="stylesheet" href="/css/style.css">
-    
-
-
-
-    <!-- scripts list from _config.yml -->
-    
-    <script src="/js/script.js"></script>
-    
-    <script src="/js/tocbot.min.js"></script>
-    
-
-
-
-
-<meta name="generator" content="Hexo 4.1.0"></head>
-<body>
-    <div class="wrapper">
-        <header>
-    <nav class="navbar">
-        <div class="container">
-            <div class="navbar-header header-logo"><a href="/">loannes&#39;s Blog</a></div>
-            <div class="menu navbar-right">
-                
-                    <a class="menu-item" href="/archives">Posts</a>
-                
-                    <a class="menu-item" href="/category">Categories</a>
-                
-                    <a class="menu-item" href="/tag">Tags</a>
-                
-                    <a class="menu-item" href="/about">About</a>
-                
-                <input id="switch_default" type="checkbox" class="switch_default">
-                <label for="switch_default" class="toggleBtn"></label>
-            </div>
-
-        </div>
-    </nav>
-
-    
-    <nav class="navbar-mobile" id="nav-mobile">
-        <div class="container">
-            <div class="navbar-header">
-                <div>
-                    <a href="/">loannes&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
-                </div>
-                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
-            </div>
-            <div class="menu" id="mobile-menu">
-                
-                    <a class="menu-item" href="/archives">Posts</a>
-                
-                    <a class="menu-item" href="/category">Categories</a>
-                
-                    <a class="menu-item" href="/tag">Tags</a>
-                
-                    <a class="menu-item" href="/about">About</a>
-                
-            </div>
-        </div>
-    </nav>
-
-</header>
-<script>
-    var mobileBtn = function f() {
-        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
-        var mobileMenu = document.getElementById("mobile-menu");
-        if(toggleMenu.classList.contains("active")){
-           toggleMenu.classList.remove("active")
-            mobileMenu.classList.remove("active")
-        }else{
-            toggleMenu.classList.add("active")
-            mobileMenu.classList.add("active")
-        }
-    }
-</script>
-        <div class="main">
-            
-    <div class="container">
-    <div class="intro">
-        <div class="avatar">
-            <a href="/archives"><img src="/image/avatar.jpeg"></a>
-        </div>
-        <div class="nickname">loannes</div>
-        <div class="description"><p>你用中文都表达不出来的东西就别指望用代码写了 — 编程珠玑</p>
-</div>
-        <div class="links">
-            
-                
-                    <a class="link-item" title="Blog" href="/archives">
-                        
-                        
-                            <i class="iconfont icon-blog"></i>
-                        
-                    </a>
-                
-                    <a class="link-item" title="Github" href="https://github.com/fuer4869" target="_blank" rel="noopener">
-                        
-                        
-                            <i class="iconfont icon-github"></i>
-                        
-                    </a>
-                
-            
-        </div>
-    </div>
-</div>
+C语言中，以数字0开头的是八进制形式，以0x或0X开头的是十六进制形式，常数的后面加字母L为长整数.
 
 
-        </div>
-        <footer id="footer" class="footer">
-    <div class="copyright">
-        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
-    </div>
-</footer>
+%hd用来输出 short int 类型，hd 是 short decimal 的简写；
+%d用来输出 int 类型，d 是 decimal 的简写；
+%ld用来输出 long int 类型，ld 是 long decimal 的简写。
 
-    </div>
-</body>
-</html>
+浮点数：在高级语言程序设计中，对于两个浮点类型的变量x,y一般不直接使用语句if(x==y)。因为在计算机中浮点数不一定会被精确显示，特别是小数点后三位之后。所以一般我们判断两个浮点数是否相等时需要这样写：|x-y| &amp;gt; 0.000001
+
+unsigned int a = 6 表示的是无符号整数 取值范围是
+
+</p><a class="button is-default mt-2 has-text-weight-semibold" href="/notes/%E6%A8%AA%E6%89%ABoffer%E7%AC%94%E8%AE%B0%20C++%E5%9F%BA%E7%A1%80/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><h2 class="mt-4 mb-0 is-family-serif"><a href="/python/Python%E9%9D%A2%E8%AF%95%E9%A2%98%E5%9B%9B/">Python面试题四</a></h2><time class="has-text-grey" datetime="2020-05-28T03:27:40.000Z">2020-05-28</time><p class="is-flex-grow-2 mt-2">
+Python中类方法、类实例方法、静态方法有何区别？
+
+
+实例方法：类的实例化对象的方法，参数是self，指向该类的实例。通过self可以自由的调用该对象的属性和其它方法，也可以修改。
+类方法：使用@classmethod装饰器的类方法，参数为cls，不同于实例方法，cls不能对类中的属性做修改
+静态方法：使用@staticmethod装饰器的类方法，不接受cls和self，但是可以接受其它参数。所以它不能访问该类的属性和方法，只能访问该类中的全局变量。
+
+参考链接
+
+请描述抽象类和接口类的区别和联系
+举个简单的例子，你需要设计一个关于汽车的类。为了便于以后的扩展，我们把汽车的基本功能放入到抽象类中去，如行驶，倒车，转弯这些方法，车灯，轮胎等属性。
+突然我们开发出了一台支持自动驾驶的车，因为这个功能不是每..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/python/Python%E9%9D%A2%E8%AF%95%E9%A2%98%E5%9B%9B/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><h2 class="mt-4 mb-0 is-family-serif"><a href="/python/Python%E9%9D%A2%E8%AF%95%E9%A2%98-%E4%BA%8C/">Python面试题(二)</a></h2><time class="has-text-grey" datetime="2020-05-02T02:27:26.000Z">2020-05-02</time><p class="is-flex-grow-2 mt-2">
+列出python中可变数据类型和不可变数据类型，并简述原理
+不可变类型：字符串str, 数值类型int, 元组tuple
+
+In [1]: a = 3
+
+In [2]: b = 3
+
+In [3]: id(a)
+Out[3]: 4494963920
+
+In [4]: id(b)
+Out[4]: 4494963920
+
+不可变类型指的是数据不允许放生变化，如果改变变量的值就只能重新创建新的对象会重新分配内存地址，所以它的id将会有所改变。
+In [5]: a = 4
+
+In [6]: id(a)
+Out[6]: 4494963952
+
+可变类型：列表list和字典dict
+也就是说如果对变量进行append、 +=等操作它只会改变变量的值，不会改变内存地址。对于相同值的不同对象也会占用不同的内存地址。
+In..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/python/Python%E9%9D%A2%E8%AF%95%E9%A2%98-%E4%BA%8C/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E7%BB%83%E4%B9%A0"><i class="tag post-item-tag">练习</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/python/Python%E9%9D%A2%E8%AF%95%E9%A2%98/">Python面试题</a></h2><time class="has-text-grey" datetime="2020-04-27T13:11:12.000Z">2020-04-27</time><p class="is-flex-grow-2 mt-2">
+一行代码实现1-100之和
+
+sum(range(100))
+
+
+如何在一个函数内部修改全局变量
+
+In [1]: c = 0
+In [3]: def change_count():
+   ...:     global c
+   ...:     c = 1
+   ...:     print(c)
+   ...:
+
+In [4]: change_count()
+1
+
+In [5]: c
+Out[5]: 1
+
+
+
+列出5个python标准库
+os: 提供操作系统有关的函数
+sys: 通常用于命令行参数
+re: 正则匹配
+math: 数学运算
+datetime： 处理日期时间
+
+
+字典如何删除键和合并两个字典
+删除：
+
+
+del dic['key']
+
+合并：
+In [1]: dic1 = &amp;#123;&amp;..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/python/Python%E9%9D%A2%E8%AF%95%E9%A2%98/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2020/07/05/rZEaTvG5OYpQBPq.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/python/%E6%B5%85%E8%B0%88Python%E4%B8%AD%E7%B1%BB%E6%96%B9%E6%B3%95%E3%80%81%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95%E5%92%8C%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2020/07/05/rZEaTvG5OYpQBPq.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/OOP,%20python"><i class="tag post-item-tag">OOP, python</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/python/%E6%B5%85%E8%B0%88Python%E4%B8%AD%E7%B1%BB%E6%96%B9%E6%B3%95%E3%80%81%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95%E5%92%8C%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/">浅谈Python中类方法、实例方法和静态方法的区别</a></h2><time class="has-text-grey" datetime="2020-03-02T12:57:51.000Z">2020-03-02</time><p class="is-flex-grow-2 mt-2">
+</p><a class="button is-default mt-2 has-text-weight-semibold" href="/python/%E6%B5%85%E8%B0%88Python%E4%B8%AD%E7%B1%BB%E6%96%B9%E6%B3%95%E3%80%81%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95%E5%92%8C%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2020/06/09/hdal6fKiVtu3LHb.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/python/%E6%B5%85%E8%B0%88python%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8%E3%80%81%E5%A4%8D%E5%88%B6%E3%80%81%E6%8C%87%E9%92%88%E4%B8%8EC++%E7%9A%84%E5%8C%BA%E5%88%AB/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2020/06/09/hdal6fKiVtu3LHb.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/python%E5%9F%BA%E7%A1%80,%20C++"><i class="tag post-item-tag">python基础, C++</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/python/%E6%B5%85%E8%B0%88python%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8%E3%80%81%E5%A4%8D%E5%88%B6%E3%80%81%E6%8C%87%E9%92%88%E4%B8%8EC++%E7%9A%84%E5%8C%BA%E5%88%AB/">浅谈python中的引用、拷贝、指针与C++的区别</a></h2><time class="has-text-grey" datetime="2020-03-01T06:10:46.000Z">2020-03-01</time><p class="is-flex-grow-2 mt-2">
+最近在学C++，在刷题的时候遇到了关于引用、指针的问题，重温相关知识后发现C++中的引用于python中引用有很大的区别，我想这就是C++效率远高于python的原因之一。通过两篇文章想梳理下python与C++在引用上的区别以及C++中引用和指针的区别。
+
+Python的引用
+在python中引用就是引用赋值,等同于浅拷贝，可以看一个例子：
+In [13]: a = 1
+
+In [14]: b = a
+
+In [15]: id(a)
+Out[15]: 4553065616
+
+In [16]: id(b)
+Out[16]: 4553065616
+
+In [20]: b is a
+Out[20]: True
+
+In [21]: b == a
+Out[21]: True
+
+上面代码中先初始化了一个值为1，名字..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/python/%E6%B5%85%E8%B0%88python%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8%E3%80%81%E5%A4%8D%E5%88%B6%E3%80%81%E6%8C%87%E9%92%88%E4%B8%8EC++%E7%9A%84%E5%8C%BA%E5%88%AB/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2020/06/20/Grzdp7S98n5PaKs.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/python/%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3Python%E7%9A%84%E6%8E%A5%E5%8F%A3%E7%B1%BB%E3%80%81%E6%8A%BD%E8%B1%A1%E7%B1%BB%E3%80%81%E5%A4%9A%E6%80%81%E5%92%8C%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2020/06/20/Grzdp7S98n5PaKs.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/python%E5%9F%BA%E7%A1%80%EF%BC%8C%E7%AC%94%E8%AE%B0"><i class="tag post-item-tag">python基础，笔记</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/python/%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3Python%E7%9A%84%E6%8E%A5%E5%8F%A3%E7%B1%BB%E3%80%81%E6%8A%BD%E8%B1%A1%E7%B1%BB%E3%80%81%E5%A4%9A%E6%80%81%E5%92%8C%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B/">如何理解Python的接口类、抽象类、多态和鸭子类型</a></h2><time class="has-text-grey" datetime="2020-02-20T07:03:09.000Z">2020-02-20</time><p class="is-flex-grow-2 mt-2">
+抽象类
+抽象类是一个特殊的类，为了在团队开发中能够规范化代码而延伸出来的知识，源于java，这种类它只能被继承而不能被实例化。这也说明了该类中的所有函数以及属性都将用来被继承。
+为什么要使用抽象类
+
+
+规范代码：
+它的子类必须实现抽象类中的所有函数 前面有提到有一点就是为了规范代码，在团队协作中很经常会遇到多个人开发同一个模块的情况，如果因为函数命名问题导致两个子类中的方法不同。为了避免这种问题才出现了抽象类这种概念。
+
+
+易于维护：
+还有另外个原因是为了减少代码的重复量和易于维护。比方说我们有多个汽车产品，不同的汽车有不同的功能。有的有自动驾驶，有的有全景天窗，但是只要是汽车都会有行驶，左转右转等基本功能，这些基本功能我们就可以放在抽象类中。
+
+
+from abc import ABCMeta,abst..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/python/%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3Python%E7%9A%84%E6%8E%A5%E5%8F%A3%E7%B1%BB%E3%80%81%E6%8A%BD%E8%B1%A1%E7%B1%BB%E3%80%81%E5%A4%9A%E6%80%81%E5%92%8C%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B/">更多</a></section></article><section class="paginator is-flex is-justify-content-flex-end is-flex-wrap-wrap"><a class="extend prev" rel="prev" href="/page/3/"><i class="iconfont icon-prev has-text-grey"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/5/"><i class="iconfont icon-next has-text-grey"></i></a></section></section><aside class="column is-hidden-mobile is-4-tablet is-3-widescreen"><div class="aside-card-container profile-widget"><!-- todo: 使用取色工具动态阴影--><section class="is-flex is-flex-direction-column is-justify-content-center is-align-items-center"><section class="is-flex is-justify-content-center avatar is-clipped skeleton"><!-- debug images "https://api.ixiaowai.cn/gqapi/gqapi.php"--><img class="js-img-fadeIn" src="/images/avatar.jpg" alt="user avatar"></section><h3 class="user-name">loannes</h3></section><section class="sns-container is-flex is-justify-content-center is-align-items-center"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section></div><main class="aside-card-container recent-widget"><h3>最近</h3><ul><li class="is-flex"><!-- change to element replace image placeholder--><img class="js-img-fadeIn" src="https://i.loli.net/2020/09/11/xkQBdTafmZAnj9r.jpg" alt="cover"><!--else--><!--    div.post-img-placeholder--><section class="is-flex-grow-2"><p class="has-text-weight-semibold" style="line-height: 20px; font-size: 14px"><a href="/leetcode/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/">LRU缓存机制算法详解</a></p><time class="has-text-weight-semibold has-text-grey" datetime="2020-06-11T06:44:48.000Z">2020-06-11</time></section></li><li class="is-flex"><!-- change to element replace image placeholder--><img class="js-img-fadeIn" src="https://ui-avatars.com/api/?background=f5f5f5&amp;name=计算" alt="cover"><!--else--><!--    div.post-img-placeholder--><section class="is-flex-grow-2"><p class="has-text-weight-semibold" style="line-height: 20px; font-size: 14px"><a href="/notes/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%84%E6%88%90/">计算机的基本组成</a></p><time class="has-text-weight-semibold has-text-grey" datetime="2020-06-08T04:56:16.000Z">2020-06-08</time></section></li><li class="is-flex"><!-- change to element replace image placeholder--><img class="js-img-fadeIn" src="https://ui-avatars.com/api/?background=f5f5f5&amp;name=横扫" alt="cover"><!--else--><!--    div.post-img-placeholder--><section class="is-flex-grow-2"><p class="has-text-weight-semibold" style="line-height: 20px; font-size: 14px"><a href="/notes/%E6%A8%AA%E6%89%ABoffer%E7%AC%94%E8%AE%B0-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/">横扫offer笔记 面向对象</a></p><time class="has-text-weight-semibold has-text-grey" datetime="2020-06-06T07:36:00.000Z">2020-06-06</time></section></li><li class="is-flex"><!-- change to element replace image placeholder--><img class="js-img-fadeIn" src="https://ui-avatars.com/api/?background=f5f5f5&amp;name=横扫" alt="cover"><!--else--><!--    div.post-img-placeholder--><section class="is-flex-grow-2"><p class="has-text-weight-semibold" style="line-height: 20px; font-size: 14px"><a href="/notes/%E6%A8%AA%E6%89%ABoffer%E7%AC%94%E8%AE%B0%20C++%E5%9F%BA%E7%A1%80/">横扫offer笔记 C++基础</a></p><time class="has-text-weight-semibold has-text-grey" datetime="2020-06-05T06:05:53.000Z">2020-06-05</time></section></li><li class="is-flex"><!-- change to element replace image placeholder--><img class="js-img-fadeIn" src="https://ui-avatars.com/api/?background=f5f5f5&amp;name=Py" alt="cover"><!--else--><!--    div.post-img-placeholder--><section class="is-flex-grow-2"><p class="has-text-weight-semibold" style="line-height: 20px; font-size: 14px"><a href="/python/Python%E9%9D%A2%E8%AF%95%E9%A2%98%E5%9B%9B/">Python面试题四</a></p><time class="has-text-weight-semibold has-text-grey" datetime="2020-05-28T03:27:40.000Z">2020-05-28</time></section></li><li class="is-flex"><!-- change to element replace image placeholder--><img class="js-img-fadeIn" src="https://ui-avatars.com/api/?background=f5f5f5&amp;name=Py" alt="cover"><!--else--><!--    div.post-img-placeholder--><section class="is-flex-grow-2"><p class="has-text-weight-semibold" style="line-height: 20px; font-size: 14px"><a href="/python/Python%E9%9D%A2%E8%AF%95%E9%A2%98-%E4%BA%8C/">Python面试题(二)</a></p><time class="has-text-weight-semibold has-text-grey" datetime="2020-05-02T02:27:26.000Z">2020-05-02</time></section></li></ul></main><main class="aside-card-container categories-widget category-page"><h3>分类</h3><section><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Django/">Django</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OOP/">OOP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode%E5%88%B7%E9%A2%98%E9%A2%98%E8%A7%A3/">leetcode刷题题解</a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python%E5%9F%BA%E7%A1%80/">python基础</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">源码分析</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%A1%E7%90%86/">管理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%87%AA%E5%8A%A8%E5%8C%96/">自动化</a><span class="category-list-count">1</span></li></ul></section></main><main class="aside-card-container archives-widget"><h3>归档</h3><section><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li></ul></section></main><main class="aside-card-container tag-widget"><h3>标签</h3><section><a href="/tags/iOS"><span class="tag post-item-tag" style="margin-bottom: 5px;">iOS</span></a><a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="tag post-item-tag" style="margin-bottom: 5px;">数据结构</span></a><a href="/tags/Python,%20NumPy"><span class="tag post-item-tag" style="margin-bottom: 5px;">Python, NumPy</span></a><a href="/tags/Python%EF%BC%8CNumPy"><span class="tag post-item-tag" style="margin-bottom: 5px;">Python，NumPy</span></a><a href="/tags/Python,%20Pandas"><span class="tag post-item-tag" style="margin-bottom: 5px;">Python, Pandas</span></a><a href="/tags/Python,%20pandas"><span class="tag post-item-tag" style="margin-bottom: 5px;">Python, pandas</span></a><a href="/tags/Python,%20Pandas,%20%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8"><span class="tag post-item-tag" style="margin-bottom: 5px;">Python, Pandas, 数据存储</span></a><a href="/tags/Python,%20Scrapy"><span class="tag post-item-tag" style="margin-bottom: 5px;">Python, Scrapy</span></a><a href="/tags/ios%E9%80%86%E5%90%91"><span class="tag post-item-tag" style="margin-bottom: 5px;">ios逆向</span></a><a href="/tags/Python"><span class="tag post-item-tag" style="margin-bottom: 5px;">Python</span></a><a href="/tags/Python,%20Django"><span class="tag post-item-tag" style="margin-bottom: 5px;">Python, Django</span></a><a href="/tags/TCP/IP"><span class="tag post-item-tag" style="margin-bottom: 5px;">TCP/IP</span></a><a href="/tags/MySQL"><span class="tag post-item-tag" style="margin-bottom: 5px;">MySQL</span></a><a href="/tags/%E7%BB%83%E4%B9%A0"><span class="tag post-item-tag" style="margin-bottom: 5px;">练习</span></a><a href="/tags/python%E5%9F%BA%E7%A1%80,%20C++"><span class="tag post-item-tag" style="margin-bottom: 5px;">python基础, C++</span></a><a href="/tags/python%E5%9F%BA%E7%A1%80%EF%BC%8C%E7%AC%94%E8%AE%B0"><span class="tag post-item-tag" style="margin-bottom: 5px;">python基础，笔记</span></a><a href="/tags/%E5%9F%BA%E7%A1%80,%20NumPY"><span class="tag post-item-tag" style="margin-bottom: 5px;">基础, NumPY</span></a><a href="/tags/iOS,%E9%80%82%E9%85%8D"><span class="tag post-item-tag" style="margin-bottom: 5px;">iOS,适配</span></a><a href="/tags/%E5%8A%A8%E7%94%BB"><span class="tag post-item-tag" style="margin-bottom: 5px;">动画</span></a><a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="tag post-item-tag" style="margin-bottom: 5px;">内存管理</span></a><a href="/tags/%E9%80%82%E9%85%8D"><span class="tag post-item-tag" style="margin-bottom: 5px;">适配</span></a><a href="/tags/iOS,%20%E5%8A%A8%E7%94%BB"><span class="tag post-item-tag" style="margin-bottom: 5px;">iOS, 动画</span></a><a href="/tags/iOS%EF%BC%8CATS"><span class="tag post-item-tag" style="margin-bottom: 5px;">iOS，ATS</span></a><a href="/tags/%E6%A0%91"><span class="tag post-item-tag" style="margin-bottom: 5px;">树</span></a><a href="/tags/%E6%8E%92%E5%BA%8F"><span class="tag post-item-tag" style="margin-bottom: 5px;">排序</span></a><a href="/tags/%E9%80%92%E5%BD%92"><span class="tag post-item-tag" style="margin-bottom: 5px;">递归</span></a><a href="/tags/hashmap"><span class="tag post-item-tag" style="margin-bottom: 5px;">hashmap</span></a><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90"><span class="tag post-item-tag" style="margin-bottom: 5px;">计算机组成</span></a><a href="/tags/iOS,%20URL"><span class="tag post-item-tag" style="margin-bottom: 5px;">iOS, URL</span></a><a href="/tags/MySQL,%E7%AC%94%E8%AE%B0"><span class="tag post-item-tag" style="margin-bottom: 5px;">MySQL,笔记</span></a><a href="/tags/OOP,%20python"><span class="tag post-item-tag" style="margin-bottom: 5px;">OOP, python</span></a><a href="/tags/%E7%AE%80%E5%8D%95%EF%BC%8C%E6%95%B0%E7%BB%84%EF%BC%8C%E5%8F%8C%E6%8C%87%E9%92%88"><span class="tag post-item-tag" style="margin-bottom: 5px;">简单，数组，双指针</span></a><a href="/tags/%E7%AE%80%E5%8D%95"><span class="tag post-item-tag" style="margin-bottom: 5px;">简单</span></a><a href="/tags/DFS"><span class="tag post-item-tag" style="margin-bottom: 5px;">DFS</span></a><a href="/tags/%E6%95%B0%E7%BB%84"><span class="tag post-item-tag" style="margin-bottom: 5px;">数组</span></a><a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="tag post-item-tag" style="margin-bottom: 5px;">字符串</span></a><a href="/tags/%E9%93%BE%E8%A1%A8"><span class="tag post-item-tag" style="margin-bottom: 5px;">链表</span></a><a href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88"><span class="tag post-item-tag" style="margin-bottom: 5px;">双指针</span></a><a href="/tags/%E4%B8%AD%E7%AD%89"><span class="tag post-item-tag" style="margin-bottom: 5px;">中等</span></a><a href="/tags/LRU"><span class="tag post-item-tag" style="margin-bottom: 5px;">LRU</span></a><a href="/tags/%E6%A0%88"><span class="tag post-item-tag" style="margin-bottom: 5px;">栈</span></a><a href="/tags/%E5%93%88%E5%B8%8C%E8%A1%A8"><span class="tag post-item-tag" style="margin-bottom: 5px;">哈希表</span></a><a href="/tags/%E4%B8%AD%E7%AD%89%EF%BC%8C%20BFS"><span class="tag post-item-tag" style="margin-bottom: 5px;">中等， BFS</span></a><a href="/tags/BFS"><span class="tag post-item-tag" style="margin-bottom: 5px;">BFS</span></a><a href="/tags/%E8%BF%AD%E4%BB%A3"><span class="tag post-item-tag" style="margin-bottom: 5px;">迭代</span></a><a href="/tags/%E4%B8%AD%E7%AD%89%EF%BC%8C%E6%95%B0%E7%BB%84"><span class="tag post-item-tag" style="margin-bottom: 5px;">中等，数组</span></a><a href="/tags/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE"><span class="tag post-item-tag" style="margin-bottom: 5px;">二分查找</span></a><a href="/tags/MySQL,%20%E4%BA%8B%E5%8A%A1"><span class="tag post-item-tag" style="margin-bottom: 5px;">MySQL, 事务</span></a><a href="/tags/%E6%B1%87%E6%80%BB"><span class="tag post-item-tag" style="margin-bottom: 5px;">汇总</span></a><a href="/tags/%E8%81%94%E7%BB%93"><span class="tag post-item-tag" style="margin-bottom: 5px;">联结</span></a><a href="/tags/%E5%85%A8%E6%96%87%E6%9C%AC%E6%90%9C%E7%B4%A2"><span class="tag post-item-tag" style="margin-bottom: 5px;">全文本搜索</span></a><a href="/tags/%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="tag post-item-tag" style="margin-bottom: 5px;">触发器</span></a><a href="/tags/%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="tag post-item-tag" style="margin-bottom: 5px;">存储过程</span></a><a href="/tags/%E8%A7%86%E5%9B%BE"><span class="tag post-item-tag" style="margin-bottom: 5px;">视图</span></a><a href="/tags/%E6%B8%B8%E6%A0%87"><span class="tag post-item-tag" style="margin-bottom: 5px;">游标</span></a><a href="/tags/%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="tag post-item-tag" style="margin-bottom: 5px;">子查询</span></a><a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="tag post-item-tag" style="margin-bottom: 5px;">正则表达式</span></a><a href="/tags/%E7%BB%84%E5%90%88%E6%9F%A5%E8%AF%A2"><span class="tag post-item-tag" style="margin-bottom: 5px;">组合查询</span></a><a href="/tags/%E9%AB%98%E7%BA%A7%E8%81%94%E7%BB%93"><span class="tag post-item-tag" style="margin-bottom: 5px;">高级联结</span></a><a href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="tag post-item-tag" style="margin-bottom: 5px;">归并排序</span></a><a href="/tags/Redis"><span class="tag post-item-tag" style="margin-bottom: 5px;">Redis</span></a><a href="/tags/MySQL%E9%94%81%EF%BC%8CInnoDB"><span class="tag post-item-tag" style="margin-bottom: 5px;">MySQL锁，InnoDB</span></a><a href="/tags/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2"><span class="tag post-item-tag" style="margin-bottom: 5px;">深度优先搜索</span></a><a href="/tags/%E6%A8%A1%E6%8B%9F%E6%B3%95"><span class="tag post-item-tag" style="margin-bottom: 5px;">模拟法</span></a></section></main></aside></div></article><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
+
+window.addEventListener('resize', $claudia.throttle(function () {
+    var images = document.querySelectorAll('.js-img-fadeIn')
+
+    images.forEach($claudia.blurBackdropImg)
+}, 150))</script></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
+
+window.addEventListener('resize', $claudia.throttle(function () {
+    var images = document.querySelectorAll('.js-img-fadeIn')
+
+    images.forEach($claudia.blurBackdropImg)
+}, 150))</script></body></html>

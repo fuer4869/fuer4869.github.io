@@ -1,0 +1,115 @@
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>算法图解之广度优先搜索</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">算法图解之广度优先搜索</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%8C%83%E5%9B%B4"><span class="toc-text">使用范围</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%BE"><span class="toc-text">图</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5"><span class="toc-text">实践</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%A2%981-%E4%BB%8E%E5%A5%BD%E5%8F%8B%E5%90%8D%E5%8D%95%E4%B8%AD%E6%89%BE%E5%87%BA%E5%85%B3%E7%B3%BB%E6%9C%80%E8%BF%91%E5%8C%BB%E7%94%9F"><span class="toc-text">题1  从好友名单中找出关系最近医生</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%A2%982-%E6%9D%A5%E6%BA%90%E4%BA%8Eleetcode"><span class="toc-text">题2 来源于leetcode</span></a></li></ol></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/%E6%A0%91"><i class="tag post-item-tag">树</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">算法图解之广度优先搜索</h1><time class="has-text-grey" datetime="2019-12-25T15:58:35.000Z">2019-12-25</time><article class="mt-2 post-content"><p><img src="https://lc-gold-cdn.xitu.io/7f95b14ea69db63d2a0c.png" alt=""></p>
+<h3 id="简介">简介</h3>
+<p>广度优先搜索算法（Breathed First Search）是一种搜索算法。原理就是从树的<strong>根节点</strong>开始去遍历所有节点，从而找出最短路径。</p>
+<h5 id="使用范围">使用范围</h5>
+<ul>
+<li>可以用来走迷宫，在游戏领域中可以用来做自动寻路功能</li>
+<li>可以用来编写跳棋AI，计算多少步能获胜</li>
+<li>也可以用来根据自己的人际关系网络查找到关系最近的医生</li>
+</ul>
+<h4 id="图">图</h4>
+<p>图由节点和边组成。一个节点可能与众多节点直接相连<br>
+图用于模拟不同的东西是如何相连的。</p>
+<p><img src="https://s2.ax1x.com/2019/12/29/luBt81.png" alt=""></p>
+<p>类似这样模拟了欠债关系的就是图</p>
+<p>在遇到能用广度优先搜索算法解决问题时，我们可以先借助图来建立问题模型，然后再通过算法去解决问题。</p>
+<p><strong>图只是用来模拟问题模型，并不是最终答案</strong></p>
+<p>树形结构也是一种图，与其他图不同的是它不会往后指。</p>
+<p><img src="https://s2.ax1x.com/2019/12/29/lusUvq.png" alt=""></p>
+<p>也就是说遇到问题后，我们可以通过图把问题的关键点放在节点上。用散列表把这些点按照图的结构存储起来，然后再执行搜索找到最佳路径。</p>
+<p>可能看文字描述有点太抽象，刷几道题来找找感觉！</p>
+<h3 id="实践">实践</h3>
+<h5 id="题1-从好友名单中找出关系最近医生">题1  从好友名单中找出关系最近医生</h5>
+<p>解题思路：<br>
+1. 创建一个队列，用于存储查找名单<br>
+2. 从队列中弹出一个人<br>
+3. 检查这个人是不是医生<br>
+4. 如果是— 查找成功<br>
+5. 如果不是，将此人的邻居加入队列<br>
+6. 回到第二步</p>
+<pre><code class="language-python">from collections import deque
+# 以图为模型 建立散列表数据
+graph = &#123;&#125;
+graph[&quot;you&quot;] = [&quot;alice&quot;, &quot;bob&quot;, &quot;clarie&quot;]
+graph[&quot;bob&quot;] = [&quot;anuj&quot;, &quot;peggy&quot;]
+graph[&quot;alice&quot;] = [&quot;peggy&quot;]
+graph[&quot;clarie&quot;] = [&quot;thom&quot;, &quot;jonny&quot;, &quot;doctor&quot;]
+graph[&quot;anuj&quot;] = []
+graph[&quot;peggy&quot;] = []
+graph[&quot;thom&quot;] = []
+graph[&quot;jonny&quot;] = []
+graph[&quot;doctor&quot;] = []
+
+
+def search(name):
+# 因为搜索
+    search_queue = deque()
+    search_queue += graph['you']
+    searched = []
+    while search_queue:
+        person = search_queue.popleft()
+        if person not in searched:
+            if person_is_doctor(person):
+                print(person + &quot; is a doctor!&quot;)
+                break
+            else:
+                search_queue += graph[person]
+                searched.append(person)
+
+
+def person_is_doctor(name):
+    return name[-1] == 'r'
+
+search(&quot;you&quot;)
+</code></pre>
+<h5 id="题2-来源于leetcode">题2 来源于leetcode</h5>
+<p>给定一个保存员工信息的数据结构，它包含了员工唯一的id，重要度 和 直系下属的id。</p>
+<p>比如，员工1是员工2的领导，员工2是员工3的领导。他们相应的重要度为15, 10, 5。那么员工1的数据结构是[1, 15, [2]]，员工2的数据结构是[2, 10, [3]]，员工3的数据结构是[3, 5, []]。注意虽然员工3也是员工1的一个下属，但是由于并不是直系下属，因此没有体现在员工1的数据结构中。</p>
+<p>现在输入一个公司的所有员工信息，以及单个员工id，返回这个员工和他所有下属的重要度之和。</p>
+<p>示例 1:</p>
+<p>输入: [[1, 5, [2, 3]], [2, 3, []], [3, 3, []]], 1<br>
+输出: 11<br>
+解释:<br>
+员工1自身的重要度是5，他有两个直系下属2和3，而且2和3的重要度均为3。因此员工1的总重要度是 5 + 3 + 3 = 11。<br>
+注意:</p>
+<p>一个员工最多有一个直系领导，但是可以有多个直系下属<br>
+员工数量不超过2000。</p>
+<p><strong>解题思路</strong></p>
+<ol>
+<li>和先前一样，为了确保顺序把所有节点放入队列中</li>
+<li>考虑到数据方便操作，把员工的数据存入到散列表中。以id为键</li>
+<li>遍历到对应员工数据后增加重要度值</li>
+<li>按队列顺序遍历subordinates值，把其下属员工继续放入到队列中。继续搜索</li>
+</ol>
+<pre><code class="language-python">&quot;&quot;&quot;
+# Employee info
+class Employee:
+    def __init__(self, id: int, importance: int, subordinates: List[int]):
+        # It's the unique id of each node.
+        # unique id of this employee
+        self.id = id
+        # the importance value of this employee
+        self.importance = importance
+        # the id of direct subordinates
+        self.subordinates = subordinates
+&quot;&quot;&quot;
+from collections import deque
+
+class Solution:
+    def getImportance(self, employees: List['Employee'], id: int) -&gt; int:
+        score = 0
+        hash_map = dict()
+        for emp in employees:
+            hash_map[emp.id] = emp
+
+        search_queue = deque()
+        search_queue.append(id)
+        while search_queue:
+            search_id = search_queue.popleft()
+            score += hash_map[search_id].importance
+            for item in hash_map[search_id].subordinates:
+                search_queue.append(item)
+        return score
+
+</code></pre>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/notes/%E3%80%90MySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%91%E7%AE%A1%E7%90%86%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86/" title="【MySQL必知必会】管理事务处理"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 【MySQL必知必会】管理事务处理</span></a><a class="button is-default" href="/%E3%80%90MySQL%E3%80%91%E6%B5%85%E8%B0%88MySQL%E7%9A%84LOAD-DATA/" title="【MySQL】浅谈MySQL的LOAD DATA"><span class="has-text-weight-semibold">下一页: 【MySQL】浅谈MySQL的LOAD DATA</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="fuer4869/fuer4869.github.io" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>

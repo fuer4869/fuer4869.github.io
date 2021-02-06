@@ -1,173 +1,68 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>loannes's blog</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/widget-post-list.css"><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><span>归档 · 2016</span></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><article class="post-container is-flex is-justify-content-center section container is-max-widescreen pt-4 px-2"><div class="columns is-variable is-1-tablet is-3-desktop-only is-2-widescreen is-full-width"><section class="column"><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="http://nos.netease.com/edu-image/EEDE6A300B4F82986FFA4C94326B54E1.jpg?imageView&amp;amp;thumbnail=426y240&amp;amp;quality=100" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/ios/iOS%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E4%B9%8B%E7%A0%B4%E8%A7%A3Pokemon-Go/"><img class="post-cover-img js-img-fadeIn" src="http://nos.netease.com/edu-image/EEDE6A300B4F82986FFA4C94326B54E1.jpg?imageView&amp;amp;thumbnail=426y240&amp;amp;quality=100" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/ios%E9%80%86%E5%90%91"><i class="tag post-item-tag">ios逆向</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/ios/iOS%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E4%B9%8B%E7%A0%B4%E8%A7%A3Pokemon-Go/">iOS逆向工程之破解Pokemon Go</a></h2><time class="has-text-grey" datetime="2016-08-16T06:44:09.000Z">2016-08-16</time><p class="is-flex-grow-2 mt-2">
 
-    <meta name="author" content="loannes">
+期待了很久的精灵宝可梦总算发布了，出于对它的热爱特地问朋友借了个美区的Apple ID下下来准备试玩一番。可是万万没想到的是，我大天朝居然被锁区了。
+本着迫切想要玩到它的心情，想了片刻。试试看破解吧，把自己的地理位置改到美国去不就行了嘛！其实这是我第一次尝试iOS逆向，其中过程也是各种心酸，尝试过的人都懂的。
+
+前言
+这次主要是想讲下重签名的问题，我直接拿了虾神的半成品，就接下去做了后面的部分。其实前面的部分也很简单，就只是利用Method Swizzle对CLLocation类做了重载，修改了地理位置。接下来就是把该类打包成dylib动态库之后重新注入到app中就可以了。
+把项目下载下来我们可以看到这么一个类:
+
+接下来我们需要做这么几步
+1.对动态库进行签名，编译后把动态文件注入到pokemongo..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/ios/iOS%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E4%B9%8B%E7%A0%B4%E8%A7%A3Pokemon-Go/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/iOS"><i class="tag post-item-tag">iOS</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/ios/WWDC15%20%E6%80%BB%E7%BB%93%20/">WWDC15 总结</a></h2><time class="has-text-grey" datetime="2016-06-22T03:12:19.000Z">2016-06-22</time><p class="is-flex-grow-2 mt-2">===========
+前言
+好吧，总算盼到了这次的WWDC，自从开始写博客后越来越喜欢关注这些比较前沿的技术动向。果然这次我热血澎湃的泡了杯咖啡穿上了大裤衩坐在电脑前等待着库克的&amp;quot;Good
+Morning！&amp;quot;
+这次发布会总体看下来对于我们这些开发者来说并没有什么颠覆性的改变，库克还穿着去年的那件深蓝色的T恤，Craig还是那么的幽默风趣。其实这次给我印象比较深刻的也就Multitasking和Swift2开源。
+Multitasking
+
+刚刚听到这个功能的时候有点没反应过来，在移动设备上做多任务处理是不是有点鸡肋。首先考虑运行的流畅性，在一个设备上同时运行两个程序我想如果使用以前的旧设备的话那肯定会非常卡。然后如果是在手机上做多任务的话，会因为屏幕太小导致操作起来十分不便，还好仅仅支..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/ios/WWDC15%20%E6%80%BB%E7%BB%93%20/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://cdn1.raywenderlich.com/wp-content/uploads/2012/09/Skeuomorph-480x147.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/ios/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/"><img class="post-cover-img js-img-fadeIn" src="https://cdn1.raywenderlich.com/wp-content/uploads/2012/09/Skeuomorph-480x147.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E5%8A%A8%E7%94%BB"><i class="tag post-item-tag">动画</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/ios/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/">学习如何制作一个像Clear的时髦的手势驱动的备忘录app</a></h2><time class="has-text-grey" datetime="2016-05-18T03:12:19.000Z">2016-05-18</time><p class="is-flex-grow-2 mt-2">==================================================
+原文链接：https://www.raywenderlich.com/21842/how-to-make-a-gesture-driven-to-do-list-app-part-13
+[译]如何制作一个类似Clear支持手势驱动的备忘录App (一)
+学习如何制作一个像Clear的时髦的手势驱动的备忘录app
+这是由教程组的成员Colin
+Eberhardt,
+ShinobiControls的CTO,
+一名会打造有趣又强大的iOS控件的开发者。看看他们的app，ShinobiPlay。你还能在Google+
+和 Twitter上找到Colin的踪迹。
+这三部分教程将会带你通过开发一个简单的备忘录应用，并且..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/ios/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/iOS"><i class="tag post-item-tag">iOS</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/%E8%B0%88%E8%B0%88Http%E5%92%8CHttps%20/">谈谈Http和Https</a></h2><time class="has-text-grey" datetime="2016-04-13T03:12:19.000Z">2016-04-13</time><p class="is-flex-grow-2 mt-2">===============
+前言
+继续上一篇文章深入研究网络相关的知识，因为上一篇还是有很多没有解释很清楚的地方，所以在这里想讲讲自己对http和https的理解。
+自从苹果更新了iOS9.0之后一直没机会研究它为什么把所以的请求都改为了https，第一反应肯定是考虑安全方面，那到底http和https有什么区别，https改善了http的哪些安全方面的不足呢？
+Http的缺点
+Http从1990年正式推出到后面更新到Http/2之后就再也没更新。而在安全方面它只是更新到了1.1，也就是说这么多年来Http一直都没有解决安全方面的问题。
+1.因为Http的通信是明文的，所以存在被窃听的风险。2.无法确认身份。3.无法验证报文的完整性。
+通信明文因为Http本身没有加密功能，所以在通信过程中都是明文通信的..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/%E8%B0%88%E8%B0%88Http%E5%92%8CHttps%20/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/iOS"><i class="tag post-item-tag">iOS</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/ios/SDWebImage%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">SDWebImage源码分析</a></h2><time class="has-text-grey" datetime="2016-03-18T03:12:19.000Z">2016-03-18</time><p class="is-flex-grow-2 mt-2">==================
+###前言
+使用SDWebImage这个第三方开源库也有一段时间了，一直没有机会去深入理解这个库为何如此强大。这次本着冒险的精神花了点时间去里面探索了一番。虽然过程有点痛苦结果也是弄的自己灰头土脸的，不过起码还是有收获的。所以在本blog做一次第一次探险的记录吧。
+
+SDWebImage github地址
+原文是这么说的：SDWebImage是一个图片的异步下载器并且支持缓存。
+作者是 Konstantinos
+K.,目前star数已超过1.3w。目前有很多著名的app都在使用这个库，如携程，Facebook等。
+虽然它的主要功能就这2点，但是它无可厚非的成为了目前主流的iOS第三方开源库的王者之一。
+下面来看一下SDWebImage的类关系图
+PS: 图片来自于 ht..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/ios/SDWebImage%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="http://cdn1.raywenderlich.com/wp-content/uploads/2015/07/starter.gif" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/ios/%E5%88%9B%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89UIViewController%E8%BF%87%E6%B8%A1%E5%8A%A8%E7%94%BB/"><img class="post-cover-img js-img-fadeIn" src="http://cdn1.raywenderlich.com/wp-content/uploads/2015/07/starter.gif" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/iOS,%20%E5%8A%A8%E7%94%BB"><i class="tag post-item-tag">iOS, 动画</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/ios/%E5%88%9B%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89UIViewController%E8%BF%87%E6%B8%A1%E5%8A%A8%E7%94%BB/">创建自定义UIViewController过渡动画</a></h2><time class="has-text-grey" datetime="2016-02-13T03:12:19.000Z">2016-02-13</time><p class="is-flex-grow-2 mt-2">原文来自Creating Custom UIViewController
+Transitions
+Push，pop，cover vertically...
+你从iOS中学会了一些漂亮的视图过渡效果，但是如果让你自己制作的话也会很有趣。自定义UIViewController过渡效果能显著地增加用户体验并且让你的app与其他的与众不同。如果你以前没亲自做过自定义过渡，你会发现它的工作量比你预期的要少很多。
+在此次课程中，你将会制作一个带有一些自定义UIViewController过渡效果的猜测游戏。当你完成的时候，你将会获得以下技能：
+
+Transition的API是怎样的结构
+如何使用自定义过渡来实现呈现和消除view controller
+如何做有交互的过渡效果
 
 
+Note:
+在此教程中所示的过渡效果是利..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/ios/%E5%88%9B%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89UIViewController%E8%BF%87%E6%B8%A1%E5%8A%A8%E7%94%BB/">更多</a></section></article></section><aside class="column is-hidden-mobile is-4-tablet is-3-widescreen"><div style="position: sticky; top: 50px;"><main class="aside-card-container archives-widget is-in-archive-page"><h3>归档</h3><section><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li></ul></section></main></div></aside></div></article><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
 
+window.addEventListener('resize', $claudia.throttle(function () {
+    var images = document.querySelectorAll('.js-img-fadeIn')
 
+    images.forEach($claudia.blurBackdropImg)
+}, 150))</script></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
 
-<title>归档: 2016 | loannes&#39;s blog</title>
+window.addEventListener('resize', $claudia.throttle(function () {
+    var images = document.querySelectorAll('.js-img-fadeIn')
 
-
-
-    <link rel="icon" href="/favicon.ico">
-
-
-
-
-    <!-- stylesheets list from _config.yml -->
-    
-    <link rel="stylesheet" href="/css/style.css">
-    
-
-
-
-    <!-- scripts list from _config.yml -->
-    
-    <script src="/js/script.js"></script>
-    
-    <script src="/js/tocbot.min.js"></script>
-    
-
-
-
-
-<meta name="generator" content="Hexo 4.1.0"></head>
-<body>
-    <div class="wrapper">
-        <header>
-    <nav class="navbar">
-        <div class="container">
-            <div class="navbar-header header-logo"><a href="/">loannes&#39;s Blog</a></div>
-            <div class="menu navbar-right">
-                
-                    <a class="menu-item" href="/archives">Posts</a>
-                
-                    <a class="menu-item" href="/category">Categories</a>
-                
-                    <a class="menu-item" href="/tag">Tags</a>
-                
-                    <a class="menu-item" href="/about">About</a>
-                
-                <input id="switch_default" type="checkbox" class="switch_default">
-                <label for="switch_default" class="toggleBtn"></label>
-            </div>
-
-        </div>
-    </nav>
-
-    
-    <nav class="navbar-mobile" id="nav-mobile">
-        <div class="container">
-            <div class="navbar-header">
-                <div>
-                    <a href="/">loannes&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
-                </div>
-                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
-            </div>
-            <div class="menu" id="mobile-menu">
-                
-                    <a class="menu-item" href="/archives">Posts</a>
-                
-                    <a class="menu-item" href="/category">Categories</a>
-                
-                    <a class="menu-item" href="/tag">Tags</a>
-                
-                    <a class="menu-item" href="/about">About</a>
-                
-            </div>
-        </div>
-    </nav>
-
-</header>
-<script>
-    var mobileBtn = function f() {
-        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
-        var mobileMenu = document.getElementById("mobile-menu");
-        if(toggleMenu.classList.contains("active")){
-           toggleMenu.classList.remove("active")
-            mobileMenu.classList.remove("active")
-        }else{
-            toggleMenu.classList.add("active")
-            mobileMenu.classList.add("active")
-        }
-    }
-</script>
-        <div class="main">
-            <div class="post-wrap archive">
-    
-    
-        
-
-        
-            <h3>2016</h3>
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2016/08/16/iOS%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E4%B9%8B%E7%A0%B4%E8%A7%A3Pokemon-Go/">iOS逆向工程之破解Pokemon Go</a>
-            <span class="archive-item-date">八月 16, 2016</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2016/06/22/WWDC15%20%E6%80%BB%E7%BB%93%20/">WWDC15 总结</a>
-            <span class="archive-item-date">六月 22, 2016</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2016/05/18/%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%83%8FClear%E7%9A%84%E6%97%B6%E9%AB%A6%E7%9A%84%E6%89%8B%E5%8A%BF%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%A4%87%E5%BF%98%E5%BD%95app%20/">学习如何制作一个像Clear的时髦的手势驱动的备忘录app</a>
-            <span class="archive-item-date">五月 18, 2016</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2016/04/13/%E8%B0%88%E8%B0%88Http%E5%92%8CHttps%20/">谈谈Http和Https</a>
-            <span class="archive-item-date">四月 13, 2016</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2016/03/18/SDWebImage%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">SDWebImage源码分析</a>
-            <span class="archive-item-date">三月 18, 2016</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2016/02/13/%E5%88%9B%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89UIViewController%E8%BF%87%E6%B8%A1%E5%8A%A8%E7%94%BB/">创建自定义UIViewController过渡动画</a>
-            <span class="archive-item-date">二月 13, 2016</span>
-        </article>
-    
-    
-</div>
-        </div>
-        <footer id="footer" class="footer">
-    <div class="copyright">
-        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
-    </div>
-</footer>
-
-    </div>
-</body>
-</html>
+    images.forEach($claudia.blurBackdropImg)
+}, 150))</script></body></html>

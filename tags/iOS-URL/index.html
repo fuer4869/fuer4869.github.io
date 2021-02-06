@@ -1,137 +1,21 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>loannes's blog</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/widget-post-list.css"><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><span>标签 · iOS, URL</span></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><article class="post-container is-flex is-justify-content-center section container is-max-widescreen pt-4 px-2"><div class="columns is-variable is-1-tablet is-3-desktop-only is-2-widescreen is-full-width"><section class="column"><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/iOS,%20URL"><i class="tag post-item-tag">iOS, URL</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/ios/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/">讲讲iOS的URL加载系统</a></h2><time class="has-text-grey" datetime="2015-03-25T03:12:19.000Z">2015-03-25</time><p class="is-flex-grow-2 mt-2">
+=============
+前言
 
-    <meta name="author" content="loannes">
+最近打算开始做一些进阶训练，所以避免不了要去触碰这些以前想都没想过的东西。现在要做的第一步就是能够比以往更深入的去学习一些知识，这两天花功夫研究了下iOS的URL加载系统，听起来好像很陌生，但是这个东西是我平常用的最多比如SDWebImage，AFNetworking都用到这些知识。
+URL加载系统
 
+URL加载系统就是由一套类和协议组成的，这个加载系统的作用就是从URL中加载内容，给服务器上传数据，管理cookies的存储，控制响应数据的缓存以及处理证书的存储和验证等，还可以定制协议扩展。看到这里应该对URL加载系统有一定的了解了吧，知道它到底是干嘛的，在我们平时使用那些涉及到整个系统的控件的时候也知道了它到底做了些什么事情。
+接下来再继续深入研究下去，关于上面提到的..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/ios/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/">更多</a></section></article></section><aside class="column is-hidden-mobile is-4-tablet is-3-widescreen"><div style="position: sticky; top: 50px;"><main class="aside-card-container tag-widget is-in-tag-page"><h3>标签</h3><section><a href="/tags/iOS"><span class="tag post-item-tag" style="margin-bottom: 5px;">iOS</span></a><a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="tag post-item-tag" style="margin-bottom: 5px;">数据结构</span></a><a href="/tags/Python,%20NumPy"><span class="tag post-item-tag" style="margin-bottom: 5px;">Python, NumPy</span></a><a href="/tags/Python%EF%BC%8CNumPy"><span class="tag post-item-tag" style="margin-bottom: 5px;">Python，NumPy</span></a><a href="/tags/Python,%20Pandas"><span class="tag post-item-tag" style="margin-bottom: 5px;">Python, Pandas</span></a><a href="/tags/Python,%20pandas"><span class="tag post-item-tag" style="margin-bottom: 5px;">Python, pandas</span></a><a href="/tags/Python,%20Pandas,%20%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8"><span class="tag post-item-tag" style="margin-bottom: 5px;">Python, Pandas, 数据存储</span></a><a href="/tags/Python,%20Scrapy"><span class="tag post-item-tag" style="margin-bottom: 5px;">Python, Scrapy</span></a><a href="/tags/ios%E9%80%86%E5%90%91"><span class="tag post-item-tag" style="margin-bottom: 5px;">ios逆向</span></a><a href="/tags/Python"><span class="tag post-item-tag" style="margin-bottom: 5px;">Python</span></a><a href="/tags/Python,%20Django"><span class="tag post-item-tag" style="margin-bottom: 5px;">Python, Django</span></a><a href="/tags/TCP/IP"><span class="tag post-item-tag" style="margin-bottom: 5px;">TCP/IP</span></a><a href="/tags/MySQL"><span class="tag post-item-tag" style="margin-bottom: 5px;">MySQL</span></a><a href="/tags/%E7%BB%83%E4%B9%A0"><span class="tag post-item-tag" style="margin-bottom: 5px;">练习</span></a><a href="/tags/python%E5%9F%BA%E7%A1%80,%20C++"><span class="tag post-item-tag" style="margin-bottom: 5px;">python基础, C++</span></a><a href="/tags/python%E5%9F%BA%E7%A1%80%EF%BC%8C%E7%AC%94%E8%AE%B0"><span class="tag post-item-tag" style="margin-bottom: 5px;">python基础，笔记</span></a><a href="/tags/%E5%9F%BA%E7%A1%80,%20NumPY"><span class="tag post-item-tag" style="margin-bottom: 5px;">基础, NumPY</span></a><a href="/tags/iOS,%E9%80%82%E9%85%8D"><span class="tag post-item-tag" style="margin-bottom: 5px;">iOS,适配</span></a><a href="/tags/%E5%8A%A8%E7%94%BB"><span class="tag post-item-tag" style="margin-bottom: 5px;">动画</span></a><a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="tag post-item-tag" style="margin-bottom: 5px;">内存管理</span></a><a href="/tags/%E9%80%82%E9%85%8D"><span class="tag post-item-tag" style="margin-bottom: 5px;">适配</span></a><a href="/tags/iOS,%20%E5%8A%A8%E7%94%BB"><span class="tag post-item-tag" style="margin-bottom: 5px;">iOS, 动画</span></a><a href="/tags/iOS%EF%BC%8CATS"><span class="tag post-item-tag" style="margin-bottom: 5px;">iOS，ATS</span></a><a href="/tags/%E6%A0%91"><span class="tag post-item-tag" style="margin-bottom: 5px;">树</span></a><a href="/tags/%E6%8E%92%E5%BA%8F"><span class="tag post-item-tag" style="margin-bottom: 5px;">排序</span></a><a href="/tags/%E9%80%92%E5%BD%92"><span class="tag post-item-tag" style="margin-bottom: 5px;">递归</span></a><a href="/tags/hashmap"><span class="tag post-item-tag" style="margin-bottom: 5px;">hashmap</span></a><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90"><span class="tag post-item-tag" style="margin-bottom: 5px;">计算机组成</span></a><a href="/tags/iOS,%20URL"><span class="tag post-item-tag" style="margin-bottom: 5px;">iOS, URL</span></a><a href="/tags/MySQL,%E7%AC%94%E8%AE%B0"><span class="tag post-item-tag" style="margin-bottom: 5px;">MySQL,笔记</span></a><a href="/tags/OOP,%20python"><span class="tag post-item-tag" style="margin-bottom: 5px;">OOP, python</span></a><a href="/tags/%E7%AE%80%E5%8D%95%EF%BC%8C%E6%95%B0%E7%BB%84%EF%BC%8C%E5%8F%8C%E6%8C%87%E9%92%88"><span class="tag post-item-tag" style="margin-bottom: 5px;">简单，数组，双指针</span></a><a href="/tags/%E7%AE%80%E5%8D%95"><span class="tag post-item-tag" style="margin-bottom: 5px;">简单</span></a><a href="/tags/DFS"><span class="tag post-item-tag" style="margin-bottom: 5px;">DFS</span></a><a href="/tags/%E6%95%B0%E7%BB%84"><span class="tag post-item-tag" style="margin-bottom: 5px;">数组</span></a><a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="tag post-item-tag" style="margin-bottom: 5px;">字符串</span></a><a href="/tags/%E9%93%BE%E8%A1%A8"><span class="tag post-item-tag" style="margin-bottom: 5px;">链表</span></a><a href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88"><span class="tag post-item-tag" style="margin-bottom: 5px;">双指针</span></a><a href="/tags/%E4%B8%AD%E7%AD%89"><span class="tag post-item-tag" style="margin-bottom: 5px;">中等</span></a><a href="/tags/LRU"><span class="tag post-item-tag" style="margin-bottom: 5px;">LRU</span></a><a href="/tags/%E6%A0%88"><span class="tag post-item-tag" style="margin-bottom: 5px;">栈</span></a><a href="/tags/%E5%93%88%E5%B8%8C%E8%A1%A8"><span class="tag post-item-tag" style="margin-bottom: 5px;">哈希表</span></a><a href="/tags/%E4%B8%AD%E7%AD%89%EF%BC%8C%20BFS"><span class="tag post-item-tag" style="margin-bottom: 5px;">中等， BFS</span></a><a href="/tags/BFS"><span class="tag post-item-tag" style="margin-bottom: 5px;">BFS</span></a><a href="/tags/%E8%BF%AD%E4%BB%A3"><span class="tag post-item-tag" style="margin-bottom: 5px;">迭代</span></a><a href="/tags/%E4%B8%AD%E7%AD%89%EF%BC%8C%E6%95%B0%E7%BB%84"><span class="tag post-item-tag" style="margin-bottom: 5px;">中等，数组</span></a><a href="/tags/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE"><span class="tag post-item-tag" style="margin-bottom: 5px;">二分查找</span></a><a href="/tags/MySQL,%20%E4%BA%8B%E5%8A%A1"><span class="tag post-item-tag" style="margin-bottom: 5px;">MySQL, 事务</span></a><a href="/tags/%E6%B1%87%E6%80%BB"><span class="tag post-item-tag" style="margin-bottom: 5px;">汇总</span></a><a href="/tags/%E8%81%94%E7%BB%93"><span class="tag post-item-tag" style="margin-bottom: 5px;">联结</span></a><a href="/tags/%E5%85%A8%E6%96%87%E6%9C%AC%E6%90%9C%E7%B4%A2"><span class="tag post-item-tag" style="margin-bottom: 5px;">全文本搜索</span></a><a href="/tags/%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="tag post-item-tag" style="margin-bottom: 5px;">触发器</span></a><a href="/tags/%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="tag post-item-tag" style="margin-bottom: 5px;">存储过程</span></a><a href="/tags/%E8%A7%86%E5%9B%BE"><span class="tag post-item-tag" style="margin-bottom: 5px;">视图</span></a><a href="/tags/%E6%B8%B8%E6%A0%87"><span class="tag post-item-tag" style="margin-bottom: 5px;">游标</span></a><a href="/tags/%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="tag post-item-tag" style="margin-bottom: 5px;">子查询</span></a><a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="tag post-item-tag" style="margin-bottom: 5px;">正则表达式</span></a><a href="/tags/%E7%BB%84%E5%90%88%E6%9F%A5%E8%AF%A2"><span class="tag post-item-tag" style="margin-bottom: 5px;">组合查询</span></a><a href="/tags/%E9%AB%98%E7%BA%A7%E8%81%94%E7%BB%93"><span class="tag post-item-tag" style="margin-bottom: 5px;">高级联结</span></a><a href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="tag post-item-tag" style="margin-bottom: 5px;">归并排序</span></a><a href="/tags/Redis"><span class="tag post-item-tag" style="margin-bottom: 5px;">Redis</span></a><a href="/tags/MySQL%E9%94%81%EF%BC%8CInnoDB"><span class="tag post-item-tag" style="margin-bottom: 5px;">MySQL锁，InnoDB</span></a><a href="/tags/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2"><span class="tag post-item-tag" style="margin-bottom: 5px;">深度优先搜索</span></a><a href="/tags/%E6%A8%A1%E6%8B%9F%E6%B3%95"><span class="tag post-item-tag" style="margin-bottom: 5px;">模拟法</span></a></section></main></div></aside></div></article><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
 
+window.addEventListener('resize', $claudia.throttle(function () {
+    var images = document.querySelectorAll('.js-img-fadeIn')
 
+    images.forEach($claudia.blurBackdropImg)
+}, 150))</script></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
 
+window.addEventListener('resize', $claudia.throttle(function () {
+    var images = document.querySelectorAll('.js-img-fadeIn')
 
-<title>Tag: iOS, URL | loannes&#39;s blog</title>
-
-
-
-    <link rel="icon" href="/favicon.ico">
-
-
-
-
-    <!-- stylesheets list from _config.yml -->
-    
-    <link rel="stylesheet" href="/css/style.css">
-    
-
-
-
-    <!-- scripts list from _config.yml -->
-    
-    <script src="/js/script.js"></script>
-    
-    <script src="/js/tocbot.min.js"></script>
-    
-
-
-
-
-<meta name="generator" content="Hexo 4.1.0"></head>
-<body>
-    <div class="wrapper">
-        <header>
-    <nav class="navbar">
-        <div class="container">
-            <div class="navbar-header header-logo"><a href="/">loannes&#39;s Blog</a></div>
-            <div class="menu navbar-right">
-                
-                    <a class="menu-item" href="/archives">Posts</a>
-                
-                    <a class="menu-item" href="/category">Categories</a>
-                
-                    <a class="menu-item" href="/tag">Tags</a>
-                
-                    <a class="menu-item" href="/about">About</a>
-                
-                <input id="switch_default" type="checkbox" class="switch_default">
-                <label for="switch_default" class="toggleBtn"></label>
-            </div>
-
-        </div>
-    </nav>
-
-    
-    <nav class="navbar-mobile" id="nav-mobile">
-        <div class="container">
-            <div class="navbar-header">
-                <div>
-                    <a href="/">loannes&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
-                </div>
-                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
-            </div>
-            <div class="menu" id="mobile-menu">
-                
-                    <a class="menu-item" href="/archives">Posts</a>
-                
-                    <a class="menu-item" href="/category">Categories</a>
-                
-                    <a class="menu-item" href="/tag">Tags</a>
-                
-                    <a class="menu-item" href="/about">About</a>
-                
-            </div>
-        </div>
-    </nav>
-
-</header>
-<script>
-    var mobileBtn = function f() {
-        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
-        var mobileMenu = document.getElementById("mobile-menu");
-        if(toggleMenu.classList.contains("active")){
-           toggleMenu.classList.remove("active")
-            mobileMenu.classList.remove("active")
-        }else{
-            toggleMenu.classList.add("active")
-            mobileMenu.classList.add("active")
-        }
-    }
-</script>
-        <div class="main">
-            
-
-    
-<div class="container">
-    <div class="post-wrap tags">
-        <h2 class="post-title">-&nbsp;Tag&nbsp;·&nbsp;iOS, URL-</h2>
-    </div>
-    <div class="post-wrap archive">
-    
-    
-        
-
-        
-            <h3>2015</h3>
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2015/03/25/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/">讲讲iOS的URL加载系统</a>
-            <span class="archive-item-date">三月 25, 2015</span>
-        </article>
-    
-    
-</div>
-</div>
-
-        </div>
-        <footer id="footer" class="footer">
-    <div class="copyright">
-        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
-    </div>
-</footer>
-
-    </div>
-</body>
-</html>
+    images.forEach($claudia.blurBackdropImg)
+}, 150))</script></body></html>

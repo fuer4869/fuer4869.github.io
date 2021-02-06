@@ -1,213 +1,261 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>loannes's blog</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/widget-post-list.css"><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><span>归档 · 2020</span></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><article class="post-container is-flex is-justify-content-center section container is-max-widescreen pt-4 px-2"><div class="columns is-variable is-1-tablet is-3-desktop-only is-2-widescreen is-full-width"><section class="column"><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2020/12/11/KT8HlhgL5mb1rDZ.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/%E3%80%90%E7%AE%97%E6%B3%95%E3%80%91%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E7%B3%BB%E5%88%97%E8%AF%A6%E8%A7%A3/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2020/12/11/KT8HlhgL5mb1rDZ.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><i class="tag post-item-tag">归并排序</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/%E3%80%90%E7%AE%97%E6%B3%95%E3%80%91%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E7%B3%BB%E5%88%97%E8%AF%A6%E8%A7%A3/">【算法】排序算法系列详解---归并算法</a></h2><time class="has-text-grey" datetime="2020-12-11T08:46:30.000Z">2020-12-11</time><p class="is-flex-grow-2 mt-2">
+排序算法
+想要理解排序算法，我们先得了解什么是分而治之思想，一种著名的递归式问题解决方案。很多算法中都用到了这种思想。
+D&amp;amp;C  分而治之
 
-    <meta name="author" content="loannes">
+比方说我们有这样一块168 * 64的地皮，我们需要在尽可能大的情况下去均匀的分成正方形，求该正方形的边长。
+所谓的分而治之就是把问题缩小化，大问题分成中等问题，中等问题分解成小问题来解决。
+这道题我们可以通过不断的找正方形来慢慢分割出小问题来。先在这块地中划出64*64的正方形，那么剩余的地皮为40 * 64，再进行分割，如此往复…
+
+最终会得到一个8*8的方块，这个就是一个典型的分而治之思想。
+归并排序
+归并排序有两种，自顶向下和自底向。
+自顶向下算法过程
+将数组拆分成两部分，先处理左边再处理右边，通过递归的方式对两边进行拆分，一直拆分到只有一个元素为止..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/%E3%80%90%E7%AE%97%E6%B3%95%E3%80%91%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E7%B3%BB%E5%88%97%E8%AF%A6%E8%A7%A3/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E7%AE%80%E5%8D%95"><i class="tag post-item-tag">简单</i></a><a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2"><i class="tag post-item-tag">字符串</i></a><a href="/tags/%E6%A8%A1%E6%8B%9F%E6%B3%95"><i class="tag post-item-tag">模拟法</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/657-%E6%9C%BA%E5%99%A8%E4%BA%BA%E8%83%BD%E5%90%A6%E8%BF%94%E5%9B%9E%E5%8E%9F%E7%82%B9/">657. 机器人能否返回原点</a></h2><time class="has-text-grey" datetime="2020-12-06T10:38:42.000Z">2020-12-06</time><p class="is-flex-grow-2 mt-2">
+前往此题
+
+解题思路
+设定x,y变量代表坐标系
+L,R,U,D分别对应x,y变量的加减。
+如果指令是 UU，则令 y=y-1y=y−1
+如果指令是 DD，则令 y=y+1y=y+1
+如果指令是 LL，则令 x=x-1x=x−1
+如果指令是 RR，则令 x=x+1x=x+1
+最后再判断是否在原点即可。
+代码
+class Solution:
+    def judgeCircle(self, moves: str) -&amp;gt; bool:
+        x = 0
+        y = 0
+        for i in moves:
+            if i == 'L': x -= 1
+            if i == 'R': x += 1
+            if i == '..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/657-%E6%9C%BA%E5%99%A8%E4%BA%BA%E8%83%BD%E5%90%A6%E8%BF%94%E5%9B%9E%E5%8E%9F%E7%82%B9/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2020/09/11/aUoXEGc1jF83MOp.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/%E8%87%AA%E5%B7%B1%E5%8A%A8%E6%89%8B%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E7%89%88sqlite%EF%BC%88%E4%B8%80%EF%BC%89/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2020/09/11/aUoXEGc1jF83MOp.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><time class="has-text-grey" datetime="2020-08-25T06:58:52.000Z">2020-08-25</time><p class="is-flex-grow-2 mt-2">layout: ‘false’
+title: 实现简易版sqlite（一）
+date: 2020-08-25 14:58:52
+tags: [sqlite, c, BTree]
+category: 杂谈
+
+前言
+在动手学习这块知识之前本身是抱着想了解数据库是如何实现的目的，但越往后越觉得数据库这个项目真的是复杂，但是也十分有趣。所以特地在此记录下我这些天来对sqlite的理解。
+本篇文章是以简易版的sqlite(后面简称sqlite)为基础写出来的原理剖析，还有很多sqlite的基本功能还未涉及到，之后我会逐步添加上去。
+框架结构
+
+本项目用c语言实现
+测试工具为rspec
+
+本sqlite的基本架构分为：
+
+核心层
+
+接口
+SQL命令处理程序
+
+分词器(Tokenizer)
+分析器(Parser)
+代码生..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/%E8%87%AA%E5%B7%B1%E5%8A%A8%E6%89%8B%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E7%89%88sqlite%EF%BC%88%E4%B8%80%EF%BC%89/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2020/09/11/xkQBdTafmZAnj9r.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/leetcode/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2020/09/11/xkQBdTafmZAnj9r.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/LRU"><i class="tag post-item-tag">LRU</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/">LRU缓存机制算法详解</a></h2><time class="has-text-grey" datetime="2020-06-11T06:44:48.000Z">2020-06-11</time><p class="is-flex-grow-2 mt-2">
+前言
+今天在刷leetcode的时候，遇到了LRU缓存机制的问题。觉得很有意思，就准备把这道题的题解以及相关知识点记录下来。
+原题是这样的
+
+运用你所掌握的数据结构，设计和实现一个  LRU (最近最少使用) 缓存机制。它应该支持以下操作： 获取数据 get 和 写入数据 put 。
+获取数据 get(key) - 如果关键字 (key) 存在于缓存中，则获取关键字的值（总是正数），否则返回 -1。
+写入数据 put(key, value) - 如果关键字已经存在，则变更其数据值；如果关键字不存在，则插入该组「关键字/值」。当缓存容量达到上限时，它应该在写入新数据之前删除最久未使用的数据值，从而为新的数据值留出空间。
+
+结合实际场景来分析这道题的话就是我们现在有一个空间有限的缓存池，为了保证缓存不会溢出我..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90"><i class="tag post-item-tag">计算机组成</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/notes/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%84%E6%88%90/">计算机的基本组成</a></h2><time class="has-text-grey" datetime="2020-06-08T04:56:16.000Z">2020-06-08</time><p class="is-flex-grow-2 mt-2">一、计算机系统概论
+
+冯诺依曼计算机组成
+
+主机（cpu+内存），外设（输入设备+输出设备+外存），总线（地址总线+数据总线+控制总线）
+
+计算机层次结构
+
+应用程序-高级语言-汇编语言-操作系统-指令集架构层-微代码层-硬件逻辑层
+
+计算机性能指标
+
+非时间指标
+【字长】机器一次能处理的二进制位数 ，常见的有32位或64位
+【总线宽度】数据总线一次能并行处理的最大信息位数，一般指运算器与存储器之间的数据总线的位数
+【主存容量】主存的大小
+【存储带宽】单位时间内与主存交换的二进制位数 B/s
+时间指标
+【主频f】时钟震荡的频率 Hz；【时钟周期T】时钟震荡一次的时间 t
+【外频】cpu与主板之间同步的时钟频率，系统总线的工作频率；【倍频】主频与外频的倍数 =主频/外频
+【CPI】clock cycles p..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/notes/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%84%E6%88%90/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><h2 class="mt-4 mb-0 is-family-serif"><a href="/notes/%E6%A8%AA%E6%89%ABoffer%E7%AC%94%E8%AE%B0-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/">横扫offer笔记 面向对象</a></h2><time class="has-text-grey" datetime="2020-06-06T07:36:00.000Z">2020-06-06</time><p class="is-flex-grow-2 mt-2">
+不可变数据类型是永远不会被改变的。
+
+const int i = 0; //指定变量i为不可变常量
+int * j = (int *)&amp;amp;i; //强行将j的指针指向常变量i, &amp;amp;i指的是得到变量i的内存地址
+* j = 1;
+printf(&amp;quot;%d %d&amp;quot;, i, *j) 最终得到0，1
+
+因为i是常变量（不可改变的变量），所以即使指针变量j指向了i的地址之后重新赋值。这个时候内存会为常变量开辟一个新的内存地址来存储原始值0，并且在输出的时候使用的还是原来的值。
+*j指的是这个指针变量所指向的值，也就是它所存储的内存地址，通过该地址找到的值
+如果这个时候输出j,那么将打印出*j中存储的内存地址
+
+在16位机器上，下面这段代码输出结果：
+
+int i = 65536;
+  ..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/notes/%E6%A8%AA%E6%89%ABoffer%E7%AC%94%E8%AE%B0-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><h2 class="mt-4 mb-0 is-family-serif"><a href="/notes/%E6%A8%AA%E6%89%ABoffer%E7%AC%94%E8%AE%B0%20C++%E5%9F%BA%E7%A1%80/">横扫offer笔记 C++基础</a></h2><time class="has-text-grey" datetime="2020-06-05T06:05:53.000Z">2020-06-05</time><p class="is-flex-grow-2 mt-2">基本运算
+
+C语言中，以数字0开头的是八进制形式，以0x或0X开头的是十六进制形式，常数的后面加字母L为长整数.
+
+
+%hd用来输出 short int 类型，hd 是 short decimal 的简写；
+%d用来输出 int 类型，d 是 decimal 的简写；
+%ld用来输出 long int 类型，ld 是 long decimal 的简写。
+
+浮点数：在高级语言程序设计中，对于两个浮点类型的变量x,y一般不直接使用语句if(x==y)。因为在计算机中浮点数不一定会被精确显示，特别是小数点后三位之后。所以一般我们判断两个浮点数是否相等时需要这样写：|x-y| &amp;gt; 0.000001
+
+unsigned int a = 6 表示的是无符号整数 取值范围是
+
+</p><a class="button is-default mt-2 has-text-weight-semibold" href="/notes/%E6%A8%AA%E6%89%ABoffer%E7%AC%94%E8%AE%B0%20C++%E5%9F%BA%E7%A1%80/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><h2 class="mt-4 mb-0 is-family-serif"><a href="/python/Python%E9%9D%A2%E8%AF%95%E9%A2%98%E5%9B%9B/">Python面试题四</a></h2><time class="has-text-grey" datetime="2020-05-28T03:27:40.000Z">2020-05-28</time><p class="is-flex-grow-2 mt-2">
+Python中类方法、类实例方法、静态方法有何区别？
+
+
+实例方法：类的实例化对象的方法，参数是self，指向该类的实例。通过self可以自由的调用该对象的属性和其它方法，也可以修改。
+类方法：使用@classmethod装饰器的类方法，参数为cls，不同于实例方法，cls不能对类中的属性做修改
+静态方法：使用@staticmethod装饰器的类方法，不接受cls和self，但是可以接受其它参数。所以它不能访问该类的属性和方法，只能访问该类中的全局变量。
+
+参考链接
+
+请描述抽象类和接口类的区别和联系
+举个简单的例子，你需要设计一个关于汽车的类。为了便于以后的扩展，我们把汽车的基本功能放入到抽象类中去，如行驶，倒车，转弯这些方法，车灯，轮胎等属性。
+突然我们开发出了一台支持自动驾驶的车，因为这个功能不是每..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/python/Python%E9%9D%A2%E8%AF%95%E9%A2%98%E5%9B%9B/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><h2 class="mt-4 mb-0 is-family-serif"><a href="/python/Python%E9%9D%A2%E8%AF%95%E9%A2%98-%E4%BA%8C/">Python面试题(二)</a></h2><time class="has-text-grey" datetime="2020-05-02T02:27:26.000Z">2020-05-02</time><p class="is-flex-grow-2 mt-2">
+列出python中可变数据类型和不可变数据类型，并简述原理
+不可变类型：字符串str, 数值类型int, 元组tuple
+
+In [1]: a = 3
+
+In [2]: b = 3
+
+In [3]: id(a)
+Out[3]: 4494963920
+
+In [4]: id(b)
+Out[4]: 4494963920
+
+不可变类型指的是数据不允许放生变化，如果改变变量的值就只能重新创建新的对象会重新分配内存地址，所以它的id将会有所改变。
+In [5]: a = 4
+
+In [6]: id(a)
+Out[6]: 4494963952
+
+可变类型：列表list和字典dict
+也就是说如果对变量进行append、 +=等操作它只会改变变量的值，不会改变内存地址。对于相同值的不同对象也会占用不同的内存地址。
+In..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/python/Python%E9%9D%A2%E8%AF%95%E9%A2%98-%E4%BA%8C/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E7%BB%83%E4%B9%A0"><i class="tag post-item-tag">练习</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/python/Python%E9%9D%A2%E8%AF%95%E9%A2%98/">Python面试题</a></h2><time class="has-text-grey" datetime="2020-04-27T13:11:12.000Z">2020-04-27</time><p class="is-flex-grow-2 mt-2">
+一行代码实现1-100之和
+
+sum(range(100))
+
+
+如何在一个函数内部修改全局变量
+
+In [1]: c = 0
+In [3]: def change_count():
+   ...:     global c
+   ...:     c = 1
+   ...:     print(c)
+   ...:
+
+In [4]: change_count()
+1
+
+In [5]: c
+Out[5]: 1
 
 
 
+列出5个python标准库
+os: 提供操作系统有关的函数
+sys: 通常用于命令行参数
+re: 正则匹配
+math: 数学运算
+datetime： 处理日期时间
 
 
-<title>归档: 2020 | loannes&#39;s blog</title>
+字典如何删除键和合并两个字典
+删除：
 
 
+del dic['key']
 
-    <link rel="icon" href="/favicon.ico">
+合并：
+In [1]: dic1 = &amp;#123;&amp;..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/python/Python%E9%9D%A2%E8%AF%95%E9%A2%98/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2020/07/05/rZEaTvG5OYpQBPq.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/python/%E6%B5%85%E8%B0%88Python%E4%B8%AD%E7%B1%BB%E6%96%B9%E6%B3%95%E3%80%81%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95%E5%92%8C%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2020/07/05/rZEaTvG5OYpQBPq.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/OOP,%20python"><i class="tag post-item-tag">OOP, python</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/python/%E6%B5%85%E8%B0%88Python%E4%B8%AD%E7%B1%BB%E6%96%B9%E6%B3%95%E3%80%81%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95%E5%92%8C%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/">浅谈Python中类方法、实例方法和静态方法的区别</a></h2><time class="has-text-grey" datetime="2020-03-02T12:57:51.000Z">2020-03-02</time><p class="is-flex-grow-2 mt-2">
+</p><a class="button is-default mt-2 has-text-weight-semibold" href="/python/%E6%B5%85%E8%B0%88Python%E4%B8%AD%E7%B1%BB%E6%96%B9%E6%B3%95%E3%80%81%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95%E5%92%8C%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2020/06/09/hdal6fKiVtu3LHb.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/python/%E6%B5%85%E8%B0%88python%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8%E3%80%81%E5%A4%8D%E5%88%B6%E3%80%81%E6%8C%87%E9%92%88%E4%B8%8EC++%E7%9A%84%E5%8C%BA%E5%88%AB/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2020/06/09/hdal6fKiVtu3LHb.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/python%E5%9F%BA%E7%A1%80,%20C++"><i class="tag post-item-tag">python基础, C++</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/python/%E6%B5%85%E8%B0%88python%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8%E3%80%81%E5%A4%8D%E5%88%B6%E3%80%81%E6%8C%87%E9%92%88%E4%B8%8EC++%E7%9A%84%E5%8C%BA%E5%88%AB/">浅谈python中的引用、拷贝、指针与C++的区别</a></h2><time class="has-text-grey" datetime="2020-03-01T06:10:46.000Z">2020-03-01</time><p class="is-flex-grow-2 mt-2">
+最近在学C++，在刷题的时候遇到了关于引用、指针的问题，重温相关知识后发现C++中的引用于python中引用有很大的区别，我想这就是C++效率远高于python的原因之一。通过两篇文章想梳理下python与C++在引用上的区别以及C++中引用和指针的区别。
+
+Python的引用
+在python中引用就是引用赋值,等同于浅拷贝，可以看一个例子：
+In [13]: a = 1
+
+In [14]: b = a
+
+In [15]: id(a)
+Out[15]: 4553065616
+
+In [16]: id(b)
+Out[16]: 4553065616
+
+In [20]: b is a
+Out[20]: True
+
+In [21]: b == a
+Out[21]: True
+
+上面代码中先初始化了一个值为1，名字..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/python/%E6%B5%85%E8%B0%88python%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8%E3%80%81%E5%A4%8D%E5%88%B6%E3%80%81%E6%8C%87%E9%92%88%E4%B8%8EC++%E7%9A%84%E5%8C%BA%E5%88%AB/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2020/06/20/Grzdp7S98n5PaKs.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/python/%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3Python%E7%9A%84%E6%8E%A5%E5%8F%A3%E7%B1%BB%E3%80%81%E6%8A%BD%E8%B1%A1%E7%B1%BB%E3%80%81%E5%A4%9A%E6%80%81%E5%92%8C%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2020/06/20/Grzdp7S98n5PaKs.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/python%E5%9F%BA%E7%A1%80%EF%BC%8C%E7%AC%94%E8%AE%B0"><i class="tag post-item-tag">python基础，笔记</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/python/%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3Python%E7%9A%84%E6%8E%A5%E5%8F%A3%E7%B1%BB%E3%80%81%E6%8A%BD%E8%B1%A1%E7%B1%BB%E3%80%81%E5%A4%9A%E6%80%81%E5%92%8C%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B/">如何理解Python的接口类、抽象类、多态和鸭子类型</a></h2><time class="has-text-grey" datetime="2020-02-20T07:03:09.000Z">2020-02-20</time><p class="is-flex-grow-2 mt-2">
+抽象类
+抽象类是一个特殊的类，为了在团队开发中能够规范化代码而延伸出来的知识，源于java，这种类它只能被继承而不能被实例化。这也说明了该类中的所有函数以及属性都将用来被继承。
+为什么要使用抽象类
 
 
+规范代码：
+它的子类必须实现抽象类中的所有函数 前面有提到有一点就是为了规范代码，在团队协作中很经常会遇到多个人开发同一个模块的情况，如果因为函数命名问题导致两个子类中的方法不同。为了避免这种问题才出现了抽象类这种概念。
 
 
-    <!-- stylesheets list from _config.yml -->
-    
-    <link rel="stylesheet" href="/css/style.css">
-    
+易于维护：
+还有另外个原因是为了减少代码的重复量和易于维护。比方说我们有多个汽车产品，不同的汽车有不同的功能。有的有自动驾驶，有的有全景天窗，但是只要是汽车都会有行驶，左转右转等基本功能，这些基本功能我们就可以放在抽象类中。
 
 
+from abc import ABCMeta,abst..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/python/%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3Python%E7%9A%84%E6%8E%A5%E5%8F%A3%E7%B1%BB%E3%80%81%E6%8A%BD%E8%B1%A1%E7%B1%BB%E3%80%81%E5%A4%9A%E6%80%81%E5%92%8C%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2020/06/20/Grzdp7S98n5PaKs.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/python/python%E8%BF%AD%E4%BB%A3%E5%99%A8%E3%80%81%E7%94%9F%E6%88%90%E5%99%A8%E7%9C%8B%E5%AE%8C%E8%BF%99%E7%AF%87%E4%BD%A0%E5%B0%B1%E6%87%82%E4%BA%86/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2020/06/20/Grzdp7S98n5PaKs.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/python%E5%9F%BA%E7%A1%80%EF%BC%8C%E7%AC%94%E8%AE%B0"><i class="tag post-item-tag">python基础，笔记</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/python/python%E8%BF%AD%E4%BB%A3%E5%99%A8%E3%80%81%E7%94%9F%E6%88%90%E5%99%A8%E7%9C%8B%E5%AE%8C%E8%BF%99%E7%AF%87%E4%BD%A0%E5%B0%B1%E6%87%82%E4%BA%86/">python迭代器、生成器看完这篇你就懂了</a></h2><time class="has-text-grey" datetime="2020-02-19T13:16:28.000Z">2020-02-19</time><p class="is-flex-grow-2 mt-2">
+生成器是python中非常有用特性，而且十分特殊，特殊到以前学过的语言都没有这种功能，身边的一些学其他语言的开发朋友也都不清楚生成器是什么。
+所以在这篇文章中将尽可能详细的解释下生成器是什么，迭代器是什么
+可迭代对象
+在说生成器之前我们必须得提可迭代对象。可迭代对象是什么，顾名思义迭代器就是支持迭代操作的对象。在python3如列表，字典，字符串都是可迭代对象，简单来说就是任何实现了__next__方法的容器都是可迭代对象，而可迭代对象可以转换成迭代器。
+迭代器甚至可以表示一个无限大的数据流，例如全体自然数。而使用list是永远不可能存储全体自然数的。
+看了下面的代码应该会清楚很多
+In [7]: a = [1,2,3]
 
-    <!-- scripts list from _config.yml -->
-    
-    <script src="/js/script.js"></script>
-    
-    <script src="/js/tocbot.min.js"></script>
-    
+In [8]: b = iter(a)
 
+In [9]: a
+Out[9]: [1..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/python/python%E8%BF%AD%E4%BB%A3%E5%99%A8%E3%80%81%E7%94%9F%E6%88%90%E5%99%A8%E7%9C%8B%E5%AE%8C%E8%BF%99%E7%AF%87%E4%BD%A0%E5%B0%B1%E6%87%82%E4%BA%86/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2020/07/05/oMUgV5L8tjmBFbD.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/%E6%B5%85%E8%B0%88MySQL%E4%B8%AD%E7%9A%84%E9%94%81/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2020/07/05/oMUgV5L8tjmBFbD.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/MySQL"><i class="tag post-item-tag">MySQL</i></a><a href="/tags/MySQL%E9%94%81%EF%BC%8CInnoDB"><i class="tag post-item-tag">MySQL锁，InnoDB</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/%E6%B5%85%E8%B0%88MySQL%E4%B8%AD%E7%9A%84%E9%94%81/">浅谈MySQL中的锁</a></h2><time class="has-text-grey" datetime="2020-02-05T02:19:33.000Z">2020-02-05</time><p class="is-flex-grow-2 mt-2">
+前言
+之前学习了MySQL的事务管理MySQL管理事务处理
+在数据库处理高并发的时候需要涉及到事务管理和锁的机制问题这两块知识。对于锁的处理一直是一个老生常谈的话题，内容太过复杂。这次借助这篇文章分享下我对Innodb中的锁的机制的理解。
+快照读与当前读
+在了解锁的机制前我们得先了解快照读与当前读的区别。
+一般我们常用的select * from ...也是读，共享锁那也是读，它们之间有什么区别呢？其实MySQL中的读与事务隔离级别中的读是不同的读。
+在 MVCC 并发控制中，读操作可以分成两类:快照读 (snapshot read)与当前读 (current read)。 快照读，读取的是记录的可见版本 (有可能是历史版本)，不用加锁。当前读，读取的是记录的最新版本，并且，当前读返回的记录，都会加上锁，..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/%E6%B5%85%E8%B0%88MySQL%E4%B8%AD%E7%9A%84%E9%94%81/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/Python,%20Django"><i class="tag post-item-tag">Python, Django</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/Django%E6%A1%86%E6%9E%B6%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/">Django框架流程分析</a></h2><time class="has-text-grey" datetime="2020-01-17T09:55:47.000Z">2020-01-17</time><p class="is-flex-grow-2 mt-2"></p><a class="button is-default mt-2 has-text-weight-semibold" href="/Django%E6%A1%86%E6%9E%B6%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2021/02/05/EwftXpN7Skn12dT.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/notes/%E3%80%90MySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%91%E7%AE%A1%E7%90%86%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2021/02/05/EwftXpN7Skn12dT.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/MySQL,%20%E4%BA%8B%E5%8A%A1"><i class="tag post-item-tag">MySQL, 事务</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/notes/%E3%80%90MySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%91%E7%AE%A1%E7%90%86%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86/">【MySQL必知必会】管理事务处理</a></h2><time class="has-text-grey" datetime="2020-01-03T14:55:20.000Z">2020-01-03</time><p class="is-flex-grow-2 mt-2">
+什么是事务处理
+事务处理是为了维护数据的完整性的技术手段，是对数据库数据安全的一种保证。它能确保成批的MySQL语句要么完全执行要么完全不执行，不会存在执行部分语句而造成该处理的数据没有被处理导致数据的错乱。
+举例来说：公司某位员工离职了，除了要删除职员表中的数据还需要删除财务数据表中的相关数据以及其他业务上的数据，客户关系数据等。这些操作都需要全部一起执行，否则会造成很严重的问题。
+ACID
+事务是DBMS的执行单位。它由有限个数据库操作语句组成。但不是任意的数据库操作序列都能成为事务。一般来说，事务是必须满足4个条件（ACID）
+原子性（Atomicity）
+原子性是指事务包含的所有操作要么全部成功，要么全部失败回滚。
+一致性（Consistency）
+一致性是指事务必须使数据库从一个一致的状态变到另..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/notes/%E3%80%90MySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%91%E7%AE%A1%E7%90%86%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86/">更多</a></section></article></section><aside class="column is-hidden-mobile is-4-tablet is-3-widescreen"><div style="position: sticky; top: 50px;"><main class="aside-card-container archives-widget is-in-archive-page"><h3>归档</h3><section><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li></ul></section></main></div></aside></div></article><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
 
+window.addEventListener('resize', $claudia.throttle(function () {
+    var images = document.querySelectorAll('.js-img-fadeIn')
 
+    images.forEach($claudia.blurBackdropImg)
+}, 150))</script></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
 
-<meta name="generator" content="Hexo 4.1.0"></head>
-<body>
-    <div class="wrapper">
-        <header>
-    <nav class="navbar">
-        <div class="container">
-            <div class="navbar-header header-logo"><a href="/">loannes&#39;s Blog</a></div>
-            <div class="menu navbar-right">
-                
-                    <a class="menu-item" href="/archives">Posts</a>
-                
-                    <a class="menu-item" href="/category">Categories</a>
-                
-                    <a class="menu-item" href="/tag">Tags</a>
-                
-                    <a class="menu-item" href="/about">About</a>
-                
-                <input id="switch_default" type="checkbox" class="switch_default">
-                <label for="switch_default" class="toggleBtn"></label>
-            </div>
+window.addEventListener('resize', $claudia.throttle(function () {
+    var images = document.querySelectorAll('.js-img-fadeIn')
 
-        </div>
-    </nav>
-
-    
-    <nav class="navbar-mobile" id="nav-mobile">
-        <div class="container">
-            <div class="navbar-header">
-                <div>
-                    <a href="/">loannes&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
-                </div>
-                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
-            </div>
-            <div class="menu" id="mobile-menu">
-                
-                    <a class="menu-item" href="/archives">Posts</a>
-                
-                    <a class="menu-item" href="/category">Categories</a>
-                
-                    <a class="menu-item" href="/tag">Tags</a>
-                
-                    <a class="menu-item" href="/about">About</a>
-                
-            </div>
-        </div>
-    </nav>
-
-</header>
-<script>
-    var mobileBtn = function f() {
-        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
-        var mobileMenu = document.getElementById("mobile-menu");
-        if(toggleMenu.classList.contains("active")){
-           toggleMenu.classList.remove("active")
-            mobileMenu.classList.remove("active")
-        }else{
-            toggleMenu.classList.add("active")
-            mobileMenu.classList.add("active")
-        }
-    }
-</script>
-        <div class="main">
-            <div class="post-wrap archive">
-    
-    
-        
-
-        
-            <h3>2020</h3>
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2020/08/25/%E8%87%AA%E5%B7%B1%E5%8A%A8%E6%89%8B%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E7%89%88sqlite%EF%BC%88%E4%B8%80%EF%BC%89/">自己动手实现简易版sqlite（一）</a>
-            <span class="archive-item-date">八月 25, 2020</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/">LRU缓存机制算法详解</a>
-            <span class="archive-item-date">六月 11, 2020</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2020/06/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%84%E6%88%90/">计算机的基本组成</a>
-            <span class="archive-item-date">六月 8, 2020</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2020/06/06/%E6%A8%AA%E6%89%ABoffer%E7%AC%94%E8%AE%B0-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/">横扫offer笔记 面向对象</a>
-            <span class="archive-item-date">六月 6, 2020</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2020/06/05/%E6%A8%AA%E6%89%ABoffer%E7%AC%94%E8%AE%B0%20C++%E5%9F%BA%E7%A1%80/">横扫offer笔记 C++基础</a>
-            <span class="archive-item-date">六月 5, 2020</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2020/05/28/Python%E9%9D%A2%E8%AF%95%E9%A2%98%E5%9B%9B/">Python面试题四</a>
-            <span class="archive-item-date">五月 28, 2020</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2020/05/02/Python%E9%9D%A2%E8%AF%95%E9%A2%98-%E4%BA%8C/">Python面试题(二)</a>
-            <span class="archive-item-date">五月 2, 2020</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2020/04/27/Python%E9%9D%A2%E8%AF%95%E9%A2%98/">Python面试题</a>
-            <span class="archive-item-date">四月 27, 2020</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2020/03/02/%E6%B5%85%E8%B0%88Python%E4%B8%AD%E7%B1%BB%E6%96%B9%E6%B3%95%E3%80%81%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95%E5%92%8C%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/">浅谈Python中类方法、实例方法和静态方法的区别</a>
-            <span class="archive-item-date">三月 2, 2020</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2020/03/01/%E6%B5%85%E8%B0%88python%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8%E3%80%81%E5%A4%8D%E5%88%B6%E3%80%81%E6%8C%87%E9%92%88%E4%B8%8EC++%E7%9A%84%E5%8C%BA%E5%88%AB/">浅谈python中的引用、拷贝、指针与C++的区别</a>
-            <span class="archive-item-date">三月 1, 2020</span>
-        </article>
-    
-    
-    <nav class="pagination">
-        <span class="page-number current">1</span><a class="page-number" href="/archives/2020/page/2/">2</a>
-    </nav>
-
-</div>
-        </div>
-        <footer id="footer" class="footer">
-    <div class="copyright">
-        <span>© loannes | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
-    </div>
-</footer>
-
-    </div>
-</body>
-</html>
+    images.forEach($claudia.blurBackdropImg)
+}, 150))</script></body></html>
