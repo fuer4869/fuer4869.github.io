@@ -1,20 +1,106 @@
-<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>loannes's blog</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/widget-post-list.css"><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><span>分类 · leetcode刷题题解</span></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><article class="post-container is-flex is-justify-content-center section container is-max-widescreen pt-4 px-2"><div class="columns is-variable is-1-tablet is-3-desktop-only is-2-widescreen is-full-width"><section class="column"><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2021/01/30/3lGOocUjxQIe25W.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/leetcode/94-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2021/01/30/3lGOocUjxQIe25W.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E6%A0%91"><i class="tag post-item-tag">树</i></a><a href="/tags/%E4%B8%AD%E7%AD%89"><i class="tag post-item-tag">中等</i></a><a href="/tags/%E6%A0%88"><i class="tag post-item-tag">栈</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/94-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86/">94. 二叉树的中序遍历</a></h2><time class="has-text-grey" datetime="2021-01-30T05:46:39.000Z">2021-01-30</time><p class="is-flex-grow-2 mt-2">
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>loannes's blog</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/widget-post-list.css"><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><span>分类 · leetcode刷题题解</span></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><article class="post-container is-flex is-justify-content-center section container is-max-widescreen pt-4 px-2"><div class="columns is-variable is-1-tablet is-3-desktop-only is-2-widescreen is-full-width"><section class="column"><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://raw.githubusercontent.com/fuer4869/imgbed/master/LeetCode_Sharing.png?token=AA76PU6A6YEIQZ4I3A6FHDDAD6GBA" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/leetcode/234-%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8/"><img class="post-cover-img js-img-fadeIn" src="https://raw.githubusercontent.com/fuer4869/imgbed/master/LeetCode_Sharing.png?token=AA76PU6A6YEIQZ4I3A6FHDDAD6GBA" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E7%AE%80%E5%8D%95"><i class="tag post-item-tag">简单</i></a><a href="/tags/%E9%93%BE%E8%A1%A8"><i class="tag post-item-tag">链表</i></a><a href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88"><i class="tag post-item-tag">双指针</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/234-%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8/">234. 回文链表</a></h2><time class="has-text-grey" datetime="2021-02-01T10:39:40.000Z">2021-02-01</time><p class="is-flex-grow-2 mt-2">
+
 前往此题
 
-解题思路
-预备知识：
+解题思路回文链表有一个标志的特性就是以首尾相应的形式往中间靠拢的。比如1-&amp;gt;2-&amp;gt;3-&amp;gt;3-&amp;gt;2-&amp;gt;1，1对应末尾的1, 2对应倒数第二的2以此类推。所以我们可以借助双指针来完美解决这个问题。一个指针指向头，一个指针指向末尾同步往中间靠拢，如果全程都是相等的那就是回文链表否则就不是。
+代码
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def isPalindrome(self, head: ListN..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/234-%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://raw.githubusercontent.com/fuer4869/imgbed/master/LeetCode_Sharing.png?token=AA76PU6A6YEIQZ4I3A6FHDDAD6GBA" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/leetcode/237-%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B9/"><img class="post-cover-img js-img-fadeIn" src="https://raw.githubusercontent.com/fuer4869/imgbed/master/LeetCode_Sharing.png?token=AA76PU6A6YEIQZ4I3A6FHDDAD6GBA" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E7%AE%80%E5%8D%95"><i class="tag post-item-tag">简单</i></a><a href="/tags/%E9%93%BE%E8%A1%A8"><i class="tag post-item-tag">链表</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/237-%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B9/">237. 删除链表中的节点</a></h2><time class="has-text-grey" datetime="2021-02-01T07:38:57.000Z">2021-02-01</time><p class="is-flex-grow-2 mt-2">
+
+前往此题
+
+解题思路因为这里不知道node的上一个节点，所以无法通过node.prev.next = node.prev.next.next来更改指针。拿例题来说：[4,5,1,9]**中我们要删除5**，我们需要找到一个能知道目标节点的上一个节点是哪个节点的方式来解决这个问题。
+我们知道5的下一个节点1的上一个节点是5。将1赋值到5,变成了**[4,1,1,9]**也就是说我们把本来要删除的5改成要删除第二个1。node.next = node.next.next
+代码
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         ..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/237-%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B9/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://raw.githubusercontent.com/fuer4869/imgbed/master/LeetCode_Sharing.png?token=AA76PU6A6YEIQZ4I3A6FHDDAD6GBA" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/leetcode/925-%E9%95%BF%E6%8C%89%E9%94%AE%E5%85%A5/"><img class="post-cover-img js-img-fadeIn" src="https://raw.githubusercontent.com/fuer4869/imgbed/master/LeetCode_Sharing.png?token=AA76PU6A6YEIQZ4I3A6FHDDAD6GBA" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E7%AE%80%E5%8D%95"><i class="tag post-item-tag">简单</i></a><a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2"><i class="tag post-item-tag">字符串</i></a><a href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88"><i class="tag post-item-tag">双指针</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/925-%E9%95%BF%E6%8C%89%E9%94%AE%E5%85%A5/">925. 长按键入</a></h2><time class="has-text-grey" datetime="2021-02-01T07:24:30.000Z">2021-02-01</time><p class="is-flex-grow-2 mt-2">
+
+前往此题
+
+双指针解法我们假设有两个指针i、j, 一个指向name的元素，另外一个指向typed的元素。接下来只要考虑到两个条件：
+i,j两个指针同步往后移，如果i, j相等则继续，如果出现不相等就说明有长按情况出现了。如果出现长按情况，j指针单独往后移直到i,j相等为止。
+代码
+class Solution:
+    def isLongPressedName(self, name: str, typed: str) -&amp;gt; bool:
+        i, j = 0, 0
+        while j &amp;lt; len(typed):
+            if i &amp;lt; len(name) and name[i] == typed[j]:
+                i+=1
+ ..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/925-%E9%95%BF%E6%8C%89%E9%94%AE%E5%85%A5/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://raw.githubusercontent.com/fuer4869/imgbed/master/LeetCode_Sharing.png?token=AA76PU6A6YEIQZ4I3A6FHDDAD6GBA" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/leetcode/145-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%90%8E%E5%BA%8F%E9%81%8D%E5%8E%86/"><img class="post-cover-img js-img-fadeIn" src="https://raw.githubusercontent.com/fuer4869/imgbed/master/LeetCode_Sharing.png?token=AA76PU6A6YEIQZ4I3A6FHDDAD6GBA" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E6%A0%91"><i class="tag post-item-tag">树</i></a><a href="/tags/%E9%80%92%E5%BD%92"><i class="tag post-item-tag">递归</i></a><a href="/tags/%E4%B8%AD%E7%AD%89"><i class="tag post-item-tag">中等</i></a><a href="/tags/%E8%BF%AD%E4%BB%A3"><i class="tag post-item-tag">迭代</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/145-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%90%8E%E5%BA%8F%E9%81%8D%E5%8E%86/">145. 二叉树的后序遍历</a></h2><time class="has-text-grey" datetime="2021-01-30T10:21:11.000Z">2021-01-30</time><p class="is-flex-grow-2 mt-2">
+
+前往此题
+
+解题思路按照后序遍历左子节点-&amp;gt;右子节点-&amp;gt;根节点的顺序来，下图的最终结果就是4 5 2 6 7 3 1
+
+递归法递归法十分简单，直接套模板即可
+class Solution:
+    def postorderTraversal(self, root: TreeNode) -&amp;gt; List[int]:
+        res = []
+        self.dfs(root, res)
+        return res
+
+
+    def dfs(self, root, res):
+        if not root: return
+
+        self.dfs(root.left, res)
+        self.dfs(root.right, re..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/145-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%90%8E%E5%BA%8F%E9%81%8D%E5%8E%86/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://raw.githubusercontent.com/fuer4869/imgbed/master/LeetCode_Sharing.png?token=AA76PU6A6YEIQZ4I3A6FHDDAD6GBA" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/leetcode/144-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86/"><img class="post-cover-img js-img-fadeIn" src="https://raw.githubusercontent.com/fuer4869/imgbed/master/LeetCode_Sharing.png?token=AA76PU6A6YEIQZ4I3A6FHDDAD6GBA" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E6%A0%91"><i class="tag post-item-tag">树</i></a><a href="/tags/%E9%80%92%E5%BD%92"><i class="tag post-item-tag">递归</i></a><a href="/tags/%E4%B8%AD%E7%AD%89"><i class="tag post-item-tag">中等</i></a><a href="/tags/%E8%BF%AD%E4%BB%A3"><i class="tag post-item-tag">迭代</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/144-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86/">144. 二叉树的前序遍历</a></h2><time class="has-text-grey" datetime="2021-01-30T08:46:54.000Z">2021-01-30</time><p class="is-flex-grow-2 mt-2">
+
+前往此题
+
+基本概念要解决这道题首先得了解二叉树前序遍历
+前序遍历
+以下面这个二叉树为例，前序遍历的遍历顺序为根节点-&amp;gt;左子节点-&amp;gt;右子节点:
+
+前序遍历一切都以左子节点为优先，即遍历结果为1 2 4 5 3 6 7
+递归解法递归解法十分简单，直接上代码了
+代码class Solution:
+    def preorderTraversal(self, root: TreeNode) -&amp;gt; List[int]:
+        def preorder(root:TreeNode):
+            if not root: return
+            res.append(root.val)
+            root.left = preorder(roo..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/144-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://raw.githubusercontent.com/fuer4869/imgbed/master/LeetCode_Sharing.png?token=AA76PU6A6YEIQZ4I3A6FHDDAD6GBA" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/leetcode/1614-%E6%8B%AC%E5%8F%B7%E7%9A%84%E6%9C%80%E5%A4%A7%E5%B5%8C%E5%A5%97%E6%B7%B1%E5%BA%A6/"><img class="post-cover-img js-img-fadeIn" src="https://raw.githubusercontent.com/fuer4869/imgbed/master/LeetCode_Sharing.png?token=AA76PU6A6YEIQZ4I3A6FHDDAD6GBA" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E7%AE%80%E5%8D%95"><i class="tag post-item-tag">简单</i></a><a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2"><i class="tag post-item-tag">字符串</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/1614-%E6%8B%AC%E5%8F%B7%E7%9A%84%E6%9C%80%E5%A4%A7%E5%B5%8C%E5%A5%97%E6%B7%B1%E5%BA%A6/">1614. 括号的最大嵌套深度</a></h2><time class="has-text-grey" datetime="2021-01-30T07:29:28.000Z">2021-01-30</time><p class="is-flex-grow-2 mt-2">
+
+前往此题
+
+统计法借助变量cur来统计括号的出现次数做互相抵消。res则记录抵消次数，最终结果返回res
+class Solution:
+    def maxDepth(self, s: str) -&amp;gt; int:
+        res = 0
+        cur = 0
+        for char in s:
+            if char == &amp;quot;(&amp;quot;: res += 1
+            if char == &amp;quot;)&amp;quot;: 
+                res -= 1
+            cur = max(res, cur)
+        
+        return cur
+
+复杂度分析
+
+时间复杂度:  O(N..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/1614-%E6%8B%AC%E5%8F%B7%E7%9A%84%E6%9C%80%E5%A4%A7%E5%B5%8C%E5%A5%97%E6%B7%B1%E5%BA%A6/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://raw.githubusercontent.com/fuer4869/imgbed/master/LeetCode_Sharing.png?token=AA76PU6A6YEIQZ4I3A6FHDDAD6GBA" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/leetcode/94-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86/"><img class="post-cover-img js-img-fadeIn" src="https://raw.githubusercontent.com/fuer4869/imgbed/master/LeetCode_Sharing.png?token=AA76PU6A6YEIQZ4I3A6FHDDAD6GBA" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E6%A0%91"><i class="tag post-item-tag">树</i></a><a href="/tags/%E4%B8%AD%E7%AD%89"><i class="tag post-item-tag">中等</i></a><a href="/tags/%E6%A0%88"><i class="tag post-item-tag">栈</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/94-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86/">94. 二叉树的中序遍历</a></h2><time class="has-text-grey" datetime="2021-01-30T05:46:39.000Z">2021-01-30</time><p class="is-flex-grow-2 mt-2">
+
+前往此题
+
+解题思路预备知识：
 
 二叉树结构基础
 中序遍历是什么
 
 什么是中序遍历
-有个口诀叫：左根右
-意思就是在遍历过程中，先找到根节点然后会去找左子节点，如果有左子节点就继续在往下找，直到找到最地下一层的左子节点。如果没有左子节点就返回根节点，最后才返回右子节点。
+有个口诀叫：左根右意思就是在遍历过程中，先找到根节点然后会去找左子节点，如果有左子节点就继续在往下找，直到找到最地下一层的左子节点。如果没有左子节点就返回根节点，最后才返回右子节点。
 
-如图：
-中序遍历最终返回的顺序为：BDCAEHGKF
+如图：中序遍历最终返回的顺序为：BDCAEHGKF
 递归法
-
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, x):
@@ -23,19 +109,12 @@
 #         self.right = None
 
 class Solution:
-    def i..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/94-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E7%AE%80%E5%8D%95"><i class="tag post-item-tag">简单</i></a><a href="/tags/%E9%93%BE%E8%A1%A8"><i class="tag post-item-tag">链表</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/206-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/">206. 反转链表</a></h2><time class="has-text-grey" datetime="2021-01-30T05:31:00.000Z">2021-01-30</time><p class="is-flex-grow-2 mt-2">
+    def inor..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/94-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://raw.githubusercontent.com/fuer4869/imgbed/master/LeetCode_Sharing.png?token=AA76PU6A6YEIQZ4I3A6FHDDAD6GBA" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/leetcode/206-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/"><img class="post-cover-img js-img-fadeIn" src="https://raw.githubusercontent.com/fuer4869/imgbed/master/LeetCode_Sharing.png?token=AA76PU6A6YEIQZ4I3A6FHDDAD6GBA" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E7%AE%80%E5%8D%95"><i class="tag post-item-tag">简单</i></a><a href="/tags/%E9%93%BE%E8%A1%A8"><i class="tag post-item-tag">链表</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/206-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/">206. 反转链表</a></h2><time class="has-text-grey" datetime="2021-01-30T05:31:00.000Z">2021-01-30</time><p class="is-flex-grow-2 mt-2">
+
 前往此题
 
-解题思路
-迭代法
-思路其实很简单就是把链表指向全都倒过来,我们将通过双指针来辅助实现。
-把 1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5 变成 1&amp;lt;-2&amp;lt;-3&amp;lt;-4&amp;lt;-5。
-千万不要理解成把它变成 5-&amp;gt;4-&amp;gt;3-&amp;gt;2-&amp;gt;1
-prev、tmp做辅助
-cur(当前)指向prev(前一个)
-prev(前一个)变成cur(当前)
-cur(当前)变成下一个
-重复上面步骤
+解题思路迭代法思路其实很简单就是把链表指向全都倒过来,我们将通过双指针来辅助实现。把 1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5 变成 1&amp;lt;-2&amp;lt;-3&amp;lt;-4&amp;lt;-5。千万不要理解成把它变成 5-&amp;gt;4-&amp;gt;3-&amp;gt;2-&amp;gt;1prev、tmp做辅助
+cur(当前)指向prev(前一个)prev(前一个)变成cur(当前)cur(当前)变成下一个重复上面步骤
 代码实现
 # Definition for singly-linked list.
 # class ListNode:
@@ -43,14 +122,12 @@ cur(当前)变成下一个
 #         self.val = x
 #         self.next = None
 
-c..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/206-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E4%B8%AD%E7%AD%89%EF%BC%8C%20BFS"><i class="tag post-item-tag">中等， BFS</i></a><a href="/tags/BFS"><i class="tag post-item-tag">BFS</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/102-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%B1%82%E5%BA%8F%E9%81%8D%E5%8E%86/">102. 二叉树的层序遍历</a></h2><time class="has-text-grey" datetime="2021-01-30T05:02:18.000Z">2021-01-30</time><p class="is-flex-grow-2 mt-2">
+class So..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/206-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://raw.githubusercontent.com/fuer4869/imgbed/master/LeetCode_Sharing.png?token=AA76PU6A6YEIQZ4I3A6FHDDAD6GBA" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/leetcode/102-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%B1%82%E5%BA%8F%E9%81%8D%E5%8E%86/"><img class="post-cover-img js-img-fadeIn" src="https://raw.githubusercontent.com/fuer4869/imgbed/master/LeetCode_Sharing.png?token=AA76PU6A6YEIQZ4I3A6FHDDAD6GBA" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E4%B8%AD%E7%AD%89%EF%BC%8C%20BFS"><i class="tag post-item-tag">中等， BFS</i></a><a href="/tags/BFS"><i class="tag post-item-tag">BFS</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/102-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%B1%82%E5%BA%8F%E9%81%8D%E5%8E%86/">102. 二叉树的层序遍历</a></h2><time class="has-text-grey" datetime="2021-01-30T05:02:18.000Z">2021-01-30</time><p class="is-flex-grow-2 mt-2">
+
 前往leetcode刷此题
 
-解题思路
-这道题其实还是蛮简单的，dfs 和 bfs都能解决。题目的大致意思是遍历一个二叉树，将其每层节点放入到一个二元数组中。
-而且还要求是逐层遍历，从左至右访问所有节点。那在遍历的时候我们只需要考虑左右顺序以及层级就行了。
-BFS
-因为需要逐层遍历，所以我们需要将每一层的数据按序放入到队列中，然后将每层的节点按照从左至右的顺序放入到一个临时数组level中。
+解题思路这道题其实还是蛮简单的，dfs 和 bfs都能解决。题目的大致意思是遍历一个二叉树，将其每层节点放入到一个二元数组中。而且还要求是逐层遍历，从左至右访问所有节点。那在遍历的时候我们只需要考虑左右顺序以及层级就行了。
+BFS因为需要逐层遍历，所以我们需要将每一层的数据按序放入到队列中，然后将每层的节点按照从左至右的顺序放入到一个临时数组level中。
 
 首先套用最基本的模板, 初始化队列并将根节点放入到队列中
 
@@ -59,21 +136,18 @@ queue = collections.deque()
         res = []
 
 
-遍历队列并创建一个临时数组level，将找到的节点放入到level中，然后继续往下层遍历，将节点的左右子节点..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/102-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%B1%82%E5%BA%8F%E9%81%8D%E5%8E%86/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2021/01/29/u9DadFi2lhqG6H1.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/leetcode/%E5%89%91%E6%8C%87-Offer-68-II-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2021/01/29/u9DadFi2lhqG6H1.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E7%AE%80%E5%8D%95"><i class="tag post-item-tag">简单</i></a><a href="/tags/DFS"><i class="tag post-item-tag">DFS</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/%E5%89%91%E6%8C%87-Offer-68-II-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/">剑指 Offer 68 - II. 二叉树的最近公共祖先</a></h2><time class="has-text-grey" datetime="2021-01-29T09:01:49.000Z">2021-01-29</time><p class="is-flex-grow-2 mt-2">给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
+遍历队列并创建一个临时数组level，将找到的节点放入到level中，然后继续往下层遍历，将节点的左右子节点放入..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/102-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%B1%82%E5%BA%8F%E9%81%8D%E5%8E%86/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://raw.githubusercontent.com/fuer4869/imgbed/master/LeetCode_Sharing.png?token=AA76PU6A6YEIQZ4I3A6FHDDAD6GBA" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/leetcode/%E5%89%91%E6%8C%87-Offer-68-II-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/"><img class="post-cover-img js-img-fadeIn" src="https://raw.githubusercontent.com/fuer4869/imgbed/master/LeetCode_Sharing.png?token=AA76PU6A6YEIQZ4I3A6FHDDAD6GBA" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E7%AE%80%E5%8D%95"><i class="tag post-item-tag">简单</i></a><a href="/tags/DFS"><i class="tag post-item-tag">DFS</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/%E5%89%91%E6%8C%87-Offer-68-II-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/">剑指 Offer 68 - II. 二叉树的最近公共祖先</a></h2><time class="has-text-grey" datetime="2021-01-29T09:01:49.000Z">2021-01-29</time><p class="is-flex-grow-2 mt-2">
+给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
 例如，给定如下二叉树:  root = [3,5,1,6,2,0,8,null,null,7,4]
 
-解题思路
-首先在解这道题之前我们必须得理解什么是最近的公共祖先。
+解题思路首先在解这道题之前我们必须得理解什么是最近的公共祖先。
 用图来解释比较好理解，有以下几种情况：
-
 
 节点p、q中，其中一个为另外一个的子节点
 
 
-
 如果节点p、q为某一个节点root的左右子树，那么它们的最近公共祖先就是root
-
 
 
 如果root的左右子树中都不包含p、q，返回null
@@ -81,94 +155,8 @@ queue = collections.deque()
 
 根据这三种情况我们可以得到递归的基本条件
 
-
 终止条件
-如果r..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/%E5%89%91%E6%8C%87-Offer-68-II-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2021/01/29/DpLuRPHWFyjSTOf.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/leetcode/189-%E6%97%8B%E8%BD%AC%E6%95%B0%E7%BB%84/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2021/01/29/DpLuRPHWFyjSTOf.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E4%B8%AD%E7%AD%89%EF%BC%8C%E6%95%B0%E7%BB%84"><i class="tag post-item-tag">中等，数组</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/189-%E6%97%8B%E8%BD%AC%E6%95%B0%E7%BB%84/">189. 旋转数组</a></h2><time class="has-text-grey" datetime="2021-01-29T05:48:44.000Z">2021-01-29</time><p class="is-flex-grow-2 mt-2">题目描述
-给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。
-解题思路一：切片
-第一步求出了k与nums长度的余数是为了避免出现k&amp;gt;len(nums)的情况出现, 然后在进行切片，把切下来的倒数k个元素放到列表最前面即可。值得注意的是，在python中以nums = nums[-k:]+…的形式不能顺利赋值，需要以全切的方式nums[:]才可以。
-
-class Solution:
-def rotate(self, nums: List[int], k: int) -&amp;gt; None:
-    if k == 0: return
-    k = k%len(nums)
-    nums[:] = nums[-k:] + nums[:-k]
-
-
-复杂度分析：
-时间复杂度：O(N)  ..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/189-%E6%97%8B%E8%BD%AC%E6%95%B0%E7%BB%84/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2021/01/29/PyFlwJEqGHh1nDQ.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/leetcode/26-%E5%88%A0%E9%99%A4%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E9%A1%B9/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2021/01/29/PyFlwJEqGHh1nDQ.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E7%AE%80%E5%8D%95%EF%BC%8C%E6%95%B0%E7%BB%84%EF%BC%8C%E5%8F%8C%E6%8C%87%E9%92%88"><i class="tag post-item-tag">简单，数组，双指针</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/26-%E5%88%A0%E9%99%A4%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E9%A1%B9/">26. 删除排序数组中的重复项</a></h2><time class="has-text-grey" datetime="2021-01-29T04:40:20.000Z">2021-01-29</time><p class="is-flex-grow-2 mt-2">26. 删除排序数组中的重复项
-
-前往leetcode做此题
-
-解题思路
-因为nums是一个排序数组，所以重复项只会出现在相邻的位置。可以通过双指针的方式来指定其中的元素，然后逐步往后移动进行比对，直到找到相邻且相等的元素删除即可。有一点要注意的是，如果连续出现三个重复的元素，用两两比对会漏掉一个，这个时候需以第一个重复元素为参照物进行比对，直到删除了所有的重复项后再往后移动。
-
-
-代码实现
-class Solution:
-    def removeDuplicates(self, nums: List[int]) -&amp;gt; int:
-        left, right = 0, 1
-        while right &amp;lt; len(nums):
-            if nums[le..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/26-%E5%88%A0%E9%99%A4%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E9%A1%B9/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E7%AE%80%E5%8D%95"><i class="tag post-item-tag">简单</i></a><a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2"><i class="tag post-item-tag">字符串</i></a><a href="/tags/%E6%A8%A1%E6%8B%9F%E6%B3%95"><i class="tag post-item-tag">模拟法</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/657-%E6%9C%BA%E5%99%A8%E4%BA%BA%E8%83%BD%E5%90%A6%E8%BF%94%E5%9B%9E%E5%8E%9F%E7%82%B9/">657. 机器人能否返回原点</a></h2><time class="has-text-grey" datetime="2020-12-06T10:38:42.000Z">2020-12-06</time><p class="is-flex-grow-2 mt-2">
-前往此题
-
-解题思路
-设定x,y变量代表坐标系
-L,R,U,D分别对应x,y变量的加减。
-如果指令是 UU，则令 y=y-1y=y−1
-如果指令是 DD，则令 y=y+1y=y+1
-如果指令是 LL，则令 x=x-1x=x−1
-如果指令是 RR，则令 x=x+1x=x+1
-最后再判断是否在原点即可。
-代码
-class Solution:
-    def judgeCircle(self, moves: str) -&amp;gt; bool:
-        x = 0
-        y = 0
-        for i in moves:
-            if i == 'L': x -= 1
-            if i == 'R': x += 1
-            if i == '..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/657-%E6%9C%BA%E5%99%A8%E4%BA%BA%E8%83%BD%E5%90%A6%E8%BF%94%E5%9B%9E%E5%8E%9F%E7%82%B9/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2020/09/11/xkQBdTafmZAnj9r.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/leetcode/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2020/09/11/xkQBdTafmZAnj9r.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/LRU"><i class="tag post-item-tag">LRU</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/">LRU缓存机制算法详解</a></h2><time class="has-text-grey" datetime="2020-06-11T06:44:48.000Z">2020-06-11</time><p class="is-flex-grow-2 mt-2">
-前言
-今天在刷leetcode的时候，遇到了LRU缓存机制的问题。觉得很有意思，就准备把这道题的题解以及相关知识点记录下来。
-原题是这样的
-
-运用你所掌握的数据结构，设计和实现一个  LRU (最近最少使用) 缓存机制。它应该支持以下操作： 获取数据 get 和 写入数据 put 。
-获取数据 get(key) - 如果关键字 (key) 存在于缓存中，则获取关键字的值（总是正数），否则返回 -1。
-写入数据 put(key, value) - 如果关键字已经存在，则变更其数据值；如果关键字不存在，则插入该组「关键字/值」。当缓存容量达到上限时，它应该在写入新数据之前删除最久未使用的数据值，从而为新的数据值留出空间。
-
-结合实际场景来分析这道题的话就是我们现在有一个空间有限的缓存池，为了保证缓存不会溢出我..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E6%8E%92%E5%BA%8F"><i class="tag post-item-tag">排序</i></a><a href="/tags/%E7%AE%80%E5%8D%95"><i class="tag post-item-tag">简单</i></a><a href="/tags/%E6%95%B0%E7%BB%84"><i class="tag post-item-tag">数组</i></a><a href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88"><i class="tag post-item-tag">双指针</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/leetcode%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/">leetcode刷题笔记（三）</a></h2><time class="has-text-grey" datetime="2019-10-24T05:22:19.000Z">2019-10-24</time><p class="is-flex-grow-2 mt-2">题目1 对有序数组删除重复项
-给定一个排序数组，你需要在原地删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。
-不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。
-示例 1:
-给定数组 nums = [1,1,2],
-函数应该返回新的长度 2, 并且原数组 nums 的前两个元素被修改为 1, 2。
-你不需要考虑数组中超出新长度后面的元素。
-示例 2:
-给定 nums = [0,0,1,1,1,2,2,3,3,4],
-函数应该返回新的长度 5, 并且原数组 nums 的前五个元素被修改为 0, 1, 2, 3, 4。
-解答
-解题思路
-因为nums是一个排序数组，所以重复项只会出现在相邻的位置。可以通过双指针的方式来指定其中的元素，
-然后逐步往后移动进..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/leetcode%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/%E7%AE%80%E5%8D%95"><i class="tag post-item-tag">简单</i></a><a href="/tags/%E6%95%B0%E7%BB%84"><i class="tag post-item-tag">数组</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/leetcode/leetcode%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/">leetcode刷题笔记（二）</a></h2><time class="has-text-grey" datetime="2019-10-23T10:50:29.000Z">2019-10-23</time><p class="is-flex-grow-2 mt-2">旋转数组
-给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。
-示例 1:
-输入: [1,2,3,4,5,6,7] 和 k = 3
-输出: [5,6,7,1,2,3,4]
-解释:
-向右旋转 1 步: [7,1,2,3,4,5,6]
-向右旋转 2 步: [6,7,1,2,3,4,5]
-向右旋转 3 步: [5,6,7,1,2,3,4]
-示例 2:
-输入: [-1,-100,3,99] 和 k = 2
-输出: [3,99,-1,-100]
-解释:
-向右旋转 1 步: [99,-1,-100,3]
-向右旋转 2 步: [3,99,-1,-100]
-解法1 拼接法
-解题思路
-第一步求出了k与nums长度的余数是为了避免出现k&amp;gt;len(nums)的情况出现
-然后在进行切片，把切下来的倒数k个元..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/leetcode%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/">更多</a></section></article><section class="paginator is-flex is-justify-content-flex-end is-flex-wrap-wrap"><a class="extend prev" rel="prev" href="/categories/leetcode%E5%88%B7%E9%A2%98%E9%A2%98%E8%A7%A3/page/2/"><i class="iconfont icon-prev has-text-grey"></i></a><a class="page-number" href="/categories/leetcode%E5%88%B7%E9%A2%98%E9%A2%98%E8%A7%A3/">1</a><a class="page-number" href="/categories/leetcode%E5%88%B7%E9%A2%98%E9%A2%98%E8%A7%A3/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/categories/leetcode%E5%88%B7%E9%A2%98%E9%A2%98%E8%A7%A3/page/4/">4</a><a class="extend next" rel="next" href="/categories/leetcode%E5%88%B7%E9%A2%98%E9%A2%98%E8%A7%A3/page/4/"><i class="iconfont icon-next has-text-grey"></i></a></section></section><aside class="column is-hidden-mobile is-4-tablet is-3-widescreen"><div style="position: sticky; top: 50px;"><main class="aside-card-container categories-widget category-page"><h3>分类</h3><section><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Django/">Django</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OOP/">OOP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode%E5%88%B7%E9%A2%98%E9%A2%98%E8%A7%A3/">leetcode刷题题解</a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python%E5%9F%BA%E7%A1%80/">python基础</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">源码分析</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%A1%E7%90%86/">管理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%87%AA%E5%8A%A8%E5%8C%96/">自动化</a><span class="category-list-count">1</span></li></ul></section></main></div></aside></div></article><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
+如果root为..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/leetcode/%E5%89%91%E6%8C%87-Offer-68-II-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/">更多</a></section></article><section class="paginator is-flex is-justify-content-flex-end is-flex-wrap-wrap"><a class="extend prev" rel="prev" href="/categories/leetcode%E5%88%B7%E9%A2%98%E9%A2%98%E8%A7%A3/page/2/"><i class="iconfont icon-prev has-text-grey"></i></a><a class="page-number" href="/categories/leetcode%E5%88%B7%E9%A2%98%E9%A2%98%E8%A7%A3/">1</a><a class="page-number" href="/categories/leetcode%E5%88%B7%E9%A2%98%E9%A2%98%E8%A7%A3/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/categories/leetcode%E5%88%B7%E9%A2%98%E9%A2%98%E8%A7%A3/page/4/">4</a><a class="extend next" rel="next" href="/categories/leetcode%E5%88%B7%E9%A2%98%E9%A2%98%E8%A7%A3/page/4/"><i class="iconfont icon-next has-text-grey"></i></a></section></section><aside class="column is-hidden-mobile is-4-tablet is-3-widescreen"><div style="position: sticky; top: 50px;"><main class="aside-card-container categories-widget category-page"><h3>分类</h3><section><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Django/">Django</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OOP/">OOP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode%E5%88%B7%E9%A2%98%E9%A2%98%E8%A7%A3/">leetcode刷题题解</a><span class="category-list-count">39</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python%E5%9F%BA%E7%A1%80/">python基础</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">源码分析</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%A1%E7%90%86/">管理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%87%AA%E5%8A%A8%E5%8C%96/">自动化</a><span class="category-list-count">1</span></li></ul></section></main></div></aside></div></article><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
 
 window.addEventListener('resize', $claudia.throttle(function () {
     var images = document.querySelectorAll('.js-img-fadeIn')
