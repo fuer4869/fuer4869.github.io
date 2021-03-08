@@ -8,86 +8,57 @@
 </ul>
 <p><a href="https://geek-docs.com/python/python-examples/python-instance-methods-and-class-methods-and-reveal-the-static-method.html">参考链接</a></p>
 <ol start="46">
-<li>请描述抽象类和接口类的区别和联系<br>
-举个简单的例子，你需要设计一个关于汽车的类。为了便于以后的扩展，我们把汽车的基本功能放入到抽象类中去，如行驶，倒车，转弯这些方法，车灯，轮胎等属性。<br>
-突然我们开发出了一台支持自动驾驶的车，因为这个功能不是每台车都有的所以就把这个功能设计到接口类中去。</li>
+<li>请描述抽象类和接口类的区别和联系<br>举个简单的例子，你需要设计一个关于汽车的类。为了便于以后的扩展，我们把汽车的基本功能放入到抽象类中去，如行驶，倒车，转弯这些方法，车灯，轮胎等属性。<br>突然我们开发出了一台支持自动驾驶的车，因为这个功能不是每台车都有的所以就把这个功能设计到接口类中去。</li>
 </ol>
 <ul>
 <li>抽象类类似于 is a的关系。定义该体系中基本共性内容，例子中车灯，行驶都是每辆车必备的功能</li>
 <li>而接口类类似于 like a的关系。属于体系的额外功能，可能有可能没有。自动驾驶就不是每辆车都有的功能</li>
 </ul>
-<p><a href="https://python3-cookbook.readthedocs.io/zh_CN/latest/c08/p12_define_interface_or_abstract_base_class.html">参考资料</a><br>
-<a href="https://www.zhihu.com/question/20149818/answer/153188511">参考资料</a><br>
-<a href="https://juejin.im/post/5c0d4859e51d4504a02eb6e2">参考资料</a></p>
+<p><a href="https://python3-cookbook.readthedocs.io/zh_CN/latest/c08/p12_define_interface_or_abstract_base_class.html">参考资料</a><br><a href="https://www.zhihu.com/question/20149818/answer/153188511">参考资料</a><br><a href="https://juejin.im/post/5c0d4859e51d4504a02eb6e2">参考资料</a></p>
 <ol start="53">
-<li>
-<p>简述read、readline、readlines的区别？<br>
-read 读取整个文件<br>
-readline 读取下一行<br>
-readlines 读取整个文件到一个迭代器以供我们遍历</p>
+<li><p>简述read、readline、readlines的区别？<br>read 读取整个文件<br>readline 读取下一行<br>readlines 读取整个文件到一个迭代器以供我们遍历</p>
 </li>
-<li>
-<p>写一个装饰器</p>
-</li>
-</ol>
+<li><p>写一个装饰器</p>
 <pre><code>import datetime
-
-def timecheck(func):
-    def wrapper(*args, **kwargs):
-        # 检查时间
-        if datetime.datetime.now().year == 2020:
-            return func(*args, **kwargs)
-    return wrapper
-
-
-@timecheck
-def time(name):
-	print('Hello &#123;&#125;, 2020!'. format(name))
-
-time(&quot;back&quot;)
 </code></pre>
-<ol start="60">
-<li>
-<p>函数调用参数的传递方式是值传递还是引用传递？<br>
-视参数类型决定，<br>
-如果是可变类型：那就是传引用<br>
-如果是不可变类型，就是传值</p>
-</li>
-<li>
-<p>有这样一段代码，print c会输出什么，为什么？<br>
-a = 10<br>
-b = 20<br>
-c = [a]<br>
-a = 15</p>
 </li>
 </ol>
-<p>答：[10]</p>
-<ol start="68">
-<li>
-<p>交换两个变量的值？<br>
-a,b = b,a</p>
-</li>
-<li>
-<p>Python主要的内置数据类型都有哪些？ print dir( ‘a ’) 的输出？<br>
-str, int, dict, tuple, boolean, list, set</p>
-</li>
-</ol>
-<p>所有带有a的内置函数</p>
-<ol start="72">
-<li>
-<p>list(map(lambda x:x*x，[y for y in range(3)]))的输出？<br>
-[0,1,4,9]</p>
-</li>
-<li>
-<p>解释下什么是闭包？<br>
-简单来说就是为了在函数外部访问到函数内的局部变量的方式称为闭包</p>
-</li>
-<li>
-<p>生成器，迭代器的区别？</p>
-</li>
-<li>
-<p>请写出一段代码用正则匹配出ip？</p>
-</li>
-</ol>
-<pre><code>In [3]: r = re.match(r'\d&#123;3&#125;.\d&#123;3&#125;.\d.\d','192.168.1.1')
+<p>def timecheck(func):<br>    def wrapper(<em>args, **kwargs):<br>        # 检查时间<br>        if datetime.datetime.now().year == 2020:<br>            return func(*args, *</em>kwargs)<br>    return wrapper</p>
+<p>@timecheck<br>def time(name):<br>    print(‘Hello {}, 2020!’. format(name))</p>
+<p>time(“back”)</p>
+<pre><code>60. 函数调用参数的传递方式是值传递还是引用传递？
+视参数类型决定，
+如果是可变类型：那就是传引用
+如果是不可变类型，就是传值
+
+67. 有这样一段代码，print c会输出什么，为什么？
+a = 10
+b = 20
+c = [a]
+a = 15
+
+答：[10]
+
+68. 交换两个变量的值？
+a,b = b,a
+
+71. Python主要的内置数据类型都有哪些？ print dir( ‘a ’) 的输出？
+str, int, dict, tuple, boolean, list, set
+
+所有带有a的内置函数
+
+72. list(map(lambda x:x*x，[y for y in range(3)]))的输出？
+[0,1,4,9]
+
+
+84. 解释下什么是闭包？
+简单来说就是为了在函数外部访问到函数内的局部变量的方式称为闭包
+
+86. 生成器，迭代器的区别？
+
+
+94. 请写出一段代码用正则匹配出ip？
+</code></pre>
+<p>In [3]: r = re.match(r’\d{3}.\d{3}.\d.\d’,’192.168.1.1’)</p>
+<pre><code>
 </code></pre>

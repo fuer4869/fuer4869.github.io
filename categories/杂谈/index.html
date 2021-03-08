@@ -6,41 +6,119 @@ Redis是什么
 Redis是一个基于键值对的NoSQL数据库，与很多键值对数据库不同，Redis 提供了丰富的 值数据存储结构，包括 string、hash、list、set、zset(有序集合)等。
 为什么要使用Redis
 ![image-20210205174819181](/Users/weijiezhu/Library/Application Support/typora-user-images/image-20210205174819181.png)
-随着互联网用户的不断增加，早在90年代单靠一个MySQL就能支撑起整个网站的数据服务已经不复存在了，..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/Redis%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86%E8%AF%A6%E8%A7%A3/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2020/07/05/oMUgV5L8tjmBFbD.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/%E6%B5%85%E8%B0%88MySQL%E4%B8%AD%E7%9A%84%E9%94%81/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2020/07/05/oMUgV5L8tjmBFbD.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/MySQL"><i class="tag post-item-tag">MySQL</i></a><a href="/tags/MySQL%E9%94%81%EF%BC%8CInnoDB"><i class="tag post-item-tag">MySQL锁，InnoDB</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/%E6%B5%85%E8%B0%88MySQL%E4%B8%AD%E7%9A%84%E9%94%81/">浅谈MySQL中的锁</a></h2><time class="has-text-grey" datetime="2020-02-05T02:19:33.000Z">2020-02-05</time><p class="is-flex-grow-2 mt-2">
-前言之前学习了MySQL的事务管理MySQL管理事务处理在数据库处理高并发的时候需要涉及到事务管理和锁的机制问题这两块知识。对于锁的处理一直是一个老生常谈的话题，内容太过复杂。这次借助这篇文章分享下我对Innodb中的锁的机制的理解。
-快照读与当前读在了解锁的机制前我们得先了解快照读与当前读的区别。
-一般我们常用的select * from ...也是读，共享锁那也是读，它们之间有什么区别呢？其实MySQL中的读与事务隔离级别中的读是不同的读。
-在 MVCC 并发控制中，读操作可以分成两类:快照读 (snapshot read)与当前读 (current read)。 快照读，读取的是记录的可见版本 (有可能是历史版本)，不用加锁。当前读，读取的是记录的最新版本，并且，当前读返回的记录，都会加上锁，保证其..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/%E6%B5%85%E8%B0%88MySQL%E4%B8%AD%E7%9A%84%E9%94%81/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://upload-images.jianshu.io/upload_images/1515206-fb17f181361f40ab.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/%E3%80%90MySQL%E3%80%91%E6%B5%85%E8%B0%88MySQL%E7%9A%84LOAD-DATA/"><img class="post-cover-img js-img-fadeIn" src="https://upload-images.jianshu.io/upload_images/1515206-fb17f181361f40ab.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/MySQL"><i class="tag post-item-tag">MySQL</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/%E3%80%90MySQL%E3%80%91%E6%B5%85%E8%B0%88MySQL%E7%9A%84LOAD-DATA/">【MySQL】浅谈MySQL的LOAD DATA</a></h2><time class="has-text-grey" datetime="2019-12-25T04:51:20.000Z">2019-12-25</time><p class="is-flex-grow-2 mt-2">
-前言
-好久没碰MySQL了，这次碰巧在研究superset的时候需要将一份csv格式的数据文件导入到数据库中。正好借此机会可以重温下MySQL。
-数据来源
-网盘密码 : g5xa
+随着互联网用户的不断增加，早在90年代单靠一个MySQL就能支撑起整个网站的数据服务已经不复存在了，..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/Redis%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86%E8%AF%A6%E8%A7%A3/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2020/07/05/rZEaTvG5OYpQBPq.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/python/%E6%B5%85%E8%B0%88Python%E4%B8%AD%E7%B1%BB%E6%96%B9%E6%B3%95%E3%80%81%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95%E5%92%8C%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2020/07/05/rZEaTvG5OYpQBPq.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/python"><i class="tag post-item-tag">python</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/python/%E6%B5%85%E8%B0%88Python%E4%B8%AD%E7%B1%BB%E6%96%B9%E6%B3%95%E3%80%81%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95%E5%92%8C%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/">浅谈Python中类方法、实例方法和静态方法的区别</a></h2><time class="has-text-grey" datetime="2020-03-02T12:57:51.000Z">2020-03-02</time><p class="is-flex-grow-2 mt-2">
+</p><a class="button is-default mt-2 has-text-weight-semibold" href="/python/%E6%B5%85%E8%B0%88Python%E4%B8%AD%E7%B1%BB%E6%96%B9%E6%B3%95%E3%80%81%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95%E5%92%8C%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2020/06/09/hdal6fKiVtu3LHb.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/python/%E6%B5%85%E8%B0%88python%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8%E3%80%81%E5%A4%8D%E5%88%B6%E3%80%81%E6%8C%87%E9%92%88%E4%B8%8EC++%E7%9A%84%E5%8C%BA%E5%88%AB/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2020/06/09/hdal6fKiVtu3LHb.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/python"><i class="tag post-item-tag">python</i></a><a href="/tags/C++"><i class="tag post-item-tag">C++</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/python/%E6%B5%85%E8%B0%88python%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8%E3%80%81%E5%A4%8D%E5%88%B6%E3%80%81%E6%8C%87%E9%92%88%E4%B8%8EC++%E7%9A%84%E5%8C%BA%E5%88%AB/">浅谈python中的引用、拷贝、指针与C++的区别</a></h2><time class="has-text-grey" datetime="2020-03-01T06:10:46.000Z">2020-03-01</time><p class="is-flex-grow-2 mt-2">
+最近在学C++，在刷题的时候遇到了关于引用、指针的问题，重温相关知识后发现C++中的引用于python中引用有很大的区别，我想这就是C++效率远高于python的原因之一。通过两篇文章想梳理下python与C++在引用上的区别以及C++中引用和指针的区别。
+
+Python的引用在python中引用就是引用赋值,等同于浅拷贝，可以看一个例子：
+In [13]: a = 1
+
+In [14]: b = a
+
+In [15]: id(a)
+Out[15]: 4553065616
+
+In [16]: id(b)
+Out[16]: 4553065616
+
+In [20]: b is a
+Out[20]: True
+
+In [21]: b == a
+Out[21]: True
+
+上面代码中先初始化了一个值为1，名字为..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/python/%E6%B5%85%E8%B0%88python%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8%E3%80%81%E5%A4%8D%E5%88%B6%E3%80%81%E6%8C%87%E9%92%88%E4%B8%8EC++%E7%9A%84%E5%8C%BA%E5%88%AB/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2020/06/20/Grzdp7S98n5PaKs.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/python/%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3Python%E7%9A%84%E6%8E%A5%E5%8F%A3%E7%B1%BB%E3%80%81%E6%8A%BD%E8%B1%A1%E7%B1%BB%E3%80%81%E5%A4%9A%E6%80%81%E5%92%8C%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2020/06/20/Grzdp7S98n5PaKs.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/python"><i class="tag post-item-tag">python</i></a><a href="/tags/oop"><i class="tag post-item-tag">oop</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/python/%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3Python%E7%9A%84%E6%8E%A5%E5%8F%A3%E7%B1%BB%E3%80%81%E6%8A%BD%E8%B1%A1%E7%B1%BB%E3%80%81%E5%A4%9A%E6%80%81%E5%92%8C%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B/">如何理解Python的接口类、抽象类、多态和鸭子类型</a></h2><time class="has-text-grey" datetime="2020-02-20T07:03:09.000Z">2020-02-20</time><p class="is-flex-grow-2 mt-2">
+抽象类抽象类是一个特殊的类，为了在团队开发中能够规范化代码而延伸出来的知识，源于java，这种类它只能被继承而不能被实例化。这也说明了该类中的所有函数以及属性都将用来被继承。
+为什么要使用抽象类
+规范代码：  它的子类必须实现抽象类中的所有函数 前面有提到有一点就是为了规范代码，在团队协作中很经常会遇到多个人开发同一个模块的情况，如果因为函数命名问题导致两个子类中的方法不同。为了避免这种问题才出现了抽象类这种概念。
+
+易于维护：  还有另外个原因是为了减少代码的重复量和易于维护。比方说我们有多个汽车产品，不同的汽车有不同的功能。有的有自动驾驶，有的有全景天窗，但是只要是汽车都会有行驶，左转右转等基本功能，这些基本功能我们就可以放在抽象类中。
+
+
+from abc import ABCMeta,abstra..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/python/%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3Python%E7%9A%84%E6%8E%A5%E5%8F%A3%E7%B1%BB%E3%80%81%E6%8A%BD%E8%B1%A1%E7%B1%BB%E3%80%81%E5%A4%9A%E6%80%81%E5%92%8C%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2020/06/20/Grzdp7S98n5PaKs.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/python/python%E8%BF%AD%E4%BB%A3%E5%99%A8%E3%80%81%E7%94%9F%E6%88%90%E5%99%A8%E7%9C%8B%E5%AE%8C%E8%BF%99%E7%AF%87%E4%BD%A0%E5%B0%B1%E6%87%82%E4%BA%86/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2020/06/20/Grzdp7S98n5PaKs.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/python"><i class="tag post-item-tag">python</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/python/python%E8%BF%AD%E4%BB%A3%E5%99%A8%E3%80%81%E7%94%9F%E6%88%90%E5%99%A8%E7%9C%8B%E5%AE%8C%E8%BF%99%E7%AF%87%E4%BD%A0%E5%B0%B1%E6%87%82%E4%BA%86/">python迭代器、生成器看完这篇你就懂了</a></h2><time class="has-text-grey" datetime="2020-02-19T13:16:28.000Z">2020-02-19</time><p class="is-flex-grow-2 mt-2">
+生成器是python中非常有用特性，而且十分特殊，特殊到以前学过的语言都没有这种功能，身边的一些学其他语言的开发朋友也都不清楚生成器是什么。所以在这篇文章中将尽可能详细的解释下生成器是什么，迭代器是什么
+可迭代对象在说生成器之前我们必须得提可迭代对象。可迭代对象是什么，顾名思义迭代器就是支持迭代操作的对象。在python3如列表，字典，字符串都是可迭代对象，简单来说就是任何实现了__next__方法的容器都是可迭代对象，而可迭代对象可以转换成迭代器。
+迭代器甚至可以表示一个无限大的数据流，例如全体自然数。而使用list是永远不可能存储全体自然数的。
+看了下面的代码应该会清楚很多
+In [7]: a = [1,2,3]
+
+In [8]: b = iter(a)
+
+In [9]: a
+Out[9]: [1, ..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/python/python%E8%BF%AD%E4%BB%A3%E5%99%A8%E3%80%81%E7%94%9F%E6%88%90%E5%99%A8%E7%9C%8B%E5%AE%8C%E8%BF%99%E7%AF%87%E4%BD%A0%E5%B0%B1%E6%87%82%E4%BA%86/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://upload-images.jianshu.io/upload_images/1515206-2c1987b74ec20905.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/data-analyst/Python%E7%88%AC%E8%99%AB%E4%B9%8BScrapy-%E6%A1%86%E6%9E%B6%E5%8E%9F%E7%90%86/"><img class="post-cover-img js-img-fadeIn" src="https://upload-images.jianshu.io/upload_images/1515206-2c1987b74ec20905.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/Python,%20Scrapy"><i class="tag post-item-tag">Python, Scrapy</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/data-analyst/Python%E7%88%AC%E8%99%AB%E4%B9%8BScrapy-%E6%A1%86%E6%9E%B6%E5%8E%9F%E7%90%86/">Python爬虫之Scrapy-框架原理</a></h2><time class="has-text-grey" datetime="2019-06-08T08:39:12.000Z">2019-06-08</time><p class="is-flex-grow-2 mt-2">
+Scrapy介绍scrapy框架包含以下几个部分
+
+Scrapy Engine 引擎
+Spiders 爬虫
+Scheduler 调度器
+Downloader 下载器
+Item Pipeline 项目管道
+Downloader Middlewares 下载器中间件
+Spider Middlewares 爬虫中间件
+
+框架中有那么多部分组成，那每个部件都是用来做什么的？查阅官方文档后我有了以下结论
+Scrapy Engine引擎
+它是负责整个框架中信号，数据等传递功能。相当于是军队中的主公，任何事情必须经过它的手由它来决定这件事情由谁来负责。
+Spiders爬虫
+是这个框架中的军师，负责处理所有的Response，返回封装在Item中的数据包。如果有更深层的URL，它将返回给Scrapy Engine，再次调..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/data-analyst/Python%E7%88%AC%E8%99%AB%E4%B9%8BScrapy-%E6%A1%86%E6%9E%B6%E5%8E%9F%E7%90%86/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://upload-images.jianshu.io/upload_images/1515206-2c1987b74ec20905.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/data-analyst/Python%E7%88%AC%E8%99%AB%E4%B9%8BScrapy-%E5%AE%89%E8%A3%85%E5%8F%8A%E5%85%A5%E9%97%A8/"><img class="post-cover-img js-img-fadeIn" src="https://upload-images.jianshu.io/upload_images/1515206-2c1987b74ec20905.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/Python,%20Scrapy"><i class="tag post-item-tag">Python, Scrapy</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/data-analyst/Python%E7%88%AC%E8%99%AB%E4%B9%8BScrapy-%E5%AE%89%E8%A3%85%E5%8F%8A%E5%85%A5%E9%97%A8/">Python爬虫之Scrapy-安装及入门</a></h2><time class="has-text-grey" datetime="2019-06-05T08:04:56.000Z">2019-06-05</time><p class="is-flex-grow-2 mt-2">
+简介Scrapy是一个为了爬取网站数据，提取结构性数据而编写的应用框架。 可以应用在包括数据挖掘，信息处理或存储历史数据等一系列的程序中。
+###环境需求Python2.7 或者Python3.5以上
+安装在安装前需要确定当前的Python是什么版本，否则会出现环境变量与当前版本不匹配的情况导致找不到文件：command not found
+pip install scrapy
+如果安装太慢，就把镜像源改为国内：pip install -i  https://pypi.douban.com/simple scrapy 
+安装过程中你会发现，scrapy有大量的依赖库：
+
+twisted  基于事件驱动和异步的网络框架
+lxml python的一个解析库，支持HTML和XML的解析，支持XPath解析方式，..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/data-analyst/Python%E7%88%AC%E8%99%AB%E4%B9%8BScrapy-%E5%AE%89%E8%A3%85%E5%8F%8A%E5%85%A5%E9%97%A8/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="http://upload-images.jianshu.io/upload_images/1515206-a1494e91afa95562.vZulrZXNvoKvLfOgbqka3AHaE8&amp;pid=Api&amp;rs=1&amp;p=0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/data-analyst/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas-matplotlib%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD%EF%BC%88%E4%BA%8C%EF%BC%89/"><img class="post-cover-img js-img-fadeIn" src="http://upload-images.jianshu.io/upload_images/1515206-a1494e91afa95562.vZulrZXNvoKvLfOgbqka3AHaE8&amp;pid=Api&amp;rs=1&amp;p=0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/Python,%20Pandas"><i class="tag post-item-tag">Python, Pandas</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/data-analyst/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas-matplotlib%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD%EF%BC%88%E4%BA%8C%EF%BC%89/">Python数据分析之Pandas-matplotlib基础功能（二）</a></h2><time class="has-text-grey" datetime="2019-05-27T10:53:30.000Z">2019-05-27</time><p class="is-flex-grow-2 mt-2">
+使用pandas和seaborn绘图Series和DataFrame自带的生成图表方法：
+import pandas as pd
+s = pd.Series(np.random.randn(10).cumsum(), index=np.arange(0, 100, 10))
+s.plot()
+
+
+使用pandas做一张堆积柱状图展示每天各种聚会规模的数据点的百分比
+tips = pd.read_csv(&amp;#39;examples/tips.csv&amp;#39;)
+party_counts = pd.crosstab(tips[&amp;#39;day&amp;#39;], tips[&amp;#39;size&amp;#39;])
+print(party_counts)
+
+size  1   2   3   4  5  6
+day     ..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/data-analyst/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas-matplotlib%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD%EF%BC%88%E4%BA%8C%EF%BC%89/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="http://upload-images.jianshu.io/upload_images/1515206-a1494e91afa95562.vZulrZXNvoKvLfOgbqka3AHaE8&amp;pid=Api&amp;rs=1&amp;p=0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/data-analyst/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas-matplotlib%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD%EF%BC%88%E4%B8%80%EF%BC%89/"><img class="post-cover-img js-img-fadeIn" src="http://upload-images.jianshu.io/upload_images/1515206-a1494e91afa95562.vZulrZXNvoKvLfOgbqka3AHaE8&amp;pid=Api&amp;rs=1&amp;p=0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/Python,%20Pandas"><i class="tag post-item-tag">Python, Pandas</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/data-analyst/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas-matplotlib%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD%EF%BC%88%E4%B8%80%EF%BC%89/">Python数据分析之Pandas-matplotlib基础功能（一）</a></h2><time class="has-text-grey" datetime="2019-05-23T12:27:00.000Z">2019-05-23</time><p class="is-flex-grow-2 mt-2">
+matplot API入门如何引入：
+import matplotlib.pyplot as plt
+
+一个简单的例子：
+import numpy as np
+
+data = np.arange(10)
+plt.plot(data)
+
+print(data)
+[0 1 2 3 4 5 6 7 8 9]
+
+效果如下：
+Figure和Subplotmatplot的图像都位于Fugure对象中，相当于一个画板，如何创建Figure对象。
+fig = plt.figure()
+ax1 = fig.add_subplot(2, 2, 1)
+ax2 = fig.add_subplot(2, 2, 2)
+ax3 = fig.add_subplot(2, 2, 3)
+
+想要实现绘图，必须先使用add_subplot方法来..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/data-analyst/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas-matplotlib%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD%EF%BC%88%E4%B8%80%EF%BC%89/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="http://upload-images.jianshu.io/upload_images/1515206-214ebdbf1561743b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/data-analyst/%E5%AE%9E%E6%88%98%E9%A1%B9%E7%9B%AE%E7%BB%83%E4%B9%A0-%E3%80%902018%E4%B8%96%E7%95%8C%E6%9D%AF%E3%80%91%E7%94%A8Python%E5%88%86%E6%9E%90%E5%A4%BA%E5%86%A0%E7%90%83%E9%98%9F/"><img class="post-cover-img js-img-fadeIn" src="http://upload-images.jianshu.io/upload_images/1515206-214ebdbf1561743b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/Python,%20Pandas"><i class="tag post-item-tag">Python, Pandas</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/data-analyst/%E5%AE%9E%E6%88%98%E9%A1%B9%E7%9B%AE%E7%BB%83%E4%B9%A0-%E3%80%902018%E4%B8%96%E7%95%8C%E6%9D%AF%E3%80%91%E7%94%A8Python%E5%88%86%E6%9E%90%E5%A4%BA%E5%86%A0%E7%90%83%E9%98%9F/">实战项目练习-【2018世界杯】用Python分析夺冠球队</a></h2><time class="has-text-grey" datetime="2019-05-20T11:22:24.000Z">2019-05-20</time><p class="is-flex-grow-2 mt-2">
+前言在网上找到了个用Python分析2018世界杯夺冠热门的项目，感觉很有意思准备拿来练练手。因为目前还没有学到图形可视化部分，所以这部分内容会完全借鉴网上的教程。
+分析目的通过数据分析找出哪些队伍是这次世界杯的夺冠热门球队
 开发环境
+Python 3.7
+SublimeText2
 
-Mac OS 10.13
-MySQL 8.0
-
-准备工作
-在开始之前需要对源数据做一次清洗：
-
-去除”，“等影响数据导入的符号
-去除第一行索引值，因为它不是数据
-如果需要咋数据库中加上id，那么为了对应在源数据中也要加上，excel中加上id还是很方便的。
-把数据转为utf-8格式的csv文件
+初步分析数据情况import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from pandas import DataFrame,Series
 
 
-在这之前先简单阅读下官方文档：MySQL Documentation
-可以很方便的找到LOAD DATA的表达式：
-LOAD DATA
-    [LOW_PRIORITY | CONCURRENT] [LOCAL]
-   ..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/%E3%80%90MySQL%E3%80%91%E6%B5%85%E8%B0%88MySQL%E7%9A%84LOAD-DATA/">更多</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/iOS"><i class="tag post-item-tag">iOS</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/ios/WWDC15%20%E6%80%BB%E7%BB%93%20/">WWDC15 总结</a></h2><time class="has-text-grey" datetime="2016-06-22T03:12:19.000Z">2016-06-22</time><p class="is-flex-grow-2 mt-2">===========
-前言
-好吧，总算盼到了这次的WWDC，自从开始写博客后越来越喜欢关注这些比较前沿的技术动向。果然这次我热血澎湃的泡了杯咖啡穿上了大裤衩坐在电脑前等待着库克的&amp;quot;Good
-Morning！&amp;quot;
-这次发布会总体看下来对于我们这些开发者来说并没有什么颠覆性的改变，库克还穿着去年的那件深蓝色的T恤，Craig还是那么的幽默风趣。其实这次给我印象比较深刻的也就Multitasking和Swift2开源。
-Multitasking
+df = pd.read_csv(&amp;#39;results.csv&amp;#39;)
+print(df.head())
 
-刚刚听到这个功能的时候有点没反应过来，在移动设备上做多任务处理是不是有点鸡肋。首先考虑运行的流畅性，在一个设备上同时运行两个程序我想如果使用以前的旧设备的话那肯定会非常卡。然后如果是在手机上做多任务的话，会因为屏幕太小导致操作起来十分不便，还好仅仅支..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/ios/WWDC15%20%E6%80%BB%E7%BB%93%20/">更多</a></section></article></section><aside class="column is-hidden-mobile is-4-tablet is-3-widescreen"><div style="position: sticky; top: 50px;"><main class="aside-card-container categories-widget category-page"><h3>分类</h3><section><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Django/">Django</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OOP/">OOP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode%E5%88%B7%E9%A2%98%E9%A2%98%E8%A7%A3/">leetcode刷题题解</a><span class="category-list-count">46</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python%E5%9F%BA%E7%A1%80/">python基础</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">源码分析</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%A1%E7%90%86/">管理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%87%AA%E5%8A%A8%E5%8C%96/">自动化</a><span class="category-list-count">1</span></li></ul></section></main></div></aside></div></article><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
+由于sublimetext上打印数据显示不全，所以打印数据放在ipython中..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/data-analyst/%E5%AE%9E%E6%88%98%E9%A1%B9%E7%9B%AE%E7%BB%83%E4%B9%A0-%E3%80%902018%E4%B8%96%E7%95%8C%E6%9D%AF%E3%80%91%E7%94%A8Python%E5%88%86%E6%9E%90%E5%A4%BA%E5%86%A0%E7%90%83%E9%98%9F/">更多</a></section></article><section class="paginator is-flex is-justify-content-flex-end is-flex-wrap-wrap"><span class="page-number current">1</span><a class="page-number" href="/categories/%E6%9D%82%E8%B0%88/page/2/">2</a><a class="page-number" href="/categories/%E6%9D%82%E8%B0%88/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/categories/%E6%9D%82%E8%B0%88/page/5/">5</a><a class="extend next" rel="next" href="/categories/%E6%9D%82%E8%B0%88/page/2/"><i class="iconfont icon-next has-text-grey"></i></a></section></section><aside class="column is-hidden-mobile is-4-tablet is-3-widescreen"><div style="position: sticky; top: 50px;"><main class="aside-card-container categories-widget category-page"><h3>分类</h3><section><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode%E5%88%B7%E9%A2%98%E9%A2%98%E8%A7%A3/">leetcode刷题题解</a><span class="category-list-count">48</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a><span class="category-list-count">46</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a><span class="category-list-count">29</span></li></ul></section></main></div></aside></div></article><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
 
 window.addEventListener('resize', $claudia.throttle(function () {
     var images = document.querySelectorAll('.js-img-fadeIn')

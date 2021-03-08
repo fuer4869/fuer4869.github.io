@@ -1,13 +1,11 @@
-<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>Python数据分析之Numpy-数组转置与轴对换详解</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Python数据分析之Numpy-数组转置与轴对换详解</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#T%E5%B1%9E%E6%80%A7"><span class="toc-text">T属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#transpose%E6%96%B9%E6%B3%95"><span class="toc-text">transpose方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#swapaxes%E6%96%B9%E6%B3%95"><span class="toc-text">swapaxes方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/%E5%9F%BA%E7%A1%80,%20NumPY"><i class="tag post-item-tag">基础, NumPY</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">Python数据分析之Numpy-数组转置与轴对换详解</h1><time class="has-text-grey" datetime="2019-04-16T07:14:39.000Z">2019-04-16</time><article class="mt-2 post-content"><p><img src="http://upload-images.jianshu.io/upload_images/1515206-52378f7408b16ff6.b7GJ6Crjo8S1cCY_ii1ETQHaEJ&amp;pid=Api&amp;rs=1&amp;p=0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="NumPy"></p>
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>Python数据分析之Numpy-数组转置与轴对换详解</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Python数据分析之Numpy-数组转置与轴对换详解</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#T%E5%B1%9E%E6%80%A7"><span class="toc-text">T属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#transpose%E6%96%B9%E6%B3%95"><span class="toc-text">transpose方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#swapaxes%E6%96%B9%E6%B3%95"><span class="toc-text">swapaxes方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/%E5%9F%BA%E7%A1%80,%20NumPY"><i class="tag post-item-tag">基础, NumPY</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">Python数据分析之Numpy-数组转置与轴对换详解</h1><time class="has-text-grey" datetime="2019-04-16T07:14:39.000Z">2019-04-16</time><article class="mt-2 post-content"><p><img src="http://upload-images.jianshu.io/upload_images/1515206-52378f7408b16ff6.b7GJ6Crjo8S1cCY_ii1ETQHaEJ&pid=Api&rs=1&p=0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="NumPy"></p>
 <blockquote>
-<p>在数学中，将矩阵的行列互换就称之为转置。那在NumPy数组中也是如此。<br>
-NumPy共有三种转置方式**<code>T</code>属性**、<strong><code>transpose</code>方法</strong>、<strong><code>swapaxes</code>方法</strong>。</p>
+<p>在数学中，将矩阵的行列互换就称之为转置。那在NumPy数组中也是如此。<br>NumPy共有三种转置方式**<code>T</code>属性<strong>、</strong><code>transpose</code>方法<strong>、</strong><code>swapaxes</code>方法**。</p>
 </blockquote>
-<h3 id="T属性">T属性</h3>
-<p><strong>T属性</strong> 它比较常用于二维数组，通过行列互换得到一个新的数组，和数学中的转置是一模一样的。</p>
-<p><img src="https://gss2.bdstatic.com/9fo3dSag_xI4khGkpoWK1HF6hhy/baike/s%3D220/sign=7f72ef7809087bf479ec50ebc2d2575e/d62a6059252dd42a4ad3d198083b5bb5c9eab82f.jpg" alt=""></p>
+<h3 id="T属性"><a href="#T属性" class="headerlink" title="T属性"></a>T属性</h3><p><strong>T属性</strong> 它比较常用于二维数组，通过行列互换得到一个新的数组，和数学中的转置是一模一样的。</p>
+<p><img src="https://gss2.bdstatic.com/9fo3dSag_xI4khGkpoWK1HF6hhy/baike/s%3D220/sign=7f72ef7809087bf479ec50ebc2d2575e/d62a6059252dd42a4ad3d198083b5bb5c9eab82f.jpg"></p>
 <p>通过转置后得到一个行列互换的新的矩阵：</p>
-<p><img src="https://gss1.bdstatic.com/-vo3dSag_xI4khGkpoWK1HF6hhy/baike/s%3D250/sign=0c564b375282b2b7a39f3ec101adcb0a/5d6034a85edf8db16601af570223dd54564e74d2.jpg" alt=""></p>
+<p><img src="https://gss1.bdstatic.com/-vo3dSag_xI4khGkpoWK1HF6hhy/baike/s%3D250/sign=0c564b375282b2b7a39f3ec101adcb0a/5d6034a85edf8db16601af570223dd54564e74d2.jpg"></p>
 <pre><code>In [170]: arr = np.arange(12).reshape(4,3)
 
 In [171]: arr
@@ -51,12 +49,7 @@ array([[[ 0,  8, 16],
        [[ 3, 11, 19],
         [ 7, 15, 23]]])
 </code></pre>
-<p>可以看到三维数组也是可以转置的。值得注意的是它的转置和二维数组的转置有明显的不同。<br>
-这里我是这么理解的：<br>
-原数组<code>arr</code>中，<strong>0</strong>的索引<code>arr[0,0,0]</code>(接下来简写为<code>[0,0,0]</code>这种格式)。经过转置后它的索引为<code>[0,0,0]</code>。<br>
-接下来看<strong>1</strong>的索引<code>[0,0,1]</code>,经过转置后变成了<code>[1,0,0]</code>，这样就很好理解了。<br>
-再看<strong>10</strong>的索引<code>[1,0,2]</code>,经过转置后变成了<code>[2,0,1]</code>。<br>
-到这步相信已经解释的再清楚不过了。</p>
+<p>可以看到三维数组也是可以转置的。值得注意的是它的转置和二维数组的转置有明显的不同。<br>这里我是这么理解的：<br>原数组<code>arr</code>中，<strong>0</strong>的索引<code>arr[0,0,0]</code>(接下来简写为<code>[0,0,0]</code>这种格式)。经过转置后它的索引为<code>[0,0,0]</code>。<br>接下来看<strong>1</strong>的索引<code>[0,0,1]</code>,经过转置后变成了<code>[1,0,0]</code>，这样就很好理解了。<br>再看<strong>10</strong>的索引<code>[1,0,2]</code>,经过转置后变成了<code>[2,0,1]</code>。<br>到这步相信已经解释的再清楚不过了。</p>
 <p>那我们回过头来再看下二维数组</p>
 <pre><code>In [171]: arr
 Out[171]:
@@ -71,14 +64,9 @@ array([[ 0,  3,  6,  9],
        [ 1,  4,  7, 10],
        [ 2,  5,  8, 11]])
 </code></pre>
-<p>原数组<code>arr</code>中，<strong>0</strong>的索引<code>arr[0,0]</code>。经过转置后它的索引为<code>[0,0]</code>。<br>
-接下来看<strong>1</strong>的索引<code>[0,1]</code>,经过转置后变成了<code>[1,0]</code>，这样就很好理解了。<br>
-再看<strong>10</strong>的索引<code>[3,1]</code>,经过转置后变成了<code>[1,3]</code>。</p>
+<p>原数组<code>arr</code>中，<strong>0</strong>的索引<code>arr[0,0]</code>。经过转置后它的索引为<code>[0,0]</code>。<br>接下来看<strong>1</strong>的索引<code>[0,1]</code>,经过转置后变成了<code>[1,0]</code>，这样就很好理解了。<br>再看<strong>10</strong>的索引<code>[3,1]</code>,经过转置后变成了<code>[1,3]</code>。</p>
 <p>所谓的转置其实就是把该元素的索引做了个倒转而已，非常简单。</p>
-<h3 id="transpose方法">transpose方法</h3>
-<p><code>transpose</code>和<code>T</code>的玩法有点差别，它的参数是数组的轴序列，通过改变轴的顺序从而导致数组中各元素索引的改变。<br>
-如果对轴不是很了解，可以参考这篇文章<br>
-<a target="_blank" rel="noopener" href="https://blog.csdn.net/ddwoys/article/details/80731977">关于NumPy数组的轴</a></p>
+<h3 id="transpose方法"><a href="#transpose方法" class="headerlink" title="transpose方法"></a>transpose方法</h3><p><code>transpose</code>和<code>T</code>的玩法有点差别，它的参数是数组的轴序列，通过改变轴的顺序从而导致数组中各元素索引的改变。<br>如果对轴不是很了解，可以参考这篇文章<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/ddwoys/article/details/80731977">关于NumPy数组的轴</a></p>
 <pre><code>In [196]: arr = np.arange(16).reshape((2, 2, 4))
 
 In [197]: arr     # arr 原本的轴序列为(0, 1, 2)
@@ -98,11 +86,8 @@ array([[[ 0,  1,  2,  3],
         [12, 13, 14, 15]]])
 </code></pre>
 <p>在这里我们把轴的顺序由原本的<code>(0, 1, 2)</code>改成了<code>(1, 0, 2)</code>。也就是<strong>把前两位互换了位置</strong>，请牢记这句话。</p>
-<p>接下来还是按照<code>T</code>属性的原理：<br>
-元素<strong>4</strong>转置前的索引值为<code>(0, 1, 0)</code>，现在要把前两位互换下位置变成<code>(1, 0, 0)</code> , 也就变成了上图中的效果。<br>
-元素<strong>10</strong>转置前的索引值为<code>(1, 0, 2)</code>，经过互换后变成了 <code>(0, 1, 2)</code>，如上图。</p>
-<p>如果我把三个轴的位置都更改了，那会发生什么？<br>
-再看下面这个案例</p>
+<p>接下来还是按照<code>T</code>属性的原理：<br>元素<strong>4</strong>转置前的索引值为<code>(0, 1, 0)</code>，现在要把前两位互换下位置变成<code>(1, 0, 0)</code> , 也就变成了上图中的效果。<br>元素<strong>10</strong>转置前的索引值为<code>(1, 0, 2)</code>，经过互换后变成了 <code>(0, 1, 2)</code>，如上图。</p>
+<p>如果我把三个轴的位置都更改了，那会发生什么？<br>再看下面这个案例</p>
 <pre><code>In [210]: arr.transpose((2,0,1))
 Out[210]:
 array([[[ 0,  4],
@@ -117,15 +102,9 @@ array([[[ 0,  4],
        [[ 3,  7],
         [11, 15]]])
 </code></pre>
-<p>轴的顺序由原来的<code>(0, 1, 2)</code>变成了<code>(2, 0, 1)</code>，三个位置都发生了改变。<br>
-我们结合上面的代码来分析下：<br>
-元素<strong>4</strong>从原本的<code>(0, 1, 0)</code>变成了<code>(0, 0, 1)</code><br>
-元素<strong>10</strong>从原本的<code>(1, 0, 2)</code>变成了<code>(2, 1, 0)</code></p>
+<p>轴的顺序由原来的<code>(0, 1, 2)</code>变成了<code>(2, 0, 1)</code>，三个位置都发生了改变。<br>我们结合上面的代码来分析下：<br>元素<strong>4</strong>从原本的<code>(0, 1, 0)</code>变成了<code>(0, 0, 1)</code><br>元素<strong>10</strong>从原本的<code>(1, 0, 2)</code>变成了<code>(2, 1, 0)</code></p>
 <p>这里稍微总结下，<code>transpose</code>与<code>T</code>属性最大的区别在于，后者是把各元素的索引序列从左往右全部翻转过来。而前者则可以很灵活的去控制想要转置的元素，在多维数组中优势会更加明显。</p>
-<h3 id="swapaxes方法">swapaxes方法</h3>
-<p>核心用法与transpose差不多，只是参数发生了变化。<br>
-<code>arr.swapaxes(1, 2)</code>，这段代码的意思是将第一个轴与第二个轴进行交换。也就等同于将轴的顺序由<code>(0, 1, 2)</code> 变成了<code>(0, 2, 1)</code> 。<br>
-接下来的索引的专置和<code>transpose</code>是一样的，这里就略过了。</p>
+<h3 id="swapaxes方法"><a href="#swapaxes方法" class="headerlink" title="swapaxes方法"></a>swapaxes方法</h3><p>核心用法与transpose差不多，只是参数发生了变化。<br><code>arr.swapaxes(1, 2)</code>，这段代码的意思是将第一个轴与第二个轴进行交换。也就等同于将轴的顺序由<code>(0, 1, 2)</code> 变成了<code>(0, 2, 1)</code> 。<br>接下来的索引的专置和<code>transpose</code>是一样的，这里就略过了。</p>
 <pre><code>In [218]: arr.swapaxes(1, 2)
 Out[217]:
 array([[[ 0,  4],
@@ -151,9 +130,7 @@ array([[[ 0,  4],
         [10, 14],
         [11, 15]]])
 </code></pre>
-<h3 id="总结">总结</h3>
-<p>本章学习了数组的转置与轴对换的内容，NumPy共有三种转置方式**<code>T</code>属性**、<strong><code>transpose</code>方法</strong>、<strong><code>swapaxes</code>方法</strong>。<br>
-<strong>T属性</strong>: 比较简单粗暴，直接将数组的轴序从左往右翻转且只有这一种方式。例如某个元素在数组中的索引为<code>(1,0,2)</code>，经过<strong>T属性</strong>的转置后它的索引将变成<code>(2, 0, 1)</code>，核心原理与数学的转置相同。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>本章学习了数组的转置与轴对换的内容，NumPy共有三种转置方式**<code>T</code>属性<strong>、</strong><code>transpose</code>方法<strong>、</strong><code>swapaxes</code>方法<strong>。<br>**T属性</strong>: 比较简单粗暴，直接将数组的轴序从左往右翻转且只有这一种方式。例如某个元素在数组中的索引为<code>(1,0,2)</code>，经过<strong>T属性</strong>的转置后它的索引将变成<code>(2, 0, 1)</code>，核心原理与数学的转置相同。</p>
 <p><strong>transpose方法</strong> : 它的参数为轴的序列，你可以通过打乱轴的排序来转置数组。例如<code>arr.transpose((0, 2, 1))</code>，数组的轴序由原来的<code>(0, 1, 2)</code>变成了<code>(0, 2, 1)</code>，从而导致元素<code>N</code>的索引由原来的<code>(a, b, c)</code>变成了<code>(a, c, b)</code>。</p>
 <p><strong>swapaxes方法</strong>: 它的核心原理与<strong>transpose</strong>相同，唯一的区别是它的参数不是整个轴的序列，而是指定2个轴然后进行互换。例如<code>swapaxes(1, 2)</code>，这段代码的意思就是轴1与轴2互换，也就是将轴序换成了<code>(0, 2, 1)</code>,就这个区别。</p>
 </article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/data-analyst/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas-Series%E4%B8%8EDataFrame/" title="Python数据分析之Pandas-Series与DataFrame-"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: Python数据分析之Pandas-Series与DataFrame-</span></a><a class="button is-default" href="/data-analyst/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BNumpy-%E5%9F%BA%E6%9C%AC%E7%9A%84%E7%B4%A2%E5%BC%95%E4%B8%8E%E5%88%87%E7%89%87/" title="Python数据分析之Numpy-基本的索引与切片"><span class="has-text-weight-semibold">下一页: Python数据分析之Numpy-基本的索引与切片</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="fuer4869/fuer4869.github.io" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>

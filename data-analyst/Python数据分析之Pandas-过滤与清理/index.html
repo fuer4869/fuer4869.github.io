@@ -1,7 +1,6 @@
 <!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>Python数据分析之Pandas-过滤与清理</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Python数据分析之Pandas-过滤与清理</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A7%BB%E9%99%A4%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE"><span class="toc-text">移除重复数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E5%87%BD%E6%95%B0%E6%88%96%E8%80%85%E6%98%A0%E5%B0%84%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E8%BD%AC%E6%8D%A2"><span class="toc-text">利用函数或者映射进行数据转换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%BF%E6%8D%A2%E5%80%BC"><span class="toc-text">替换值</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/Python,%20Pandas"><i class="tag post-item-tag">Python, Pandas</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">Python数据分析之Pandas-过滤与清理</h1><time class="has-text-grey" datetime="2019-05-10T08:06:27.000Z">2019-05-10</time><article class="mt-2 post-content"><p><img src="http://upload-images.jianshu.io/upload_images/1515206-83f7589908b21260.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="数据重塑"></p>
-<h2 id="移除重复数据">移除重复数据</h2>
-<p><strong>DataFrame中常常会出现重复行。如下面这个例子：</strong></p>
-<pre><code>In [295]: data = DataFrame(&#123;'k1':['one']*3 + ['two'] * 4, 'k2':[1,1,2,3,3,4,4]&#125;)
+<h2 id="移除重复数据"><a href="#移除重复数据" class="headerlink" title="移除重复数据"></a>移除重复数据</h2><p><strong>DataFrame中常常会出现重复行。如下面这个例子：</strong></p>
+<pre><code>In [295]: data = DataFrame(&#123;&#39;k1&#39;:[&#39;one&#39;]*3 + [&#39;two&#39;] * 4, &#39;k2&#39;:[1,1,2,3,3,4,4]&#125;)
 In [296]: data
 Out[296]:
     k1  k2
@@ -35,16 +34,16 @@ Out[298]:
 5  two   4
 </code></pre>
 <p>这两个方法默认会去判断全部列，也可以指定部分列来进行判断，这样其他列就会根据指定的列来做判断：</p>
-<pre><code>In [299]: data['v1'] = range(7)
+<pre><code>In [299]: data[&#39;v1&#39;] = range(7)
 
-In [300]: data.drop_duplicates(['k1'])
+In [300]: data.drop_duplicates([&#39;k1&#39;])
 Out[300]:
     k1  k2  v1
 0  one   1   0
 3  two   3   3
 </code></pre>
 <p><code>duplicated</code>和<code>drop_duplicates</code>默认保留的是第一个出现的值的组合。传入<code>take_last=True</code>则会保留最后一个：</p>
-<pre><code>In [305]: data.drop_duplicates(['k1','k2'],keep='last')
+<pre><code>In [305]: data.drop_duplicates([&#39;k1&#39;,&#39;k2&#39;],keep=&#39;last&#39;)
 Out[305]:
     k1  k2  v1
 1  one   1   1
@@ -52,10 +51,9 @@ Out[305]:
 4  two   3   4
 6  two   4   6
 </code></pre>
-<h2 id="利用函数或者映射进行数据转换">利用函数或者映射进行数据转换</h2>
-<p>在对数据集进行转换时，你可能希望根据数组、Series或DataFrame列中的值来实现该转换工作。如下：</p>
-<pre><code>In [307]: data = DataFrame(&#123;'food':['bacon','pulled pork','bacon', 'Pastrami','corned beed', 'Bacon
-     ...: ', 'pastrami', 'honey ham', 'nova lox'], 'ounces':[4,3,12,6,7.5,8,3,5,6]&#125;)
+<h2 id="利用函数或者映射进行数据转换"><a href="#利用函数或者映射进行数据转换" class="headerlink" title="利用函数或者映射进行数据转换"></a>利用函数或者映射进行数据转换</h2><p>在对数据集进行转换时，你可能希望根据数组、Series或DataFrame列中的值来实现该转换工作。如下：</p>
+<pre><code>In [307]: data = DataFrame(&#123;&#39;food&#39;:[&#39;bacon&#39;,&#39;pulled pork&#39;,&#39;bacon&#39;, &#39;Pastrami&#39;,&#39;corned beed&#39;, &#39;Bacon
+     ...: &#39;, &#39;pastrami&#39;, &#39;honey ham&#39;, &#39;nova lox&#39;], &#39;ounces&#39;:[4,3,12,6,7.5,8,3,5,6]&#125;)
 
 In [308]: data
 Out[308]:
@@ -72,15 +70,15 @@ Out[308]:
 </code></pre>
 <p>假设你想要添加一列表示该肉类食物来源的动物类型。我们先编写一个肉类到动物的映射：</p>
 <pre><code>In [310]: meat_to_animal = &#123;
-                            'bacon':'pig',
-                            'pulled pork':'pig',
-                            'pastrami':'cow',
-                            'corned beef':'cow',
-                            'honey ham':'pig',
-                            'nova lox':'salmon'&#125;
+                            &#39;bacon&#39;:&#39;pig&#39;,
+                            &#39;pulled pork&#39;:&#39;pig&#39;,
+                            &#39;pastrami&#39;:&#39;cow&#39;,
+                            &#39;corned beef&#39;:&#39;cow&#39;,
+                            &#39;honey ham&#39;:&#39;pig&#39;,
+                            &#39;nova lox&#39;:&#39;salmon&#39;&#125;
 </code></pre>
 <p>Series的<code>map</code>方法可以接受一个函数或含有映射关系的字典型对象，但是这里有一个问题，有些肉类的首字母大写了，而有些则没有。所以我们要把各个值转换成小写：</p>
-<pre><code>In [311]: data['animal'] = data['food'].map(str.lower).map(meat_to_animal)
+<pre><code>In [311]: data[&#39;animal&#39;] = data[&#39;food&#39;].map(str.lower).map(meat_to_animal)
 
 In [313]: data
 Out[313]:
@@ -95,8 +93,7 @@ Out[313]:
 7    honey ham     5.0     pig
 8     nova lox     6.0  salmon
 </code></pre>
-<h2 id="替换值">替换值</h2>
-<p>之前学到了利用<code>fillna</code>方法填充缺失数据可以看做值替换的一种特殊情况。虽然前面提到的<code>map</code>可用于修改对象的数据子集，而<code>replace</code>则提供一种实现该功能的更简单、更灵活的方式：</p>
+<h2 id="替换值"><a href="#替换值" class="headerlink" title="替换值"></a>替换值</h2><p>之前学到了利用<code>fillna</code>方法填充缺失数据可以看做值替换的一种特殊情况。虽然前面提到的<code>map</code>可用于修改对象的数据子集，而<code>replace</code>则提供一种实现该功能的更简单、更灵活的方式：</p>
 <pre><code>In [317]: data = Series([1, -999, 2, -999, -1000, 3])
 
 In [318]: data

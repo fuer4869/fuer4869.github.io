@@ -1,9 +1,8 @@
-<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>Python数据分析之Pandas-Series与DataFrame基本功能（二）</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Python数据分析之Pandas-Series与DataFrame基本功能（二）</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%97%E6%95%B0%E8%BF%90%E7%AE%97%E5%92%8C%E6%95%B0%E6%8D%AE%E5%AF%B9%E9%BD%90"><span class="toc-text">算数运算和数据对齐</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E7%AE%97%E6%95%B0%E6%96%B9%E6%B3%95%E4%B8%AD%E5%A1%AB%E5%85%85%E5%80%BC"><span class="toc-text">在算数方法中填充值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DataFrame%E5%92%8CSeries%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BF%90%E7%AE%97"><span class="toc-text">DataFrame和Series之间的运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%BA%94%E7%94%A8%E5%92%8C%E6%98%A0%E5%B0%84"><span class="toc-text">函数应用和映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F%E5%92%8C%E6%8E%92%E5%90%8D"><span class="toc-text">排序和排名</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8E%92%E5%90%8D"><span class="toc-text">排名</span></a></li></ol></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/Python,%20Pandas"><i class="tag post-item-tag">Python, Pandas</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">Python数据分析之Pandas-Series与DataFrame基本功能（二）</h1><time class="has-text-grey" datetime="2019-04-24T10:47:20.000Z">2019-04-24</time><article class="mt-2 post-content"><p><img src="http://upload-images.jianshu.io/upload_images/1515206-21199b69100c1a6e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="pandas"></p>
-<h3 id="算数运算和数据对齐">算数运算和数据对齐</h3>
-<p>pandas中的一个功能是对不同索引的对象进行算数运算。在运算时，如果存在不同的索引对，那么结果就是它们的并集。</p>
-<pre><code>In [122]: s1 = Series([7.3, -2.5, 3.4, 1.5], index=['a','c','d','e'])
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>Python数据分析之Pandas-Series与DataFrame基本功能（二）</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Python数据分析之Pandas-Series与DataFrame基本功能（二）</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%97%E6%95%B0%E8%BF%90%E7%AE%97%E5%92%8C%E6%95%B0%E6%8D%AE%E5%AF%B9%E9%BD%90"><span class="toc-text">算数运算和数据对齐</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E7%AE%97%E6%95%B0%E6%96%B9%E6%B3%95%E4%B8%AD%E5%A1%AB%E5%85%85%E5%80%BC"><span class="toc-text">在算数方法中填充值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DataFrame%E5%92%8CSeries%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BF%90%E7%AE%97"><span class="toc-text">DataFrame和Series之间的运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%BA%94%E7%94%A8%E5%92%8C%E6%98%A0%E5%B0%84"><span class="toc-text">函数应用和映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F%E5%92%8C%E6%8E%92%E5%90%8D"><span class="toc-text">排序和排名</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/Python,%20Pandas"><i class="tag post-item-tag">Python, Pandas</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">Python数据分析之Pandas-Series与DataFrame基本功能（二）</h1><time class="has-text-grey" datetime="2019-04-24T10:47:20.000Z">2019-04-24</time><article class="mt-2 post-content"><p><img src="http://upload-images.jianshu.io/upload_images/1515206-21199b69100c1a6e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="pandas"></p>
+<h3 id="算数运算和数据对齐"><a href="#算数运算和数据对齐" class="headerlink" title="算数运算和数据对齐"></a>算数运算和数据对齐</h3><p>pandas中的一个功能是对不同索引的对象进行算数运算。在运算时，如果存在不同的索引对，那么结果就是它们的并集。</p>
+<pre><code>In [122]: s1 = Series([7.3, -2.5, 3.4, 1.5], index=[&#39;a&#39;,&#39;c&#39;,&#39;d&#39;,&#39;e&#39;])
 
-In [123]: s2 = Series([-2.1, 3.6, -1.5, 4, 3.1], index=['a','c','e','f','g'])
+In [123]: s2 = Series([-2.1, 3.6, -1.5, 4, 3.1], index=[&#39;a&#39;,&#39;c&#39;,&#39;e&#39;,&#39;f&#39;,&#39;g&#39;])
 
 In [124]: s1
 Out[124]:
@@ -34,8 +33,8 @@ dtype: float64
 </code></pre>
 <p>可以看到，不重叠的索引处因为数据对齐功能的缘故被引入了<code>NaN</code>值。相当于<code>s1</code>中的<code>f、g</code>索引和<code>s2</code>中的<code>d</code>索引本身都为缺失值<code>NaN</code>，由于<code>n + NaN = NaN</code>的特性，所以才有了这样的结果。</p>
 <p>同样在<code>DataFrame</code>上也会是这种情况:</p>
-<pre><code>In [127]: df1 = DataFrame(np.arange(9.).reshape((3, 3)), columns=list('bcd'),index=['Ohio','Texas','Colorado'])
-In [129]: df2 = DataFrame(np.arange(12.).reshape(4, 3), columns=list('bde'), index=['Utah','Ohio','Texas','Oregon'])
+<pre><code>In [127]: df1 = DataFrame(np.arange(9.).reshape((3, 3)), columns=list(&#39;bcd&#39;),index=[&#39;Ohio&#39;,&#39;Texas&#39;,&#39;Colorado&#39;])
+In [129]: df2 = DataFrame(np.arange(12.).reshape(4, 3), columns=list(&#39;bde&#39;), index=[&#39;Utah&#39;,&#39;Ohio&#39;,&#39;Texas&#39;,&#39;Oregon&#39;])
 
 In [130]: df1
 Out[130]:
@@ -62,8 +61,7 @@ Texas     9.0 NaN  12.0 NaN
 Utah      NaN NaN   NaN NaN
 </code></pre>
 <p>如何解决这个问题?再看下面的例子：</p>
-<h3 id="在算数方法中填充值">在算数方法中填充值</h3>
-<p>pandas对运算设计了几个函数，通过这个函数我们可以预先设置好填充值来解决这个问题。</p>
+<h3 id="在算数方法中填充值"><a href="#在算数方法中填充值" class="headerlink" title="在算数方法中填充值"></a>在算数方法中填充值</h3><p>pandas对运算设计了几个函数，通过这个函数我们可以预先设置好填充值来解决这个问题。</p>
 <pre><code>In [134]: df1.add(df2, fill_value=0)
 Out[134]:
             b    c     d     e
@@ -73,12 +71,8 @@ Oregon    9.0  NaN  10.0  11.0
 Texas     9.0  4.0  12.0   8.0
 Utah      0.0  NaN   1.0   2.0
 </code></pre>
-<p><code>add</code> 加法<br>
-<code>sub</code> 减法<br>
-<code>div</code>  除法<br>
-<code>mul</code> 乘法</p>
-<h3 id="DataFrame和Series之间的运算">DataFrame和Series之间的运算</h3>
-<p><strong>计算二维数组和某行之差</strong></p>
+<p><code>add</code> 加法<br><code>sub</code> 减法<br><code>div</code>  除法<br><code>mul</code> 乘法</p>
+<h3 id="DataFrame和Series之间的运算"><a href="#DataFrame和Series之间的运算" class="headerlink" title="DataFrame和Series之间的运算"></a>DataFrame和Series之间的运算</h3><p><strong>计算二维数组和某行之差</strong></p>
 <pre><code>In [135]: arr = np.arange(12).reshape((3,4))
 
 In [136]: arr
@@ -96,9 +90,8 @@ array([[0, 0, 0, 0],
        [4, 4, 4, 4],
        [8, 8, 8, 8]])
 </code></pre>
-<p>数组中的每一行都对该数组进行了运算，这个过程叫做广播。<br>
-再来看看<code>DataFrame</code>和<code>Series</code>之间的运算：</p>
-<pre><code>In [139]: frame = DataFrame(np.arange(12).reshape((4,3)), columns=list('bde'),index=['Utah','Ohio','Texas','Oregon'])
+<p>数组中的每一行都对该数组进行了运算，这个过程叫做广播。<br>再来看看<code>DataFrame</code>和<code>Series</code>之间的运算：</p>
+<pre><code>In [139]: frame = DataFrame(np.arange(12).reshape((4,3)), columns=list(&#39;bde&#39;),index=[&#39;Utah&#39;,&#39;Ohio&#39;,&#39;Texas&#39;,&#39;Oregon&#39;])
 
 In [140]: series = frame.iloc[0]
 
@@ -127,7 +120,7 @@ Oregon  9  9  9
 </code></pre>
 <p><code>DataFrame</code>与<code>Series</code>的运算中匹配到了<code>Utah</code>这行然后沿着行向下广播得到上面的答案。</p>
 <p>如果想在列上广播，那首先想到的肯定是修改<code>axis</code>选项啦</p>
-<pre><code>In [144]: series3 = frame['d']
+<pre><code>In [144]: series3 = frame[&#39;d&#39;]
 
 In [145]: series3
 Out[145]:
@@ -146,9 +139,8 @@ Texas  -1  0  1
 Oregon -1  0  1
 </code></pre>
 <p>在这里我的理解是<code>series3</code>匹配到了列，沿着列向右广播过去。</p>
-<h3 id="函数应用和映射">函数应用和映射</h3>
-<p>NumPy的很多方法也可用于操作pandas对象：</p>
-<pre><code>In [150]: frame = DataFrame(np.random.randn(4, 3), columns=list('bde'), index=['Utah','Ohio','Texas','Oregon'])
+<h3 id="函数应用和映射"><a href="#函数应用和映射" class="headerlink" title="函数应用和映射"></a>函数应用和映射</h3><p>NumPy的很多方法也可用于操作pandas对象：</p>
+<pre><code>In [150]: frame = DataFrame(np.random.randn(4, 3), columns=list(&#39;bde&#39;), index=[&#39;Utah&#39;,&#39;Ohio&#39;,&#39;Texas&#39;,&#39;Oregon&#39;])
 
 In [151]: frame
 Out[151]:
@@ -176,8 +168,7 @@ d    2.469600
 e    2.838010
 dtype: float64
 </code></pre>
-<p><code>axis </code>默认为0，以列为目标执行<code>f</code>函数。<br>
-当然反过来也是可以的：</p>
+<p><code>axis </code>默认为0，以列为目标执行<code>f</code>函数。<br>当然反过来也是可以的：</p>
 <pre><code>In [155]: frame.apply(f, axis=1)
 Out[155]:
 Utah      3.132508
@@ -188,7 +179,7 @@ dtype: float64
 </code></pre>
 <p>以行为目标执行<code>f</code>函数。</p>
 <p>元素级的Python函数也是可以用的，也就是将函数作用到每一个元素：</p>
-<pre><code>In [156]: format = lambda x: '%.2f' % x
+<pre><code>In [156]: format = lambda x: &#39;%.2f&#39; % x
 
 In [157]: frame.applymap(format)
 Out[157]:
@@ -200,7 +191,7 @@ Oregon  -0.11   1.03  -0.31
 </code></pre>
 <p>将<code>frame</code>中的数值转换成了浮点数。</p>
 <p>相较于<code>apply</code>其实有更简便的方式<code>map</code>, <code>map</code>函数更针对于单个元素（某列或者某行）:</p>
-<pre><code>In [158]: frame['e'].map(format)
+<pre><code>In [158]: frame[&#39;e&#39;].map(format)
 Out[158]:
 Utah      -2.14
 Ohio      -0.39
@@ -209,119 +200,50 @@ Oregon    -0.31
 Name: e, dtype: object
 </code></pre>
 <p>接下来会详细出一篇用来区分<code>map</code>，<code>apply</code>，<code>applymap</code>之间的用法与区别的文章。</p>
-<h3 id="排序和排名">排序和排名</h3>
-<p><strong>对行或列索引排序</strong></p>
+<h3 id="排序和排名"><a href="#排序和排名" class="headerlink" title="排序和排名"></a>排序和排名</h3><p><strong>对行或列索引排序</strong></p>
 <ul>
-<li>对列进行排序从而将行索引排成了升序</li>
+<li>对列进行排序从而将行索引排成了升序<pre><code>In [169]: frame = DataFrame(np.arange(8).reshape((2, 4)), index=[&#39;three&#39;, &#39;one&#39;], columns=[&#39;d&#39;,&#39;a&#39;,&#39;b&#39;,&#39;c&#39;])
+</code></pre>
+</li>
 </ul>
-<pre><code>In [169]: frame = DataFrame(np.arange(8).reshape((2, 4)), index=['three', 'one'], columns=['d','a','b','c'])
-
-In [171]: frame.sort_index()
-Out[171]:
-       d  a  b  c
-one    4  5  6  7
-three  0  1  2  3
+<p>In [171]: frame.sort_index()<br>Out[171]:<br>       d  a  b  c<br>one    4  5  6  7<br>three  0  1  2  3</p>
+<pre><code>
+* 对行进行排序从而将列索引排成了升序*
 </code></pre>
-<ul>
-<li>对行进行排序从而将列索引排成了升序*</li>
-</ul>
-<pre><code>In [170]: frame.sort_index(axis=1)
-Out[170]:
-       a  b  c  d
-three  1  2  3  0
-one    5  6  7  4
+<p>In [170]: frame.sort_index(axis=1)<br>Out[170]:<br>       a  b  c  d<br>three  1  2  3  0<br>one    5  6  7  4</p>
+<pre><code>
+*也可以降序排序*
 </code></pre>
-<p><em>也可以降序排序</em></p>
-<pre><code>In [173]: frame.sort_index(axis=1, ascending=False)
-Out[173]:
-       d  c  b  a
-three  0  3  2  1
-one    4  7  6  5
+<p>In [173]: frame.sort_index(axis=1, ascending=False)<br>Out[173]:<br>       d  c  b  a<br>three  0  3  2  1<br>one    4  7  6  5</p>
+<pre><code> *如果是想对数据进行排序*
 </code></pre>
-<p><em>如果是想对数据进行排序</em></p>
-<pre><code>In [174]: obj = Series([4, 7, -3, 2])
-In [176]: obj.sort_values()
-Out[176]:
-2   -3
-3    2
-0    4
-1    7
-dtype: int64
+<p>In [174]: obj = Series([4, 7, -3, 2])<br>In [176]: obj.sort_values()<br>Out[176]:<br>2   -3<br>3    2<br>0    4<br>1    7<br>dtype: int64</p>
+<pre><code>*数据中如果有缺失值，在排序后会强制放到末尾*
 </code></pre>
-<p><em>数据中如果有缺失值，在排序后会强制放到末尾</em></p>
-<pre><code>In [177]: obj = Series([4, np.nan, 7, np.nan, -3, 2])
-
-In [178]: obj.sort_values()
-Out[178]:
-4   -3.0
-5    2.0
-0    4.0
-2    7.0
-1    NaN
-3    NaN
-dtype: float64
+<p>In [177]: obj = Series([4, np.nan, 7, np.nan, -3, 2])</p>
+<p>In [178]: obj.sort_values()<br>Out[178]:<br>4   -3.0<br>5    2.0<br>0    4.0<br>2    7.0<br>1    NaN<br>3    NaN<br>dtype: float64</p>
+<pre><code>*在DataFrame中，可以对一个或者多个列中的值进行排序*
 </code></pre>
-<p><em>在DataFrame中，可以对一个或者多个列中的值进行排序</em></p>
-<pre><code>In [179]: frame = DataFrame(&#123;'b':[4, 7, -3, 2], 'a':[0, 1, 0, 1]&#125;)
-In [181]: frame.sort_values(by='b')
-Out[181]:
-   b  a
-2 -3  0
-3  2  1
-0  4  0
-1  7  1
+<p>In [179]: frame = DataFrame({‘b’:[4, 7, -3, 2], ‘a’:[0, 1, 0, 1]})<br>In [181]: frame.sort_values(by=’b’)<br>Out[181]:<br>   b  a<br>2 -3  0<br>3  2  1<br>0  4  0<br>1  7  1</p>
+<pre><code>对多个列进行排序的话，优先还是按照数组中第一项来排，也就是下面这个例子中的```b```
 </code></pre>
-<p>对多个列进行排序的话，优先还是按照数组中第一项来排，也就是下面这个例子中的<code>b</code></p>
-<pre><code>In [182]: frame.sort_values(by=['b','a'])
-Out[182]:
-   b  a
-2 -3  0
-3  2  1
-0  4  0
-1  7  1
+<p>In [182]: frame.sort_values(by=[‘b’,’a’])<br>Out[182]:<br>   b  a<br>2 -3  0<br>3  2  1<br>0  4  0<br>1  7  1</p>
+<pre><code>
+##### 排名
+排名和排序不同，排名会在不动索引的情况下对当前数据做一个排名。如果出现平级的情况就会分配一个平均排名。
 </code></pre>
-<h5 id="排名">排名</h5>
-<p>排名和排序不同，排名会在不动索引的情况下对当前数据做一个排名。如果出现平级的情况就会分配一个平均排名。</p>
-<pre><code>In [183]: obj = Series([7, -5, 7, 4, 2, 0, 4])
-
-In [184]: obj.rank()
-Out[184]:
-0    6.5
-1    1.0
-2    6.5
-3    4.5
-4    3.0
-5    2.0
-6    4.5
-dtype: float64
+<p>In [183]: obj = Series([7, -5, 7, 4, 2, 0, 4])</p>
+<p>In [184]: obj.rank()<br>Out[184]:<br>0    6.5<br>1    1.0<br>2    6.5<br>3    4.5<br>4    3.0<br>5    2.0<br>6    4.5<br>dtype: float64</p>
+<pre><code>*也可以对排序完的数据按照顺序进行排名*
 </code></pre>
-<p><em>也可以对排序完的数据按照顺序进行排名</em></p>
-<pre><code>In [186]: obj.rank(method='first')
-Out[186]:
-0    6.0
-1    1.0
-2    7.0
-3    4.0
-4    3.0
-5    2.0
-6    5.0
-dtype: float64
+<p>In [186]: obj.rank(method=’first’)<br>Out[186]:<br>0    6.0<br>1    1.0<br>2    7.0<br>3    4.0<br>4    3.0<br>5    2.0<br>6    5.0<br>dtype: float64</p>
+<pre><code>一开始可能看不懂，其实这里应该要这么理解：
 </code></pre>
-<p>一开始可能看不懂，其实这里应该要这么理解：</p>
-<pre><code>In [185]: obj.sort_values()
-Out[185]:
-1   -5   #1
-5    0   #2
-4    2   #3
-3    4   #4
-6    4   #5
-0    7   #6
-2    7   #7
-dtype: int64
+<p>In [185]: obj.sort_values()<br>Out[185]:<br>1   -5   #1<br>5    0   #2<br>4    2   #3<br>3    4   #4<br>6    4   #5<br>0    7   #6<br>2    7   #7<br>dtype: int64</p>
+<pre><code>下表列出了常用的```method```选项
+*average*  默认: 在相等分组中，为各个值分配平均排名
+*min*：   按从小到大进行排名
+*max*：  按从大到小进行排名
+*first*： 按默认排序后的出现顺序进行排名
 </code></pre>
-<p>下表列出了常用的<code>method</code>选项<br>
-<em>average</em>  默认: 在相等分组中，为各个值分配平均排名<br>
-<em>min</em>：   按从小到大进行排名<br>
-<em>max</em>：  按从大到小进行排名<br>
-<em>first</em>： 按默认排序后的出现顺序进行排名</p>
 </article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/data-analyst/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas-Series%E4%B8%8EDataFrame%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD%EF%BC%88%E5%9B%9B%EF%BC%89/" title="Python数据分析之Pandas-Series与DataFrame基本功能（四）"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: Python数据分析之Pandas-Series与DataFrame基本功能（四）</span></a><a class="button is-default" href="/data-analyst/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas-Series%E4%B8%8EDataFrame%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD%EF%BC%88%E4%B8%80%EF%BC%89/" title="Python数据分析之Pandas-Series与DataFrame基本功能（一）"><span class="has-text-weight-semibold">下一页: Python数据分析之Pandas-Series与DataFrame基本功能（一）</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="fuer4869/fuer4869.github.io" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>

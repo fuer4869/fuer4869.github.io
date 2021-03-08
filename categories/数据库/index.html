@@ -1,0 +1,73 @@
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>loannes's blog</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/widget-post-list.css"><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><span>分类 · 数据库</span></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><article class="post-container is-flex is-justify-content-center section container is-max-widescreen pt-4 px-2"><div class="columns is-variable is-1-tablet is-3-desktop-only is-2-widescreen is-full-width"><section class="column"><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2021/02/05/8lWv7eXDJ4RtYsj.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/%E6%B5%85%E8%B0%88Redis%E7%9A%84%E6%8C%81%E4%B9%85%E5%8C%96-RDB%E4%B8%8EAOF/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2021/02/05/8lWv7eXDJ4RtYsj.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/Redis"><i class="tag post-item-tag">Redis</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/%E6%B5%85%E8%B0%88Redis%E7%9A%84%E6%8C%81%E4%B9%85%E5%8C%96-RDB%E4%B8%8EAOF/">浅谈Redis的持久化:RDB与AOF</a></h2><time class="has-text-grey" datetime="2020-12-04T09:54:06.000Z">2020-12-04</time><p class="is-flex-grow-2 mt-2">
+Redis数据持久化
+Redis可不单单是一个缓存型数据库，如果出现Redis服务出现问题导致关闭或者人为的操作导致停止运行，那么所有的数据都将丢失。
+为此Redis推出了数据持久化的方案，Redis推出了两种方案：RDB与AOF
+RDB快照
+什么是RDB快照，RDB快照有点类似于传统数据库的db文件。指的是将Redis中的数据以二进制格式存储在RDB文件中，因为是在磁盘上进行的操作，所以每次写入数据都是IO操作。为了减少磁盘的负担，Redis支持修改RDB文件的写入时间间隔：
+save &amp;lt;seconds&amp;gt; &amp;lt;changes&amp;gt;表示在seconds秒内，至少有changes次变化，就会自动触发bgsave命令
+
+save 900 1  当时间到900秒时，如果至少有1个key发生变化..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/%E6%B5%85%E8%B0%88Redis%E7%9A%84%E6%8C%81%E4%B9%85%E5%8C%96-RDB%E4%B8%8EAOF/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2020/09/11/aUoXEGc1jF83MOp.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/%E8%87%AA%E5%B7%B1%E5%8A%A8%E6%89%8B%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E7%89%88sqlite%EF%BC%88%E4%B8%80%EF%BC%89/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2020/09/11/aUoXEGc1jF83MOp.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/sqlite"><i class="tag post-item-tag">sqlite</i></a><a href="/tags/c"><i class="tag post-item-tag">c</i></a><a href="/tags/BTree"><i class="tag post-item-tag">BTree</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/%E8%87%AA%E5%B7%B1%E5%8A%A8%E6%89%8B%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E7%89%88sqlite%EF%BC%88%E4%B8%80%EF%BC%89/">自己动手实现简易版sqlite（一）.md</a></h2><time class="has-text-grey" datetime="2020-08-25T06:58:52.000Z">2020-08-25</time><p class="is-flex-grow-2 mt-2">
+前言在动手学习这块知识之前本身是抱着想了解数据库是如何实现的目的，但越往后越觉得数据库这个项目真的是复杂，但是也十分有趣。所以特地在此记录下我这些天来对sqlite的理解。
+本篇文章是以简易版的sqlite(后面简称sqlite)为基础写出来的原理剖析，还有很多sqlite的基本功能还未涉及到，之后我会逐步添加上去。
+框架结构
+本项目用c语言实现
+测试工具为rspec
+
+本sqlite的基本架构分为：
+
+核心层
+接口
+SQL命令处理程序
+分词器(Tokenizer)
+分析器(Parser)
+代码生成器(Code Generator)
+
+
+虚拟机（后台）
+B树 (B-Tree)
+页面调度程序（Pager）
+操作系统接口 (OS Interface)
+
+
+
+
+其他辅助类
+
+
+一般我们把接口和SQL命令处理程序..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/%E8%87%AA%E5%B7%B1%E5%8A%A8%E6%89%8B%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E7%89%88sqlite%EF%BC%88%E4%B8%80%EF%BC%89/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.loli.net/2020/07/05/oMUgV5L8tjmBFbD.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/%E6%B5%85%E8%B0%88MySQL%E4%B8%AD%E7%9A%84%E9%94%81/"><img class="post-cover-img js-img-fadeIn" src="https://i.loli.net/2020/07/05/oMUgV5L8tjmBFbD.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/MySQL"><i class="tag post-item-tag">MySQL</i></a><a href="/tags/MySQL%E9%94%81%EF%BC%8CInnoDB"><i class="tag post-item-tag">MySQL锁，InnoDB</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/%E6%B5%85%E8%B0%88MySQL%E4%B8%AD%E7%9A%84%E9%94%81/">浅谈MySQL中的锁</a></h2><time class="has-text-grey" datetime="2020-02-05T02:19:33.000Z">2020-02-05</time><p class="is-flex-grow-2 mt-2">
+前言之前学习了MySQL的事务管理MySQL管理事务处理在数据库处理高并发的时候需要涉及到事务管理和锁的机制问题这两块知识。对于锁的处理一直是一个老生常谈的话题，内容太过复杂。这次借助这篇文章分享下我对Innodb中的锁的机制的理解。
+快照读与当前读在了解锁的机制前我们得先了解快照读与当前读的区别。
+一般我们常用的select * from ...也是读，共享锁那也是读，它们之间有什么区别呢？其实MySQL中的读与事务隔离级别中的读是不同的读。
+在 MVCC 并发控制中，读操作可以分成两类:快照读 (snapshot read)与当前读 (current read)。 快照读，读取的是记录的可见版本 (有可能是历史版本)，不用加锁。当前读，读取的是记录的最新版本，并且，当前读返回的记录，都会加上锁，保证其..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/%E6%B5%85%E8%B0%88MySQL%E4%B8%AD%E7%9A%84%E9%94%81/">更多</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://upload-images.jianshu.io/upload_images/1515206-fb17f181361f40ab.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/%E3%80%90MySQL%E3%80%91%E6%B5%85%E8%B0%88MySQL%E7%9A%84LOAD-DATA/"><img class="post-cover-img js-img-fadeIn" src="https://upload-images.jianshu.io/upload_images/1515206-fb17f181361f40ab.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/MySQL"><i class="tag post-item-tag">MySQL</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/%E3%80%90MySQL%E3%80%91%E6%B5%85%E8%B0%88MySQL%E7%9A%84LOAD-DATA/">【MySQL】浅谈MySQL的LOAD DATA</a></h2><time class="has-text-grey" datetime="2019-12-25T04:51:20.000Z">2019-12-25</time><p class="is-flex-grow-2 mt-2">
+前言好久没碰MySQL了，这次碰巧在研究superset的时候需要将一份csv格式的数据文件导入到数据库中。正好借此机会可以重温下MySQL。
+数据来源 网盘密码 : g5xa
+开发环境
+
+Mac OS 10.13
+MySQL 8.0
+
+准备工作在开始之前需要对源数据做一次清洗：
+
+去除”，“等影响数据导入的符号
+去除第一行索引值，因为它不是数据
+如果需要咋数据库中加上id，那么为了对应在源数据中也要加上，excel中加上id还是很方便的。
+把数据转为utf-8格式的csv文件
+
+
+在这之前先简单阅读下官方文档：MySQL Documentation
+可以很方便的找到LOAD DATA的表达式：
+LOAD DATA
+    [LOW_PRIORITY | CONCURRENT] [LOCAL]
+    I..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/%E3%80%90MySQL%E3%80%91%E6%B5%85%E8%B0%88MySQL%E7%9A%84LOAD-DATA/">更多</a></section></article></section><aside class="column is-hidden-mobile is-4-tablet is-3-widescreen"><div style="position: sticky; top: 50px;"><main class="aside-card-container categories-widget category-page"><h3>分类</h3><section><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode%E5%88%B7%E9%A2%98%E9%A2%98%E8%A7%A3/">leetcode刷题题解</a><span class="category-list-count">48</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a><span class="category-list-count">46</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a><span class="category-list-count">29</span></li></ul></section></main></div></aside></div></article><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
+
+window.addEventListener('resize', $claudia.throttle(function () {
+    var images = document.querySelectorAll('.js-img-fadeIn')
+
+    images.forEach($claudia.blurBackdropImg)
+}, 150))</script></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
+
+window.addEventListener('resize', $claudia.throttle(function () {
+    var images = document.querySelectorAll('.js-img-fadeIn')
+
+    images.forEach($claudia.blurBackdropImg)
+}, 150))</script></body></html>

@@ -1,83 +1,52 @@
-<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>创建自定义UIViewController过渡动画</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">创建自定义UIViewController过渡动画</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A5%E9%97%A8"><span class="toc-text">入门</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A2%E7%B4%A2Transitioning-API"><span class="toc-text">探索Transitioning API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E4%B8%8E%E8%80%85%EF%BC%88The-Participants%EF%BC%89"><span class="toc-text">参与者（The Participants）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Transitioning-Delegate"><span class="toc-text">Transitioning Delegate</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Animation-Controller"><span class="toc-text">Animation Controller</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%B8%A1%E7%8E%AF%E5%A2%83%EF%BC%88Transitioning-Context%EF%BC%89"><span class="toc-text">过渡环境（Transitioning Context）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%B8%A1%E8%BF%87%E7%A8%8B%EF%BC%88The-Transitioning-Process%EF%BC%89"><span class="toc-text">过渡过程（The Transitioning Process）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84%E5%91%88%E7%8E%B0%E8%BF%87%E6%B8%A1%E6%95%88%E6%9E%9C%EF%BC%88Creating-a-Custom-Presentation-Transition%EF%BC%89"><span class="toc-text">创建一个自定义的呈现过渡效果（Creating a Custom Presentation Transition）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%8A%A8%E7%94%BB"><span class="toc-text">创建动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E7%9A%84%E5%86%99%E5%87%BA%E5%8A%A8%E7%94%BB"><span class="toc-text">完整的写出动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E9%99%A4-View-Controller"><span class="toc-text">消除 View Controller</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E5%AE%83%E6%9C%89%E4%BA%A4%E4%BA%92%E6%80%A7"><span class="toc-text">使它有交互性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E4%BA%92%E5%8A%A8%E7%94%BB%E6%98%AF%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C%E7%9A%84"><span class="toc-text">交互动画是如何工作的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E4%BA%A4%E4%BA%92%E8%BF%87%E6%B8%A1"><span class="toc-text">创建一个交互过渡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E4%B8%8B%E6%9D%A5%E8%AF%A5%E6%80%8E%E4%B9%88%E5%8A%9E"><span class="toc-text">接下来该怎么办?</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/iOS,%20%E5%8A%A8%E7%94%BB"><i class="tag post-item-tag">iOS, 动画</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">创建自定义UIViewController过渡动画</h1><time class="has-text-grey" datetime="2016-02-13T03:12:19.000Z">2016-02-13</time><article class="mt-2 post-content"><p>原文来自<a target="_blank" rel="noopener" href="http://www.raywenderlich.com/110536/custom-uiviewcontroller-transitions">Creating Custom UIViewController<br>
-Transitions</a></p>
-<p><code>Push，pop，cover vertically...</code><br>
-你从iOS中学会了一些漂亮的视图过渡效果，但是如果让你自己制作的话也会很有趣。自定义<code>UIViewController</code>过渡效果能显著地增加用户体验并且让你的app与其他的与众不同。如果你以前没亲自做过自定义过渡，你会发现它的工作量比你预期的要少很多。</p>
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>创建自定义UIViewController过渡动画</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">创建自定义UIViewController过渡动画</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A5%E9%97%A8"><span class="toc-text">入门</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A2%E7%B4%A2Transitioning-API"><span class="toc-text">探索Transitioning API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E4%B8%8E%E8%80%85%EF%BC%88The-Participants%EF%BC%89"><span class="toc-text">参与者（The Participants）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Transitioning-Delegate"><span class="toc-text">Transitioning Delegate</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Animation-Controller"><span class="toc-text">Animation Controller</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%B8%A1%E7%8E%AF%E5%A2%83%EF%BC%88Transitioning-Context%EF%BC%89"><span class="toc-text">过渡环境（Transitioning Context）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%B8%A1%E8%BF%87%E7%A8%8B%EF%BC%88The-Transitioning-Process%EF%BC%89"><span class="toc-text">过渡过程（The Transitioning Process）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84%E5%91%88%E7%8E%B0%E8%BF%87%E6%B8%A1%E6%95%88%E6%9E%9C%EF%BC%88Creating-a-Custom-Presentation-Transition%EF%BC%89"><span class="toc-text">创建一个自定义的呈现过渡效果（Creating a Custom Presentation Transition）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%8A%A8%E7%94%BB"><span class="toc-text">创建动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E7%9A%84%E5%86%99%E5%87%BA%E5%8A%A8%E7%94%BB"><span class="toc-text">完整的写出动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E9%99%A4-View-Controller"><span class="toc-text">消除 View Controller</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E5%AE%83%E6%9C%89%E4%BA%A4%E4%BA%92%E6%80%A7"><span class="toc-text">使它有交互性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E4%BA%92%E5%8A%A8%E7%94%BB%E6%98%AF%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C%E7%9A%84"><span class="toc-text">交互动画是如何工作的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E4%BA%A4%E4%BA%92%E8%BF%87%E6%B8%A1"><span class="toc-text">创建一个交互过渡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E4%B8%8B%E6%9D%A5%E8%AF%A5%E6%80%8E%E4%B9%88%E5%8A%9E"><span class="toc-text">接下来该怎么办?</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/iOS"><i class="tag post-item-tag">iOS</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">创建自定义UIViewController过渡动画</h1><time class="has-text-grey" datetime="2016-02-13T03:12:19.000Z">2016-02-13</time><article class="mt-2 post-content"><p>原文来自<a target="_blank" rel="noopener" href="http://www.raywenderlich.com/110536/custom-uiviewcontroller-transitions">Creating Custom UIViewController<br>Transitions</a></p>
+<p><code>Push，pop，cover vertically...</code><br>你从iOS中学会了一些漂亮的视图过渡效果，但是如果让你自己制作的话也会很有趣。自定义<code>UIViewController</code>过渡效果能显著地增加用户体验并且让你的app与其他的与众不同。如果你以前没亲自做过自定义过渡，你会发现它的工作量比你预期的要少很多。</p>
 <p>在此次课程中，你将会制作一个带有一些自定义<code>UIViewController</code>过渡效果的猜测游戏。当你完成的时候，你将会获得以下技能：</p>
 <ul>
-<li>Transition的API是怎样的结构</li>
-<li>如何使用自定义过渡来实现呈现和消除view controller</li>
-<li>如何做有交互的过渡效果</li>
+<li>  Transition的API是怎样的结构</li>
+<li>  如何使用自定义过渡来实现呈现和消除view controller</li>
+<li>  如何做有交互的过渡效果</li>
 </ul>
 <blockquote>
-<p>Note:<br>
-在此教程中所示的过渡效果是利用<code>UIView</code>动画，所以你必须熟悉关于此次主题的知识，至少需要熟悉基础知识。可以查看我们的教程<a target="_blank" rel="noopener" href="http://www.raywenderlich.com/113674/ios-animation-tutorial-getting-started">iOS<br>
-Animation</a>中的简介。</p>
+<p>Note:<br>在此教程中所示的过渡效果是利用<code>UIView</code>动画，所以你必须熟悉关于此次主题的知识，至少需要熟悉基础知识。可以查看我们的教程<a target="_blank" rel="noopener" href="http://www.raywenderlich.com/113674/ios-animation-tutorial-getting-started">iOS<br>Animation</a>中的简介。</p>
 </blockquote>
-<h3 id="入门">入门</h3>
-<p>下载 <a target="_blank" rel="noopener" href="http://www.raywenderlich.com/110536/custom-uiviewcontroller-transitions">starter project for this<br>
-tutorial</a>.运行项目,你会看到如下效果：<br>
-<img src="http://cdn1.raywenderlich.com/wp-content/uploads/2015/07/starter.gif" alt=""></p>
-<p><img src="http://cdn3.raywenderlich.com/wp-content/uploads/2015/08/cuteness-overload-322x320.jpg" alt=""></p>
+<h3 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h3><p>下载 <a target="_blank" rel="noopener" href="http://www.raywenderlich.com/110536/custom-uiviewcontroller-transitions">starter project for this<br>tutorial</a>.运行项目,你会看到如下效果：<br><img src="http://cdn1.raywenderlich.com/wp-content/uploads/2015/07/starter.gif"></p>
+<p><img src="http://cdn3.raywenderlich.com/wp-content/uploads/2015/08/cuteness-overload-322x320.jpg"></p>
 <hr>
-<p>你会看到app中一个page view<br>
-controller有好几张卡。每张卡都在形容一种动物，点击卡片会展示这张卡所描述的动物。</p>
+<p>你会看到app中一个page view<br>controller有好几张卡。每张卡都在形容一种动物，点击卡片会展示这张卡所描述的动物。</p>
 <p>而你的工作就是猜这个动物！是只猫，狗还是一条鱼？玩玩看，看你能玩的怎么样。</p>
 <p>大部分的导航逻辑做的已经蛮到位了，但是这个app还是感觉有点单调乏味。你来用自定义过渡来使这个app变的更加有趣吧。</p>
-<h3 id="探索Transitioning-API">探索Transitioning API</h3>
-<p>具体的来说，就是过渡效果API大量的使用了协议。在本章节末尾，你会理解每个协议之间的联系和职责。下面这张示例图会告诉你API中分为那几个主要部分：<br>
-<img src="http://cdn4.raywenderlich.com/wp-content/uploads/2015/07/parts.001-667x500.jpg" alt=""></p>
-<h3 id="参与者（The-Participants）">参与者（The Participants）</h3>
-<p>（这个标题不知道怎么翻译，）<br>
-尽管这个示例图看起来很复杂，当你理解了其中各部分是如何工作之后你就会觉得它其实很简单。</p>
-<h3 id="Transitioning-Delegate">Transitioning Delegate</h3>
-<p>每一个<code>view controller</code>都可能会有一个遵循<code>UIViewControllerTransitioningDelegate</code>协议的<code>transitioningDelegate</code></p>
-<p>当你去呈现或者消除一个<code>view controller</code>的时候，UIKit会向transitioning<br>
-delegate请求使用<code>animation controller</code>,把view controller的<br>
-<code>transitioningDelegate</code>设置为你自己写的类并且返回给它，这样自定义的动画会替代默认动画。</p>
-<h3 id="Animation-Controller">Animation Controller</h3>
-<p>对一个实现<code>UIViewControllerAnimatedTransitioning</code>协议的对象执行过渡动画。</p>
-<h3 id="过渡环境（Transitioning-Context）">过渡环境（Transitioning Context）</h3>
-<p>你没有必要自己亲手去写代码来执行这协议。相反，当过渡开始时你的animation<br>
-controller会从UIKit得到一个完整的配置环境。</p>
-<h3 id="过渡过程（The-Transitioning-Process）">过渡过程（The Transitioning Process）</h3>
-<p>这里是几个在呈现过渡时的步骤：</p>
+<h3 id="探索Transitioning-API"><a href="#探索Transitioning-API" class="headerlink" title="探索Transitioning API"></a>探索Transitioning API</h3><p>具体的来说，就是过渡效果API大量的使用了协议。在本章节末尾，你会理解每个协议之间的联系和职责。下面这张示例图会告诉你API中分为那几个主要部分：<br><img src="http://cdn4.raywenderlich.com/wp-content/uploads/2015/07/parts.001-667x500.jpg"></p>
+<h3 id="参与者（The-Participants）"><a href="#参与者（The-Participants）" class="headerlink" title="参与者（The Participants）"></a>参与者（The Participants）</h3><p>（这个标题不知道怎么翻译，）<br>尽管这个示例图看起来很复杂，当你理解了其中各部分是如何工作之后你就会觉得它其实很简单。</p>
+<h3 id="Transitioning-Delegate"><a href="#Transitioning-Delegate" class="headerlink" title="Transitioning Delegate"></a>Transitioning Delegate</h3><p>每一个<code>view controller</code>都可能会有一个遵循<code>UIViewControllerTransitioningDelegate</code>协议的<code>transitioningDelegate</code></p>
+<p>当你去呈现或者消除一个<code>view controller</code>的时候，UIKit会向transitioning<br>delegate请求使用<code>animation controller</code>,把view controller的<br><code>transitioningDelegate</code>设置为你自己写的类并且返回给它，这样自定义的动画会替代默认动画。</p>
+<h3 id="Animation-Controller"><a href="#Animation-Controller" class="headerlink" title="Animation Controller"></a>Animation Controller</h3><p>对一个实现<code>UIViewControllerAnimatedTransitioning</code>协议的对象执行过渡动画。</p>
+<h3 id="过渡环境（Transitioning-Context）"><a href="#过渡环境（Transitioning-Context）" class="headerlink" title="过渡环境（Transitioning Context）"></a>过渡环境（Transitioning Context）</h3><p>你没有必要自己亲手去写代码来执行这协议。相反，当过渡开始时你的animation<br>controller会从UIKit得到一个完整的配置环境。</p>
+<h3 id="过渡过程（The-Transitioning-Process）"><a href="#过渡过程（The-Transitioning-Process）" class="headerlink" title="过渡过程（The Transitioning Process）"></a>过渡过程（The Transitioning Process）</h3><p>这里是几个在呈现过渡时的步骤：</p>
 <ol>
-<li>你用代码或者连接触发了过渡效果。</li>
-<li>然后UIKit向&quot;to&quot; view controller（将要被呈现的view<br>
-controller）请求transitioninig<br>
-delegate。如果它没有，UIKit会使用默认的那个，内置到过渡效果中。</li>
-<li>然后UIKit通过<code>animationControllerForPresentedController(_:presentingController:sourceController:)</code>向transitioninig<br>
-delegate请求一个animation<br>
-controller。如果它返回<code>nil</code>，将会使用默认过渡动画效果。</li>
-<li>一旦它有了一个有效的animation<br>
-controller,UIKIt就会构建出一个过渡环境。</li>
-<li>然后UIKit会从animation<br>
-controller使用<code>transitionDuration(_:)</code>查询动画的持续时间。</li>
-<li>然后UIKit会在animation<br>
-controller中唤醒<code>animateTransition(_:)</code>来执行过渡。</li>
-<li>最后，animation<br>
-controller会在过渡体系中调用<code>completeTransition(_:)</code>接口来表示动画已经结束。</li>
+<li> 你用代码或者连接触发了过渡效果。</li>
+<li>然后UIKit向”to” view controller（将要被呈现的view<br> controller）请求transitioninig<br> delegate。如果它没有，UIKit会使用默认的那个，内置到过渡效果中。</li>
+<li>然后UIKit通过<code>animationControllerForPresentedController(_:presentingController:sourceController:)</code>向transitioninig<br> delegate请求一个animation<br> controller。如果它返回<code>nil</code>，将会使用默认过渡动画效果。</li>
+<li>一旦它有了一个有效的animation<br> controller,UIKIt就会构建出一个过渡环境。</li>
+<li>然后UIKit会从animation<br> controller使用<code>transitionDuration(_:)</code>查询动画的持续时间。</li>
+<li>然后UIKit会在animation<br> controller中唤醒<code>animateTransition(_:)</code>来执行过渡。</li>
+<li>最后，animation<br> controller会在过渡体系中调用<code>completeTransition(_:)</code>接口来表示动画已经结束。</li>
 </ol>
-<h3 id="创建一个自定义的呈现过渡效果（Creating-a-Custom-Presentation-Transition）">创建一个自定义的呈现过渡效果（Creating a Custom Presentation Transition）</h3>
-<p>是时候实践下你新学到的知识了！</p>
+<h3 id="创建一个自定义的呈现过渡效果（Creating-a-Custom-Presentation-Transition）"><a href="#创建一个自定义的呈现过渡效果（Creating-a-Custom-Presentation-Transition）" class="headerlink" title="创建一个自定义的呈现过渡效果（Creating a Custom Presentation Transition）"></a>创建一个自定义的呈现过渡效果（Creating a Custom Presentation Transition）</h3><p>是时候实践下你新学到的知识了！</p>
 <p>你的目标是执行以下动画：</p>
 <ul>
-<li>当用户点击一张卡片，快速翻转并呈现出一张缩小至和卡片一样大小的第二个界面。</li>
-<li>快速翻转之后，界面放大至整个屏幕一样大小。</li>
+<li>  当用户点击一张卡片，快速翻转并呈现出一张缩小至和卡片一样大小的第二个界面。</li>
+<li>  快速翻转之后，界面放大至整个屏幕一样大小。</li>
 </ul>
-<h3 id="创建动画">创建动画</h3>
-<p>你将开始制作animation controller。</p>
+<h3 id="创建动画"><a href="#创建动画" class="headerlink" title="创建动画"></a>创建动画</h3><p>你将开始制作animation controller。</p>
 <p>打开<code>File\New\File…</code>,选择<code>iOS\Source\Cocoa Touch Class</code>,然后点击<code>Next</code>。起名为<code>FlipPresentAnimationController</code>,设置它的超类为<code>NSObject</code>语言为<code>Swift</code>。点击<code>Next</code>然后设置群组为<code>Animation Controllers</code>。点击<code>Create</code>来创建你的新文件。</p>
-<p>Animation<br>
-controllers必须执行<code>UIViewControllerAnimatedTransitioning</code>的协议。打开<code>FlipPresentAnimationController.swift</code>,然后更新类的声明：</p>
+<p>Animation<br>controllers必须执行<code>UIViewControllerAnimatedTransitioning</code>的协议。打开<code>FlipPresentAnimationController.swift</code>,然后更新类的声明：</p>
 <pre><code>    import UIKit
 
     class FlipPresentAnimationController: NSObject,     UIViewControllerAnimatedTransitioning &#123;
 
     &#125;
 </code></pre>
-<p>注意由于缺少接口你可能会遇到一些编译错误；不要慌-你正在解决这些问题。<br>
-<img src="http://cdn4.raywenderlich.com/wp-content/uploads/2015/08/staring-at-pc-462x320.gif" alt=""></p>
+<p>注意由于缺少接口你可能会遇到一些编译错误；不要慌-你正在解决这些问题。<br><img src="http://cdn4.raywenderlich.com/wp-content/uploads/2015/08/staring-at-pc-462x320.gif"></p>
 <p>Compiler errors…don’t panic…</p>
 <hr>
 <p>接下来你将要使用被点击的卡片的frame来当做动画的起始点。按照下面这句话写在类中来保存这个值。</p>
@@ -115,13 +84,9 @@ controllers必须执行<code>UIViewControllerAnimatedTransitioning</code>的协�
 </code></pre>
 <p>上面的代码发生了什么：</p>
 <ol>
-<li>过渡环境会提供需要用到的view<br>
-controllers并且它们的view会参与进过渡效果。你可以通过合适的key来获得它们。</li>
-<li>你接下来定义了&quot;to&quot;<br>
-view的frame开始和最后的大小。在这个例子中，frame由过渡开始的卡片大小到放大至整个屏幕。</li>
-<li><code>UIView</code> 快速翻转至&quot;to&quot;<br>
-view并且使它变成一个轻便的界面;这会把你的view和其层级结构做成动画。snapshot的frame刚开始为卡片的frame。你也可以修改它的corner<br>
-radius至卡片一样。</li>
+<li>过渡环境会提供需要用到的view<br> controllers并且它们的view会参与进过渡效果。你可以通过合适的key来获得它们。</li>
+<li>你接下来定义了”to”<br> view的frame开始和最后的大小。在这个例子中，frame由过渡开始的卡片大小到放大至整个屏幕。</li>
+<li><code>UIView</code> 快速翻转至”to”<br> view并且使它变成一个轻便的界面;这会把你的view和其层级结构做成动画。snapshot的frame刚开始为卡片的frame。你也可以修改它的corner<br> radius至卡片一样。</li>
 </ol>
 <p>继续在接口中添加鞋面几行代码：</p>
 <pre><code>    containerView.addSubview(toVC.view)
@@ -131,13 +96,10 @@ radius至卡片一样。</li>
     AnimationHelper.perspectiveTransformForContainerView(containerView)
     snapshot.layer.transform = AnimationHelper.yRotation(M_PI_2)
 </code></pre>
-<p>一个新成员出现了：contriner<br>
-view。你可以把它想象成一块跳舞的地板而你的过渡正在上面扭。虽然container<br>
-view已经包含了&quot;from&quot; view，但是你还必须去添加&quot;to&quot;view。</p>
+<p>一个新成员出现了：contriner<br>view。你可以把它想象成一块跳舞的地板而你的过渡正在上面扭。虽然container<br>view已经包含了”from” view，但是你还必须去添加”to”view。</p>
 <p>你现在已经添加了container的截图并且隐藏了真正的view。这个完整的动画会将截图旋转出view然后隐藏掉。</p>
 <blockquote>
-<p>注意：不要被<code>AnimationHelper</code><br>
-混淆。它是一个功能性的类，主要负责对view做变形动画和增加透视效果。随意看一下就行。</p>
+<p>注意：不要被<code>AnimationHelper</code><br>混淆。它是一个功能性的类，主要负责对view做变形动画和增加透视效果。随意看一下就行。</p>
 </blockquote>
 <p>此时，你已经具备了执行动画的所有条件。在接口底部添加最后的一部分代码吧：</p>
 <pre><code>    // 1
@@ -173,19 +135,17 @@ view已经包含了&quot;from&quot; view，但是你还必须去添加&quot;to&q
 </code></pre>
 <p>现在来对每个部分进行讨论：</p>
 <ol>
-<li>首先，你确定了动画持续时间。注意到了<code>transitionDuration(_:)</code>接口的用法，在类的顶部实施。你必须确保你声明的过渡效果持续时间和动画的持续时间相匹配这样UIKit才能保持它们同步。</li>
-<li>在&quot;from&quot;view的y轴旋转到一半左右的时候你先把它隐藏起来。</li>
-<li>接下来你用同样的技术把截图呈现了出来。</li>
-<li>然后你对截图设置了frame并放大至整个屏幕大小。</li>
-<li>最后，才能把&quot;to&quot;view给呈现出来。当屏幕截图不再使用的时候把它给移除掉。然后你把&quot;from&quot;view旋转至原来的样子；还有，当过渡回来的时候它有可能是隐藏着的。调用<code>completeTransition</code>的时候会通知过渡环境动画已经结束。UIKit为了保证最后的状态不变会把&quot;from&quot;view从container中移除。</li>
+<li> 首先，你确定了动画持续时间。注意到了<code>transitionDuration(_:)</code>接口的用法，在类的顶部实施。你必须确保你声明的过渡效果持续时间和动画的持续时间相匹配这样UIKit才能保持它们同步。</li>
+<li> 在”from”view的y轴旋转到一半左右的时候你先把它隐藏起来。</li>
+<li> 接下来你用同样的技术把截图呈现了出来。</li>
+<li> 然后你对截图设置了frame并放大至整个屏幕大小。</li>
+<li> 最后，才能把”to”view给呈现出来。当屏幕截图不再使用的时候把它给移除掉。然后你把”from”view旋转至原来的样子；还有，当过渡回来的时候它有可能是隐藏着的。调用<code>completeTransition</code>的时候会通知过渡环境动画已经结束。UIKit为了保证最后的状态不变会把”from”view从container中移除。</li>
 </ol>
 <p>现在你可以准备使用animation controller！</p>
-<h3 id="完整的写出动画">完整的写出动画</h3>
-<p>打开<code>CardViewController.swift</code>然后在类中声明这样的一个property：</p>
+<h3 id="完整的写出动画"><a href="#完整的写出动画" class="headerlink" title="完整的写出动画"></a>完整的写出动画</h3><p>打开<code>CardViewController.swift</code>然后在类中声明这样的一个property：</p>
 <pre><code>    private let flipPresentAnimationController = FlipPresentAnimationController()
 </code></pre>
-<p>UIKit认为transitioning delegate会为了过渡去声明animation<br>
-controller。这样的话你必须先提供给<code>UIViewControllerTransitioningDelegate</code>一个合理的对象。</p>
+<p>UIKit认为transitioning delegate会为了过渡去声明animation<br>controller。这样的话你必须先提供给<code>UIViewControllerTransitioningDelegate</code>一个合理的对象。</p>
 <p>在此例子中，<code>CardViewController</code>将承担<code>transitioning delegate</code>的工作。在源文件底部添加下面的这个继承<code>UIViewControllerTransitioningDelegate</code>的扩展类。</p>
 <pre><code>    extension CardViewController: UIViewControllerTransitioningDelegate &#123;
 
@@ -198,24 +158,19 @@ controller。这样的话你必须先提供给<code>UIViewControllerTransitionin
       return flipPresentAnimationController
     &#125;
 </code></pre>
-<p>这个时候你已经返回了你自己创建的自定义animation<br>
-controller。这个接口会保证过渡开始的时候使用的frame的正确性。</p>
-<p>最后一步把<code>CardViewController</code>标记为transitioning delegate。View<br>
-controllers<br>
-本身有一个<code>transitioningDelegate</code>属性，如果它可能使用了自定义过渡UIKit会请求去查看。</p>
+<p>这个时候你已经返回了你自己创建的自定义animation<br>controller。这个接口会保证过渡开始的时候使用的frame的正确性。</p>
+<p>最后一步把<code>CardViewController</code>标记为transitioning delegate。View<br>controllers<br>本身有一个<code>transitioningDelegate</code>属性，如果它可能使用了自定义过渡UIKit会请求去查看。</p>
 <p>添加<code>prepareForSeque(_:sender:)</code>,就在卡片指定的部分：</p>
 <pre><code>    destinationViewController.transitioningDelegate = self
 </code></pre>
-<p>如果<code>view controller being presented</code>是需要transitioning<br>
-delegate这一点很重要，不是view controller 执行了呈现效果。</p>
+<p>如果<code>view controller being presented</code>是需要transitioning<br>delegate这一点很重要，不是view controller 执行了呈现效果。</p>
 <p>编译项目，点击卡片你会看到如下效果：</p>
-<p><img src="http://cdn2.raywenderlich.com/wp-content/uploads/2015/07/frontflip-slow.gif" alt=""></p>
+<p><img src="http://cdn2.raywenderlich.com/wp-content/uploads/2015/07/frontflip-slow.gif"></p>
 <p>到了这里你有了自己的第一个自定义过渡效果。但是完成呈现新的view只解决了一般；你必须同样要一个华丽的消除效果！</p>
-<p><img src="http://cdn3.raywenderlich.com/wp-content/uploads/2015/08/yay.jpg" alt=""></p>
+<p><img src="http://cdn3.raywenderlich.com/wp-content/uploads/2015/08/yay.jpg"></p>
 <p>Showy? I got yer showy right here!</p>
 <hr>
-<h3 id="消除-View-Controller">消除 View Controller</h3>
-<p>定位到<code>File\New\File…</code>,选择<code>iOS\Source\Cocoa Touch Class</code>,点击<code>Next</code>。设置名字为<code>FlipDismissAnimationController</code>，确保它继承NSObject设置语言为<code>Swift</code>，点击<code>Next</code>并且确保保存在<code>Animation Controllers</code>这个群组。点击<code>Create</code>创建文件。</p>
+<h3 id="消除-View-Controller"><a href="#消除-View-Controller" class="headerlink" title="消除 View Controller"></a>消除 View Controller</h3><p>定位到<code>File\New\File…</code>,选择<code>iOS\Source\Cocoa Touch Class</code>,点击<code>Next</code>。设置名字为<code>FlipDismissAnimationController</code>，确保它继承NSObject设置语言为<code>Swift</code>，点击<code>Next</code>并且确保保存在<code>Animation Controllers</code>这个群组。点击<code>Create</code>创建文件。</p>
 <p>把新文件的内容替换成下面这些代码：</p>
 <pre><code>    import UIKit
 
@@ -234,8 +189,8 @@ delegate这一点很重要，不是view controller 执行了呈现效果。</p>
 </code></pre>
 <p>其实这个类在本质上和presentation animation是相反的：</p>
 <ul>
-<li>把view缩回到和卡片一样大小；<code>destinationFrame</code>用来保存这个值。</li>
-<li>快速翻转view之后显示原来的那张卡片。</li>
+<li>  把view缩回到和卡片一样大小；<code>destinationFrame</code>用来保存这个值。</li>
+<li>  快速翻转view之后显示原来的那张卡片。</li>
 </ul>
 <p>在<code>animateTransition(_:):</code>接口中添加如下代码：</p>
 <pre><code>    guard let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey),
@@ -265,14 +220,12 @@ delegate这一点很重要，不是view controller 执行了呈现效果。</p>
 </code></pre>
 <p>这是对每部分你做了什么做出的讨论：</p>
 <ol>
-<li>从view的缩小动画开始之后，你需要快速翻转所用到的initialFrame和finalFrame。</li>
-<li>因为这个时候你需要操作&quot;from&quot;view，所以你获取了它的截图。</li>
-<li>就像之前一样，你添加了&quot;to&quot;view 并且添加了之前获取的截图到container<br>
-view。然后隐藏&quot;from&quot;view，这样不会与截图产生冲突。</li>
-<li>最后，用同样的旋转方法把&quot;to&quot;view给隐藏掉。</li>
+<li> 从view的缩小动画开始之后，你需要快速翻转所用到的initialFrame和finalFrame。</li>
+<li> 因为这个时候你需要操作”from”view，所以你获取了它的截图。</li>
+<li>就像之前一样，你添加了”to”view 并且添加了之前获取的截图到container<br> view。然后隐藏”from”view，这样不会与截图产生冲突。</li>
+<li> 最后，用同样的旋转方法把”to”view给隐藏掉。</li>
 </ol>
-<p>剩下的就是帮它自己添加动画。<br>
-直接把这段代码放入<code>animateTransition(_:):</code>底部：</p>
+<p>剩下的就是帮它自己添加动画。<br>直接把这段代码放入<code>animateTransition(_:):</code>底部：</p>
 <pre><code>    let duration = transitionDuration(transitionContext)
 
     UIView.animateKeyframesWithDuration(
@@ -301,12 +254,10 @@ view。然后隐藏&quot;from&quot;view，这样不会与截图产生冲突。</
 </code></pre>
 <p>这个效果差不多就是和反过来的presentation animation一样；</p>
 <ol>
-<li>你首先缩放了view，然后在旋转的同时隐藏了截图。接下来你通过往相反的方向并绕着y轴旋转&quot;to&quot;view<br>
-到一半后呈现出来。</li>
-<li>最后，在过渡结束的时候你移除了截图并通知过渡环境过渡已经结束。这样就允许了UIKit能够分层的刷新视图并且对过渡过程中的视图进行整理。</li>
+<li>你首先缩放了view，然后在旋转的同时隐藏了截图。接下来你通过往相反的方向并绕着y轴旋转”to”view<br> 到一半后呈现出来。</li>
+<li> 最后，在过渡结束的时候你移除了截图并通知过渡环境过渡已经结束。这样就允许了UIKit能够分层的刷新视图并且对过渡过程中的视图进行整理。</li>
 </ol>
-<p>打开<code>CardViewController.swift</code>,把下面这句代码声明在之前那个animation<br>
-controller右下方：</p>
+<p>打开<code>CardViewController.swift</code>,把下面这句代码声明在之前那个animation<br>controller右下方：</p>
 <pre><code>    private let flipDismissAnimationController = FlipDismissAnimationController()
 </code></pre>
 <p>接下来，在类中创建一个如下所示的拓展类：</p>
@@ -316,32 +267,20 @@ controller右下方：</p>
     &#125;
 </code></pre>
 <p>通过这个接口把正确的frame给到dismissing animation controller并且返回它。</p>
-<p>跟最后一步一样，修改<code>transitionDuration</code>和<br>
-<code>FlipPresentAnimationController</code>让动画变的更漂亮。</p>
+<p>跟最后一步一样，修改<code>transitionDuration</code>和<br><code>FlipPresentAnimationController</code>让动画变的更漂亮。</p>
 <pre><code>    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -&gt; NSTimeInterval &#123;
           return 0.6
     &#125;
 </code></pre>
 <p>编译app，点击卡片你会看到呈现和消除动画。</p>
-<p><img src="http://cdn3.raywenderlich.com/wp-content/uploads/2015/07/flip-ready.gif" alt=""></p>
+<p><img src="http://cdn3.raywenderlich.com/wp-content/uploads/2015/07/flip-ready.gif"></p>
 <p>你的自定义动画看上去有点尖锐，不过你可以通过为它添加用户交互动画来提升效果。</p>
-<h3 id="使它有交互性">使它有交互性</h3>
-<p>iOS中的设置就是一个典型的有交互动画的好例子：</p>
-<p><img src="http://cdn3.raywenderlich.com/wp-content/uploads/2015/07/settings.gif" alt=""></p>
+<h3 id="使它有交互性"><a href="#使它有交互性" class="headerlink" title="使它有交互性"></a>使它有交互性</h3><p>iOS中的设置就是一个典型的有交互动画的好例子：</p>
+<p><img src="http://cdn3.raywenderlich.com/wp-content/uploads/2015/07/settings.gif"></p>
 <p>你在这一章节的任务就是手势在屏幕左侧挥动的时候卡片导航回面朝下的状态。过渡过程会跟随用户的手指变化。</p>
-<h3 id="交互动画是如何工作的">交互动画是如何工作的</h3>
-<p>interaction controller<br>
-会对touch事件或者加速，减速甚至相反的过渡效果都会产生回应。<br>
-为了激活交互过渡效果，transition delegate还必须提供一个interaction<br>
-controller。<br>
-任何对象都可以执行<code>UIViewControllerInteractiveTransitioning</code>协议。你已经做完了过渡动画；interaction<br>
-controller会在对手势产生反馈的时候移动动画而不是播放视频。</p>
-<p>Apple<br>
-提供了了现成的<code>UIPercentDrivenInteractiveTransition</code>类，它就是interaction<br>
-controller的实体类。你可以通过这个类制作你的交互过渡效果。</p>
-<h3 id="创建一个交互过渡">创建一个交互过渡</h3>
-<p>你的第一个工作就是创建一个interaction<br>
-controller。定位到<code>File\New\File…</code>,然后选择<code>iOS\Source\Cocoa Touch Class.</code>。起名为<code>SwipeInteractionController</code>,选择它的超类为<code>UIPercentDrivenInteractiveTransition</code>。确保选中的语言为<code>Swift</code>然后点击<code>Next</code>。选择<code>Interaction Controllers</code>群组然后点击<code>Create</code>。</p>
+<h3 id="交互动画是如何工作的"><a href="#交互动画是如何工作的" class="headerlink" title="交互动画是如何工作的"></a>交互动画是如何工作的</h3><p>interaction controller<br>会对touch事件或者加速，减速甚至相反的过渡效果都会产生回应。<br>为了激活交互过渡效果，transition delegate还必须提供一个interaction<br>controller。<br>任何对象都可以执行<code>UIViewControllerInteractiveTransitioning</code>协议。你已经做完了过渡动画；interaction<br>controller会在对手势产生反馈的时候移动动画而不是播放视频。</p>
+<p>Apple<br>提供了了现成的<code>UIPercentDrivenInteractiveTransition</code>类，它就是interaction<br>controller的实体类。你可以通过这个类制作你的交互过渡效果。</p>
+<h3 id="创建一个交互过渡"><a href="#创建一个交互过渡" class="headerlink" title="创建一个交互过渡"></a>创建一个交互过渡</h3><p>你的第一个工作就是创建一个interaction<br>controller。定位到<code>File\New\File…</code>,然后选择<code>iOS\Source\Cocoa Touch Class.</code>。起名为<code>SwipeInteractionController</code>,选择它的超类为<code>UIPercentDrivenInteractiveTransition</code>。确保选中的语言为<code>Swift</code>然后点击<code>Next</code>。选择<code>Interaction Controllers</code>群组然后点击<code>Create</code>。</p>
 <p>打开<code>SwipeInteractionController.swift</code>，然后在类的顶部定义一下属性：</p>
 <pre><code>    var interactionInProgress = false
     private var shouldCompleteTransition = false
@@ -349,11 +288,9 @@ controller。定位到<code>File\New\File…</code>,然后选择<code>iOS\Source
 </code></pre>
 <p>上面的代码十分简单:</p>
 <ol>
-<li>顾名思义，<code>interactionInProgress</code>指的是是否已经在交互过程中。</li>
-<li>你将会使用<code>shouldCompleteTransition</code>在内部控制过渡-你将会在后面看到它。</li>
-<li>interaction controller会直接呈现和消除view<br>
-controllers，所以你必须在<code>viewController</code>中捕获当前的view<br>
-controller。</li>
+<li> 顾名思义，<code>interactionInProgress</code>指的是是否已经在交互过程中。</li>
+<li> 你将会使用<code>shouldCompleteTransition</code>在内部控制过渡-你将会在后面看到它。</li>
+<li>interaction controller会直接呈现和消除view<br> controllers，所以你必须在<code>viewController</code>中捕获当前的view<br> controller。</li>
 </ol>
 <p>在类中添加一下接口：</p>
 <pre><code>    func wireToViewController(viewController: UIViewController!) &#123;
@@ -361,8 +298,7 @@ controller。</li>
           prepareGestureRecognizerInView(viewController.view)
     &#125;
 </code></pre>
-<p>你所有的执行会依靠检测手势来控制过渡。在上面那个接口中，你获得了view<br>
-controller的引用，并且对它的view建立了手势识别器。</p>
+<p>你所有的执行会依靠检测手势来控制过渡。在上面那个接口中，你获得了view<br>controller的引用，并且对它的view建立了手势识别器。</p>
 <p>如下面所示执行<code>prepareGestureRecognizerInView(_:)</code>：</p>
 <pre><code>    private func prepareGestureRecognizerInView(view: UIView) &#123;
           let gesture = UIScreenEdgePanGestureRecognizer(target: self, action:     &quot;handleGesture:&quot;)
@@ -413,21 +349,18 @@ controller的引用，并且对它的view建立了手势识别器。</p>
 </code></pre>
 <p>解谜：</p>
 <ol>
-<li>你首先声明了一个本地变量当做动画过程的轨迹。你会记录下view的过渡并且计算动画过程。滑动200点的距离等于100%的完成度，所以你可以通过这个数字来计算过渡进度。</li>
-<li>当手势开始的时候，你适当的在view<br>
-controller中调整了<code>interactionInProgress</code>并且触发了消除事件。</li>
-<li>当手势开始移动的时候，你随着进度量连续的调用了<code>updateInteractiveTransition</code>。这是一个<code>UIPercentDrivenInteractiveTransition</code>的接口它沿着你传入的百分比值来移动过渡效果。</li>
-<li>如果手势被取消，你更新了<code>interactionInProgress</code>并且让过渡滚回到原来的状态。</li>
-<li>只要手势已经结束，你当前使用的过渡进度会给用户决定这个时候是取消过渡还是完成过渡。</li>
+<li> 你首先声明了一个本地变量当做动画过程的轨迹。你会记录下view的过渡并且计算动画过程。滑动200点的距离等于100%的完成度，所以你可以通过这个数字来计算过渡进度。</li>
+<li>当手势开始的时候，你适当的在view<br> controller中调整了<code>interactionInProgress</code>并且触发了消除事件。</li>
+<li> 当手势开始移动的时候，你随着进度量连续的调用了<code>updateInteractiveTransition</code>。这是一个<code>UIPercentDrivenInteractiveTransition</code>的接口它沿着你传入的百分比值来移动过渡效果。</li>
+<li> 如果手势被取消，你更新了<code>interactionInProgress</code>并且让过渡滚回到原来的状态。</li>
+<li> 只要手势已经结束，你当前使用的过渡进度会给用户决定这个时候是取消过渡还是完成过渡。</li>
 </ol>
 <p>来把剩下的都写完</p>
-<p><img src="http://cdn1.raywenderlich.com/wp-content/uploads/2015/08/glory-pc-480x279.jpg" alt=""></p>
-<p>打开<code>CardViewController.swift</code>然后在interaction<br>
-controller中声明如下的属性：</p>
+<p><img src="http://cdn1.raywenderlich.com/wp-content/uploads/2015/08/glory-pc-480x279.jpg"></p>
+<p>打开<code>CardViewController.swift</code>然后在interaction<br>controller中声明如下的属性：</p>
 <pre><code>    private let swipeInteractionController = SwipeInteractionController()
 </code></pre>
-<p>UIKit会在<code>interactionControllerForDismissal(_:).</code>这个接口中向transitioning<br>
-delegate请求一个interaction controller。</p>
+<p>UIKit会在<code>interactionControllerForDismissal(_:).</code>这个接口中向transitioning<br>delegate请求一个interaction controller。</p>
 <p>在文件底部加入如下的扩展类：</p>
 <pre><code>    func interactionControllerForDismissal(animator: UIViewControllerAnimatedTransitioning) -&gt; UIViewControllerInteractiveTransitioning? &#123;
 
@@ -435,32 +368,20 @@ delegate请求一个interaction controller。</p>
 
     &#125;
 </code></pre>
-<p>这里会去检查当前的view是否在检查手势，意思就是这里有个交互效果正在进行中。然后它会返回一个合适的view<br>
-controller。</p>
+<p>这里会去检查当前的view是否在检查手势，意思就是这里有个交互效果正在进行中。然后它会返回一个合适的view<br>controller。</p>
 <p>现在定位到<code>prepareForSegue(_:sender:)</code>,在<code>transitioningDelegate</code>下面添加如下代码：</p>
 <pre><code>    swipeInteractionController.wireToViewController(destinationViewController)
 </code></pre>
 <p>这个会给interaction controller一个被呈现的view controller的引用。</p>
 <p>编译项目，点击卡片，在左侧滑动你就会看到最终效果：</p>
-<p><img src="http://cdn3.raywenderlich.com/wp-content/uploads/2015/07/interactive.gif" alt=""></p>
+<p><img src="http://cdn3.raywenderlich.com/wp-content/uploads/2015/07/interactive.gif"></p>
 <p>恭喜-你创建了一个漂亮的交互动画！</p>
-<h3 id="接下来该怎么办">接下来该怎么办?</h3>
-<p>你可以从<a target="_blank" rel="noopener" href="http://cdn1.raywenderlich.com/wp-content/uploads/2015/12/GuessThePet-Finished.zip">这里</a>下载本次教程的完整案例。</p>
-<p>去学习更多的知识，找到第3章，在<a target="_blank" rel="noopener" href="http://www.raywenderlich.com/store/ios-7-by-tutorials">iOS 7 by<br>
-Tutorials</a><br>
-“Custom View Controller Transitions&quot;以及第19章，在<a target="_blank" rel="noopener" href="http://www.raywenderlich.com/store/ios-animations-by-tutorials">iOS Animations by<br>
-Tutorials</a>中的&quot;Custom<br>
-Presentation Controller &amp; Device Orientation Animations”。</p>
-<p>本次教程针对了modal presentation 和 dismissal<br>
-transitions。指出使用container view<br>
-controllers的时候自定义UIViewController 交互动画也能使用是很重要的：</p>
+<h3 id="接下来该怎么办"><a href="#接下来该怎么办" class="headerlink" title="接下来该怎么办?"></a>接下来该怎么办?</h3><p>你可以从<a target="_blank" rel="noopener" href="http://cdn1.raywenderlich.com/wp-content/uploads/2015/12/GuessThePet-Finished.zip">这里</a>下载本次教程的完整案例。</p>
+<p>去学习更多的知识，找到第3章，在<a target="_blank" rel="noopener" href="http://www.raywenderlich.com/store/ios-7-by-tutorials">iOS 7 by<br>Tutorials</a><br>“Custom View Controller Transitions”以及第19章，在<a target="_blank" rel="noopener" href="http://www.raywenderlich.com/store/ios-animations-by-tutorials">iOS Animations by<br>Tutorials</a>中的”Custom<br>Presentation Controller &amp; Device Orientation Animations”。</p>
+<p>本次教程针对了modal presentation 和 dismissal<br>transitions。指出使用container view<br>controllers的时候自定义UIViewController 交互动画也能使用是很重要的：</p>
 <ul>
-<li>当在使用navigation controller，声明animation<br>
-controllers是它的delegate的责任，一个遵循于<code>UINavigationControllerDelegate</code>的对象。这个delegate可以在<code>navigationController(_:animationControllerForOperation:fromViewController:toViewController:)</code>接口中提供一个animation<br>
-controller。</li>
-<li>tab bar<br>
-controller则是依赖于<code>tabBarController(_:animationControllerForTransitionFromViewController:toViewController:)</code>接口中执行<code>UITabBarControllerDelegate</code>协议来返回animation<br>
-controller的一个对象。</li>
+<li>当在使用navigation controller，声明animation<br>  controllers是它的delegate的责任，一个遵循于<code>UINavigationControllerDelegate</code>的对象。这个delegate可以在<code>navigationController(_:animationControllerForOperation:fromViewController:toViewController:)</code>接口中提供一个animation<br>  controller。</li>
+<li>tab bar<br>  controller则是依赖于<code>tabBarController(_:animationControllerForTransitionFromViewController:toViewController:)</code>接口中执行<code>UITabBarControllerDelegate</code>协议来返回animation<br>  controller的一个对象。</li>
 </ul>
 <p>我希望你能对本次教程感兴趣；如果你有什么问题或者建议，请加入我们的论坛！</p>
 </article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/ios/SDWebImage%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" title="SDWebImage源码分析"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: SDWebImage源码分析</span></a><a class="button is-default" href="/ios/%E7%BB%86%E8%B0%88iOS8%E7%9A%84Self-Sizing%20Cells%20/" title="细谈iOS8的Self-Sizing Cells"><span class="has-text-weight-semibold">下一页: 细谈iOS8的Self-Sizing Cells</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="fuer4869/fuer4869.github.io" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>

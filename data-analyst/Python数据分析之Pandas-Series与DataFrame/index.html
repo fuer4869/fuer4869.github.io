@@ -2,8 +2,7 @@
 <blockquote>
 <p>在pandas中接下来要经常用到的数据结构就是Series和DataFrame了。这两个对象为大多数数据处理提供了可靠、易于使用的功能</p>
 </blockquote>
-<h3 id="Series">Series</h3>
-<p>Series是由一组数据以及这组数据所对应的数据标签（即索引）组成。</p>
+<h3 id="Series"><a href="#Series" class="headerlink" title="Series"></a>Series</h3><p>Series是由一组数据以及这组数据所对应的数据标签（即索引）组成。</p>
 <pre><code>In [66]: obj = Series([4, 7, -5, 3])
 
 In [67]: obj
@@ -15,9 +14,8 @@ Out[67]:
 dtype: int64
 </code></pre>
 <p>其中左边的一列数字即为索引，索引默认是0到N-1的数字。</p>
-<h5 id="自定义索引">自定义索引</h5>
-<p>我们可以通过设置<strong>index</strong>属性来自定义索引的表现形式。</p>
-<pre><code>In [68]: obj2 = Series([4, 7, -5, 3],index = ['d','b','a','c'])
+<h5 id="自定义索引"><a href="#自定义索引" class="headerlink" title="自定义索引"></a>自定义索引</h5><p>我们可以通过设置<strong>index</strong>属性来自定义索引的表现形式。</p>
+<pre><code>In [68]: obj2 = Series([4, 7, -5, 3],index = [&#39;d&#39;,&#39;b&#39;,&#39;a&#39;,&#39;c&#39;])
 
 In [69]: obj2
 Out[69]:
@@ -27,11 +25,10 @@ a   -5
 c    3
 dtype: int64
 </code></pre>
-<h5 id="Series索引的应用">Series索引的应用</h5>
-<pre><code>In [70]: obj2['a']
+<h5 id="Series索引的应用"><a href="#Series索引的应用" class="headerlink" title="Series索引的应用"></a>Series索引的应用</h5><pre><code>In [70]: obj2[&#39;a&#39;]
 Out[70]: -5
 
-In [71]: obj2['d'] = 6
+In [71]: obj2[&#39;d&#39;] = 6
 
 In [72]: obj2
 Out[72]:
@@ -41,14 +38,14 @@ a   -5
 c    3
 dtype: int64
 
-In [74]: obj2[['a','b','c']]
+In [74]: obj2[[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]]
 Out[74]:
 a   -5
 b    7
 c    3
 dtype: int64
 
-In [79]: obj2[['a','b','c']] = 1
+In [79]: obj2[[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]] = 1
 
 In [80]: obj2
 Out[80]:
@@ -59,8 +56,7 @@ c    1
 dtype: int64
 </code></pre>
 <p>我们可以通过直接索引的方式来取出一个值或者一组值，也可以像NumPy一样可以对它们进行赋值。</p>
-<h5 id="Series的运算">Series的运算</h5>
-<pre><code>In [83]: obj2[obj2 &gt; 0]
+<h5 id="Series的运算"><a href="#Series的运算" class="headerlink" title="Series的运算"></a>Series的运算</h5><pre><code>In [83]: obj2[obj2 &gt; 0]
 Out[83]:
 d    4
 b    7
@@ -84,8 +80,7 @@ a       0.006738
 c      20.085537
 dtype: float64
 </code></pre>
-<h5 id="Series和Python字典的关系">Series和Python字典的关系</h5>
-<pre><code>In [88]: sdata = &#123;'Ohio': 35000, 'Texas':71000, 'Oregon':16000, 'Utah':5000&#125;
+<h5 id="Series和Python字典的关系"><a href="#Series和Python字典的关系" class="headerlink" title="Series和Python字典的关系"></a>Series和Python字典的关系</h5><pre><code>In [88]: sdata = &#123;&#39;Ohio&#39;: 35000, &#39;Texas&#39;:71000, &#39;Oregon&#39;:16000, &#39;Utah&#39;:5000&#125;
 
 In [89]: obj3 = Series(sdata)
 
@@ -98,7 +93,7 @@ Utah       5000
 dtype: int64
 </code></pre>
 <p>如果单单传入一个字典，那么最终得到的Series对象中的索引值就是字典的键值。</p>
-<pre><code>In [91]: states = ['California', 'Ohio', 'Oregon','Texas']
+<pre><code>In [91]: states = [&#39;California&#39;, &#39;Ohio&#39;, &#39;Oregon&#39;,&#39;Texas&#39;]
 In [92]: obj4 = Series(sdata, index=states)
 
 In [93]: obj4
@@ -111,25 +106,23 @@ dtype: float64
 </code></pre>
 <p>在上面这个替换索引的例子中，sdata中的键值（索引）与states中相匹配的三个值会被找出来作了替换，但是<code>California</code>这个索引在sdata中不存在，所以它的结果为<code>NaN</code>。在pandas中，<code>NaN</code>表示缺失数据。</p>
 <p>如果传入多个字典，那结果会和上面的例子截然相反</p>
-<pre><code>In [94]: sdata2 = &#123;'Ohios': 35000, 'Texass':71000, 'Oregons':16000, 'Utahs':5000&#125;
+<pre><code>In [94]: sdata2 = &#123;&#39;Ohios&#39;: 35000, &#39;Texass&#39;:71000, &#39;Oregons&#39;:16000, &#39;Utahs&#39;:5000&#125;
 
 In [95]: obj3 = Series([sdata,sdata2])
 
 In [96]: obj3
 Out[96]:
-0    &#123;'Ohio': 35000, 'Texas': 71000, 'Oregon': 1600...
-1    &#123;'Ohios': 35000, 'Texass': 71000, 'Oregons': 1...
+0    &#123;&#39;Ohio&#39;: 35000, &#39;Texas&#39;: 71000, &#39;Oregon&#39;: 1600...
+1    &#123;&#39;Ohios&#39;: 35000, &#39;Texass&#39;: 71000, &#39;Oregons&#39;: 1...
 dtype: object
 </code></pre>
 <p>它会得到一个以传入的字典为值，0到N-1为索引的Series对象。</p>
-<h3 id="DataFrame">DataFrame</h3>
-<blockquote>
+<h3 id="DataFrame"><a href="#DataFrame" class="headerlink" title="DataFrame"></a>DataFrame</h3><blockquote>
 <p>DataFrame是一个表格型数据，它含有一组有序的列，每列可以是不同的值类型（数值、字符串、布尔值等）。DataFrame既有行索引也有列索引，可以把它想象成<strong>Excel</strong>表。DataFrame中数据是以一个或者多个二维块存放的（而不是列表、字典或别的一堆数据结构）。</p>
 </blockquote>
-<h5 id="如何构建DataFrame">如何构建DataFrame</h5>
-<p>直接传入一个等长列表或者NumPy数组组成的字典：</p>
-<pre><code>In [103]: data = &#123;'state':['Ohio','Ohio','Ohio','Neveda','Neveda'],'year':[2000, 2001, 2002, 2001, 2002],
-     ...: 'pop':[1.5, 1.7, 3.6, 2.4, 2.9]&#125;
+<h5 id="如何构建DataFrame"><a href="#如何构建DataFrame" class="headerlink" title="如何构建DataFrame"></a>如何构建DataFrame</h5><p>直接传入一个等长列表或者NumPy数组组成的字典：</p>
+<pre><code>In [103]: data = &#123;&#39;state&#39;:[&#39;Ohio&#39;,&#39;Ohio&#39;,&#39;Ohio&#39;,&#39;Neveda&#39;,&#39;Neveda&#39;],&#39;year&#39;:[2000, 2001, 2002, 2001, 2002],
+     ...: &#39;pop&#39;:[1.5, 1.7, 3.6, 2.4, 2.9]&#125;
 
 In [104]: frame = DataFrame(data)
 
@@ -144,7 +137,7 @@ Out[105]:
 </code></pre>
 <p>同样DataFrame会自动加上索引，并且全部列会被有序排列。因为数据会打乱行索引，所以数据不会被自动排序。</p>
 <p>如果不想排序列，那我们可以预先指定列的序列:</p>
-<pre><code>In [106]: DataFrame(data, columns=['year','state','pop'])
+<pre><code>In [106]: DataFrame(data, columns=[&#39;year&#39;,&#39;state&#39;,&#39;pop&#39;])
 Out[106]:
    year   state  pop
 0  2000    Ohio  1.5
@@ -154,9 +147,8 @@ Out[106]:
 4  2002  Neveda  2.9
 </code></pre>
 <p>这样就可以按照我们指定的序列来排序所有的列。</p>
-<h5 id="如何获取DataFrame中的列">如何获取DataFrame中的列</h5>
-<p>可以通过属性（只读）的方式或者类似字典标记（读写）的方式获得：</p>
-<pre><code>In [107]: frame = DataFrame(data, columns=['year','state','pop'])
+<h5 id="如何获取DataFrame中的列"><a href="#如何获取DataFrame中的列" class="headerlink" title="如何获取DataFrame中的列"></a>如何获取DataFrame中的列</h5><p>可以通过属性（只读）的方式或者类似字典标记（读写）的方式获得：</p>
+<pre><code>In [107]: frame = DataFrame(data, columns=[&#39;year&#39;,&#39;state&#39;,&#39;pop&#39;])
 
 In [108]: frame
 Out[108]:
@@ -176,7 +168,7 @@ Out[109]:
 4    2002
 Name: year, dtype: int64
 </code></pre>
-<pre><code>In [110]: frame['year']
+<pre><code>In [110]: frame[&#39;year&#39;]
 Out[110]:
 0    2000
 1    2001
@@ -185,18 +177,17 @@ Out[110]:
 4    2002
 Name: year, dtype: int64
 </code></pre>
-<h5 id="如何获取DataFrame中的某行数据">如何获取DataFrame中的某行数据</h5>
-<pre><code>frame.loc[0]
+<h5 id="如何获取DataFrame中的某行数据"><a href="#如何获取DataFrame中的某行数据" class="headerlink" title="如何获取DataFrame中的某行数据"></a>如何获取DataFrame中的某行数据</h5><pre><code>frame.loc[0]
 Out[111]:
 year     2000
 state    Ohio
 pop       1.5
 Name: 0, dtype: object
 </code></pre>
-<pre><code>In [114]: frame = DataFrame(data, columns=['year','state','pop'],index=['one','two','three','four','five'
+<pre><code>In [114]: frame = DataFrame(data, columns=[&#39;year&#39;,&#39;state&#39;,&#39;pop&#39;],index=[&#39;one&#39;,&#39;two&#39;,&#39;three&#39;,&#39;four&#39;,&#39;five&#39;
      ...: ])
 
-In [115]: frame.loc['two']
+In [115]: frame.loc[&#39;two&#39;]
 Out[115]:
 year     2001
 state    Ohio
@@ -204,9 +195,8 @@ pop       1.7
 Name: two, dtype: object
 </code></pre>
 <p>可以通过DataFrame的<code>loc</code>函数来取出行数据。</p>
-<h5 id="对列进行修改">对列进行修改</h5>
-<p>上面有说到过DataFrame获取列的读写权限，属性的方法只能读，通过字典标记形式可以进行写入操作。</p>
-<pre><code>In [122]: frame['num'] = 16
+<h5 id="对列进行修改"><a href="#对列进行修改" class="headerlink" title="对列进行修改"></a>对列进行修改</h5><p>上面有说到过DataFrame获取列的读写权限，属性的方法只能读，通过字典标记形式可以进行写入操作。</p>
+<pre><code>In [122]: frame[&#39;num&#39;] = 16
 
 In [123]: frame
 Out[123]:
@@ -229,7 +219,7 @@ four   2001  Neveda  2.4
 five   2002  Neveda  2.9
 </code></pre>
 <p>也可以将列表或者数组赋值给它，但是要注意它的长度是否相匹配。</p>
-<pre><code>In [144]: frame['num'] = [5, 4, 3, 2, 1]
+<pre><code>In [144]: frame[&#39;num&#39;] = [5, 4, 3, 2, 1]
 
 In [145]: frame
 Out[145]:
@@ -241,9 +231,9 @@ four   2001  Neveda  2.4    2
 five   2002  Neveda  2.9    1
 </code></pre>
 <p>如果将一个Series赋值给它，就会精确的匹配到DataFrame的索引。</p>
-<pre><code>In [146]: val = Series([-1.2, -1.5, -1.7],index=['two','four','five'])
+<pre><code>In [146]: val = Series([-1.2, -1.5, -1.7],index=[&#39;two&#39;,&#39;four&#39;,&#39;five&#39;])
 
-In [147]: frame['val'] = val
+In [147]: frame[&#39;val&#39;] = val
 
 In [148]: frame
 Out[148]:
@@ -255,28 +245,18 @@ four   2001  Neveda  2.4    2 -1.5
 five   2002  Neveda  2.9    1 -1.7
 </code></pre>
 <p>如果有空位，将会自动填上<code>NaN</code>值。在赋值过程中，如果将要赋值的列不存在，那它会自动创建一个新列。</p>
-<h5 id="DataFrame的构造函数能接受的所有数据类型">DataFrame的构造函数能接受的所有数据类型</h5>
-<ul>
+<h5 id="DataFrame的构造函数能接受的所有数据类型"><a href="#DataFrame的构造函数能接受的所有数据类型" class="headerlink" title="DataFrame的构造函数能接受的所有数据类型"></a>DataFrame的构造函数能接受的所有数据类型</h5><ul>
 <li><strong>二维ndarray</strong>   数据矩阵，还可以传入行标和列标</li>
 <li><strong>由数组、列表或元组组成的字典</strong>  每个序列会变成DataFrame的一列。所有序列的长度必须相同。</li>
 <li><strong>NumPy的结构化数组/记录数组</strong> 类似于“由数组组成的字典”</li>
 <li><strong>由Series组成的字典</strong> 每个Series都会成为一列。如果没有指定行索引，则各Series的索引会被合并成结果的行索引。 每个Series的列索引就是在该字典中的键。</li>
 <li><strong>由字典组成的字典</strong> 各内层字典会成为一列。键会被合并成结果的行索引，跟“由Series组成的字典”一样。</li>
 <li><strong>字典或Series的列表</strong>  各项将会成为DataFrame的一行。字典键或Series索引的并集将会成为DataFrame的列标。</li>
-<li><strong>由列标或元组组成的列表</strong>  类似于&quot;二维ndarray&quot;</li>
+<li><strong>由列标或元组组成的列表</strong>  类似于”二维ndarray”</li>
 <li><strong>另一个DataFrame</strong> 该DataFrame的索引会被沿用，除非指定了其他索引。</li>
-<li><strong>NumPy的MaskedArray</strong> 类似于&quot;二维ndarray&quot;的情况，只是掩码值在DataFrame会变成NA/缺失值。</li>
+<li><strong>NumPy的MaskedArray</strong> 类似于”二维ndarray”的情况，只是掩码值在DataFrame会变成NA/缺失值。</li>
 </ul>
-<h3 id="总结">总结</h3>
-<p>今天学习了Series和DataFrame的数据结构部分。了解了它们的构建方式<br>
-Series的构建方式: <code>data = Series([1, 2, 3])</code> 或者通过传入一个字典来创建Series<br>
-Series的常用功能：<br>
-<strong>Series自定义索引名称</strong> 通过在构造函数中设置索引名称来达到自定义索引的目的<br>
-<strong>Series索引的一些玩法</strong> 我们可以通过字典的形式<code>data['one']</code>来获得数据，也可以将其中的参数组成一个数组来获取多个数据<code>data[['one','two','three']]</code>。<br>
-<strong>Series的运算</strong> Series可以像NumPy一样支持数学运算，并且它的运算方式也和NumPy一样数据批量运算。</p>
-<p><strong>DataFrame的构建方式</strong>：直接传入一个等长列表或者NumPy数组组成的字典。<br>
-<strong>如何获取DataFrame中的数据</strong>  由于<code>DataFrame</code>是个表格型数据，数据也有两种类型：<strong>行数据</strong> 和 <strong>列数据</strong>，以点属性的方式<code>frame.year</code>或者字典形式<code>frame['year']</code>都可以获得列数据。值得注意的是，点属性是获取的是带有只读属性的数据，而字典形式的则是带有读写形式的数据。如果想要修改数据还是得用字典形式来获取数据比较好。<br>
-如果是想获取行数据，可以通过<code>loc</code>函数来获取。例如通过行索引名称<code>frame.loc['id']</code> 或者行索引序列号<code>frame.loc[0]</code> 来获取。<br>
-<strong>DataFrame的赋值</strong>  可以通过字典形式赋值，但要注意与数据长度必须相匹配。也可以直接赋值一个Series对象过去，这样可以在赋值的同时把索引名称也一并带过去。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>今天学习了Series和DataFrame的数据结构部分。了解了它们的构建方式<br>Series的构建方式: <code>data = Series([1, 2, 3])</code> 或者通过传入一个字典来创建Series<br>Series的常用功能：<br><strong>Series自定义索引名称</strong> 通过在构造函数中设置索引名称来达到自定义索引的目的<br><strong>Series索引的一些玩法</strong> 我们可以通过字典的形式<code>data[&#39;one&#39;]</code>来获得数据，也可以将其中的参数组成一个数组来获取多个数据<code>data[[&#39;one&#39;,&#39;two&#39;,&#39;three&#39;]]</code>。<br><strong>Series的运算</strong> Series可以像NumPy一样支持数学运算，并且它的运算方式也和NumPy一样数据批量运算。</p>
+<p><strong>DataFrame的构建方式</strong>：直接传入一个等长列表或者NumPy数组组成的字典。<br><strong>如何获取DataFrame中的数据</strong>  由于<code>DataFrame</code>是个表格型数据，数据也有两种类型：<strong>行数据</strong> 和 <strong>列数据</strong>，以点属性的方式<code>frame.year</code>或者字典形式<code>frame[&#39;year&#39;]</code>都可以获得列数据。值得注意的是，点属性是获取的是带有只读属性的数据，而字典形式的则是带有读写形式的数据。如果想要修改数据还是得用字典形式来获取数据比较好。<br>如果是想获取行数据，可以通过<code>loc</code>函数来获取。例如通过行索引名称<code>frame.loc[&#39;id&#39;]</code> 或者行索引序列号<code>frame.loc[0]</code> 来获取。<br><strong>DataFrame的赋值</strong>  可以通过字典形式赋值，但要注意与数据长度必须相匹配。也可以直接赋值一个Series对象过去，这样可以在赋值的同时把索引名称也一并带过去。</p>
 <p>学了NumPy的基础之后发现学习pandas基础会相当轻松，除了多了一个表格型数据外，它的一些核心用法是差不多的，不管是赋值也好还是索引也罢，只要稍加注意一些如读写，区分行列数据的用法就基本掌握了这些知识点了。</p>
 </article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/data-analyst/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas-Series%E4%B8%8EDataFrame%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD%EF%BC%88%E4%B8%80%EF%BC%89/" title="Python数据分析之Pandas-Series与DataFrame基本功能（一）"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: Python数据分析之Pandas-Series与DataFrame基本功能（一）</span></a><a class="button is-default" href="/data-analyst/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BNumpy-%E6%95%B0%E7%BB%84%E8%BD%AC%E7%BD%AE%E4%B8%8E%E8%BD%B4%E5%AF%B9%E6%8D%A2%E8%AF%A6%E8%A7%A3/" title="Python数据分析之Numpy-数组转置与轴对换详解"><span class="has-text-weight-semibold">下一页: Python数据分析之Numpy-数组转置与轴对换详解</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="fuer4869/fuer4869.github.io" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>

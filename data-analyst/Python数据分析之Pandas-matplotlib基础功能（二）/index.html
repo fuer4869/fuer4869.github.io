@@ -1,15 +1,13 @@
-<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>Python数据分析之Pandas-matplotlib基础功能（二）</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Python数据分析之Pandas-matplotlib基础功能（二）</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8pandas%E5%92%8Cseaborn%E7%BB%98%E5%9B%BE"><span class="toc-text">使用pandas和seaborn绘图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8pandas%E5%81%9A%E4%B8%80%E5%BC%A0%E5%A0%86%E7%A7%AF%E6%9F%B1%E7%8A%B6%E5%9B%BE"><span class="toc-text">使用pandas做一张堆积柱状图</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#seaborn%E8%BF%99%E4%B8%AA%E5%BA%93%E9%9D%9E%E5%B8%B8%E9%80%82%E5%90%88%E8%BF%9B%E8%A1%8C%E5%90%88%E8%AE%A1%E6%95%B0%E6%8D%AE"><span class="toc-text">seaborn这个库非常适合进行合计数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E6%9F%B1%E7%8A%B6%E5%9B%BE%E9%A2%9C%E8%89%B2"><span class="toc-text">修改柱状图颜色</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%92%8C%E5%AF%86%E5%BA%A6%E5%9B%BE"><span class="toc-text">直方图和密度图</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%9B%B4%E6%96%B9%E5%9B%BE"><span class="toc-text">直方图</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AF%86%E5%BA%A6%E5%9B%BE"><span class="toc-text">密度图</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%A3%E5%B8%83%E5%9B%BE%E6%88%96%E7%82%B9%E5%9B%BE"><span class="toc-text">散布图或点图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E9%9D%A2%E7%BD%91%E6%A0%BC%E5%92%8C%E7%B1%BB%E5%9E%8B%E6%95%B0%E6%8D%AE"><span class="toc-text">分面网格和类型数据</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/Python,%20Pandas"><i class="tag post-item-tag">Python, Pandas</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">Python数据分析之Pandas-matplotlib基础功能（二）</h1><time class="has-text-grey" datetime="2019-05-27T10:53:30.000Z">2019-05-27</time><article class="mt-2 post-content"><p><img src="http://upload-images.jianshu.io/upload_images/1515206-a1494e91afa95562.vZulrZXNvoKvLfOgbqka3AHaE8&amp;pid=Api&amp;rs=1&amp;p=0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
-<h2 id="使用pandas和seaborn绘图">使用pandas和seaborn绘图</h2>
-<p>Series和DataFrame自带的生成图表方法：</p>
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>Python数据分析之Pandas-matplotlib基础功能（二）</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Python数据分析之Pandas-matplotlib基础功能（二）</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8pandas%E5%92%8Cseaborn%E7%BB%98%E5%9B%BE"><span class="toc-text">使用pandas和seaborn绘图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8pandas%E5%81%9A%E4%B8%80%E5%BC%A0%E5%A0%86%E7%A7%AF%E6%9F%B1%E7%8A%B6%E5%9B%BE"><span class="toc-text">使用pandas做一张堆积柱状图</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#seaborn%E8%BF%99%E4%B8%AA%E5%BA%93%E9%9D%9E%E5%B8%B8%E9%80%82%E5%90%88%E8%BF%9B%E8%A1%8C%E5%90%88%E8%AE%A1%E6%95%B0%E6%8D%AE"><span class="toc-text">seaborn这个库非常适合进行合计数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E6%9F%B1%E7%8A%B6%E5%9B%BE%E9%A2%9C%E8%89%B2"><span class="toc-text">修改柱状图颜色</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%92%8C%E5%AF%86%E5%BA%A6%E5%9B%BE"><span class="toc-text">直方图和密度图</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%9B%B4%E6%96%B9%E5%9B%BE"><span class="toc-text">直方图</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AF%86%E5%BA%A6%E5%9B%BE"><span class="toc-text">密度图</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%A3%E5%B8%83%E5%9B%BE%E6%88%96%E7%82%B9%E5%9B%BE"><span class="toc-text">散布图或点图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E9%9D%A2%E7%BD%91%E6%A0%BC%E5%92%8C%E7%B1%BB%E5%9E%8B%E6%95%B0%E6%8D%AE"><span class="toc-text">分面网格和类型数据</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/Python,%20Pandas"><i class="tag post-item-tag">Python, Pandas</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">Python数据分析之Pandas-matplotlib基础功能（二）</h1><time class="has-text-grey" datetime="2019-05-27T10:53:30.000Z">2019-05-27</time><article class="mt-2 post-content"><p><img src="http://upload-images.jianshu.io/upload_images/1515206-a1494e91afa95562.vZulrZXNvoKvLfOgbqka3AHaE8&pid=Api&rs=1&p=0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
+<h2 id="使用pandas和seaborn绘图"><a href="#使用pandas和seaborn绘图" class="headerlink" title="使用pandas和seaborn绘图"></a>使用pandas和seaborn绘图</h2><p>Series和DataFrame自带的生成图表方法：</p>
 <pre><code>import pandas as pd
 s = pd.Series(np.random.randn(10).cumsum(), index=np.arange(0, 100, 10))
 s.plot()
 </code></pre>
 <p><img src="https://upload-images.jianshu.io/upload_images/1515206-56941fedb2451278.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="case-16.png"></p>
-<h3 id="使用pandas做一张堆积柱状图">使用pandas做一张堆积柱状图</h3>
-<p>展示每天各种聚会规模的数据点的百分比</p>
-<pre><code>tips = pd.read_csv('examples/tips.csv')
-party_counts = pd.crosstab(tips['day'], tips['size'])
+<h3 id="使用pandas做一张堆积柱状图"><a href="#使用pandas做一张堆积柱状图" class="headerlink" title="使用pandas做一张堆积柱状图"></a>使用pandas做一张堆积柱状图</h3><p>展示每天各种聚会规模的数据点的百分比</p>
+<pre><code>tips = pd.read_csv(&#39;examples/tips.csv&#39;)
+party_counts = pd.crosstab(tips[&#39;day&#39;], tips[&#39;size&#39;])
 print(party_counts)
 
 size  1   2   3   4  5  6
@@ -18,7 +16,6 @@ Fri   1  16   1   1  0  0
 Sat   2  53  18  13  1  0
 Sun   0  39  15  18  3  1
 Thur  1  48   4   5  1  3
-
 </code></pre>
 <pre><code>party_counts = party_counts.loc[:, 2:5]
 print(party_counts)
@@ -44,46 +41,37 @@ Thur  0.827586  0.068966  0.086207  0.017241
 <p>生成图表</p>
 <pre><code>party_pcts.plot.bar()
 </code></pre>
-<p><img src="https://upload-images.jianshu.io/upload_images/1515206-02c5432dfef6167c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="case-17.png"><br>
-从图表中可以看出，在周日的聚会规模最大。</p>
-<h4 id="seaborn这个库非常适合进行合计数据">seaborn这个库非常适合进行合计数据</h4>
-<p>接下来使用Seaborn来查看每天给的小费比例，Seaborn其实是在matplotlib的基础上进行了更高级的API封装，但应强调的是，应该把Seaborn视为matplotlib的补充，而不是替代物。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/1515206-02c5432dfef6167c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="case-17.png"><br>从图表中可以看出，在周日的聚会规模最大。</p>
+<h4 id="seaborn这个库非常适合进行合计数据"><a href="#seaborn这个库非常适合进行合计数据" class="headerlink" title="seaborn这个库非常适合进行合计数据"></a>seaborn这个库非常适合进行合计数据</h4><p>接下来使用Seaborn来查看每天给的小费比例，Seaborn其实是在matplotlib的基础上进行了更高级的API封装，但应强调的是，应该把Seaborn视为matplotlib的补充，而不是替代物。</p>
 <pre><code>import seaborn as sns
-tips['tip_pct'] = tips['tip'] / tips['total_bill'] - tips['tip']   # 新增了一项小费占比
+tips[&#39;tip_pct&#39;] = tips[&#39;tip&#39;] / tips[&#39;total_bill&#39;] - tips[&#39;tip&#39;]   # 新增了一项小费占比
 tips.head()
-
 </code></pre>
 <p><img src="https://upload-images.jianshu.io/upload_images/1515206-732cfb02da00491d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="case-18.png"></p>
-<pre><code>sns.barplot(x='tip_pct', y='day', data=tips, orient='h')  #orient 表示柱状图的方向，h表示横向
+<pre><code>sns.barplot(x=&#39;tip_pct&#39;, y=&#39;day&#39;, data=tips, orient=&#39;h&#39;)  #orient 表示柱状图的方向，h表示横向
 </code></pre>
 <p><img src="https://upload-images.jianshu.io/upload_images/1515206-21ef28bf90b0782b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="case-19.png"></p>
 <p>因为seaborn绘制函数需要使用到DataFrame参数。其他的参数都是关于列的名字</p>
-<h4 id="修改柱状图颜色">修改柱状图颜色</h4>
-<pre><code>fig8 = plt.figure()
-sns.barplot(x='tip_pct',y='day',hue='time',data=tips,orient='h')
+<h4 id="修改柱状图颜色"><a href="#修改柱状图颜色" class="headerlink" title="修改柱状图颜色"></a>修改柱状图颜色</h4><pre><code>fig8 = plt.figure()
+sns.barplot(x=&#39;tip_pct&#39;,y=&#39;day&#39;,hue=&#39;time&#39;,data=tips,orient=&#39;h&#39;)
 </code></pre>
-<p>把关键词改为<code>time</code>后，seaborn自动修改了图表的配色。<br>
-<img src="https://upload-images.jianshu.io/upload_images/1515206-16de5acc0f191887.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="case-20.png"></p>
+<p>把关键词改为<code>time</code>后，seaborn自动修改了图表的配色。<br><img src="https://upload-images.jianshu.io/upload_images/1515206-16de5acc0f191887.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="case-20.png"></p>
 <p>图形背景和网格线可以手动调整：</p>
 <pre><code>sns.set_style(&quot;darkgrid&quot;)
 </code></pre>
 <p><img src="https://upload-images.jianshu.io/upload_images/1515206-3569bef0587609b5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="case-21.png"></p>
-<h3 id="直方图和密度图">直方图和密度图</h3>
-<h5 id="直方图">直方图</h5>
-<p>可以对值的频率进行离散化显示的柱状图。</p>
+<h3 id="直方图和密度图"><a href="#直方图和密度图" class="headerlink" title="直方图和密度图"></a>直方图和密度图</h3><h5 id="直方图"><a href="#直方图" class="headerlink" title="直方图"></a>直方图</h5><p>可以对值的频率进行离散化显示的柱状图。</p>
 <blockquote>
 <p>个人理解：通过直方图和密度图能很直观的分析出一堆数据中那部分的数据最集中。比如厂商做衣服，标准身材的人肯定占大多数，而太瘦小或太胖这种身材都占小部分。这样分析就能知道该大量制作多少尺寸的衣服了。</p>
 </blockquote>
 <p>通过在Series中使用<code>plot.hist</code>方法来实现：</p>
 <pre><code>fig9 = plt.figure()
-tips['tip_pct'].plot.hist(bins=50)
+tips[&#39;tip_pct&#39;].plot.hist(bins=50)
 </code></pre>
 <p><img src="https://upload-images.jianshu.io/upload_images/1515206-25cf06ff3052f391.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="小费百分比直方图.png"></p>
-<h5 id="密度图">密度图</h5>
-<p>密度图是通过计算“可能会产生观测数据的连续概率分布的估计”而产生的图表。<br>
-使用<code>plot.kde</code>和标准混合正态分布估计即可生成一张密度图</p>
+<h5 id="密度图"><a href="#密度图" class="headerlink" title="密度图"></a>密度图</h5><p>密度图是通过计算“可能会产生观测数据的连续概率分布的估计”而产生的图表。<br>使用<code>plot.kde</code>和标准混合正态分布估计即可生成一张密度图</p>
 <pre><code>fig10 = plt.figure()
-tips['tip_pct'].plot.density()
+tips[&#39;tip_pct&#39;].plot.density()
 </code></pre>
 <p><img src="https://upload-images.jianshu.io/upload_images/1515206-7505bfb3d22ac8a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="case-23.png"></p>
 <p>还有一种更方便的方法能一起绘制直方图和密度图</p>
@@ -93,14 +81,13 @@ comp1 = np.random.normal(0, 1, size=200)  # 一组标准差为1，以0为中心�
 comp2 = np.random.normal(10, 2, size=200) # 一组标准差为2，以10为中心的正态分布数组
 
 values = pd.Series(np.concatenate([comp1, comp2]))  # 对两组数据进行合并
-sns.distplot(values, bins=100, color='k')
+sns.distplot(values, bins=100, color=&#39;k&#39;)
 # 把数据分割成了100个区间（割的越细分析越精确）
 </code></pre>
 <p><img src="https://upload-images.jianshu.io/upload_images/1515206-58e0a70adc6016c6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="标准直方图.png"></p>
-<h3 id="散布图或点图">散布图或点图</h3>
-<p>点图或散布图是观察两个一维数据序列之间的关系的有效手段。</p>
-<pre><code>macro = pd.read_csv('examples/macrodata.csv')
-data = macro[['cpi','m1','tbilrate','unemp']]
+<h3 id="散布图或点图"><a href="#散布图或点图" class="headerlink" title="散布图或点图"></a>散布图或点图</h3><p>点图或散布图是观察两个一维数据序列之间的关系的有效手段。</p>
+<pre><code>macro = pd.read_csv(&#39;examples/macrodata.csv&#39;)
+data = macro[[&#39;cpi&#39;,&#39;m1&#39;,&#39;tbilrate&#39;,&#39;unemp&#39;]]
 trans_data = np.log(data).diff().dropna()
 # 这里做了三个步骤
 # 1.对data中的数据做了对数处理，来获取以自然对数e为底```data```的对数
@@ -117,15 +104,14 @@ print(trans_data[-5:])
 </code></pre>
 <p><img src="https://upload-images.jianshu.io/upload_images/1515206-de43336f951a932f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="回归/散布图.png"></p>
 <p>Seaborn可以一次性两两组合多个变量做出多个对比图，做出一个N * N的矩阵</p>
-<pre><code>sns.pairplot(trans_data,diag_kind='kde',plot_kws=&#123;'alpha':0.2&#125;)
+<pre><code>sns.pairplot(trans_data,diag_kind=&#39;kde&#39;,plot_kws=&#123;&#39;alpha&#39;:0.2&#125;)
 </code></pre>
 <p><img src="https://upload-images.jianshu.io/upload_images/1515206-cfefd87058130bf9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="散布图矩阵.png"></p>
-<h3 id="分面网格和类型数据">分面网格和类型数据</h3>
-<pre><code>sns.factorplot(x='day',y='tip_pct',hue='time',col='smoker',kind='bar',data=tips[tips.tip_pct &lt; 1])
+<h3 id="分面网格和类型数据"><a href="#分面网格和类型数据" class="headerlink" title="分面网格和类型数据"></a>分面网格和类型数据</h3><pre><code>sns.factorplot(x=&#39;day&#39;,y=&#39;tip_pct&#39;,hue=&#39;time&#39;,col=&#39;smoker&#39;,kind=&#39;bar&#39;,data=tips[tips.tip_pct &lt; 1])
 </code></pre>
 <p><img src="https://upload-images.jianshu.io/upload_images/1515206-040423a9279afe60.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="按照天/时间/吸烟者的消费计算百分比.png"></p>
 <p>除了可以用不同的颜色按时间分组，也可以通过给每个时间值添加一行来扩展分面网格：</p>
-<pre><code>sns.factorplot(x='day',y='tip_pct',row='time',col='smoker',kind='bar',data=tips[tips.tip_pct &lt; 1])
+<pre><code>sns.factorplot(x=&#39;day&#39;,y=&#39;tip_pct&#39;,row=&#39;time&#39;,col=&#39;smoker&#39;,kind=&#39;bar&#39;,data=tips[tips.tip_pct &lt; 1])
 </code></pre>
 <p><img src="https://upload-images.jianshu.io/upload_images/1515206-fd0ac0752e7d6bc2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="按天的tip_pct，通过time/smoker分面.png"></p>
 </article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/data-analyst/Python%E7%88%AC%E8%99%AB%E4%B9%8BScrapy-%E5%AE%89%E8%A3%85%E5%8F%8A%E5%85%A5%E9%97%A8/" title="Python爬虫之Scrapy-安装及入门"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: Python爬虫之Scrapy-安装及入门</span></a><a class="button is-default" href="/data-analyst/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas-matplotlib%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD%EF%BC%88%E4%B8%80%EF%BC%89/" title="Python数据分析之Pandas-matplotlib基础功能（一）"><span class="has-text-weight-semibold">下一页: Python数据分析之Pandas-matplotlib基础功能（一）</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="fuer4869/fuer4869.github.io" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>

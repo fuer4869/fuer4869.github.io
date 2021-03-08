@@ -1,9 +1,8 @@
-<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>Python数据分析之Numpy-基本的索引与切片</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Python数据分析之Numpy-基本的索引与切片</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#NumPy%E6%95%B0%E7%BB%84%E5%88%87%E7%89%87%E4%B8%8E%E5%88%97%E8%A1%A8%E5%88%87%E7%89%87%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">NumPy数组切片与列表切片的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NumPy%E6%95%B0%E7%BB%84%E7%9A%84%E7%B4%A2%E5%BC%95%E4%B8%8EPython%E5%88%97%E8%A1%A8%E7%B4%A2%E5%BC%95%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">NumPy数组的索引与Python列表索引的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NumPy%E6%95%B0%E7%BB%84%E7%9A%84%E5%88%87%E7%89%87"><span class="toc-text">NumPy数组的切片</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">布尔型索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8A%B1%E5%BC%8F%E7%B4%A2%E5%BC%95"><span class="toc-text">花式索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/Python,%20NumPy"><i class="tag post-item-tag">Python, NumPy</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">Python数据分析之Numpy-基本的索引与切片</h1><time class="has-text-grey" datetime="2019-04-15T09:52:17.000Z">2019-04-15</time><article class="mt-2 post-content"><p><img src="http://upload-images.jianshu.io/upload_images/1515206-52378f7408b16ff6.b7GJ6Crjo8S1cCY_ii1ETQHaEJ&amp;pid=Api&amp;rs=1&amp;p=0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="NumPy"></p>
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>Python数据分析之Numpy-基本的索引与切片</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Python数据分析之Numpy-基本的索引与切片</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#NumPy%E6%95%B0%E7%BB%84%E5%88%87%E7%89%87%E4%B8%8E%E5%88%97%E8%A1%A8%E5%88%87%E7%89%87%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">NumPy数组切片与列表切片的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NumPy%E6%95%B0%E7%BB%84%E7%9A%84%E7%B4%A2%E5%BC%95%E4%B8%8EPython%E5%88%97%E8%A1%A8%E7%B4%A2%E5%BC%95%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">NumPy数组的索引与Python列表索引的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NumPy%E6%95%B0%E7%BB%84%E7%9A%84%E5%88%87%E7%89%87"><span class="toc-text">NumPy数组的切片</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%83%E5%B0%94%E5%9E%8B%E7%B4%A2%E5%BC%95"><span class="toc-text">布尔型索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8A%B1%E5%BC%8F%E7%B4%A2%E5%BC%95"><span class="toc-text">花式索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/Python,%20NumPy"><i class="tag post-item-tag">Python, NumPy</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">Python数据分析之Numpy-基本的索引与切片</h1><time class="has-text-grey" datetime="2019-04-15T09:52:17.000Z">2019-04-15</time><article class="mt-2 post-content"><p><img src="http://upload-images.jianshu.io/upload_images/1515206-52378f7408b16ff6.b7GJ6Crjo8S1cCY_ii1ETQHaEJ&pid=Api&rs=1&p=0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="NumPy"></p>
 <blockquote>
 <p>NumPy数组的切片与Python中列表的区别在于它的切片是直接对原始数据进行操作，也就是说你做的任何修改都会直接影响到源数据，因为它修改的是内存中的数据。</p>
 </blockquote>
-<h3 id="NumPy数组切片与列表切片的区别">NumPy数组切片与列表切片的区别</h3>
-<pre><code>In [36]: arr = np.arange(10)
+<h3 id="NumPy数组切片与列表切片的区别"><a href="#NumPy数组切片与列表切片的区别" class="headerlink" title="NumPy数组切片与列表切片的区别"></a>NumPy数组切片与列表切片的区别</h3><pre><code>In [36]: arr = np.arange(10)
 
 In [37]: arr
 Out[37]: array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
@@ -30,8 +29,7 @@ In [47]: arr  #先前对arr2进行的操作也直接影响到了arr
 Out[47]: array([0, 1, 2, 1, 1, 1, 6, 7, 8, 9])
 </code></pre>
 <p>上面其实涉及到了浅拷贝与深拷贝的问题，已经不属于本篇文章的内容暂时不讨论。</p>
-<h3 id="NumPy数组的索引与Python列表索引的区别">NumPy数组的索引与Python列表索引的区别</h3>
-<pre><code># 创建NumPy数组arr
+<h3 id="NumPy数组的索引与Python列表索引的区别"><a href="#NumPy数组的索引与Python列表索引的区别" class="headerlink" title="NumPy数组的索引与Python列表索引的区别"></a>NumPy数组的索引与Python列表索引的区别</h3><pre><code># 创建NumPy数组arr
 In [50]: arr = np.array([[[1, 2, 3],[4, 5, 6]],[[7, 8, 9],[10, 11, 12]]])
 
 In [51]: arr
@@ -70,11 +68,9 @@ In [57]: arr2[0] = 1
 
 In [58]: arr2
 Out[58]: [1, [[7, 8, 9], [10, 11, 12]]]
-
 </code></pre>
 <p>这里还是因为NumPy中的所有运算都是针对数组的关系，所以就算是数组中元素是个数组，它依旧会对数组进行遍历然后赋值，不会像Python那样把列表强行改成了1。</p>
-<h3 id="NumPy数组的切片">NumPy数组的切片</h3>
-<p>它的基本用法和Python切片差不多，这里不再多赘述。具体可以之前写的这篇文章:<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/f3481b59d173">深度解析Python切片</a></p>
+<h3 id="NumPy数组的切片"><a href="#NumPy数组的切片" class="headerlink" title="NumPy数组的切片"></a>NumPy数组的切片</h3><p>它的基本用法和Python切片差不多，这里不再多赘述。具体可以之前写的这篇文章:<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/f3481b59d173">深度解析Python切片</a></p>
 <p>这里主要分析下在NumPy多维数组中，它的切片是什么样子的</p>
 <pre><code>In [61]: arr = np.array([[1, 2, 3],[4, 5, 6],[7, 8, 9]])
 
@@ -99,8 +95,7 @@ Out[98]:
 array([[7, 8, 9],
        [1, 1, 1]])
 </code></pre>
-<h1>布尔型索引</h1>
-<p>顾名思义，它意味着ndarray将通过布尔值来索引。布尔值是如何与索引产生联系的？</p>
+<h1 id="布尔型索引"><a href="#布尔型索引" class="headerlink" title="布尔型索引"></a>布尔型索引</h1><p>顾名思义，它意味着ndarray将通过布尔值来索引。布尔值是如何与索引产生联系的？</p>
 <pre><code>In [112]: values = np.array([1+2, 2+2, 1+3, 2+3, 5-1, 2+4])
 
 In [114]: values == 4
@@ -131,7 +126,7 @@ array([[-0.2727878 , -0.38506136, -1.17539146],
        [ 1.32918343, -0.62140714, -0.45032477],
        [-2.57158431, -0.77592511,  1.13117563]])
 </code></pre>
-<p>在条件判断中的**&amp;** 、<strong>|<strong>这两个运算符也能使用，需要注意的是</strong>and</strong> 和 <strong>or</strong>则不能在布尔型数组中使用</p>
+<p>在条件判断中的**&amp;** 、**|<strong>这两个运算符也能使用，需要注意的是</strong>and** 和 <strong>or</strong>则不能在布尔型数组中使用</p>
 <pre><code>In [120]: data[(values == 4) | (values == 3)]
 Out[120]:
 array([[-0.2727878 , -0.38506136, -1.17539146],
@@ -139,8 +134,7 @@ array([[-0.2727878 , -0.38506136, -1.17539146],
        [ 0.22901328,  2.14870512,  0.22426147],
        [ 0.34037236,  0.1902144 ,  0.28806536]])
 </code></pre>
-<h3 id="花式索引">花式索引</h3>
-<p>花式索引其实是利用整数数组进行索引的方式。</p>
+<h3 id="花式索引"><a href="#花式索引" class="headerlink" title="花式索引"></a>花式索引</h3><p>花式索引其实是利用整数数组进行索引的方式。</p>
 <pre><code>In [134]: arr = np.empty((8, 4))
 
 In [135]: for i in range(8):
@@ -194,9 +188,5 @@ In [144]: arr[[1, 2, 3, 4],[1, 1, 1, 1]]
 Out[144]: array([ 0.78143357,  0.53750907, -2.09393981,  0.21576689])
 </code></pre>
 <p>其实它最终是按照（1，1）、（2，1）、（3，1）、（4，1）来取出数据的，和以往的索引方式有很大的区别。</p>
-<h3 id="总结">总结</h3>
-<p>在本章中学到了NumPy索引的一些玩法:<br>
-<strong>布尔型索引</strong>：可以根据另一个数组以条件判断产生的布尔值对其索引。<br>
-<strong>切片索引</strong>：基本操作方式和Python切片差不多，唯一要注意的是它的赋值将会扩散到整个切片区域，还有一点切片索引将会对源数据进行操作，需要特别注意。<br>
-<strong>花式索引</strong> ：很特殊的一种索引方式，脑洞大开的设计居然可以用数组来对数组进行索引，同时还可以对取出的数据进行排序，我想这个排序功能以后会经常使用。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在本章中学到了NumPy索引的一些玩法:<br><strong>布尔型索引</strong>：可以根据另一个数组以条件判断产生的布尔值对其索引。<br><strong>切片索引</strong>：基本操作方式和Python切片差不多，唯一要注意的是它的赋值将会扩散到整个切片区域，还有一点切片索引将会对源数据进行操作，需要特别注意。<br><strong>花式索引</strong> ：很特殊的一种索引方式，脑洞大开的设计居然可以用数组来对数组进行索引，同时还可以对取出的数据进行排序，我想这个排序功能以后会经常使用。</p>
 </article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/data-analyst/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BNumpy-%E6%95%B0%E7%BB%84%E8%BD%AC%E7%BD%AE%E4%B8%8E%E8%BD%B4%E5%AF%B9%E6%8D%A2%E8%AF%A6%E8%A7%A3/" title="Python数据分析之Numpy-数组转置与轴对换详解"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: Python数据分析之Numpy-数组转置与轴对换详解</span></a><a class="button is-default" href="/data-analyst/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BNumpy-ndarray%E5%8F%8A%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="Python数据分析之Numpy-ndarray及数据类型"><span class="has-text-weight-semibold">下一页: Python数据分析之Numpy-ndarray及数据类型</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="fuer4869/fuer4869.github.io" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>

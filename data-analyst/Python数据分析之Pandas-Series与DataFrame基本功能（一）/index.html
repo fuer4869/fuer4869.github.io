@@ -1,8 +1,6 @@
 <!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>Python数据分析之Pandas-Series与DataFrame基本功能（一）</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Python数据分析之Pandas-Series与DataFrame基本功能（一）</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E6%96%B0%E7%B4%A2%E5%BC%95"><span class="toc-text">重新索引</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#reindex%E5%9C%A8Series%E4%B8%8A%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-text">reindex在Series上的应用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#reindex%E5%9C%A8DataFrame%E4%B8%8A%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-text">reindex在DataFrame上的应用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%A2%E5%BC%83%E6%8C%87%E5%AE%9A%E8%BD%B4%E4%B8%8A%E7%9A%84%E9%A1%B9"><span class="toc-text">丢弃指定轴上的项</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E3%80%81%E9%80%89%E5%8C%BA%E5%92%8C%E8%BF%87%E6%BB%A4"><span class="toc-text">索引、选区和过滤</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Series%E6%9C%80%E5%9F%BA%E6%9C%AC%E7%9A%84%E7%B4%A2%E5%BC%95%EF%BC%9A"><span class="toc-text">Series最基本的索引：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Series%E7%9A%84%E5%88%87%E7%89%87%E7%B4%A2%E5%BC%95%E3%80%81%E9%80%89%E5%8F%96%E5%92%8C%E8%BF%87%E6%BB%A4"><span class="toc-text">Series的切片索引、选取和过滤:</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#DataFrame%E7%9A%84%E5%88%87%E7%89%87%E7%B4%A2%E5%BC%95%E3%80%81%E9%80%89%E5%8F%96%E5%92%8C%E8%BF%87%E6%BB%A4"><span class="toc-text">DataFrame的切片索引、选取和过滤</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#loc%E5%87%BD%E6%95%B0"><span class="toc-text">loc函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#iloc%E5%87%BD%E6%95%B0"><span class="toc-text">iloc函数</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/Python,%20pandas"><i class="tag post-item-tag">Python, pandas</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">Python数据分析之Pandas-Series与DataFrame基本功能（一）</h1><time class="has-text-grey" datetime="2019-04-23T06:37:53.000Z">2019-04-23</time><article class="mt-2 post-content"><p><img src="http://upload-images.jianshu.io/upload_images/1515206-21199b69100c1a6e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="pandas"></p>
-<h2 id="重新索引">重新索引</h2>
-<p>pandas对象的一个重要方法，其作用是创建一个适应新索引的新对象。</p>
-<h5 id="reindex在Series上的应用">reindex在Series上的应用</h5>
-<pre><code>In [3]: obj = Series([4.5, 7.2, -5.3, 3.6], index=['d','b','a','c'])
+<h2 id="重新索引"><a href="#重新索引" class="headerlink" title="重新索引"></a>重新索引</h2><p>pandas对象的一个重要方法，其作用是创建一个适应新索引的新对象。</p>
+<h5 id="reindex在Series上的应用"><a href="#reindex在Series上的应用" class="headerlink" title="reindex在Series上的应用"></a>reindex在Series上的应用</h5><pre><code>In [3]: obj = Series([4.5, 7.2, -5.3, 3.6], index=[&#39;d&#39;,&#39;b&#39;,&#39;a&#39;,&#39;c&#39;])
 
 In [4]: obj
 Out[4]:
@@ -12,9 +10,9 @@ a   -5.3
 c    3.6
 dtype: float64
 
-In [5]: obj2 = reindex(['a', 'b', 'c', 'd', 'e'])
+In [5]: obj2 = reindex([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;])
 
-In [6]: obj2 = obj.reindex(['a', 'b', 'c', 'd', 'e'])
+In [6]: obj2 = obj.reindex([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;])
 
 In [7]: obj2
 Out[7]:
@@ -24,11 +22,10 @@ c    3.6
 d    4.5
 e    NaN   #如果新索引之前不存在，那么它的值就为缺失值
 dtype: float64
-
 </code></pre>
 <p>Series的reindex函数将会根据新索引对数据重新排列，并且返回一个新的Series对象。如果某个索引不存在，那么它对应的值就为缺失值。</p>
 <p>如果想要对缺失值进行补充，那么也有下面这几个方法：</p>
-<pre><code>In [8]: obj.reindex(['a', 'b', 'c', 'd', 'e'],fill_value=0)
+<pre><code>In [8]: obj.reindex([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;],fill_value=0)
 Out[8]:
 a   -5.3
 b    7.2
@@ -37,11 +34,10 @@ d    4.5
 e    0.0
 dtype: float64
 </code></pre>
-<p>这里直接预设了填充值为0，意味着该Series中所有的空缺值都将被替换成0<br>
-另外一种方法是：</p>
-<pre><code>obj3 = Series(['blue','purple','yellow'], index=[0, 2, 4])
+<p>这里直接预设了填充值为0，意味着该Series中所有的空缺值都将被替换成0<br>另外一种方法是：</p>
+<pre><code>obj3 = Series([&#39;blue&#39;,&#39;purple&#39;,&#39;yellow&#39;], index=[0, 2, 4])
 
-In [10]: obj3.reindex(range(6), method='ffill')  # 'ffill'为前向填充，缺失值将前一位数据作为填充值，反之就是后向填充'bfill'
+In [10]: obj3.reindex(range(6), method=&#39;ffill&#39;)  # &#39;ffill&#39;为前向填充，缺失值将前一位数据作为填充值，反之就是后向填充&#39;bfill&#39;
 
 Out[10]:
 0      blue
@@ -60,9 +56,8 @@ Out[11]:
 dtype: object
 </code></pre>
 <p>如果不想把填充值固定，也可以考虑使用<code>method</code>选项，它可以依据前后数据做填充处理。</p>
-<h5 id="reindex在DataFrame上的应用">reindex在DataFrame上的应用</h5>
-<p>reindex不单可以修改行索引，也可以修改DataFrame的列索引</p>
-<pre><code>In [14]: frame = DataFrame(np.arange(9).reshape((3, 3)), index=['a', 'c', 'd'], columns=['Ohio', 'Texas', 'California'])
+<h5 id="reindex在DataFrame上的应用"><a href="#reindex在DataFrame上的应用" class="headerlink" title="reindex在DataFrame上的应用"></a>reindex在DataFrame上的应用</h5><p>reindex不单可以修改行索引，也可以修改DataFrame的列索引</p>
+<pre><code>In [14]: frame = DataFrame(np.arange(9).reshape((3, 3)), index=[&#39;a&#39;, &#39;c&#39;, &#39;d&#39;], columns=[&#39;Ohio&#39;, &#39;Texas&#39;, &#39;California&#39;])
 
 In [15]: frame
 Out[15]:
@@ -71,7 +66,7 @@ a     0      1           2
 c     3      4           5
 d     6      7           8
 
-In [16]: frame2 = frame.reindex(['a','b','c','d'])
+In [16]: frame2 = frame.reindex([&#39;a&#39;,&#39;b&#39;,&#39;c&#39;,&#39;d&#39;])
 
 In [17]: frame2
 Out[17]:
@@ -83,7 +78,7 @@ d   6.0    7.0         8.0
 </code></pre>
 <p>同Series，在修改行索引的时候出现索引不存在的情况就会引入缺失值<code>NaN</code>。</p>
 <p>如何重新索引列：</p>
-<pre><code>In [18]: states = ['Texas', 'Utah', 'California']
+<pre><code>In [18]: states = [&#39;Texas&#39;, &#39;Utah&#39;, &#39;California&#39;]
 
 In [19]: frame.reindex(columns=states)
 Out[19]:
@@ -93,12 +88,12 @@ c      4   NaN           5
 d      7   NaN           8
 </code></pre>
 <p><code>method</code>插值能否同时对行列产生作用</p>
-<pre><code>In [38]: frame.reindex(index=['a','b','c','d'],method='ffill', columns = ['Texas','Utah','California'])
+<pre><code>In [38]: frame.reindex(index=[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;,&#39;d&#39;],method=&#39;ffill&#39;, columns = [&#39;Texas&#39;,&#39;Utah&#39;,&#39;California&#39;])
 
 &gt;&gt;&gt; index must be monotonic increasing or decreasing
 </code></pre>
 <p>按照书中的写法，发现在现在这个版本中已经不适用了，会出现错误。在这个方法中如果存在插值属性<code>method</code>，那行索引和列索引都将会被补充，但是在例子中列索引并不像行索引一样是有序的，所以才会出现这的错误。</p>
-<pre><code>In [39]: frame.reindex(index=['a','b','c','d'], columns = ['Texas','Utah','California']).ffill()
+<pre><code>In [39]: frame.reindex(index=[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;,&#39;d&#39;], columns = [&#39;Texas&#39;,&#39;Utah&#39;,&#39;California&#39;]).ffill()
 Out[39]:
    Texas  Utah  California
 a    1.0   NaN         2.0
@@ -107,12 +102,11 @@ c    4.0   NaN         5.0
 d    7.0   NaN         8.0
 </code></pre>
 <p>改成这种写法就可以了。</p>
-<h5 id="丢弃指定轴上的项">丢弃指定轴上的项</h5>
-<p>丢弃指定轴上的项<code>drop()</code>在清理数据中是一个非常重要的功能。</p>
+<h5 id="丢弃指定轴上的项"><a href="#丢弃指定轴上的项" class="headerlink" title="丢弃指定轴上的项"></a>丢弃指定轴上的项</h5><p>丢弃指定轴上的项<code>drop()</code>在清理数据中是一个非常重要的功能。</p>
 <p><code>drop</code>函数在Series上的应用:</p>
-<pre><code>In [40]: obj = Series(np.arange(5.), index=['a','b','c','d','e'])
+<pre><code>In [40]: obj = Series(np.arange(5.), index=[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;,&#39;d&#39;,&#39;e&#39;])
 
-In [41]: new_obj = obj.drop('c')
+In [41]: new_obj = obj.drop(&#39;c&#39;)
 
 In [42]: new_obj
 Out[42]:
@@ -123,7 +117,7 @@ e    4.0
 dtype: float64
 </code></pre>
 <p>当然也可以同时删除多个项:</p>
-<pre><code>In [43]: obj.drop(['d','c'])
+<pre><code>In [43]: obj.drop([&#39;d&#39;,&#39;c&#39;])
 Out[43]:
 a    0.0
 b    1.0
@@ -131,8 +125,8 @@ e    4.0
 dtype: float64
 </code></pre>
 <p><code>drop</code>函数在DataFrame上的应用</p>
-<pre><code>In [45]: data = DataFrame(np.arange(16).reshape(4,4), index=['Ohio','Colorado','Utah','New York'], columns=['one','two','thre
-    ...: e','four'])
+<pre><code>In [45]: data = DataFrame(np.arange(16).reshape(4,4), index=[&#39;Ohio&#39;,&#39;Colorado&#39;,&#39;Utah&#39;,&#39;New York&#39;], columns=[&#39;one&#39;,&#39;two&#39;,&#39;thre
+    ...: e&#39;,&#39;four&#39;])
 
 In [46]: data
 Out[46]:
@@ -142,7 +136,7 @@ Colorado    4    5      6     7
 Utah        8    9     10    11
 New York   12   13     14    15
 
-In [47]: data.drop(['Colorado', 'Ohio'])
+In [47]: data.drop([&#39;Colorado&#39;, &#39;Ohio&#39;])
 Out[47]:
           one  two  three  four
 Utah        8    9     10    11
@@ -150,13 +144,12 @@ New York   12   13     14    15
 </code></pre>
 <p>如果是删除行索引，同Series我们可以直接删除任意一个或多个轴上的值。</p>
 <p>如果要删除列索引</p>
-<pre><code>In [50]: data.drop('two')
+<pre><code>In [50]: data.drop(&#39;two&#39;)
 
- &gt;&gt;&gt; KeyError: &quot;['two'] not found in axis&quot;
+ &gt;&gt;&gt; KeyError: &quot;[&#39;two&#39;] not found in axis&quot;
 </code></pre>
-<p>它是不能直接删除的，会出现报错。意思是在默认的轴上并没有发现<code>two</code>这个索引。<br>
-因为<code>dop</code>函数默认的轴是横向的，如果想要删除某个列就必须告诉它我要删除纵向的轴。可通过下面这个方式：</p>
-<pre><code>In [49]: data.drop('two', axis=1)
+<p>它是不能直接删除的，会出现报错。意思是在默认的轴上并没有发现<code>two</code>这个索引。<br>因为<code>dop</code>函数默认的轴是横向的，如果想要删除某个列就必须告诉它我要删除纵向的轴。可通过下面这个方式：</p>
+<pre><code>In [49]: data.drop(&#39;two&#39;, axis=1)
 Out[49]:
           one  three  four
 Ohio        0      2     3
@@ -164,7 +157,7 @@ Colorado    4      6     7
 Utah        8     10    11
 New York   12     14    15
 </code></pre>
-<pre><code>In [51]: data.drop(['two','four'], axis=1)
+<pre><code>In [51]: data.drop([&#39;two&#39;,&#39;four&#39;], axis=1)
 Out[51]:
           one  three
 Ohio        0      2
@@ -172,18 +165,15 @@ Colorado    4      6
 Utah        8     10
 New York   12     14
 </code></pre>
-<h4 id="索引、选区和过滤">索引、选区和过滤</h4>
-<h5 id="Series最基本的索引：">Series最基本的索引：</h5>
-<pre><code>In [52]: obj = Series(np.arange(4), index=['a','b','c','d'])
+<h4 id="索引、选区和过滤"><a href="#索引、选区和过滤" class="headerlink" title="索引、选区和过滤"></a>索引、选区和过滤</h4><h5 id="Series最基本的索引："><a href="#Series最基本的索引：" class="headerlink" title="Series最基本的索引："></a>Series最基本的索引：</h5><pre><code>In [52]: obj = Series(np.arange(4), index=[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;,&#39;d&#39;])
 
-In [53]: obj['b']
+In [53]: obj[&#39;b&#39;]
 Out[53]: 1
 
 In [54]: obj[1]
 Out[54]: 1
 </code></pre>
-<h5 id="Series的切片索引、选取和过滤">Series的切片索引、选取和过滤:</h5>
-<pre><code>In [55]: obj[2:4]   #切片索引
+<h5 id="Series的切片索引、选取和过滤"><a href="#Series的切片索引、选取和过滤" class="headerlink" title="Series的切片索引、选取和过滤:"></a>Series的切片索引、选取和过滤:</h5><pre><code>In [55]: obj[2:4]   #切片索引
 Out[55]:
 c    2
 d    3
@@ -202,17 +192,16 @@ b    1
 dtype: int64
 </code></pre>
 <p>这里还有一种比较好玩的切片选取方式，就是利用标签来切片：</p>
-<pre><code>In [58]: obj['b':'c']
+<pre><code>In [58]: obj[&#39;b&#39;:&#39;c&#39;]
 Out[58]:
 b    1
 c    2
 dtype: int64
 </code></pre>
 <p>如果是用标签来切片的情况下，它与Python传统切片不同，切片末端的数据也会被选取到。</p>
-<h5 id="DataFrame的切片索引、选取和过滤">DataFrame的切片索引、选取和过滤</h5>
-<p>DataFrame最基本的索引：</p>
-<pre><code>In [61]: data = DataFrame(np.arange(16).reshape((4,4)), index=['Ohio','Colorado','Utah','New York'], columns=['one','two','th
-    ...: ree','four'])
+<h5 id="DataFrame的切片索引、选取和过滤"><a href="#DataFrame的切片索引、选取和过滤" class="headerlink" title="DataFrame的切片索引、选取和过滤"></a>DataFrame的切片索引、选取和过滤</h5><p>DataFrame最基本的索引：</p>
+<pre><code>In [61]: data = DataFrame(np.arange(16).reshape((4,4)), index=[&#39;Ohio&#39;,&#39;Colorado&#39;,&#39;Utah&#39;,&#39;New York&#39;], columns=[&#39;one&#39;,&#39;two&#39;,&#39;th
+    ...: ree&#39;,&#39;four&#39;])
 
 In [62]: data
 Out[62]:
@@ -222,7 +211,7 @@ Colorado    4    5      6     7
 Utah        8    9     10    11
 New York   12   13     14    15
 
-In [63]: data['two']
+In [63]: data[&#39;two&#39;]
 Out[63]:
 Ohio         1
 Colorado     5
@@ -230,7 +219,7 @@ Utah         9
 New York    13
 Name: two, dtype: int64
 
-In [64]: data[['three','two']]
+In [64]: data[[&#39;three&#39;,&#39;two&#39;]]
 Out[64]:
           three  two
 Ohio          2    1
@@ -246,7 +235,7 @@ Ohio        0    1      2     3
 Colorado    4    5      6     7
 </code></pre>
 <p>布尔型数组也是默认选取行</p>
-<pre><code>In [66]: data[data['three'] &gt; 5]
+<pre><code>In [66]: data[data[&#39;three&#39;] &gt; 5]
 Out[66]:
           one  two  three  four
 Colorado    4    5      6     7
@@ -282,10 +271,8 @@ Colorado    0    5      6     7
 Utah        8    9     10    11
 New York   12   13     14    15
 </code></pre>
-<p>进阶选取，先选取列数据再选取行数据：<br>
-在新版本pandas中，复杂的选取方式我们可以通过以下2种方式<code>loc</code>函数和<code>iloc</code>函数。</p>
-<h3 id="loc函数">loc函数</h3>
-<p><code>loc</code>函数有以下多种方式来选取以及过滤数据的：</p>
+<p>进阶选取，先选取列数据再选取行数据：<br>在新版本pandas中，复杂的选取方式我们可以通过以下2种方式<code>loc</code>函数和<code>iloc</code>函数。</p>
+<h3 id="loc函数"><a href="#loc函数" class="headerlink" title="loc函数"></a>loc函数</h3><p><code>loc</code>函数有以下多种方式来选取以及过滤数据的：</p>
 <ul>
 <li>标签类型</li>
 <li>切片</li>
@@ -293,13 +280,13 @@ New York   12   13     14    15
 </ul>
 <p>它的语法为<code>data.loc[&lt;row selection&gt;, &lt;column selection&gt;]</code></p>
 <p><strong>标签类型</strong></p>
-<pre><code>In [75]: data.loc['Colorado',['two','three']]
+<pre><code>In [75]: data.loc[&#39;Colorado&#39;,[&#39;two&#39;,&#39;three&#39;]]
 Out[75]:
 two      5
 three    6
 Name: Colorado, dtype: int64
 </code></pre>
-<pre><code>In [101]: data.loc[:'Utah', 'two']
+<pre><code>In [101]: data.loc[:&#39;Utah&#39;, &#39;two&#39;]
 Out[101]:
 Ohio        0
 Colorado    5
@@ -307,7 +294,7 @@ Utah        9
 Name: two, dtype: int64
 </code></pre>
 <p><strong>切片</strong></p>
-<pre><code>In [112]: data.loc['Utah',:'two']
+<pre><code>In [112]: data.loc[&#39;Utah&#39;,:&#39;two&#39;]
 Out[112]:
 one    8
 two    9
@@ -330,8 +317,7 @@ Utah        8    9     10    11
 New York   12   13     14    15
 </code></pre>
 <p>由于<code>data.three &gt; 5</code>最终会返回一个Series对象，DataFrame会通过这个<strong>布尔型Series</strong>来相互匹配选取布尔值<code>True</code>对应的数据最终得到了过滤后的数据。</p>
-<h3 id="iloc函数">iloc函数</h3>
-<p><code>iloc</code>函数则是基于整数参数来获取数据的，它的语法为<code>data.loc[&lt;row selection&gt;, &lt;column selection&gt;]</code></p>
+<h3 id="iloc函数"><a href="#iloc函数" class="headerlink" title="iloc函数"></a>iloc函数</h3><p><code>iloc</code>函数则是基于整数参数来获取数据的，它的语法为<code>data.loc[&lt;row selection&gt;, &lt;column selection&gt;]</code></p>
 <pre><code>In [96]: data.iloc[2]
 Out[96]:
 one       8
@@ -340,8 +326,7 @@ three    10
 four     11
 Name: Utah, dtype: int64
 </code></pre>
-<p>单独选择了第三行，返回<code>Utah</code>的<code>Series</code>对象。因为参数中是一个单独的整数，所以<code>iloc</code>函数会返回<code>Series</code>对象。<br>
-如果想要它返回<code>DataFrame</code>对象，可以这么写：</p>
+<p>单独选择了第三行，返回<code>Utah</code>的<code>Series</code>对象。因为参数中是一个单独的整数，所以<code>iloc</code>函数会返回<code>Series</code>对象。<br>如果想要它返回<code>DataFrame</code>对象，可以这么写：</p>
 <pre><code>In [119]: data.iloc[[2]]
 Out[119]:
       one  two  three  four
