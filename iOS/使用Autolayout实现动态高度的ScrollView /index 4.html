@@ -1,0 +1,48 @@
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>使用Autolayout实现动态高度的ScrollView</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">使用Autolayout实现动态高度的ScrollView</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87"><span class="toc-text">准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E7%9A%84"><span class="toc-text">目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5"><span class="toc-text">实践</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/iOS"><i class="tag post-item-tag">iOS</i></a><a href="/tags/autolayout"><i class="tag post-item-tag">autolayout</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">使用Autolayout实现动态高度的ScrollView</h1><time class="has-text-grey" datetime="2015-03-22T03:12:19.000Z">2015-03-22</time><article class="mt-2 post-content"><p>=============================</p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><hr>
+<p>自从改用Autolayout作为界面布局的主要核心技术之后一直都没有做这方面的技术总结，最近打算写一系列关于Autolayout的文章，从比较基础的界面到复杂的界面都会去写，就当做是Autolayout的教程吧。</p>
+<h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><hr>
+<ol>
+<li> 首先你必须得先了解基本的Autolayout的使用方法和特性。</li>
+<li> 理解ScrollView在Autolayout中的特别之处。</li>
+</ol>
+<h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><hr>
+<ol>
+<li> 通过Autolayout实现ScrollView的动态布局。</li>
+<li> 实现简单的动态界面，并且能够让ScrollView在各种设备上正常运行。</li>
+<li> 步骤简单明确，不需要大量的布局代码。</li>
+</ol>
+<p>知道了自己要做什么之后就开始接下来的Autolayout实践过程吧。</p>
+<h3 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h3><hr>
+<p>首先创建一个支持Size Classes的界面,一般都选择Compact/Regular。</p>
+<p>添加一个Scrollview到ViewController的Container<br>View(也就是图中的View)中并且填满整个界面，然后添加上，下，左，右的约束。现在在添加一个UIView到Scrollview中同样撑满整个ScrollView，然后以Scrollview为父容器添加上下左右的约束，添加完成后会发现还是会有警告</p>
+<p>它提示我们ScrollView还未确定它的contentwidth和contentheight，这个问题就是在之前讲到的一个点，scrollview有一个特性就是当你使用autolayout确定了它的坐标的宽高是不够的，必须还要确定它的contentsize。那既然刚刚放入的UIView是ScrollView的子容器，那么它就有确定ScrollView的contentsize大小的功能，接下来我们要做的就是确定这个UIView的宽和高。</p>
+<p>现在我们让ScrollView中的View与Container View等高，与Scroll View等宽。</p>
+<p>接下来我们创建一个固定高度的界面，这个界面内容的高度是超过iPhone4的屏幕宽度的，我们要在不管理ScrollView的contentsize的情况下让ScrollView自动适配。</p>
+<p>我在界面中添加了一个label(toplabel)，一个棕色的uiview(colorview)，一个底部的label(bottomlabel)</p>
+<ul>
+<li>toplabel<ul>
+<li>  距container view的顶约束：35pt</li>
+<li>  位于container view横向居中的约束</li>
+<li>  底部约束与colorview的顶部：Standard</li>
+</ul>
+</li>
+<li>colorview<ul>
+<li>  顶部约束与toplabel的底部：Standard</li>
+<li>  left:8</li>
+<li>  right:8</li>
+<li>  底部约束与bottomlabel的顶部:Standard</li>
+</ul>
+</li>
+<li>bottomlabel<ul>
+<li>  顶部约束与colorview的底部：Standard</li>
+<li>  left:8</li>
+<li>  right:8</li>
+<li>  bottom:Standard</li>
+</ul>
+</li>
+</ul>
+<p>上面是2张模拟器的效果图，一张是iPhone4的，另外一张是iPhone6的效果图。我们可以看到刚刚我们制作的界面已经完美适配成功了，由于本人水平有限不会做gif图，所以效果不是很明显。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><hr>
+<p>适配Scrollview的过程中只要搞懂了Scrollview中有一个特性，那就是需要让编译器知道Scrollview的contentsize，只有知道了这个才能够做好适配，接下来的适配工作都是围绕着这点出发的，相信知道了这一点之后的你只要稍加思考就能够轻松驾驭Scrollview的适配。<br>而且使用Autolayout制作界面会比用绝对坐标方便很多也快很多，也不容易出错。刚刚做的适配根本就没有写一句代码就做到了完美适配，是不是很方便。希望越来越多的人能喜欢上Autolayout</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/ios/%E8%AE%B2%E8%AE%B2iOS%E7%9A%84URL%E5%8A%A0%E8%BD%BD%E7%B3%BB%E7%BB%9F%20/" title="讲讲iOS的URL加载系统"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 讲讲iOS的URL加载系统</span></a><a class="button is-default" href="/ios/%E5%88%9D%E6%8E%A2Size%20Classes%E7%AC%94%E8%AE%B0%20/" title="初探Size Classes笔记"><span class="has-text-weight-semibold">下一页: 初探Size Classes笔记</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="fuer4869/fuer4869.github.io" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>
