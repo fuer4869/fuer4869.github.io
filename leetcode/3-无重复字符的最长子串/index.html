@@ -12,7 +12,7 @@
 <li>lookup: 存储窗口中的字符集合，如果遇到重复则窗口往右移并缩小窗口</li>
 <li>left:  用于指向将被删除元素在<code>str</code>中的索引</li>
 </ul>
-<p><img src="https://raw.githubusercontent.com/fuer4869/imgbed/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202021-07-03%20%E4%B8%8B%E5%8D%887.05.46.png"></p>
+<p><img src="/images/leetcode-3.gif"></p>
 <p>我们只需遍历整个字符串，将遇到的字符放入窗口<code>lookup</code>中，用<code>maxL</code>记录最大窗口，<code>curL</code>记录当前窗口大小，如果遇到重复字符则缩小窗口并往右移。</p>
 <h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><pre><code class="python">class Solution:
     def lengthOfLongestSubstring(self, s: str) -&gt; int:
