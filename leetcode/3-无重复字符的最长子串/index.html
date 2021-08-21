@@ -10,7 +10,7 @@
 <li>curL:  代表当前符合无重复字符窗口的长度</li>
 <li>maxL: 代表遍历至现在遇到的最长窗口</li>
 <li>lookup: 存储窗口中的字符集合，如果遇到重复则窗口往右移并缩小窗口</li>
-<li>left:  用于指向将被删除元素在<code>str</code>中的索引</li>
+<li>left:  用于指向窗口左侧，如果发现窗口中有重复数字，则窗口往右移即<code>left+=1</code></li>
 </ul>
 <p><img src="/images/leetcode-3.gif"></p>
 <p>我们只需遍历整个字符串，将遇到的字符放入窗口<code>lookup</code>中，用<code>maxL</code>记录最大窗口，<code>curL</code>记录当前窗口大小，如果遇到重复字符则缩小窗口并往右移。</p>
