@@ -18,8 +18,13 @@
 <li>空间复杂度：O(N)</li>
 </ul>
 <h4 id="原地置换"><a href="#原地置换" class="headerlink" title="原地置换"></a>原地置换</h4><p>上面的解法空间复杂度是O(N)的，可以使用原地置换法来达到O(1)。</p>
-<p>题目中给出了<code>在一个长度为 n 的数组 nums 里的所有数字都在 0～n-1 的范围内</code> ，所以我们可以通过遍历数组来置换元素来排序，这样可以做到是<code>nums[i] == i</code>的效果。如果在遍历过程中遇到<code>nums[i] == nums[nums[i]]</code>说明遇到了重复元素，将它返回即可。</p>
+<p>题目中给出了<code>在一个长度为 n 的数组 nums 里的所有数字都在 0～n-1 的范围内</code> ，所以我们可以通过遍历数组来置换元素进行排序，这样可以做到是<code>nums[i] == i</code>的效果。如果在遍历过程中遇到<code>nums[i] == nums[nums[i]]</code>说明遇到了重复元素，将它返回即可。</p>
 <p><img src="https://raw.githubusercontent.com/fuer4869/imgbed/master/%E5%8E%9F%E5%9C%B0%E7%BD%AE%E6%8D%A2.gif"></p>
+<p><strong>算法过程</strong></p>
+<ol>
+<li>遍历数组通过交换操作使索引与值一一对应，直到<code>nums[i] == i</code>，交换下一个来达到排序的目的</li>
+<li>在不断交换的同时如果出现索引与值对应就说明遇到重复元素了</li>
+</ol>
 <h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><pre><code class="python">class Solution:
     def findRepeatNumber(self, nums: List[int]) -&gt; int:
         i = 0
