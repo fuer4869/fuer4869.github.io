@@ -13,7 +13,7 @@
 <li>链表A走完后就走链表B，链表B走完后就走链表A</li>
 <li>由于链表A走到a + c ， 链表B走到b + c的时候，链表B比链表A多走了一步，再把链表A指向链表B，链表B指向链表A，a + c + b = b + c + a，链表A与链表B必然会在某一点相交<code>ha==hb</code></li>
 <li>一旦<code>ha==hb</code>，遍历结束返回相交点，这个点必然是它们相交的起始点。</li>
-<li>如果这两个链表不想交，那ha最终会指向null，hb也将指向null。 返回<code>ha</code>即可</li>
+<li>如果这两个链表不相交，那ha最终会指向null，hb也将指向null。 返回<code>ha</code>即可</li>
 </ol>
 <p><strong>代码</strong></p>
 <pre><code class="python">
