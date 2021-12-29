@@ -1,0 +1,46 @@
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>54. 螺旋矩阵</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">54. 螺旋矩阵</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%8B%9F%E6%B3%95"><span class="toc-text">模拟法</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/%E4%B8%AD%E7%AD%89"><i class="tag post-item-tag">中等</i></a><a href="/tags/%E7%9F%A9%E9%98%B5"><i class="tag post-item-tag">矩阵</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">54. 螺旋矩阵</h1><time class="has-text-grey" datetime="2021-12-24T07:18:11.000Z">2021-12-24</time><article class="mt-2 post-content"><p><img src="/images/LeetCode_Sharing.png" alt=""></p>
+<a id="more"></a>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/spiral-matrix/">前往此题</a></p>
+</blockquote>
+<h3 id="模拟法">模拟法</h3>
+<p>我们可以模拟向内环绕的过程依次填入元素到数组中即可。</p>
+<ol>
+<li>生成一个<code>m×n</code>的矩阵<code>tar</code>,表示内旋过程的总步数</li>
+<li><code>l,r,t,b</code>代表矩阵的上下左右边界，边界会随着内旋的过程改变</li>
+<li><code>num</code>代表当前步数，开始循环后按照从左至右、从上至下、从右至左、从下至上的顺序执行，每次执行填入数据后将<code>num+=1</code>，然后更新边界</li>
+<li>最后注意<code>num</code>在循环过程中不能大于矩阵大小<code>tar</code></li>
+</ol>
+<p>![](…/images/2021-12-29 3.59.24.png)</p>
+<pre><code class="language-python">class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -&gt; List[int]:
+        l, r, t, b = 0, len(matrix[0]) - 1, 0, len(matrix) - 1
+        res, num, tar = [], 1, len(matrix[0]) * len(matrix)
+
+        while num &lt;= tar:
+            for i in range(l, r + 1):
+                if num &gt; tar: break
+                res.append(matrix[t][i])
+                num += 1
+            t += 1
+
+            for i in range(t, b + 1):
+                if num &gt; tar: break
+                res.append(matrix[i][r])
+                num += 1
+            r -= 1
+
+            for i in range(r, l - 1, -1):
+                if num &gt; tar: break
+                res.append(matrix[b][i])
+                num += 1
+            b -= 1
+
+            for i in range(b, t - 1, -1):
+                if num &gt; tar: break
+                res.append(matrix[i][l])
+                num += 1
+            l += 1
+        return res
+</code></pre>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><em></em><a class="button is-default" href="/143-%E9%87%8D%E6%8E%92%E9%93%BE%E8%A1%A8/" title="143. 重排链表"><span class="has-text-weight-semibold">下一页: 143. 重排链表</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="fuer4869/fuer4869.github.io" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>

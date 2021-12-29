@@ -9,7 +9,7 @@
 <li>我们先观察下这种情况：<code>[5,6,7,1,2,3,4]</code>，mid为<strong>1</strong>。<code>[low, mid-1]</code>是有序的，<code>[mid, high]</code>是无序的。我们只需先判断<code>target</code>在不在有序的那一侧，如果在就在<code>[low, mid-1]</code>中寻找，否则就在<code>[mid + 1, high]</code>中寻找。</li>
 <li>反过来也是，如：<code>[6,7,1,2,3,4,5]</code>，mid为<strong>2</strong>。此时<code>[mid, high]</code>是有序的，<code>[low, mid-1]</code>是无序的，先判断<code>target</code>在不在右侧，如果在就在<code>[mid, high]</code>中找，否则就在<code>[low, mid-1]</code>中找。</li>
 </ul>
-<p>![](../images/屏幕快照 2021-09-23 下午6.50.04.png)</p>
+<p><img src="/images/search-in-rotated-sorted-array.png"></p>
 <p><strong>代码</strong></p>
 <pre><code class="python">class Solution:
     def search(self, nums: List[int], target: int) -&gt; int:
