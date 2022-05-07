@@ -1,10 +1,10 @@
-<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>剑指 Offer 68 - I. 二叉搜索树的最近公共祖先</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">剑指 Offer 68 - I. 二叉搜索树的最近公共祖先</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E6%B3%95"><span class="toc-text">递归法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90"><span class="toc-text">复杂度分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E6%B3%95"><span class="toc-text">迭代法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="toc-text">代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90-1"><span class="toc-text">复杂度分析</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/%E6%A0%91"><i class="tag post-item-tag">树</i></a><a href="/tags/%E7%AE%80%E5%8D%95"><i class="tag post-item-tag">简单</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">剑指 Offer 68 - I. 二叉搜索树的最近公共祖先</h1><time class="has-text-grey" datetime="2021-01-27T14:52:40.000Z">2021-01-27</time><article class="mt-2 post-content"><p><img src="/images/LeetCode_Sharing.png"></p>
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>剑指 Offer 68 - I. 二叉搜索树的最近公共祖先</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">剑指 Offer 68 - I. 二叉搜索树的最近公共祖先</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E6%B3%95"><span class="toc-text">递归法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90"><span class="toc-text">复杂度分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E6%B3%95"><span class="toc-text">迭代法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81-2"><span class="toc-text">代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90-2"><span class="toc-text">复杂度分析</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/%E7%AE%80%E5%8D%95"><i class="tag post-item-tag">简单</i></a><a href="/tags/%E6%A0%91"><i class="tag post-item-tag">树</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">剑指 Offer 68 - I. 二叉搜索树的最近公共祖先</h1><time class="has-text-grey" datetime="2021-01-27T14:52:40.000Z">2021-01-27</time><article class="mt-2 post-content"><p><img src="/images/LeetCode_Sharing.png" alt=""></p>
 <a id="more"></a> 
-
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-zui-jin-gong-gong-zu-xian-lcof/">前往此题</a></p>
 </blockquote>
-<h3 id="递归法"><a href="#递归法" class="headerlink" title="递归法"></a>递归法</h3><p><strong>二叉搜索树祖先的定义</strong>：</p>
+<h3 id="递归法">递归法</h3>
+<p><strong>二叉搜索树祖先的定义</strong>：</p>
 <p>若节点<code>p</code>在节点<code>root</code>的左或者右子树中，或者<code>p=root</code>，则称<code>root</code>是<code>p</code>的<strong>祖先</strong>。</p>
 <p>根据<strong>祖先</strong>的定义，可以分析出以下几种情况：</p>
 <ol>
@@ -12,30 +12,35 @@
 <li>当<code>root.val &lt; p.val</code>, 则<code>p</code>在<code>root </code>的右子树中</li>
 <li>当<code>root.val &gt; p.val</code>，则<code>p</code>在<code>root</code>的左子树中</li>
 </ol>
-<p><img src="https://raw.githubusercontent.com/fuer4869/imgbed/master/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88%20.gif"></p>
-<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><pre><code class="python">class Solution:
-    def lowestCommonAncestor(self, root: &#39;TreeNode&#39;, p: &#39;TreeNode&#39;, q: &#39;TreeNode&#39;) -&gt; &#39;TreeNode&#39;:
+<p><img src="https://raw.githubusercontent.com/fuer4869/imgbed/master/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88%20.gif" alt=""></p>
+<h4 id="代码">代码</h4>
+<pre><code class="language-python">class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -&gt; 'TreeNode':
         if root.val &lt; p.val and root.val &lt; q.val:
             return self.lowestCommonAncestor(root.right, p, q)
         if root.val &gt; p.val and root.val &gt; q.val:
             return self.lowestCommonAncestor(root.left, p, q)
         return root
 </code></pre>
-<h4 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h4><ul>
+<h4 id="复杂度分析">复杂度分析</h4>
+<ul>
 <li>时间复杂度： O(N)</li>
 <li>空间复杂度： O(N)</li>
 </ul>
-<h3 id="迭代法"><a href="#迭代法" class="headerlink" title="迭代法"></a>迭代法</h3><p>迭代法的思路与递归法相同</p>
+<h3 id="迭代法">迭代法</h3>
+<p>迭代法的思路与递归法相同</p>
 <ol>
-<li>遍历查找节点<ul>
+<li>遍历查找节点
+<ul>
 <li>通过判断大小确定<code>p</code>,<code>q</code>在<code>root</code>的左侧还是右侧，在左子树就遍历<code>root.left</code>, 在右侧就遍历<code>root.right</code></li>
 <li>如果在两侧，<code>root</code>就是公共祖先节点</li>
 </ul>
 </li>
 <li>返回公共节点<code>root</code></li>
 </ol>
-<h4 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h4><pre><code class="python">class Solution:
-    def lowestCommonAncestor(self, root: &#39;TreeNode&#39;, p: &#39;TreeNode&#39;, q: &#39;TreeNode&#39;) -&gt; &#39;TreeNode&#39;:
+<h4 id="代码-2">代码</h4>
+<pre><code class="language-python">class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -&gt; 'TreeNode':
         while root:
             if root.val &lt; p.val and root.val &lt; q.val:
                 root = root.right
@@ -44,7 +49,8 @@
             else: break
         return root
 </code></pre>
-<h4 id="复杂度分析-1"><a href="#复杂度分析-1" class="headerlink" title="复杂度分析"></a>复杂度分析</h4><ul>
+<h4 id="复杂度分析-2">复杂度分析</h4>
+<ul>
 <li>时间复杂度:  O(N)</li>
 <li>空间复杂度:  O(N)</li>
 </ul>

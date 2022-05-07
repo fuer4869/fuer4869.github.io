@@ -1,6 +1,7 @@
-<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>iOS常见面试题</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">iOS常见面试题</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#iOS%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98"><span class="toc-text">iOS常见面试题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B1%BB%EF%BC%88class%EF%BC%89%E5%92%8C%E7%BB%93%E6%9E%84%E4%BD%93-struct-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="toc-text">类（class）和结构体(struct)有什么区别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#swift%E6%98%AF%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%98%E6%98%AF%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80"><span class="toc-text">swift是面向对象还是函数式编程语言</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8swift%E4%B8%AD%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%AF%E9%80%89%E6%80%A7%EF%BC%88Optional%EF%BC%89"><span class="toc-text">在swift中什么是可选性（Optional）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8swift%E4%B8%AD%EF%BC%8C%E4%BB%80%E4%B9%88%E6%98%AF%E6%B3%9B%E5%9E%8B"><span class="toc-text">在swift中，什么是泛型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E%E5%B9%B6%E6%AF%94%E8%BE%83%E5%85%B3%E9%94%AE%E8%AF%8D%EF%BC%9AOpen-Public-Internal-File-private%E5%92%8CPrivate"><span class="toc-text">说明并比较关键词：Open,Public,Internal,File-private和Private</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E%E6%AF%94%E8%BE%83%E5%85%B3%E9%94%AE%E8%AF%8D%EF%BC%9AStrong-Weak%E5%92%8CUnowned"><span class="toc-text">说明比较关键词：Strong, Weak和Unowned</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8Swift%E4%B8%AD%EF%BC%8C%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3copy-on-write"><span class="toc-text">在Swift中，如何理解copy-on-write</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%B1%9E%E6%80%A7%E8%A7%82%E5%AF%9F"><span class="toc-text">什么是属性观察</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E5%A6%82%E4%BD%95%E4%BF%AE%E6%94%B9%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">在结构体中如何修改成员变量的方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%94%A8swift%E5%AE%9E%E7%8E%B0%E6%88%96%EF%BC%88-%EF%BC%89%E6%93%8D%E4%BD%9C"><span class="toc-text">如何用swift实现或（||）操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0%EF%BC%9A%E8%BE%93%E5%85%A5%E4%BB%BB%E6%84%8F%E4%B8%80%E4%B8%AA%E6%95%B4%E6%95%B0%EF%BC%8C%E8%BE%93%E5%87%BA%E4%B8%BA%E8%BE%93%E5%85%A5%E7%9A%84%E6%95%B4%E6%95%B0-2"><span class="toc-text">实现一个函数：输入任意一个整数，输出为输入的整数+2</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0%EF%BC%9A%E6%B1%820-100%EF%BC%88%E5%8C%85%E6%8B%AC0%E5%92%8C100%EF%BC%89%E4%B8%AD%E4%B8%BA%E5%81%B6%E6%95%B0%E5%B9%B6%E4%B8%94%E6%81%B0%E5%A5%BD%E6%98%AF%E5%85%B6%E4%BB%96%E6%95%B0%E5%AD%97%E5%B9%B3%E6%96%B9%E7%9A%84%E6%95%B0%E5%AD%97"><span class="toc-text">实现一个函数：求0~100（包括0和100）中为偶数并且恰好是其他数字平方的数字</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Objective-C-%E9%9D%A2%E8%AF%95%E7%90%86%E8%AE%BA%E9%A2%98"><span class="toc-text">Objective-C 面试理论题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFARC"><span class="toc-text">什么是ARC</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E%E6%AF%94%E8%BE%83%E5%85%B3%E9%94%AE%E8%AF%8D%EF%BC%9Astrong%EF%BC%8Cweak%EF%BC%8Cassign%E5%92%8Ccopy"><span class="toc-text">说明比较关键词：strong，weak，assign和copy</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#runloop%E5%92%8C%E7%BA%BF%E7%A8%8B%E6%9C%89%E4%BB%80%E4%B9%88%E5%85%B3%E7%B3%BB"><span class="toc-text">runloop和线程有什么关系</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E%E5%B9%B6%E6%AF%94%E8%BE%83%E5%85%B3%E9%94%AE%E8%AF%8D%EF%BC%9A-weak%E5%92%8C-block"><span class="toc-text">说明并比较关键词：____weak和____block</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFblock%EF%BC%9F%E5%AE%83%E5%92%8C%E4%BB%A3%E7%90%86%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-text">什么是block？它和代理的区别是什么</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Objective-C%E9%9D%A2%E8%AF%95%E5%AE%9E%E6%88%98%E9%A2%98"><span class="toc-text">Objective-C面试实战题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%B6%E6%9E%84%E8%A7%A3%E8%80%A6%E4%BB%A3%E7%A0%81%E8%80%83%E6%9F%A5"><span class="toc-text">架构解耦代码考查</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E8%AF%AD%E6%B3%95%E8%80%83%E6%9F%A5"><span class="toc-text">内存管理语法考查</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E8%AF%AD%E6%B3%95%E8%80%83%E6%9F%A5"><span class="toc-text">多线程语法考查</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A5scheduledTimerWithTimeInterval%E7%9A%84%E6%96%B9%E5%BC%8F%E8%A7%A6%E5%8F%91%E7%9A%84timer%EF%BC%8C%E5%9C%A8%E6%BB%91%E5%8A%A8%E9%A1%B5%E9%9D%A2%E4%B8%8A%E7%9A%84%E5%88%97%E8%A1%A8%E6%97%B6%EF%BC%8Ctimer%E4%BC%9A%E6%9A%82%E5%81%9C%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%EF%BC%9F%E8%AF%A5%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3"><span class="toc-text">以scheduledTimerWithTimeInterval的方式触发的timer，在滑动页面上的列表时，timer会暂停，为什么？该如何解决</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Swift-VS-Objective-C"><span class="toc-text">Swift VS Objective-C</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Swift%E4%B8%BA%E4%BB%80%E4%B9%88%E5%B0%86String%EF%BC%8CArray%E5%92%8CDictionary%E8%AE%BE%E8%AE%A1%E6%88%90%E5%80%BC%E7%B1%BB%E5%9E%8B"><span class="toc-text">Swift为什么将String，Array和Dictionary设计成值类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%94%A8Swift%E5%B0%86%E5%8D%8F%E8%AE%AE%E4%B8%AD%E7%9A%84%E9%83%A8%E5%88%86%E6%96%B9%E6%B3%95%E8%AE%BE%E8%AE%A1%E6%88%90%E5%8F%AF%E9%80%89"><span class="toc-text">如何用Swift将协议中的部分方法设计成可选</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/iOS"><i class="tag post-item-tag">iOS</i></a><a href="/tags/%E9%9D%A2%E8%AF%95"><i class="tag post-item-tag">面试</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">iOS常见面试题</h1><time class="has-text-grey" datetime="2021-09-02T11:24:05.000Z">2021-09-02</time><article class="mt-2 post-content"><h3 id="iOS常见面试题"><a href="#iOS常见面试题" class="headerlink" title="iOS常见面试题"></a>iOS常见面试题</h3><a id="more"></a>
-
-<h4 id="类（class）和结构体-struct-有什么区别"><a href="#类（class）和结构体-struct-有什么区别" class="headerlink" title="类（class）和结构体(struct)有什么区别"></a>类（class）和结构体(struct)有什么区别</h4><p>在<strong>swift</strong>中，<strong>class</strong>是引用类型，<strong>struct</strong>是值类型。值类型在传递和赋值时将进行复制，而引用类型则只会使用引用对象的一个指向。</p>
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>iOS常见面试题</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">iOS常见面试题</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#iOS%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98"><span class="toc-text">iOS常见面试题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B1%BB%EF%BC%88class%EF%BC%89%E5%92%8C%E7%BB%93%E6%9E%84%E4%BD%93-struct-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="toc-text">类（class）和结构体(struct)有什么区别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#swift%E6%98%AF%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%98%E6%98%AF%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80"><span class="toc-text">swift是面向对象还是函数式编程语言</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8swift%E4%B8%AD%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%AF%E9%80%89%E6%80%A7%EF%BC%88Optional%EF%BC%89"><span class="toc-text">在swift中什么是可选性（Optional）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8swift%E4%B8%AD%EF%BC%8C%E4%BB%80%E4%B9%88%E6%98%AF%E6%B3%9B%E5%9E%8B"><span class="toc-text">在swift中，什么是泛型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E%E5%B9%B6%E6%AF%94%E8%BE%83%E5%85%B3%E9%94%AE%E8%AF%8D%EF%BC%9AOpen-Public-Internal-File-private%E5%92%8CPrivate"><span class="toc-text">说明并比较关键词：Open,Public,Internal,File-private和Private</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E%E6%AF%94%E8%BE%83%E5%85%B3%E9%94%AE%E8%AF%8D%EF%BC%9AStrong-Weak%E5%92%8CUnowned"><span class="toc-text">说明比较关键词：Strong, Weak和Unowned</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8Swift%E4%B8%AD%EF%BC%8C%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3copy-on-write"><span class="toc-text">在Swift中，如何理解copy-on-write</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%B1%9E%E6%80%A7%E8%A7%82%E5%AF%9F"><span class="toc-text">什么是属性观察</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E5%A6%82%E4%BD%95%E4%BF%AE%E6%94%B9%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">在结构体中如何修改成员变量的方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%94%A8swift%E5%AE%9E%E7%8E%B0%E6%88%96%EF%BC%88-%EF%BC%89%E6%93%8D%E4%BD%9C"><span class="toc-text">如何用swift实现或（||）操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0%EF%BC%9A%E8%BE%93%E5%85%A5%E4%BB%BB%E6%84%8F%E4%B8%80%E4%B8%AA%E6%95%B4%E6%95%B0%EF%BC%8C%E8%BE%93%E5%87%BA%E4%B8%BA%E8%BE%93%E5%85%A5%E7%9A%84%E6%95%B4%E6%95%B0-2"><span class="toc-text">实现一个函数：输入任意一个整数，输出为输入的整数+2</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0%EF%BC%9A%E6%B1%820-100%EF%BC%88%E5%8C%85%E6%8B%AC0%E5%92%8C100%EF%BC%89%E4%B8%AD%E4%B8%BA%E5%81%B6%E6%95%B0%E5%B9%B6%E4%B8%94%E6%81%B0%E5%A5%BD%E6%98%AF%E5%85%B6%E4%BB%96%E6%95%B0%E5%AD%97%E5%B9%B3%E6%96%B9%E7%9A%84%E6%95%B0%E5%AD%97"><span class="toc-text">实现一个函数：求0~100（包括0和100）中为偶数并且恰好是其他数字平方的数字</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Objective-C-%E9%9D%A2%E8%AF%95%E7%90%86%E8%AE%BA%E9%A2%98"><span class="toc-text">Objective-C 面试理论题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFARC"><span class="toc-text">什么是ARC</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E%E6%AF%94%E8%BE%83%E5%85%B3%E9%94%AE%E8%AF%8D%EF%BC%9Astrong%EF%BC%8Cweak%EF%BC%8Cassign%E5%92%8Ccopy"><span class="toc-text">说明比较关键词：strong，weak，assign和copy</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#runloop%E5%92%8C%E7%BA%BF%E7%A8%8B%E6%9C%89%E4%BB%80%E4%B9%88%E5%85%B3%E7%B3%BB"><span class="toc-text">runloop和线程有什么关系</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E%E5%B9%B6%E6%AF%94%E8%BE%83%E5%85%B3%E9%94%AE%E8%AF%8D%EF%BC%9A-weak%E5%92%8C-block"><span class="toc-text">说明并比较关键词：____weak和____block</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFblock%EF%BC%9F%E5%AE%83%E5%92%8C%E4%BB%A3%E7%90%86%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-text">什么是block？它和代理的区别是什么</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Objective-C%E9%9D%A2%E8%AF%95%E5%AE%9E%E6%88%98%E9%A2%98"><span class="toc-text">Objective-C面试实战题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%B6%E6%9E%84%E8%A7%A3%E8%80%A6%E4%BB%A3%E7%A0%81%E8%80%83%E6%9F%A5"><span class="toc-text">架构解耦代码考查</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E8%AF%AD%E6%B3%95%E8%80%83%E6%9F%A5"><span class="toc-text">内存管理语法考查</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E8%AF%AD%E6%B3%95%E8%80%83%E6%9F%A5"><span class="toc-text">多线程语法考查</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A5scheduledTimerWithTimeInterval%E7%9A%84%E6%96%B9%E5%BC%8F%E8%A7%A6%E5%8F%91%E7%9A%84timer%EF%BC%8C%E5%9C%A8%E6%BB%91%E5%8A%A8%E9%A1%B5%E9%9D%A2%E4%B8%8A%E7%9A%84%E5%88%97%E8%A1%A8%E6%97%B6%EF%BC%8Ctimer%E4%BC%9A%E6%9A%82%E5%81%9C%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%EF%BC%9F%E8%AF%A5%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3"><span class="toc-text">以scheduledTimerWithTimeInterval的方式触发的timer，在滑动页面上的列表时，timer会暂停，为什么？该如何解决</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Swift-VS-Objective-C"><span class="toc-text">Swift VS Objective-C</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Swift%E4%B8%BA%E4%BB%80%E4%B9%88%E5%B0%86String%EF%BC%8CArray%E5%92%8CDictionary%E8%AE%BE%E8%AE%A1%E6%88%90%E5%80%BC%E7%B1%BB%E5%9E%8B"><span class="toc-text">Swift为什么将String，Array和Dictionary设计成值类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%94%A8Swift%E5%B0%86%E5%8D%8F%E8%AE%AE%E4%B8%AD%E7%9A%84%E9%83%A8%E5%88%86%E6%96%B9%E6%B3%95%E8%AE%BE%E8%AE%A1%E6%88%90%E5%8F%AF%E9%80%89"><span class="toc-text">如何用Swift将协议中的部分方法设计成可选</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/iOS"><i class="tag post-item-tag">iOS</i></a><a href="/tags/%E9%9D%A2%E8%AF%95"><i class="tag post-item-tag">面试</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">iOS常见面试题</h1><time class="has-text-grey" datetime="2021-09-02T11:24:05.000Z">2021-09-02</time><article class="mt-2 post-content"><h3 id="iOS常见面试题">iOS常见面试题</h3>
+<a id="more"></a>
+<h4 id="类（class）和结构体-struct-有什么区别">类（class）和结构体(struct)有什么区别</h4>
+<p>在<strong>swift</strong>中，<strong>class</strong>是引用类型，<strong>struct</strong>是值类型。值类型在传递和赋值时将进行复制，而引用类型则只会使用引用对象的一个指向。</p>
 <p><strong>class</strong>的如下功能是<strong>struct</strong>没有的：</p>
 <ul>
 <li>可以继承，子类可以使用父类的特性和方法</li>
@@ -13,41 +14,45 @@
 <li>结构小，适用于复制操作，相较于<code>class</code>的实例被多次引用，<code>struct</code>更加安全</li>
 <li>无须担心内存泄漏或者多线程的问题</li>
 </ul>
-<h4 id="swift是面向对象还是函数式编程语言"><a href="#swift是面向对象还是函数式编程语言" class="headerlink" title="swift是面向对象还是函数式编程语言"></a>swift是面向对象还是函数式编程语言</h4><p>swift即是面向对象的编程语言，也是函数式编程语言。</p>
+<h4 id="swift是面向对象还是函数式编程语言">swift是面向对象还是函数式编程语言</h4>
+<p>swift即是面向对象的编程语言，也是函数式编程语言。</p>
 <p>swift支持<code>reduce、map、filter</code>等函数式方法，所以是函数式编程语言</p>
-<h4 id="在swift中什么是可选性（Optional）"><a href="#在swift中什么是可选性（Optional）" class="headerlink" title="在swift中什么是可选性（Optional）"></a>在swift中什么是可选性（Optional）</h4><p><code>Objective-C</code>中<code>nil</code>: 表示缺少一个合法的对象，它指向不存在对象的指针</p>
+<h4 id="在swift中什么是可选性（Optional）">在swift中什么是可选性（Optional）</h4>
+<p><code>Objective-C</code>中<code>nil</code>: 表示缺少一个合法的对象，它指向不存在对象的指针</p>
 <p><code>swift</code>中的<code>nil</code>：表示任意类型的值缺失，它是一个确定的值，这个值就是表示缺失</p>
 <p>所以在<code>swift</code>中当我们在声明类型的时候需要考虑该类型会不会有值缺失的情况，此为可选类型。</p>
 <p><code>?</code>声明可选类型：</p>
-<pre><code class="swift">let status: Int? = 1  //声明可选Int类型常量，值为1
+<pre><code class="language-swift">let status: Int? = 1  //声明可选Int类型常量，值为1
 var address: String? = &quot;上海&quot; //声明可选String类型变量，初始值为&quot;上海&quot;
 var p: Person?   // 声明可选Person类变量，初始值为nil
 </code></pre>
 <p>需要注意的是<code>Int</code>与<code>Int?</code>是不同的，<code>Int?</code>表示可选的<code>Int</code>类型，可以赋值为<code>nil</code>，而<code>Int</code>不可以赋值为<code>nil</code></p>
 <p><strong>隐式可选类型</strong></p>
 <p>隐式可选类型<code>!</code>也是可选类型的一种。都知道可选类型在使用中需要确定它是否是空值，为了告诉编译器可选类型是有值的</p>
-<pre><code class="swift">var dog: String? = &quot;wangcai&quot;
-let cat: String = dog   // Error: Value of optional type &#39;String?&#39; not unwrapped; did you mean to use &#39;!&#39; or &#39;?&#39;?
+<pre><code class="language-swift">var dog: String? = &quot;wangcai&quot;
+let cat: String = dog   // Error: Value of optional type 'String?' not unwrapped; did you mean to use '!' or '?'?
 </code></pre>
 <p>如上，常量<code>cat</code>在接受赋值时无法确定变量<code>dog</code>是否有值，所以编译器会报错。可以用隐式解析来表示该可选类型有值</p>
-<pre><code class="swift">var dog: String? = &quot;wangcai&quot;
+<pre><code class="language-swift">var dog: String? = &quot;wangcai&quot;
 let cat: String = dog!
 </code></pre>
 <blockquote>
 <p>如果一个变量之后可能变成 <code>nil</code> 的话请不要使用隐式解析可选类型。如果你需要在变量的生命周期中判断是否是 <code>nil</code> 的话，请使用普通可选类型。</p>
 </blockquote>
-<h4 id="在swift中，什么是泛型"><a href="#在swift中，什么是泛型" class="headerlink" title="在swift中，什么是泛型"></a>在swift中，什么是泛型</h4><p>泛型的功能主要是为了增加代码的灵活性而生的。</p>
+<h4 id="在swift中，什么是泛型">在swift中，什么是泛型</h4>
+<p>泛型的功能主要是为了增加代码的灵活性而生的。</p>
 <p>如我们需要实现一个方法来交换两个<code>Int</code>值:</p>
-<pre><code class="swift">func swap (_ a: inout Int, _b: inout Int) &#123;
+<pre><code class="language-swift">func swap (_ a: inout Int, _b: inout Int) &#123;
     (a, b) = (b, a)
 &#125;
 </code></pre>
 <p>此时如果我们还需要实现交换<code>Float</code>类型的值交换，就需要另外再写一个同样逻辑的方法，这样并不高效。泛型就是为了解决这种问题而来的：</p>
-<pre><code class="swift">func swap&lt;T&gt; (_ a: inout T, _b: inout T) &#123;
+<pre><code class="language-swift">func swap&lt;T&gt; (_ a: inout T, _b: inout T) &#123;
     (a, b) = (b, a)
 &#125;
 </code></pre>
-<h4 id="说明并比较关键词：Open-Public-Internal-File-private和Private"><a href="#说明并比较关键词：Open-Public-Internal-File-private和Private" class="headerlink" title="说明并比较关键词：Open,Public,Internal,File-private和Private"></a>说明并比较关键词：Open,Public,Internal,File-private和Private</h4><p>Swift有五个级别的访问控制权限，从高到低分别为Open, Public, Internal, File-private 和 Private</p>
+<h4 id="说明并比较关键词：Open-Public-Internal-File-private和Private">说明并比较关键词：Open,Public,Internal,File-private和Private</h4>
+<p>Swift有五个级别的访问控制权限，从高到低分别为Open, Public, Internal, File-private 和 Private</p>
 <p>它们遵循的基本原则是：高级别的变量不允许被定义为低级别变量的成员变量。比如一个Private的class中不能含有Public的string值。反之，Public的class中可以含有Private的Int值</p>
 <ul>
 <li>Open: 具备最高的访问权。其修饰的类和方法能被任意Module访问和重写</li>
@@ -55,19 +60,22 @@ let cat: String = dog!
 <li>Internal（默认）:  表示当前定义的Moudle中访问和重写，可以被一个Moudle中的多个文件访问但不能被其他Moudle访问</li>
 <li>File-Private : 表示其修饰的对象只能在当前文件中使用</li>
 </ul>
-<h4 id="说明比较关键词：Strong-Weak和Unowned"><a href="#说明比较关键词：Strong-Weak和Unowned" class="headerlink" title="说明比较关键词：Strong, Weak和Unowned"></a>说明比较关键词：Strong, Weak和Unowned</h4><p><strong>内存管理</strong></p>
+<h4 id="说明比较关键词：Strong-Weak和Unowned">说明比较关键词：Strong, Weak和Unowned</h4>
+<p><strong>内存管理</strong></p>
 <p>一个对象在没有任何强引用指向它时，所占用的内存会被回收。反之，只要有任何一个强引用指向该对象，它就会一直存在于内存中。</p>
 <ul>
 <li>Strong代表强引用，是默认属性。当一个对象被声明为Strong时，表示父层级对该对象有一个强引用的指向。此时，该对象的引用计数会增加1</li>
 <li>Weak代表弱引用。当一个对象被声明为Weak时，表示父层级对该引用对象没有指向，该对象必须是可选类型变量，所以该对象的引用计数不会增加1。在该独享被释放后，弱引用也随即消失。继续访问该对象，程序会得到nil，不会崩溃。</li>
 <li>Unowned与弱引用的本质一样。唯一不同的是，对象被释放后，依然有一个无效的引用指向对象，它不是Optional，也不指向nil。如果继续访问该对象，则程序就会崩溃。</li>
 </ul>
-<h4 id="在Swift中，如何理解copy-on-write"><a href="#在Swift中，如何理解copy-on-write" class="headerlink" title="在Swift中，如何理解copy-on-write"></a>在Swift中，如何理解copy-on-write</h4><p><strong>内存管理</strong></p>
+<h4 id="在Swift中，如何理解copy-on-write">在Swift中，如何理解copy-on-write</h4>
+<p><strong>内存管理</strong></p>
 <p>当值类型（比如struct）在复制时，复制的对象和原对象实际上在内存中指向同一对象。当且仅当修改复制后的对象时，才会在内存中重新创建一个新的对象。下面举一个例子：</p>
-<p>![](../images/屏幕快照 2021-09-24 下午7.21.27.png)</p>
+<p>![](…/images/屏幕快照 2021-09-24 下午7.21.27.png)</p>
 <p>复制的数组<code>arrayB</code>和原数组<code>arrayA</code>一开始共享同一个地址，直到其中之一发生改变。这样设计使得值类型可以被多次复制而不会耗费多余的内存，只有变化的时候才会增加开销。</p>
-<h4 id="什么是属性观察"><a href="#什么是属性观察" class="headerlink" title="什么是属性观察"></a>什么是属性观察</h4><p>属性观察是指在当前类型内对特定属性进行监视并作出响应行为。具体有两种：<code>willSet</code>和<code>didSet</code></p>
-<pre><code class="swift">var title: String &#123;
+<h4 id="什么是属性观察">什么是属性观察</h4>
+<p>属性观察是指在当前类型内对特定属性进行监视并作出响应行为。具体有两种：<code>willSet</code>和<code>didSet</code></p>
+<pre><code class="language-swift">var title: String &#123;
     willSet &#123;
         print(&quot;title will set from \(title) to \(newValue)&quot;)
     &#125;
@@ -77,8 +85,9 @@ let cat: String = dog!
 &#125;
 </code></pre>
 <p>但是在初始化方法对属性的设定以及在<code>willSet</code>和<code>didSet</code>中对属性的再次设定都不会触发属性观察。</p>
-<h4 id="在结构体中如何修改成员变量的方法"><a href="#在结构体中如何修改成员变量的方法" class="headerlink" title="在结构体中如何修改成员变量的方法"></a>在结构体中如何修改成员变量的方法</h4><p>一般在结构体中不允许修改成员变量，但是可以通过在函数<code>func changeName()</code>的前面加上关键词<code>mutating</code>表示该方法会修改结构体中自己的成员变量。</p>
-<pre><code class="swift">protocol Pet &#123;
+<h4 id="在结构体中如何修改成员变量的方法">在结构体中如何修改成员变量的方法</h4>
+<p>一般在结构体中不允许修改成员变量，但是可以通过在函数<code>func changeName()</code>的前面加上关键词<code>mutating</code>表示该方法会修改结构体中自己的成员变量。</p>
+<pre><code class="language-swift">protocol Pet &#123;
     var name: String &#123; get set &#125;
 &#125;
 
@@ -90,8 +99,9 @@ struct MyDog: Pet &#123;
     &#125;
 &#125;
 </code></pre>
-<h4 id="如何用swift实现或（-）操作"><a href="#如何用swift实现或（-）操作" class="headerlink" title="如何用swift实现或（||）操作"></a>如何用swift实现或（||）操作</h4><p>虽然解法有很多如：</p>
-<pre><code class="swift">func ||(left: Bool, right: Bool)-&gt; Bool &#123;
+<h4 id="如何用swift实现或（-）操作">如何用swift实现或（||）操作</h4>
+<p>虽然解法有很多如：</p>
+<pre><code class="language-swift">func ||(left: Bool, right: Bool)-&gt; Bool &#123;
   if left &#123;
     return true
   &#125;else &#123;
@@ -101,7 +111,7 @@ struct MyDog: Pet &#123;
 </code></pre>
 <p>但其实这种做法是违背了或（||）操作的本质的，也就是当表达式左边的值为真的时候无须计算表达式右边的值。</p>
 <p>正确做法：</p>
-<pre><code class="swift">func ||(left: Bool, right: @autoclosure () -&gt; Bool) -&gt; Bool &#123;
+<pre><code class="language-swift">func ||(left: Bool, right: @autoclosure () -&gt; Bool) -&gt; Bool &#123;
   if left &#123;
     return true
   &#125;else &#123;
@@ -110,10 +120,11 @@ struct MyDog: Pet &#123;
 &#125;
 </code></pre>
 <p><code>autoclosure</code>可以将表达式右边的值的计算推迟到判定<strong>left</strong>为<strong>false</strong>时，这样就可以避免因为第一种方法带来的不必要的开销了。</p>
-<h4 id="实现一个函数：输入任意一个整数，输出为输入的整数-2"><a href="#实现一个函数：输入任意一个整数，输出为输入的整数-2" class="headerlink" title="实现一个函数：输入任意一个整数，输出为输入的整数+2"></a>实现一个函数：输入任意一个整数，输出为输入的整数+2</h4><p><strong>柯里化currying</strong></p>
+<h4 id="实现一个函数：输入任意一个整数，输出为输入的整数-2">实现一个函数：输入任意一个整数，输出为输入的整数+2</h4>
+<p><strong>柯里化currying</strong></p>
 <p>这种情况直接返回<code>num+2</code>明显不是一个最优解，如果再遇到<code>num+3，num + 4</code>用直接返回会造成大量重复代码。</p>
 <p>可以通过柯里化一个方法模板来避免这种情况：</p>
-<pre><code class="swift">func addTo(adder: Int) -&gt; (Int) -&gt; Int &#123;
+<pre><code class="language-swift">func addTo(adder: Int) -&gt; (Int) -&gt; Int &#123;
     // 通过柯里化将增量adder放入函数中并作为addTo函数的返回值
     return &#123;
         num in return num + adder
@@ -126,8 +137,9 @@ let addTwo = addTo(adder: 2)
 // 最后传递给增量函数addTwo一个被相加的数
 let result = addTwo(6)
 </code></pre>
-<h4 id="实现一个函数：求0-100（包括0和100）中为偶数并且恰好是其他数字平方的数字"><a href="#实现一个函数：求0-100（包括0和100）中为偶数并且恰好是其他数字平方的数字" class="headerlink" title="实现一个函数：求0~100（包括0和100）中为偶数并且恰好是其他数字平方的数字"></a>实现一个函数：求0~100（包括0和100）中为偶数并且恰好是其他数字平方的数字</h4><p><strong>函数式编程</strong></p>
-<pre><code class="swift">func evenSquareNums(from: Int, to: Int) -&gt; [Int] &#123;
+<h4 id="实现一个函数：求0-100（包括0和100）中为偶数并且恰好是其他数字平方的数字">实现一个函数：求0~100（包括0和100）中为偶数并且恰好是其他数字平方的数字</h4>
+<p><strong>函数式编程</strong></p>
+<pre><code class="language-swift">func evenSquareNums(from: Int, to: Int) -&gt; [Int] &#123;
     var res = [Int]()
     
     for num in from...to where num % 2 == 0 &#123;
@@ -141,13 +153,16 @@ let result = addTwo(6)
 evenSquareNums(from: 0, to: 100)
 </code></pre>
 <p>这个函数可以用函数式编程进行优化：</p>
-<pre><code class="swift">var res = (0...10).map&#123; $0 * $0 &#125;.filter&#123; $0 % 2 == 0 &#125;
+<pre><code class="language-swift">var res = (0...10).map&#123; $0 * $0 &#125;.filter&#123; $0 % 2 == 0 &#125;
 </code></pre>
-<h3 id="Objective-C-面试理论题"><a href="#Objective-C-面试理论题" class="headerlink" title="Objective-C 面试理论题"></a>Objective-C 面试理论题</h3><h4 id="什么是ARC"><a href="#什么是ARC" class="headerlink" title="什么是ARC"></a>什么是ARC</h4><p><strong>内存管理</strong></p>
+<h3 id="Objective-C-面试理论题">Objective-C 面试理论题</h3>
+<h4 id="什么是ARC">什么是ARC</h4>
+<p><strong>内存管理</strong></p>
 <p>它是Objective-C的内存管理机制，简单的说是代码中自动加入了retain/release，原先需要手动添加用来处理内存管理的引用计数的代码可以由编译器自动处理。</p>
 <p>以前的手动释放称为MRC</p>
 <p>Garbage Collection在运行时管理内存，可以解决retain cycle，而ARC在编译时管理内存。</p>
-<h4 id="说明比较关键词：strong，weak，assign和copy"><a href="#说明比较关键词：strong，weak，assign和copy" class="headerlink" title="说明比较关键词：strong，weak，assign和copy"></a>说明比较关键词：strong，weak，assign和copy</h4><p><strong>内存管理</strong></p>
+<h4 id="说明比较关键词：strong，weak，assign和copy">说明比较关键词：strong，weak，assign和copy</h4>
+<p><strong>内存管理</strong></p>
 <ul>
 <li><strong>strong</strong> 表示指向并拥有该对象。其修饰的对象引用计数会增加1。该对象只要引用计数不为0，就不会被销毁。</li>
 <li><strong>weak</strong> 表示指向但不拥有该对象。其修饰的对象引用计数不会增加。无须手动设置，该对象会自行在内存中被销毁。</li>
@@ -156,25 +171,30 @@ evenSquareNums(from: 0, to: 100)
 <li><strong>copy</strong>与<strong>strong</strong>类似。不同之处是，<strong>strong</strong>的复制时多个指针指向同一个地址，而<strong>copy</strong>的复制时每次会在内存中复制一份对象，指针指向不同地址。<strong>copy</strong>一般用在修饰有对应可变类型的不可变对象上，如<strong>NSString</strong>，<strong>NSArray</strong>和<strong>NSDictionary</strong>。</li>
 </ul>
 <p>在oc中，基本数据类型默认关键字是<strong>atomic</strong>，<strong>readwrite</strong>和<strong>assign</strong>；普通属性的默认关键字是<strong>atomic</strong>，<strong>readwrite</strong>和<strong>strong</strong>。</p>
-<h4 id="runloop和线程有什么关系"><a href="#runloop和线程有什么关系" class="headerlink" title="runloop和线程有什么关系"></a>runloop和线程有什么关系</h4><p><strong>线程</strong></p>
+<h4 id="runloop和线程有什么关系">runloop和线程有什么关系</h4>
+<p><strong>线程</strong></p>
 <p><strong>runloop</strong>是每一个线程一直运行的一个对象，它主要用来负责响应需要处理的事件和消息。每一个线程都有且仅有一个<strong>runloop</strong>与其对应，没有线程就没有<strong>runloop</strong>。</p>
 <p>在所有线程中，只有主线程的<strong>runloop</strong>是默认启动的，<strong>main</strong>函数会设置一个<strong>NSURLLoop</strong>对象。而其他线程的<strong>runloop</strong>默认是没有启动的，可以通过<code>[NSRunLoop currentRunLoop]</code>来启动。</p>
 <p>Runloop的作用就是为了保持线程不会被退出，可以等待事件而不会因为事件结束了就退出了，等待期间会处于休眠状态。</p>
-<h3 id="说明并比较关键词：-weak和-block"><a href="#说明并比较关键词：-weak和-block" class="headerlink" title="说明并比较关键词：____weak和____block"></a>说明并比较关键词：____weak和____block</h3><p><strong>变量修改</strong></p>
+<h3 id="说明并比较关键词：-weak和-block">说明并比较关键词：____weak和____block</h3>
+<p><strong>变量修改</strong></p>
 <ul>
 <li>__ weak 与 weak基本相同。前者用于修饰变量，后者用于修饰属性。__weak主要用于防止block中的循环引用。</li>
 <li>__ block 也用于修饰变量。它是引用修饰，所以其修饰的值是动态变化的，即可以被重新赋值的。__block用于修饰某些<strong>block</strong>内部将要修改的外部变量。</li>
 <li>__ weak 和 __ block 的使用场景几乎与<strong>block</strong>息息相关。所谓的<strong>block</strong>，就是oc对于闭包的实现。闭包就是没有名字的函数，或者可以理解为指向函数的指针。</li>
 </ul>
-<h4 id="什么是block？它和代理的区别是什么"><a href="#什么是block？它和代理的区别是什么" class="headerlink" title="什么是block？它和代理的区别是什么"></a>什么是block？它和代理的区别是什么</h4><p><strong>回调</strong></p>
+<h4 id="什么是block？它和代理的区别是什么">什么是block？它和代理的区别是什么</h4>
+<p><strong>回调</strong></p>
 <p>在iOS中，block和代理都是回调的方式，block是一段封装好的代码。</p>
 <p>而代理的声明和实现一般分开，比如<strong>UITableViewDelegate</strong>就是代理的声明在<strong>UITableView</strong>中，实现在某个<strong>UIViewController</strong>中。</p>
 <p><strong>Block</strong>和代理的区别首先在于，<strong>block</strong>集中代码块，而代理分散代码块，所以<strong>block</strong>更适用于轻便简单的回调，如网络传输。而代理适合于公共接口较多的情况，这样做也更易于解耦代码架构。</p>
 <p><strong>Block</strong>运行成本比代理高。<strong>block</strong>出栈时，需要将使用的栈内存复制到堆内存，如果是对象就加引用计数。</p>
 <p><strong>delegate</strong>则只是保存了一个对象指针，直接回调并没有额外的消耗。</p>
-<h2 id="Objective-C面试实战题"><a href="#Objective-C面试实战题" class="headerlink" title="Objective-C面试实战题"></a>Objective-C面试实战题</h2><h4 id="架构解耦代码考查"><a href="#架构解耦代码考查" class="headerlink" title="架构解耦代码考查"></a>架构解耦代码考查</h4><p><strong>属性声明</strong> </p>
+<h2 id="Objective-C面试实战题">Objective-C面试实战题</h2>
+<h4 id="架构解耦代码考查">架构解耦代码考查</h4>
+<p><strong>属性声明</strong></p>
 <p>请问下面代码有什么问题？</p>
-<pre><code class="swift">typedef enmu &#123;
+<pre><code class="language-swift">typedef enmu &#123;
   Normal;
   VIP;
 &#125;CustomerType;
@@ -191,7 +211,7 @@ evenSquareNums(from: 0, to: 100)
 <li><strong>enum</strong>定义的写法不够好。官方推荐使用<strong>NS_ENUM</strong>来定义枚举。同时在枚举的诶个类型前应加上<strong>enum</strong>的名称。</li>
 <li><strong>UIImage</strong>不应该出现在<strong>Customer</strong>中。<strong>Customer</strong>明显是一个<strong>Model</strong>类，<strong>UIImage</strong>应该归属于<strong>View</strong>部分。无论是<strong>MVC</strong>还是<strong>MVVM</strong>，抑或是<strong>VIPER</strong>，<strong>Model</strong>都应该和<strong>View</strong>划清界限，避免整个架构耦合。</li>
 </ul>
-<pre><code class="swift">typedef NS_ENUM(NSinteger, CustomerType) &#123;
+<pre><code class="language-swift">typedef NS_ENUM(NSinteger, CustomerType) &#123;
   CustomerTypeNormal;
   CustomerTypeVIP;
 &#125;
@@ -204,8 +224,9 @@ evenSquareNums(from: 0, to: 100)
 
 @end
 </code></pre>
-<h4 id="内存管理语法考查"><a href="#内存管理语法考查" class="headerlink" title="内存管理语法考查"></a>内存管理语法考查</h4><p>请问下面的代码打印结果是什么？</p>
-<pre><code class="swift">NSString *firstStr = @&quot;helloworld&quot;;
+<h4 id="内存管理语法考查">内存管理语法考查</h4>
+<p>请问下面的代码打印结果是什么？</p>
+<pre><code class="language-swift">NSString *firstStr = @&quot;helloworld&quot;;
 NSString *secondStr = @&quot;helloworld&quot;;
 
 if (firstStr == secondStr)&#123;
@@ -215,12 +236,13 @@ if (firstStr == secondStr)&#123;
 &#125;
 </code></pre>
 <ul>
-<li><strong>==**这个符号判断的不是两个值是否相等，而是这两个指针是否指向同一个对象。如果要判断两个</strong>NSString<strong>的值是否相同，那么应该用</strong>isEqualToString**这个方法。</li>
+<li><strong>==<strong>这个符号判断的不是两个值是否相等，而是这两个指针是否指向同一个对象。如果要判断两个</strong>NSString</strong>的值是否相同，那么应该用<strong>isEqualToString</strong>这个方法。</li>
 <li>上面的代码中，两个指针指向不同的对象，尽管它们的值相同。但是<strong>iOS</strong>的编译器优化了内存分配，当两个指针指向两个值一样的<strong>NSString</strong>时，两者指向同一个内存地址。</li>
 </ul>
-<h4 id="多线程语法考查"><a href="#多线程语法考查" class="headerlink" title="多线程语法考查"></a>多线程语法考查</h4><p><strong>多线程</strong></p>
+<h4 id="多线程语法考查">多线程语法考查</h4>
+<p><strong>多线程</strong></p>
 <p>请问下面的代码有什么问题？</p>
-<pre><code class="swift">-(void)viewDidLoad &#123;
+<pre><code class="language-swift">-(void)viewDidLoad &#123;
   UILabel *alertLabel = [[UILabel alloc] initWithFrame:CGRectMake(100,100,100,100)];
   alertLabel.text = @&quot;Wait 4 seconds...&quot;;
   [self.view addSubView:alertLabel];
@@ -233,7 +255,7 @@ if (firstStr == secondStr)&#123;
 &#125;
 </code></pre>
 <p>所有与UI相关的操作应该在主线程进行。</p>
-<pre><code class="swift">-(void)viewDidLoad &#123;
+<pre><code class="language-swift">-(void)viewDidLoad &#123;
   UILabel *alertLabel = [[UILabel alloc] initWithFrame:CGRectMake(100,100,100,100)];
   alertLabel.text = @&quot;Wait 4 seconds...&quot;;
   [self.view addSubView:alertLabel];
@@ -247,7 +269,8 @@ if (firstStr == secondStr)&#123;
   &#125;];
 &#125;
 </code></pre>
-<h4 id="以scheduledTimerWithTimeInterval的方式触发的timer，在滑动页面上的列表时，timer会暂停，为什么？该如何解决"><a href="#以scheduledTimerWithTimeInterval的方式触发的timer，在滑动页面上的列表时，timer会暂停，为什么？该如何解决" class="headerlink" title="以scheduledTimerWithTimeInterval的方式触发的timer，在滑动页面上的列表时，timer会暂停，为什么？该如何解决"></a>以scheduledTimerWithTimeInterval的方式触发的timer，在滑动页面上的列表时，timer会暂停，为什么？该如何解决</h4><p><strong>线程</strong> <strong>runloop</strong></p>
+<h4 id="以scheduledTimerWithTimeInterval的方式触发的timer，在滑动页面上的列表时，timer会暂停，为什么？该如何解决">以scheduledTimerWithTimeInterval的方式触发的timer，在滑动页面上的列表时，timer会暂停，为什么？该如何解决</h4>
+<p><strong>线程</strong> <strong>runloop</strong></p>
 <p>造成此问题的原因在于滑动页面上的列表时，当前线程的runloop切换了mode的模式，导致timer暂停。</p>
 <p><strong>runloop</strong>中的<strong>mode</strong>主要用来指定事件在runloop中的优先级，具体有以下几种。</p>
 <ul>
@@ -259,7 +282,7 @@ if (firstStr == secondStr)&#123;
 </ul>
 <p>在滑动列表时，<strong>runloop</strong>的<strong>mode</strong>由原来的<strong>Default</strong>模式切换到了<strong>Event Tracking</strong>模式，<strong>timer</strong>原来运行在<strong>Default</strong>模式中，被关闭后自然就停止工作了。</p>
 <p>解决方法： 方法一时将<strong>timer</strong>加入NSRunloopCommonModes中。方法二是将<strong>timer</strong>放到另一个线程中，然后开启另一个线程的<strong>runloop</strong>，这样可以保证与主线程互不干扰，而现在主线程正在处理页面滑动。</p>
-<pre><code class="swift">// 方法一
+<pre><code class="language-swift">// 方法一
 [[NSRunLoop currentRunLoop] addTimer: timer forMode:NSRunLoopCommonModes]
 
 // 方法二
@@ -268,22 +291,27 @@ dispatch_async(dispatch_get_global_queue(0, 0) ^&#123;
   [[NSRunLoop currentRunLoop] run];
 &#125;)
 </code></pre>
-<h4 id="Swift-VS-Objective-C"><a href="#Swift-VS-Objective-C" class="headerlink" title="Swift VS Objective-C"></a>Swift VS Objective-C</h4><h4 id="Swift为什么将String，Array和Dictionary设计成值类型"><a href="#Swift为什么将String，Array和Dictionary设计成值类型" class="headerlink" title="Swift为什么将String，Array和Dictionary设计成值类型"></a>Swift为什么将String，Array和Dictionary设计成值类型</h4><ul>
+<h4 id="Swift-VS-Objective-C">Swift VS Objective-C</h4>
+<h4 id="Swift为什么将String，Array和Dictionary设计成值类型">Swift为什么将String，Array和Dictionary设计成值类型</h4>
+<ul>
 <li>值类型相比引用类型，最大的优势在于可以高效地使用内存。值类型在栈上操作，引用类型在堆上操作。栈上的操作仅仅是单个指针的上下移动，而堆上的操作则牵扯合并、移位、重新连接等。也就是说，Swift这样设计大幅减少了堆上的内存分配和回收的次数。值类型的一个特点是在传递和赋值时进行复制，每次复制肯定会产生额外开销，但是在 Swift 中这个消耗被控制在了最小范围内，在没有必要复制的时候，值类型的复制都是不会发生的。也就是说Swift的值类型只有在发生更改的时候才会进行真正的复制，否则相同的值用的都是同一块内存。而引用类型则做不到这一点。</li>
 <li>Swift将String，Array和Dictionary设计成值类型也是为了线程安全。通过Swift的let设置，使得这些数据达到了真正意义上的不变，也从根本上解决了多线程中内存访问和操作顺序的问题。</li>
 </ul>
-<h4 id="如何用Swift将协议中的部分方法设计成可选"><a href="#如何用Swift将协议中的部分方法设计成可选" class="headerlink" title="如何用Swift将协议中的部分方法设计成可选"></a>如何用Swift将协议中的部分方法设计成可选</h4><p>@optional和@required是Objective-C中特有的关键字。</p>
+<h4 id="如何用Swift将协议中的部分方法设计成可选">如何用Swift将协议中的部分方法设计成可选</h4>
+<p>@optional和@required是Objective-C中特有的关键字。</p>
 <p>在Swift中，默认所有方法在协议中都是必须实现的。而且在协议中，方法不可以被直接定义为optional。下面先给出两种解决方案：</p>
 <ul>
-<li><p>在协议和方法前都加上@objc关键字，然后再在方法前加上optional关键字。该方法实际上是把协议转化为Objetcive-C的方式，然后进行可选定义。示例如下：</p>
-<pre><code class="swift">@objc protocol SomeProtocol &#123;
+<li>
+<p>在协议和方法前都加上@objc关键字，然后再在方法前加上optional关键字。该方法实际上是把协议转化为Objetcive-C的方式，然后进行可选定义。示例如下：</p>
+<pre><code class="language-swift">@objc protocol SomeProtocol &#123;
   func requiredFunc()
   @objc optional func optionalFunc()
 &#125;
 </code></pre>
 </li>
-<li><p>用扩展来规定可选方法。在Swift中，协议扩展可以定义部分方法的默认实现，这样，这些方法在实际调用中就是可选实现的了。示例如下：</p>
-<pre><code class="swift">protocol SomeProtocol &#123;
+<li>
+<p>用扩展来规定可选方法。在Swift中，协议扩展可以定义部分方法的默认实现，这样，这些方法在实际调用中就是可选实现的了。示例如下：</p>
+<pre><code class="language-swift">protocol SomeProtocol &#123;
   func requiredFunc()
   func optionalFunc()
 &#125;

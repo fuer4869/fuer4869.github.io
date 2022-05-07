@@ -1,16 +1,18 @@
-<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>144. 二叉树的前序遍历</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">144. 二叉树的前序遍历</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E8%A7%A3%E6%B3%95"><span class="toc-text">递归解法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E8%A7%A3%E6%B3%95"><span class="toc-text">迭代解法</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/%E6%A0%91"><i class="tag post-item-tag">树</i></a><a href="/tags/%E9%80%92%E5%BD%92"><i class="tag post-item-tag">递归</i></a><a href="/tags/%E4%B8%AD%E7%AD%89"><i class="tag post-item-tag">中等</i></a><a href="/tags/%E8%BF%AD%E4%BB%A3"><i class="tag post-item-tag">迭代</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">144. 二叉树的前序遍历</h1><time class="has-text-grey" datetime="2021-01-30T08:46:54.000Z">2021-01-30</time><article class="mt-2 post-content"><p><img src="/images/LeetCode_Sharing.png"></p>
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>144. 二叉树的前序遍历</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">144. 二叉树的前序遍历</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E8%A7%A3%E6%B3%95"><span class="toc-text">递归解法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E8%A7%A3%E6%B3%95"><span class="toc-text">迭代解法</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/%E4%B8%AD%E7%AD%89"><i class="tag post-item-tag">中等</i></a><a href="/tags/%E6%A0%91"><i class="tag post-item-tag">树</i></a><a href="/tags/%E8%BF%AD%E4%BB%A3"><i class="tag post-item-tag">迭代</i></a><a href="/tags/%E9%80%92%E5%BD%92"><i class="tag post-item-tag">递归</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">144. 二叉树的前序遍历</h1><time class="has-text-grey" datetime="2021-01-30T08:46:54.000Z">2021-01-30</time><article class="mt-2 post-content"><p><img src="/images/LeetCode_Sharing.png" alt=""></p>
 <a id="more"></a> 
-
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-tree-preorder-traversal/">前往此题</a></p>
 </blockquote>
-<h4 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h4><p>要解决这道题首先得了解二叉树前序遍历</p>
+<h4 id="基本概念">基本概念</h4>
+<p>要解决这道题首先得了解二叉树前序遍历</p>
 <p><strong>前序遍历</strong></p>
 <p>以下面这个二叉树为例，前序遍历的遍历顺序为<strong>根节点-&gt;左子节点-&gt;右子节点</strong>:</p>
-<p><img src="https://i.loli.net/2021/01/30/dTuCGz4YJDOsLv7.png"></p>
+<p><img src="https://i.loli.net/2021/01/30/dTuCGz4YJDOsLv7.png" alt=""></p>
 <p>前序遍历一切都以<strong>左子节点</strong>为优先，即遍历结果为<code>1 2 4 5 3 6 7</code></p>
-<h4 id="递归解法"><a href="#递归解法" class="headerlink" title="递归解法"></a>递归解法</h4><p>递归解法十分简单，直接上代码了</p>
-<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><pre><code class="python">class Solution:
+<h4 id="递归解法">递归解法</h4>
+<p>递归解法十分简单，直接上代码了</p>
+<h4 id="代码">代码</h4>
+<pre><code class="language-python">class Solution:
     def preorderTraversal(self, root: TreeNode) -&gt; List[int]:
         def preorder(root:TreeNode):
             if not root: return
@@ -22,10 +24,12 @@
         preorder(root)
         return res
 </code></pre>
-<h4 id="迭代解法"><a href="#迭代解法" class="headerlink" title="迭代解法"></a>迭代解法</h4><p><strong>算法过程</strong></p>
+<h4 id="迭代解法">迭代解法</h4>
+<p><strong>算法过程</strong></p>
 <ol>
 <li>初始化栈，并将根节点入栈</li>
-<li>当栈不为空时：<ul>
+<li>当栈不为空时：
+<ul>
 <li>弹出栈顶元素node，并将值添加到结果<code>res</code>中。</li>
 <li>如果node的右子树非空，将右子树入栈</li>
 <li>如果node的左子树非空，将左子树入栈</li>
@@ -34,7 +38,7 @@
 </ol>
 <p>​    因为栈先进后出的特性，所以需要先将右子树入栈再将左子树入栈来保证<strong>根节点-&gt;左节点-&gt;右节点</strong>的顺序</p>
 <p><strong>代码</strong></p>
-<pre><code class="python"># Definition for a binary tree node.
+<pre><code class="language-python"># Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
 #         self.val = val

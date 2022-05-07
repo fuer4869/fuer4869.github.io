@@ -1,21 +1,26 @@
-<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>自己动手实现简易版sqlite（一）.md</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">自己动手实现简易版sqlite（一）.md</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6%E7%BB%93%E6%9E%84"><span class="toc-text">框架结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E8%AF%8D%E5%99%A8"><span class="toc-text">分词器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90%E5%99%A8-Parser"><span class="toc-text">解析器(Parser)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="toc-text">虚拟机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BTree%E9%83%A8%E5%88%86"><span class="toc-text">BTree部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BTree%E5%AE%9E%E7%8E%B0"><span class="toc-text">BTree实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E9%83%A8%E5%88%86"><span class="toc-text">测试部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-text">参考文献</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/sqlite"><i class="tag post-item-tag">sqlite</i></a><a href="/tags/c"><i class="tag post-item-tag">c</i></a><a href="/tags/BTree"><i class="tag post-item-tag">BTree</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">自己动手实现简易版sqlite（一）.md</h1><time class="has-text-grey" datetime="2020-08-25T06:58:52.000Z">2020-08-25</time><article class="mt-2 post-content"><p><img src="https://i.loli.net/2020/09/11/aUoXEGc1jF83MOp.jpg"></p>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在动手学习这块知识之前本身是抱着想了解数据库是如何实现的目的，但越往后越觉得数据库这个项目真的是复杂，但是也十分有趣。所以特地在此记录下我这些天来对sqlite的理解。</p>
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>自己动手实现简易版sqlite（一）.md</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">自己动手实现简易版sqlite（一）.md</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6%E7%BB%93%E6%9E%84"><span class="toc-text">框架结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E8%AF%8D%E5%99%A8"><span class="toc-text">分词器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90%E5%99%A8-Parser"><span class="toc-text">解析器(Parser)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="toc-text">虚拟机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BTree%E9%83%A8%E5%88%86"><span class="toc-text">BTree部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BTree%E5%AE%9E%E7%8E%B0"><span class="toc-text">BTree实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E9%83%A8%E5%88%86"><span class="toc-text">测试部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-text">参考文献</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/sqlite"><i class="tag post-item-tag">sqlite</i></a><a href="/tags/c"><i class="tag post-item-tag">c</i></a><a href="/tags/BTree"><i class="tag post-item-tag">BTree</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">自己动手实现简易版sqlite（一）.md</h1><time class="has-text-grey" datetime="2020-08-25T06:58:52.000Z">2020-08-25</time><article class="mt-2 post-content"><p><img src="https://i.loli.net/2020/09/11/aUoXEGc1jF83MOp.jpg" alt=""></p>
+<h3 id="前言">前言</h3>
+<p>在动手学习这块知识之前本身是抱着想了解数据库是如何实现的目的，但越往后越觉得数据库这个项目真的是复杂，但是也十分有趣。所以特地在此记录下我这些天来对sqlite的理解。</p>
 <p>本篇文章是以简易版的sqlite(后面简称sqlite)为基础写出来的原理剖析，还有很多sqlite的基本功能还未涉及到，之后我会逐步添加上去。</p>
-<h3 id="框架结构"><a href="#框架结构" class="headerlink" title="框架结构"></a>框架结构</h3><ul>
+<h3 id="框架结构">框架结构</h3>
+<ul>
 <li>本项目用c语言实现</li>
 <li>测试工具为<a target="_blank" rel="noopener" href="http://rspec.info/">rspec</a></li>
 </ul>
 <p>本sqlite的基本架构分为：</p>
 <ul>
-<li>核心层<ul>
+<li>核心层
+<ul>
 <li>接口</li>
-<li>SQL命令处理程序<ul>
+<li>SQL命令处理程序
+<ul>
 <li>分词器(Tokenizer)</li>
 <li>分析器(Parser)</li>
 <li>代码生成器(Code Generator)</li>
 </ul>
 </li>
-<li>虚拟机（后台）<ul>
+<li>虚拟机（后台）
+<ul>
 <li>B树 (B-Tree)</li>
 <li>页面调度程序（Pager）</li>
 <li>操作系统接口 (OS Interface)</li>
@@ -25,7 +30,7 @@
 </li>
 <li>其他辅助类</li>
 </ul>
-<p><img src="https://i.loli.net/2020/09/19/gkwIPC5RoOM4Y9d.gif"></p>
+<p><img src="https://i.loli.net/2020/09/19/gkwIPC5RoOM4Y9d.gif" alt=""></p>
 <p>一般我们把<strong>接口</strong>和<strong>SQL命令处理程序</strong>称为<strong>前端</strong>，把<strong>虚拟机</strong>称为<strong>后端</strong>。前端负责处理应用程序传递过来的SQL语句和SQLite命令，对获取的编码分析、优化，并转换为后端能够执行的SQLite内部字节编码。</p>
 <p>而<strong>后端</strong>才是真正的数据库处理工作，对数据的存储，如何做到快速的读写以及减少对磁盘的压力等都是它的工作。</p>
 <p><strong>接口（Interface）</strong></p>
@@ -46,20 +51,22 @@
 <p>OS Interface也成为VFS，该模块提供了跨操作系统的可移植性。简单来讲就是能够使sqlite适应在不同的操作系统上。如read（）、write（）、lseek（）等都是OS接口部分。</p>
 <p><strong>测试代码</strong></p>
 <p>测试脚本，负责对sqlite大部分功能的测试工作。本项目使用的是<code>ruby</code>的<code>rspec</code>测试框架。</p>
-<h3 id="分词器"><a href="#分词器" class="headerlink" title="分词器"></a>分词器</h3><p>目前只实现了<code>select</code>·<code>insert </code> <code>exit</code> </p>
+<h3 id="分词器">分词器</h3>
+<p>目前只实现了<code>select</code>·<code>insert </code> <code>exit</code></p>
 <p>为分词器设计了一个缓冲区结构<code>InputBuffer</code></p>
-<pre><code class="c">typedef struct InputBuffer &#123;
+<pre><code class="language-c">typedef struct InputBuffer &#123;
   char* buffer;
   size_t buffer_length;
   ssize_t input_length;
 &#125;InputBuffer;
 </code></pre>
 <p>而分词器的功能就是从输入流中获取一行二进制字符串(对的，目前只能一行一行分)</p>
-<pre><code class="c"> ssize_t bytes_read = getline(&amp;(input_buffer-&gt;buffer), &amp;(input_buffer-&gt;buffer_length), stdin);
+<pre><code class="language-c"> ssize_t bytes_read = getline(&amp;(input_buffer-&gt;buffer), &amp;(input_buffer-&gt;buffer_length), stdin);
 </code></pre>
 <p>然后将获取到的数据流封装进<code>InputBuffer</code>中传递给解析器<strong>Parser</strong></p>
-<h3 id="解析器-Parser"><a href="#解析器-Parser" class="headerlink" title="解析器(Parser)"></a>解析器(Parser)</h3><p>解析器收到分词器的数据后通过<code>strncmp</code>函数进行截取来判断将执行什么操作。对的，只支持插入、查询业务功能。</p>
-<pre><code class="c">/*
+<h3 id="解析器-Parser">解析器(Parser)</h3>
+<p>解析器收到分词器的数据后通过<code>strncmp</code>函数进行截取来判断将执行什么操作。对的，只支持插入、查询业务功能。</p>
+<pre><code class="language-c">/*
  * 解析器
  * SQL Command Processor
  */
@@ -77,7 +84,7 @@ PrepareResult prepare_statement(InputBuffer* input_buffer,
 &#125;
 </code></pre>
 <p>其他解析器</p>
-<pre><code class="c">MetaCommandResult do_meta_command(InputBuffer* input_buffer, Table* table) &#123;
+<pre><code class="language-c">MetaCommandResult do_meta_command(InputBuffer* input_buffer, Table* table) &#123;
   if (strcmp(input_buffer-&gt;buffer, &quot;.exit&quot;) == 0) &#123;
     db_close(table);
     exit(EXIT_SUCCESS);
@@ -94,20 +101,21 @@ PrepareResult prepare_statement(InputBuffer* input_buffer,
   &#125;
 &#125;
 </code></pre>
-<h3 id="虚拟机"><a href="#虚拟机" class="headerlink" title="虚拟机"></a>虚拟机</h3><p>为虚拟机创建了两个类 <strong>Pager</strong> 、 <strong>Table</strong> 、<strong>Row</strong></p>
-<pre><code class="c">typedef struct Pager &#123;
+<h3 id="虚拟机">虚拟机</h3>
+<p>为虚拟机创建了两个类 <strong>Pager</strong> 、 <strong>Table</strong> 、<strong>Row</strong></p>
+<pre><code class="language-c">typedef struct Pager &#123;
   int file_descriptor;
   uint32_t file_length;
   uint32_t num_pages;
   void* pages[TABLE_MAX_PAGES];
 &#125;Pager;
 </code></pre>
-<pre><code class="c">typedef struct Table &#123;
+<pre><code class="language-c">typedef struct Table &#123;
   Pager* pager;
   uint32_t root_page_num;
 &#125;Table;
 </code></pre>
-<pre><code class="c">struct Row_t &#123;
+<pre><code class="language-c">struct Row_t &#123;
   uint32_t id;
   char username[COLUMN_USERNAME_SIZE + 1];
   char email[COLUMN_EMAIL_SIZE + 1];
@@ -123,27 +131,28 @@ typedef struct Row_t Row;
 <p>在设计<code>select</code>与<code>insert</code>之前，先来研究下OS接口部分。</p>
 <p><strong>write</strong></p>
 <p>write()会把参数buf所指的内存写入count个字节到所指的文件fd内</p>
-<pre><code class="c">ssize_t write (int fd, const void * buf, size_t count);
+<pre><code class="language-c">ssize_t write (int fd, const void * buf, size_t count);
 </code></pre>
 <p>这里也按照了操作系统的<strong>分页</strong>的内存管理方式，将数据一页一页的写入到指定文件中。</p>
 <p>根据<strong>分页地址结构</strong>规则，一个页码<code>page_num</code>对应着一个偏移量，所以在确定了<strong>页码</strong>之后还需要确定<strong>偏移量</strong></p>
-<p><img src="https://i.loli.net/2020/09/26/VIvb4wijqA9eQBT.png"></p>
+<p><img src="https://i.loli.net/2020/09/26/VIvb4wijqA9eQBT.png" alt=""></p>
 <p>分页的<strong>偏移量</strong><code>offset</code> 也是OS部分的工作，在插入之前先移动到文件的读写位置<code>page*PAGE_SIZE</code></p>
-<pre><code class="c">off_t offset = lseek(pager-&gt;file_descriptor, page_num * PAGE_SIZE, SEEK_SET);
+<pre><code class="language-c">off_t offset = lseek(pager-&gt;file_descriptor, page_num * PAGE_SIZE, SEEK_SET);
 </code></pre>
 <p>写入数据到指定文件：</p>
-<pre><code class="c">ssize_t bytes_written =
+<pre><code class="language-c">ssize_t bytes_written =
       write(pager-&gt;file_descriptor, pager-&gt;pages[page_num], PAGE_SIZE);
 </code></pre>
 <p>在这里我们将每页大小设计为4096bytes,也就是4k。一般x86操作系统默认分页都是4k，当然现在很多架构下的页面分配方式可以自由选择，有2M、4M的都会有。既然我们是做数据库，本身用到的数据单位不会很大，而且是个轻量级的数据库，设计每页为4k也能起到在节约内存的同时减少磁盘IO次数。</p>
 <p><strong>read</strong></p>
 <p>read()会把参数fd所指的文件传送count 个字节到buf 指针所指的内存中</p>
-<pre><code class="c">ssize_t read(int fd, void * buf, size_t count);
+<pre><code class="language-c">ssize_t read(int fd, void * buf, size_t count);
 </code></pre>
 <p>同样读取数据也是按页读取</p>
-<pre><code class="c">ssize_t bytes_read = read(pager-&gt;file_descriptor, page, PAGE_SIZE);
+<pre><code class="language-c">ssize_t bytes_read = read(pager-&gt;file_descriptor, page, PAGE_SIZE);
 </code></pre>
-<h3 id="BTree部分"><a href="#BTree部分" class="headerlink" title="BTree部分"></a>BTree部分</h3><p><strong>为什么数据结构部分用的是BTree？</strong></p>
+<h3 id="BTree部分">BTree部分</h3>
+<p><strong>为什么数据结构部分用的是BTree？</strong></p>
 <p>数据库设计这样的数据结构是为了让系统在查询数据的时候最大限度的减少磁盘的IO使用次数，因为数据库中那么多条数据，系统并不知道我们要查询的数据存在哪里，只能一页一页数据的找（系统从磁盘读取数据到内存时是以磁盘块（block）为基本单位的，位于同一个磁盘块中的数据会被一次性读取出来，而不是需要什么取什么）。但是每找一页就是一次的IO，所以为了减少开销，必须在设计数据结构的时候能减少这方面的消耗。</p>
 <p>B 树就是常说的“B 减树（B- 树）”，又名平衡多路（即不止两个子树）查找树，它和平衡二叉树的不同有这么几点：</p>
 <ol>
@@ -152,11 +161,12 @@ typedef struct Row_t Row;
 <li>B 树的所有叶子节点都在同一层，并且叶子节点只有关键字，指向孩子的指针为 null</li>
 </ol>
 <p>和平衡二叉树相同的点在于：B 树的节点数据大小也是按照左小右大，子树与节点的大小比较决定了子树指针所处位置。</p>
-<p><img src="https://i.loli.net/2020/10/06/X7xHiAvLq2IMulp.png"></p>
+<p><img src="https://i.loli.net/2020/10/06/X7xHiAvLq2IMulp.png" alt=""></p>
 <p><code>BTree</code>中的每个节点对应一个磁盘块（页），上图是一个3阶BTree，每个节点最多有两个关键字和三个指向对应子节点的指针，关键字超过两个就会产生新的子节点。如果我们要查找<strong>28</strong>这条数据，数据库首先从磁盘中读取<strong>磁盘块1</strong>，对<strong>磁盘块1</strong>中的数据进行二分查找，如果不存在就找到目标所在的范围: 17 &lt; 28 &lt; 35 ,然后读取<strong>磁盘块3</strong>，以此类推最终在<strong>磁盘块8</strong>中找到了我们要查找的数据，磁盘IO次数为3也就是<strong>BTree</strong>的阶数。</p>
 <p>下图是在网上找的一个4阶BTree的插入数据过程：</p>
-<p><img src="https://i.loli.net/2020/10/10/gxtHuRP19fTrFV7.gif"></p>
-<h3 id="BTree实现"><a href="#BTree实现" class="headerlink" title="BTree实现"></a>BTree实现</h3><p>叶节点结构：</p>
+<p><img src="https://i.loli.net/2020/10/10/gxtHuRP19fTrFV7.gif" alt=""></p>
+<h3 id="BTree实现">BTree实现</h3>
+<p>叶节点结构：</p>
 <p>一个叶节点我们可以显式的定义为有<strong>键值</strong>，<strong>存储子节点地址的指针</strong>，<strong>数据</strong>。但是在内存当中它还有其他元素。</p>
 <ul>
 <li>键的大小</li>
@@ -169,7 +179,7 @@ typedef struct Row_t Row;
 <li>整个节点的大小</li>
 </ul>
 <p>等等。</p>
-<pre><code class="c">/*
+<pre><code class="language-c">/*
  * 叶节点主体的内存布局
  * LEAF_NODE_KEY_SIZE            键大小
  * LEAF_NODE_KEY_OFFSET          键的位置
@@ -195,9 +205,9 @@ const uint32_t LEAF_NODE_LEFT_SPLIT_COUNT = (LEAF_NODE_MAX_CELLS + 1) - LEAF_NOD
 </code></pre>
 <p>这些都是我们在实现BTree部分时需要用到的<strong>常量</strong>。</p>
 <p>先上一张BTree的插入数据逻辑图：</p>
-<p><img src="https://i.loli.net/2020/10/18/PFnBvDeTSoGrlxX.png"></p>
+<p><img src="https://i.loli.net/2020/10/18/PFnBvDeTSoGrlxX.png" alt=""></p>
 <p><strong>判断是否已存在该数据</strong></p>
-<pre><code class="c">if (cursor-&gt;cell_num &lt; num_cells) &#123;
+<pre><code class="language-c">if (cursor-&gt;cell_num &lt; num_cells) &#123;
     uint32_t key_at_index = *leaf_node_key(node, cursor-&gt;cell_num);
     if (key_at_index == key_to_insert) &#123;
       return EXECUTE_DUPLICATE_KEY;
@@ -205,7 +215,7 @@ const uint32_t LEAF_NODE_LEFT_SPLIT_COUNT = (LEAF_NODE_MAX_CELLS + 1) - LEAF_NOD
   &#125;
 </code></pre>
 <p><strong>插入数据到子节点中</strong></p>
-<pre><code class="c">  /*
+<pre><code class="language-c">  /*
   创建一个新的节点， 插入新数据到对应的节点中然后更新父节点。
   */
  
@@ -219,7 +229,7 @@ const uint32_t LEAF_NODE_LEFT_SPLIT_COUNT = (LEAF_NODE_MAX_CELLS + 1) - LEAF_NOD
   *leaf_node_next_leaf(old_node) = new_page_num;
 </code></pre>
 <p>调整位置并存储到内存中</p>
-<pre><code class="c">for (int32_t i = LEAF_NODE_MAX_CELLS; i &gt;= 0; i--) &#123;
+<pre><code class="language-c">for (int32_t i = LEAF_NODE_MAX_CELLS; i &gt;= 0; i--) &#123;
     void* destination_node;
     if (i &gt;= LEAF_NODE_LEFT_SPLIT_COUNT) &#123;
       destination_node = new_node;
@@ -240,7 +250,7 @@ const uint32_t LEAF_NODE_LEFT_SPLIT_COUNT = (LEAF_NODE_MAX_CELLS + 1) - LEAF_NOD
   &#125;
 </code></pre>
 <p>如果需要存放到根节点而根节点将超出阈值则需要拆分根节点</p>
-<pre><code class="c">/*
+<pre><code class="language-c">/*
  * 创建新的根节点
  */
 void create_new_root(Table*table, uint32_t right_child_page_num)&#123;
@@ -274,15 +284,16 @@ void create_new_root(Table*table, uint32_t right_child_page_num)&#123;
   *node_parent(right_child) = table-&gt;root_page_num;
 &#125;
 </code></pre>
-<h3 id="测试部分"><a href="#测试部分" class="headerlink" title="测试部分"></a>测试部分</h3><p>测试框架用的是<a target="_blank" rel="noopener" href="http://rspec.info/">rspec</a></p>
+<h3 id="测试部分">测试部分</h3>
+<p>测试框架用的是<a target="_blank" rel="noopener" href="http://rspec.info/">rspec</a></p>
 <p><strong>配置测试环境</strong></p>
 <p>配置ruby环境，需要先安装好<a target="_blank" rel="noopener" href="https://www.ruby-lang.org/en/">Ruby</a>(Mac自带Ruby环境)</p>
 <p>没有的可以自行安装</p>
 <p>先安装<code>rvm</code></p>
-<pre><code class="shell">$ curl -L https://raw.githubusercontent.com/wayneeseguin/rvm/master/binscripts/rvm-installer | bash -s stable
+<pre><code class="language-shell">$ curl -L https://raw.githubusercontent.com/wayneeseguin/rvm/master/binscripts/rvm-installer | bash -s stable
 </code></pre>
 <p>再安装<code>ruby</code></p>
-<pre><code class="shell">$ rvm install 2.3.0
+<pre><code class="language-shell">$ rvm install 2.3.0
 </code></pre>
 <p>最后安装<code>bundler</code></p>
 <pre><code>$ gem install bundler
@@ -292,14 +303,14 @@ void create_new_root(Table*table, uint32_t right_child_page_num)&#123;
 <p><strong>Gemfile</strong></p>
 <p>Gemfile 是我们创建的一个用于描述 gem 之间依赖的文件。gem 是一堆 Ruby 代码的集合，它能够为我们提供调用。你的 Gemfile 必须放在项目的根目录下面， 这是 Bundler 的要求，对于任何的其他形式的包管理文件来说，这也是标准。这里值得注意的一点是 Gemfile 会被作为 Ruby 代码来执行。当在 Bundler 上下文环境中被执行的时能使我们访问一些方法，我们用这些方法来解释 gem 之间的 require 关系。</p>
 <p>在<code>Gemfile</code>文件中加入下面几行：</p>
-<pre><code class="ruby">group :development, :test do
-  gem &#39;rspec-rails&#39;, &#39;~&gt; 3.4&#39;
+<pre><code class="language-ruby">group :development, :test do
+  gem 'rspec-rails', '~&gt; 3.4'
 end
 </code></pre>
 <p>执行<code>bundle install</code></p>
 <p>到这里测试环境就配置好了</p>
 <p><strong>执行测试</strong></p>
-<pre><code class="ruby">  it &#39;allows printing out the structure of a 4-leaf-node btree&#39; do
+<pre><code class="language-ruby">  it 'allows printing out the structure of a 4-leaf-node btree' do
     script = [
       &quot;insert 18 user18 person18@example.com&quot;,
       &quot;insert 7 user7 person7@example.com&quot;,
@@ -382,7 +393,7 @@ end
 </code></pre>
 <p>写完测试脚本后执行测试</p>
 <p><code>bundle exec rspec</code></p>
-<pre><code class="shell">bundle exec rspec
+<pre><code class="language-shell">bundle exec rspec
 ............
 
 Finished in 0.37043 seconds (files took 0.55291 seconds to load)
@@ -390,7 +401,8 @@ Finished in 0.37043 seconds (files took 0.55291 seconds to load)
 </code></pre>
 <p>数据库是一个很庞大的系统，我现在只是实现了其中的凤毛麟角，接下来我有时间会继续实现未完成的部分。</p>
 <p>下一篇文章会加入删除、更新部分等常用数据库功能。</p>
-<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>《Inside Sqlite》</p>
+<h3 id="参考文献">参考文献</h3>
+<p>《Inside Sqlite》</p>
 <p>《sqlite database system: design and implementation》</p>
 <p><a target="_blank" rel="noopener" href="https://cstack.github.io/db_tutorial/">Let’s Build a Simple Database</a></p>
 <p><a target="_blank" rel="noopener" href="https://nicky-chen.github.io/2018/11/17/btree-info/">数据结构之BTree和B+Tree</a></p>

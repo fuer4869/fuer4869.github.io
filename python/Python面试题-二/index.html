@@ -1,7 +1,7 @@
 <ol start="21">
-<li>列出python中可变数据类型和不可变数据类型，并简述原理</li>
+<li>列出python中可变数据类型和不可变数据类型，并简述原理<br>
+<strong>不可变类型：字符串str, 数值类型int, 元组tuple</strong></li>
 </ol>
-<p><strong>不可变类型：字符串str, 数值类型int, 元组tuple</strong></p>
 <pre><code>In [1]: a = 3
 
 In [2]: b = 3
@@ -18,7 +18,8 @@ Out[4]: 4494963920
 In [6]: id(a)
 Out[6]: 4494963952
 </code></pre>
-<p><strong>可变类型：列表list和字典dict</strong><br>也就是说如果对变量进行append、 +=等操作它只会改变变量的值，不会改变内存地址。对于相同值的不同对象也会占用不同的内存地址。</p>
+<p><strong>可变类型：列表list和字典dict</strong><br>
+也就是说如果对变量进行append、 +=等操作它只会改变变量的值，不会改变内存地址。对于相同值的不同对象也会占用不同的内存地址。</p>
 <pre><code>In [7]: a = [1,2]
 
 In [8]: id(a)
@@ -38,313 +39,498 @@ In [15]: id(b)
 Out[15]: 4530973424
 </code></pre>
 <ol start="22">
-<li>s = “ajldjlajfdljfddd”，去重并从小到大排序输出”adfjl”<pre><code>In [1]: s = &quot;ajldjlajfdljfddd&quot;
+<li>s = “ajldjlajfdljfddd”，去重并从小到大排序输出&quot;adfjl&quot;</li>
+</ol>
+<pre><code>In [1]: s = &quot;ajldjlajfdljfddd&quot;
+
+In [2]: s = set(s)
+
+In [4]: s = list(s)
+
+In [5]: s.sort(reverse=False)
+
+In [6]: res = &quot;&quot;.join(s)
+
+In [7]: res
+Out[7]: 'adfjl'
 </code></pre>
+<ol start="23">
+<li>用lambda函数实现两个数相乘</li>
+</ol>
+<pre><code>In [8]: sums = lambda a,b:a*b
+In [9]: sums(1,2)
+Out[9]: 2
+</code></pre>
+<ol start="24">
+<li>字典根据键从小到大排序</li>
+</ol>
+<pre><code>In [10]: dic=&#123;&quot;name&quot;:&quot;zs&quot;,&quot;age&quot;:18,&quot;city&quot;:&quot;深圳&quot;,&quot;tel&quot;:&quot;1362626627&quot;&#125;
+In [12]: lis = sorted(dic.items(), key=lambda i:i[0], reverse=False)
+In [13]: lis
+Out[13]: [('age', 18), ('city', '深圳'), ('name', 'zs'), ('tel', '1362626627')]
+
+In [15]: dict(lis)
+Out[15]: &#123;'age': 18, 'city': '深圳', 'name': 'zs', 'tel': '1362626627'&#125;
+</code></pre>
+<ol start="25">
+<li>利用collections库的Counter方法统计字符串每个单词出现的次数&quot;kjalfj;ldsjafl;hdsllfdhg;lahfbl;hl;ahlf;h&quot;</li>
+</ol>
+<pre><code>In [1]: from collections import Counter
+
+In [2]: a = &quot;kjalfj;ldsjafl;hdsllfdhg;lahfbl;hl;ahlf;h&quot;
+
+In [3]: res = Counter(a)
+
+In [4]: res
+Out[4]:
+Counter(&#123;'k': 1,
+         'j': 3,
+         'a': 4,
+         'l': 9,
+         'f': 5,
+         ';': 6,
+         'd': 3,
+         's': 2,
+         'h': 6,
+         'g': 1,
+         'b': 1&#125;)
+</code></pre>
+<ol start="26">
+<li>字符串a = “not 404 found 张三 99 深圳”，每个词中间是空格，用正则过滤掉英文和数字，最终输出&quot;张三 深圳&quot;</li>
+</ol>
+<pre><code>In [4]: import re
+In [5]: a = &quot;not 404 found 张三 99 深圳&quot;
+In [6]: l = a.split(&quot; &quot;)
+In [7]: res = re.findall('\d+|[A-Za-z]+',a)
+In [8]: for i in res:
+    ...:     if i in l:
+    ...:         l.remove(i)
+In [10]: print(&quot; &quot;.join(l))
+    张三 深圳
+</code></pre>
+<ol start="27">
+<li>filter方法求出列表所有奇数并构造新列表，a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</li>
+</ol>
+<pre><code>In [1]: a = [1,2,3,4,5,6,7,8,9,10]
+
+In [2]: def fl(a):
+   ...:     return a%2 == 1
+   ...:
+
+In [3]: newlist = filter(fl,a )
+
+In [5]: newlist = [i for i in newlist]
+
+In [6]: newlist
+Out[6]: [1, 3, 5, 7, 9]
+</code></pre>
+<ol start="28">
+<li>列表推导式求列表所有奇数并构造新列表，a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</li>
+</ol>
+<pre><code>res = [i for i in a if i%2==1]
+</code></pre>
+<ol start="29">
+<li>
+<p>正则re.complie作用<br>
+re.compile是将正则表达式编译成一个对象，加快速度，并重复使用</p>
+</li>
+<li>
+<p>a=（1，）b=(1)，c=(“1”) 分别是什么类型的数据？<br>
+分别是：tuple， int, str</p>
+</li>
+<li>
+<p>两个列表[1,5,7,9]和[2,2,6,8]合并为[1,2,2,5,6,7,8,9]</p>
 </li>
 </ol>
-<p>In [2]: s = set(s)</p>
-<p>In [4]: s = list(s)</p>
-<p>In [5]: s.sort(reverse=False)</p>
-<p>In [6]: res = “”.join(s)</p>
-<p>In [7]: res<br>Out[7]: ‘adfjl’</p>
-<pre><code>
-23. 用lambda函数实现两个数相乘
+<pre><code>In [18]: a.extend(b)
+
+In [19]: a
+Out[19]: [1, 5, 7, 9, 2, 2, 6, 8]
+In [21]: a.sort(reverse=False)
+
+In [22]: a
+Out[22]: [1, 2, 2, 5, 6, 7, 8, 9]
 </code></pre>
-<p>In [8]: sums = lambda a,b:a*b<br>In [9]: sums(1,2)<br>Out[9]: 2</p>
-<pre><code>
-24. 字典根据键从小到大排序
+<ol start="32">
+<li>
+<p>用python删除文件和用linux命令删除文件方法<br>
+python: os.remvoe(file)<br>
+linux: rm file</p>
+</li>
+<li>
+<p>log日志中，我们需要用时间戳记录error,warning等的发生时间，请用datetime模块打印当前时间戳 “2018-04-01 11:38:54”</p>
+</li>
+</ol>
+<pre><code>In [23]: import datetime
+
+In [28]: a = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
+In [29]: a
+Out[29]: '2020-05-04 23:02:46'
 </code></pre>
-<p>In [10]: dic={“name”:”zs”,”age”:18,”city”:”深圳”,”tel”:”1362626627”}<br>In [12]: lis = sorted(dic.items(), key=lambda i:i[0], reverse=False)<br>In [13]: lis<br>Out[13]: [(‘age’, 18), (‘city’, ‘深圳’), (‘name’, ‘zs’), (‘tel’, ‘1362626627’)]</p>
-<p>In [15]: dict(lis)<br>Out[15]: {‘age’: 18, ‘city’: ‘深圳’, ‘name’: ‘zs’, ‘tel’: ‘1362626627’}</p>
-<pre><code>
-25. 利用collections库的Counter方法统计字符串每个单词出现的次数&quot;kjalfj;ldsjafl;hdsllfdhg;lahfbl;hl;ahlf;h&quot;
+<ol start="34">
+<li>
+<p>数据库优化查询方法<br>
+索引：<br>
+使用中间表，外链：</p>
+</li>
+<li>
+<p>请列出你会的任意一种统计图（条形图、折线图等）绘制的开源库，第三方也行<br>
+matplotlib</p>
+</li>
+<li>
+<p>写一段自定义异常代码</p>
+</li>
+</ol>
+<pre><code>In [30]: def fn():
+    ...:     try:
+    ...:         for i in range(5):
+    ...:             if i &gt; 2:
+    ...:                 raise Exception(&quot;大于2&quot;)
+    ...:     except Exception as ret:
+    ...:         print(ret)
+    ...:
+
+In [31]: fn()
+大于2
 </code></pre>
-<p>In [1]: from collections import Counter</p>
-<p>In [2]: a = “kjalfj;ldsjafl;hdsllfdhg;lahfbl;hl;ahlf;h”</p>
-<p>In [3]: res = Counter(a)</p>
-<p>In [4]: res<br>Out[4]:<br>Counter({‘k’: 1,<br>         ‘j’: 3,<br>         ‘a’: 4,<br>         ‘l’: 9,<br>         ‘f’: 5,<br>         ‘;’: 6,<br>         ‘d’: 3,<br>         ‘s’: 2,<br>         ‘h’: 6,<br>         ‘g’: 1,<br>         ‘b’: 1})</p>
-<pre><code>
-
-26. 字符串a = &quot;not 404 found 张三 99 深圳&quot;，每个词中间是空格，用正则过滤掉英文和数字，最终输出&quot;张三 深圳&quot;
+<ol start="37">
+<li>正则表达式匹配中，<code>（.*）</code>和<code>（.*?）</code>匹配区别？<br>
+贪婪匹配：</li>
+</ol>
+<pre><code>In [32]: s=&quot;&lt;a&gt;标签1&lt;/a&gt;&lt;a&gt;标签2&lt;/a&gt;&quot;
+In [35]: res1 = re.findall(&quot;&lt;a&gt;(.*)&lt;/a&gt;&quot;,s)
+In [37]: res1
+Out[37]: ['标签1&lt;/a&gt;&lt;a&gt;标签2']
 </code></pre>
-<p>In [4]: import re<br>In [5]: a = “not 404 found 张三 99 深圳”<br>In [6]: l = a.split(“ “)<br>In [7]: res = re.findall(‘\d+|[A-Za-z]+’,a)<br>In [8]: for i in res:<br>    …:     if i in l:<br>    …:         l.remove(i)<br>In [10]: print(“ “.join(l))<br>    张三 深圳</p>
-<pre><code>
-27. filter方法求出列表所有奇数并构造新列表，a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+<p>非贪婪匹配：</p>
+<pre><code>In [32]: s=&quot;&lt;a&gt;标签1&lt;/a&gt;&lt;a&gt;标签2&lt;/a&gt;&quot;
+In [35]: res1 = re.findall(&quot;&lt;a&gt;(.*?)&lt;/a&gt;&quot;,s)
+In [37]: res1
+Out[37]: ['标签1', '标签2']
 </code></pre>
-<p>In [1]: a = [1,2,3,4,5,6,7,8,9,10]</p>
-<p>In [2]: def fl(a):<br>   …:     return a%2 == 1<br>   …:</p>
-<p>In [3]: newlist = filter(fl,a )</p>
-<p>In [5]: newlist = [i for i in newlist]</p>
-<p>In [6]: newlist<br>Out[6]: [1, 3, 5, 7, 9]</p>
-<pre><code>
-
-28. 列表推导式求列表所有奇数并构造新列表，a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+<ol start="38">
+<li>
+<p>简述Django的orm<br>
+简单来说就是ORM相当于是面向对象的数据库语句，它的函数封装了mysql，oracle常用的增删改查功能，比如<code>save</code>就是数据库的insert或者update，getallObject就是select语句。<br>
+在Django中每个model映射为一个数据表，model中的每个属性都代表着数据表中的字段。</p>
+</li>
+<li>
+<p>[[1,2],[3,4],[5,6]]一行代码展开该列表，得出[1,2,3,4,5,6]</p>
+</li>
+</ol>
+<pre><code>In [49]: x = [j for i in a for j in i]
+In [50]: x
+Out[50]: [1, 2, 3, 4, 5,]
 </code></pre>
-<p>res = [i for i in a if i%2==1]</p>
-<pre><code>
-29. 正则re.complie作用
-re.compile是将正则表达式编译成一个对象，加快速度，并重复使用
+<ol start="40">
+<li>x=“abc”,y=“def”,z=[“d”,“e”,“f”],分别求出x.join(y)和x.join(z)返回的结果</li>
+</ol>
+<pre><code>In [51]: x = &quot;abc&quot;
+In [53]: y=&quot;def&quot;
 
+In [54]: z=[&quot;d&quot;,&quot;e&quot;,&quot;f&quot;]
 
-30. a=（1，）b=(1)，c=(&quot;1&quot;) 分别是什么类型的数据？
-分别是：tuple， int, str
+In [55]: m = x.join(y)
 
-31. 两个列表[1,5,7,9]和[2,2,6,8]合并为[1,2,2,5,6,7,8,9]
+In [56]: n = x.join(z)
+
+In [57]: m
+Out[57]: 'dabceabcf'
+
+In [58]: n
+Out[58]: 'dabceabcf'
 </code></pre>
-<p>In [18]: a.extend(b)</p>
-<p>In [19]: a<br>Out[19]: [1, 5, 7, 9, 2, 2, 6, 8]<br>In [21]: a.sort(reverse=False)</p>
-<p>In [22]: a<br>Out[22]: [1, 2, 2, 5, 6, 7, 8, 9]</p>
-<pre><code>
-32. 用python删除文件和用linux命令删除文件方法
-python: os.remvoe(file)
-linux: rm file
+<p>join与os.path.join的区别：<br>
+join会将前x以分隔符的方式放入后者</p>
+<ol start="41">
+<li>
+<p>举例说明异常模块中try except else finally的相关意义</p>
+</li>
+<li>
+<p>python中交换两个数值</p>
+</li>
+</ol>
+<pre><code>In [59]: a,b=3,4
 
+In [60]: a,b=b,a
 
-33. log日志中，我们需要用时间戳记录error,warning等的发生时间，请用datetime模块打印当前时间戳 “2018-04-01 11:38:54”
+In [61]: a
+Out[61]: 4
+
+In [62]: b
+Out[62]: 3
 </code></pre>
-<p>In [23]: import datetime</p>
-<p>In [28]: a = str(datetime.datetime.now().strftime(‘%Y-%m-%d %H:%M:%S’))</p>
-<p>In [29]: a<br>Out[29]: ‘2020-05-04 23:02:46’</p>
-<pre><code>
+<ol start="43">
+<li>举例说明zip（）函数用法<br>
+zip函数会把一个或多个序列也就是可迭代对象作为参数返回一个元组的列表，同时将这些序列中并排的元素配对。</li>
+</ol>
+<pre><code>In [1]: a = [1,2]
 
-34. 数据库优化查询方法
-索引：
-使用中间表，外链：
+In [2]: b=[3,4]
 
+In [3]: res = [i for i in zip(a,b)]
 
-35. 请列出你会的任意一种统计图（条形图、折线图等）绘制的开源库，第三方也行
-matplotlib
+In [4]: res
+Out[4]: [(1, 3), (2, 4)]
 
+In [5]: a=&quot;ab&quot;
 
-36. 写一段自定义异常代码
+In [6]: b
+Out[6]: [3, 4]
+
+In [7]: b=&quot;xyz&quot;
+
+In [8]: res=[i for i in zip(a,b)]
+
+In [9]: res
+Out[9]: [('a', 'x'), ('b', 'y')]
 </code></pre>
-<p>In [30]: def fn():<br>    …:     try:<br>    …:         for i in range(5):<br>    …:             if i &gt; 2:<br>    …:                 raise Exception(“大于2”)<br>    …:     except Exception as ret:<br>    …:         print(ret)<br>    …:</p>
-<p>In [31]: fn()<br>大于2</p>
-<pre><code>
-37. 正则表达式匹配中，`（.*）`和`（.*?）`匹配区别？
-贪婪匹配：
+<ol start="44">
+<li>a=“张明 98分”，用re.sub，将98替换为100</li>
+</ol>
+<pre><code>In [1]: a = &quot;张明 50分&quot;
+
+In [2]: import re
+
+In [3]: res=re.sub(r'\d+',&quot;100&quot;,a)
+
+In [4]: res
+Out[4]: '张明 100分'
 </code></pre>
-<p>In [32]: s=”<a>标签1</a><a>标签2</a>“<br>In [35]: res1 = re.findall(“<a>(.*)</a>“,s)<br>In [37]: res1<br>Out[37]: [‘标签1</a><a>标签2’]</p>
-<pre><code>非贪婪匹配：
+<ol start="45">
+<li>写5条常用sql语句</li>
+</ol>
+<pre><code>show databases;
+
+show tables;
+
+desc 表名;
+
+select * from 表名;
+
+delete from 表名 where id=5;
+
+update students set gender=0,hometown=&quot;北京&quot; where id=5
 </code></pre>
-<p>In [32]: s=”<a>标签1</a><a>标签2</a>“<br>In [35]: res1 = re.findall(“<a>(.*?)</a>“,s)<br>In [37]: res1<br>Out[37]: [‘标签1’, ‘标签2’]</p>
-<pre><code>
-38. 简述Django的orm
-简单来说就是ORM相当于是面向对象的数据库语句，它的函数封装了mysql，oracle常用的增删改查功能，比如`save`就是数据库的insert或者update，getallObject就是select语句。
-在Django中每个model映射为一个数据表，model中的每个属性都代表着数据表中的字段。
-
-
-39. [[1,2],[3,4],[5,6]]一行代码展开该列表，得出[1,2,3,4,5,6]
+<ol start="46">
+<li>
+<p>a=&quot;hello&quot;和b=&quot;你好&quot;编码成bytes类型</p>
+</li>
+<li>
+<p>[1,2,3]+[4,5,6]的结果是多少？<br>
+等价于extend</p>
+</li>
+</ol>
+<pre><code>[1,2,3,4,5,6]
 </code></pre>
-<p>In [49]: x = [j for i in a for j in i]<br>In [50]: x<br>Out[50]: [1, 2, 3, 4, 5,]</p>
-<pre><code>
-40. x=&quot;abc&quot;,y=&quot;def&quot;,z=[&quot;d&quot;,&quot;e&quot;,&quot;f&quot;],分别求出x.join(y)和x.join(z)返回的结果
+<ol start="48">
+<li>提高python运行效率的方法</li>
+</ol>
+<ul>
+<li>使用生成器或迭代器节约内存</li>
+<li>多线程，多进程</li>
+<li>优化算法</li>
+<li>循环优化</li>
+</ul>
+<ol start="49">
+<li>正则匹配日期2018-03-20<br>
+url = <a href="https://sycm.taobao.com/bda/tradinganaly/overview/get_summary.json?dateRange=2018-03-20%7C2018-03-20&amp;dateType=recent1&amp;device=1&amp;token=ff25b109b&amp;_=1521595613462">https://sycm.taobao.com/bda/tradinganaly/overview/get_summary.json?dateRange=2018-03-20|2018-03-20&amp;dateType=recent1&amp;device=1&amp;token=ff25b109b&amp;_=1521595613462</a></li>
+</ol>
+<pre><code>res = re.findall(r'dateRange=(.*?)%7C(.*?)&amp;',url)
+In [12]: res
+Out[12]: [('2018-03-20', '2018-03-20')]
 </code></pre>
-<p>In [51]: x = “abc”<br>In [53]: y=”def”</p>
-<p>In [54]: z=[“d”,”e”,”f”]</p>
-<p>In [55]: m = x.join(y)</p>
-<p>In [56]: n = x.join(z)</p>
-<p>In [57]: m<br>Out[57]: ‘dabceabcf’</p>
-<p>In [58]: n<br>Out[58]: ‘dabceabcf’</p>
-<pre><code>join与os.path.join的区别：
-join会将前x以分隔符的方式放入后者
+<ol start="52">
+<li>list=[2,3,5,4,9,6]，从小到大排序，不许用sort，输出[2,3,4,5,6,9]<br>
+<strong>快速排序</strong></li>
+</ol>
+<pre><code>def quicksort(list):
+    if len(list) &lt; 2:
+        return list
 
-
-41. 举例说明异常模块中try except else finally的相关意义
-
-
-42. python中交换两个数值
+    pivot = list[0]
+    less = [i for i in list[1:] if i &lt;= pivot]
+    greater = [i for i in list[1:] if i &gt; pivot]
+    return quicksort(less) + [pivot] + quicksort(greater)
 </code></pre>
-<p>In [59]: a,b=3,4</p>
-<p>In [60]: a,b=b,a</p>
-<p>In [61]: a<br>Out[61]: 4</p>
-<p>In [62]: b<br>Out[62]: 3</p>
-<pre><code>
+<ol start="56">
+<li>
+<p>列出常见的状态码和意义<br>
+200 请求正常<br>
+404 找不到资源<br>
+500 服务器故障<br>
+403 请求资源被拒绝</p>
+</li>
+<li>
+<p>后端优化</p>
+</li>
+</ol>
+<ul>
+<li>合理使用缓存，比如缓存可以存储一些读写次数高不需要担心安全问题的，不怎么需要更改的数据</li>
+<li>异步</li>
+<li>算法优化，循环优化</li>
+</ul>
+<ol start="58">
+<li>使用pop和del删除字典中的&quot;name&quot;字段，dic={“name”:“zs”,“age”:18}</li>
+</ol>
+<pre><code>In [1]: dic=&#123;&quot;name&quot;:&quot;zs&quot;,&quot;age&quot;:18&#125;
 
+In [2]: dic.pop(&quot;name&quot;)
+Out[2]: 'zs'
 
-43. 举例说明zip（）函数用法
-zip函数会把一个或多个序列也就是可迭代对象作为参数返回一个元组的列表，同时将这些序列中并排的元素配对。
+In [3]: dic
+Out[3]: &#123;'age': 18&#125;
+
+In [4]: del dic[&quot;age&quot;]
+
+In [5]: dic
+Out[5]: &#123;&#125;
 </code></pre>
-<p>In [1]: a = [1,2]</p>
-<p>In [2]: b=[3,4]</p>
-<p>In [3]: res = [i for i in zip(a,b)]</p>
-<p>In [4]: res<br>Out[4]: [(1, 3), (2, 4)]</p>
-<p>In [5]: a=”ab”</p>
-<p>In [6]: b<br>Out[6]: [3, 4]</p>
-<p>In [7]: b=”xyz”</p>
-<p>In [8]: res=[i for i in zip(a,b)]</p>
-<p>In [9]: res<br>Out[9]: [(‘a’, ‘x’), (‘b’, ‘y’)]</p>
-<pre><code>
-44. a=&quot;张明 98分&quot;，用re.sub，将98替换为100
+<ol start="59">
+<li>
+<p>列出常见MYSQL数据存储引擎<br>
+InnoDB：支持事务处理，支持外键，支持崩溃修复能力和并发控制。如果需要对事务的完整性要求比较高（比如银行），要求实现并发控制（比如售票），那选择InnoDB有很大的优势。如果需要频繁的更新、删除操作的数据库，也可以选择InnoDB，因为支持事务的提交（commit）和回滚（rollback）。</p>
+</li>
+<li>
+<p>Redis与MySQL的区别<br>
+Redis:</p>
+</li>
+</ol>
+<ul>
+<li>非关系型数据库，完全开源免费的key-value数据库。一个支持多种数据结构的数据库</li>
+<li>将数据存储在内存中，读写速度快</li>
+<li>数据持久化，重启后仍可继续使用</li>
+<li>支持多种数据结构:strings，set，sorted set，list</li>
+</ul>
+<ol start="61">
+<li>
+<p>简述同源策略<br>
+协议相同<br>
+端口相同<br>
+域名相同<br>
+只要不满足其中任意一个要求，就不符合同源策略，就会出现“跨域”</p>
+</li>
+<li>
+<p>简述cookie和session的区别</p>
+</li>
+</ol>
+<ul>
+<li>cookie 安全性没session高</li>
+<li>cookie是用在客户端上的，session是来自于服务端</li>
+<li>session的session id依赖于cookie，需要存在cookie中，如果浏览器禁用了cookie，session也会失效</li>
+</ul>
+<ol start="63">
+<li>简述线程与进程<br>
+进程好比是火车，线程则是火车车厢</li>
+</ol>
+<ul>
+<li>一个进程可以有多个线程</li>
+<li>进程与进程之间无任何关联</li>
+<li>如果进程销毁了，它的所有线程也将消失</li>
+<li>同一进程下不同线程可以共享数据，但是不同进程之间共享数据就很难</li>
+<li>进程使用的内存地址可以上锁，只有其中一个线程使用完了才能给其他线程用。这可以称为互斥锁，也就是线程锁</li>
+</ul>
+<ol start="66">
+<li>python中copy和deepcopy区别<br>
+浅拷贝<br>
+仅拷贝对象，如果对象中还有其他元素，则不会做拷贝</li>
+</ol>
+<p>深拷贝<br>
+不仅拷贝对象，对象中的元素（除了不可变元素）都会被拷贝</p>
+<p>特殊情况<br>
+如果深拷贝对象是元组，</p>
+<ol start="70">
+<li>a = &quot; hehheh &quot;,去除首尾空格</li>
+</ol>
+<pre><code>a.strip()
 </code></pre>
-<p>In [1]: a = “张明 50分”</p>
-<p>In [2]: import re</p>
-<p>In [3]: res=re.sub(r’\d+’,”100”,a)</p>
-<p>In [4]: res<br>Out[4]: ‘张明 100分’</p>
-<pre><code>
-
-45. 写5条常用sql语句
+<ol start="72">
+<li>对list排序foo = [-5,8,0,4,9,-4,-20,-2,8,2,-4],使用lambda函数从小到大排序</li>
+</ol>
+<pre><code>In [46]: a = sorted(foo, reverse=False)
 </code></pre>
-<p>show databases;</p>
-<p>show tables;</p>
-<p>desc 表名;</p>
-<p>select * from 表名;</p>
-<p>delete from 表名 where id=5;</p>
-<p>update students set gender=0,hometown=”北京” where id=5</p>
-<pre><code>
-46. a=&quot;hello&quot;和b=&quot;你好&quot;编码成bytes类型
-
-
-47. [1,2,3]+[4,5,6]的结果是多少？
-等价于extend
+<ol start="73">
+<li>使用lambda函数对list排序foo = [-5,8,0,4,9,-4,-20,-2,8,2,-4]，输出结果为[0,2,4,8,8,9,-2,-4,-4,-5,-20]，正数从小到大，负数从大到小</li>
+</ol>
+<pre><code>In [65]: a = sorted(foo, key=lambda x:(x&lt;0, abs(x)))
 </code></pre>
-<p>[1,2,3,4,5,6]</p>
-<pre><code>
-
-48. 提高python运行效率的方法
- * 使用生成器或迭代器节约内存
- * 多线程，多进程
- * 优化算法
- * 循环优化
-
- 49. 正则匹配日期2018-03-20
- url = https://sycm.taobao.com/bda/tradinganaly/overview/get_summary.json?dateRange=2018-03-20%7C2018-03-20&amp;dateType=recent1&amp;device=1&amp;token=ff25b109b&amp;_=1521595613462
+<p>小于0的按照绝对值大小进行排序</p>
+<ol start="74">
+<li>列表嵌套字典的排序，分别根据年龄和姓名排序</li>
+</ol>
+<p>foo = [{“name”:“zs”,“age”:19},{“name”:“ll”,“age”:54},</p>
+<p>{“name”:“wa”,“age”:17},{“name”:“df”,“age”:23}]</p>
+<pre><code>In [70]: f = sorted(foo, key=lambda x:x[&quot;age&quot;])
 </code></pre>
-<p>res = re.findall(r’dateRange=(.<em>?)%7C(.</em>?)&amp;’,url)<br>In [12]: res<br>Out[12]: [(‘2018-03-20’, ‘2018-03-20’)]</p>
-<pre><code>
-52. list=[2,3,5,4,9,6]，从小到大排序，不许用sort，输出[2,3,4,5,6,9]
-**快速排序**
+<ol start="77">
+<li>根据键对字典排序（方法一，zip函数）</li>
+</ol>
+<pre><code>In [79]: s = sorted(dic.items(), key=lambda x:x[0])
+Out[80]: [('city', 'beijing'), ('name', 'zs'), ('sex', 'man')]
 </code></pre>
-<p>def quicksort(list):<br>    if len(list) &lt; 2:<br>        return list</p>
-<pre><code>pivot = list[0]
-less = [i for i in list[1:] if i &lt;= pivot]
-greater = [i for i in list[1:] if i &gt; pivot]
-return quicksort(less) + [pivot] + quicksort(greater)
+<ol start="81">
+<li>举例说明SQL注入和解决办法<br>
+当以字符串格式化书写方式的时候，如果用户输入的有;+SQL语句，后面的SQL语句会执行，比如例子中的SQL注入会删除数据库demo</li>
+</ol>
+<p>sql预编译，</p>
+<pre><code>String sql = &quot;select id, no from user where id=?&quot;;
+PreparedStatement ps = conn.prepareStatement(sql);
+ps.setInt(1, id);
+ps.executeQuery();
 </code></pre>
-<pre><code>
-56. 列出常见的状态码和意义
-200 请求正常
-404 找不到资源
-500 服务器故障
-403 请求资源被拒绝
-
-57. 后端优化
- * 合理使用缓存，比如缓存可以存储一些读写次数高不需要担心安全问题的，不怎么需要更改的数据
- * 异步
- * 算法优化，循环优化
-
- 58. 使用pop和del删除字典中的&quot;name&quot;字段，dic=&#123;&quot;name&quot;:&quot;zs&quot;,&quot;age&quot;:18&#125;
+<p>参数校验：<br>
+不能带有特殊符号等格式问题，一般限制邮箱，手机号形式</p>
+<ol start="82">
+<li>s=“info:xiaoZhang 33 shandong”,用正则切分字符串输出[‘info’, ‘xiaoZhang’, ‘33’, ‘shandong’]</li>
+</ol>
+<pre><code>In [16]: res = re.split(r':|\s',s)
 </code></pre>
-<p> In [1]: dic={“name”:”zs”,”age”:18}</p>
-<p>In [2]: dic.pop(“name”)<br>Out[2]: ‘zs’</p>
-<p>In [3]: dic<br>Out[3]: {‘age’: 18}</p>
-<p>In [4]: del dic[“age”]</p>
-<p>In [5]: dic<br>Out[5]: {}</p>
-<pre><code>
-59. 列出常见MYSQL数据存储引擎
-InnoDB：支持事务处理，支持外键，支持崩溃修复能力和并发控制。如果需要对事务的完整性要求比较高（比如银行），要求实现并发控制（比如售票），那选择InnoDB有很大的优势。如果需要频繁的更新、删除操作的数据库，也可以选择InnoDB，因为支持事务的提交（commit）和回滚（rollback）。
-
-
-60. Redis与MySQL的区别
-Redis:
-* 非关系型数据库，完全开源免费的key-value数据库。一个支持多种数据结构的数据库
-* 将数据存储在内存中，读写速度快
-* 数据持久化，重启后仍可继续使用
-* 支持多种数据结构:strings，set，sorted set，list
-
-61. 简述同源策略
-协议相同
-端口相同
-域名相同
-只要不满足其中任意一个要求，就不符合同源策略，就会出现“跨域”
-
-62. 简述cookie和session的区别
-
-* cookie 安全性没session高
-* cookie是用在客户端上的，session是来自于服务端
-* session的session id依赖于cookie，需要存在cookie中，如果浏览器禁用了cookie，session也会失效
-
-63. 简述线程与进程
-进程好比是火车，线程则是火车车厢
-* 一个进程可以有多个线程
-* 进程与进程之间无任何关联
-* 如果进程销毁了，它的所有线程也将消失
-* 同一进程下不同线程可以共享数据，但是不同进程之间共享数据就很难
-* 进程使用的内存地址可以上锁，只有其中一个线程使用完了才能给其他线程用。这可以称为互斥锁，也就是线程锁
-
-
-66. python中copy和deepcopy区别
-浅拷贝
-仅拷贝对象，如果对象中还有其他元素，则不会做拷贝
-
-深拷贝
-不仅拷贝对象，对象中的元素（除了不可变元素）都会被拷贝
-
-特殊情况
-如果深拷贝对象是元组，
-
-
-
-70. a = &quot; hehheh &quot;,去除首尾空格
+<ol start="83">
+<li>正则匹配以http://163.com结尾的邮箱</li>
+</ol>
+<pre><code>re.match(&quot;\w+@163.com$&quot;,str)
 </code></pre>
-<p> a.strip()</p>
-<pre><code>
-72. 对list排序foo = [-5,8,0,4,9,-4,-20,-2,8,2,-4],使用lambda函数从小到大排序
-</code></pre>
-<p>In [46]: a = sorted(foo, reverse=False)</p>
-<pre><code>
-73. 使用lambda函数对list排序foo = [-5,8,0,4,9,-4,-20,-2,8,2,-4]，输出结果为[0,2,4,8,8,9,-2,-4,-4,-5,-20]，正数从小到大，负数从大到小
-</code></pre>
-<p>In [65]: a = sorted(foo, key=lambda x:(x&lt;0, abs(x)))</p>
-<pre><code>小于0的按照绝对值大小进行排序
+<ol start="84">
+<li>递归求1-10的总和</li>
+</ol>
+<pre><code>def sums(num):
+    if num &gt; 0:
+        res = num + sums(num-1)
+    else:
+        res = 0
+    return res
 
-74. 列表嵌套字典的排序，分别根据年龄和姓名排序
-
-foo = [&#123;&quot;name&quot;:&quot;zs&quot;,&quot;age&quot;:19&#125;,&#123;&quot;name&quot;:&quot;ll&quot;,&quot;age&quot;:54&#125;,
-
-&#123;&quot;name&quot;:&quot;wa&quot;,&quot;age&quot;:17&#125;,&#123;&quot;name&quot;:&quot;df&quot;,&quot;age&quot;:23&#125;]
+print(sums(10))
 </code></pre>
-<p>In [70]: f = sorted(foo, key=lambda x:x[“age”])</p>
-<pre><code>
-77. 根据键对字典排序（方法一，zip函数）
-</code></pre>
-<p>In [79]: s = sorted(dic.items(), key=lambda x:x[0])<br>Out[80]: [(‘city’, ‘beijing’), (‘name’, ‘zs’), (‘sex’, ‘man’)]</p>
-<pre><code>
-81. 举例说明SQL注入和解决办法
-当以字符串格式化书写方式的时候，如果用户输入的有;+SQL语句，后面的SQL语句会执行，比如例子中的SQL注入会删除数据库demo
-
-sql预编译，
-</code></pre>
-<p>String sql = “select id, no from user where id=?”;<br>PreparedStatement ps = conn.prepareStatement(sql);<br>ps.setInt(1, id);<br>ps.executeQuery();</p>
-<pre><code>参数校验：
-不能带有特殊符号等格式问题，一般限制邮箱，手机号形式
-
-
-82. s=&quot;info:xiaoZhang 33 shandong&quot;,用正则切分字符串输出[&#39;info&#39;, &#39;xiaoZhang&#39;, &#39;33&#39;, &#39;shandong&#39;]
-</code></pre>
-<p>In [16]: res = re.split(r’:|\s’,s)</p>
-<pre><code>
-83. 正则匹配以http://163.com结尾的邮箱
-</code></pre>
-<p>re.match(“\w+@163.com$”,str)</p>
-<pre><code>
-84. 递归求1-10的总和
-</code></pre>
-<p>def sums(num):<br>    if num &gt; 0:<br>        res = num + sums(num-1)<br>    else:<br>        res = 0<br>    return res</p>
-<p>print(sums(10))</p>
-<pre><code>
-86. MyISAM 与 InnoDB 区别：
- * MyISAM不支持事务，InnoDB支持事务，这也是MySQL默认引擎为InnoDB的最大原因
- * InnoDB支持外键
- * MyISAM支持全文本搜索，InnoDB不支持
- * MyISAM表保存成文件形式，跨平台使用更加方便
-
- * MyISAM管理非事务表，提供高速存储和检索以及全文搜索能力，如果再应用中执行大量select操作，应该选择MyISAM
- * InnoDB用于事务处理，具有ACID事务支持等特性，如果在应用中执行大量insert和update操作，应该选择InnoDB
-
-
- 87. MySQL全文搜索与like的区别
- * like效率没有全文本高，随着文本的长度增加耗时也会随之增长
- * like无法控制匹配条件，哪些关键词无须匹配哪些需要过滤掉等情况
- * 全文本能做到智能化匹配结果，可以控制匹配结果的优先级，匹配一个或多个关键词
-</code></pre>
+<ol start="86">
+<li>MyISAM 与 InnoDB 区别：</li>
+</ol>
+<ul>
+<li>
+<p>MyISAM不支持事务，InnoDB支持事务，这也是MySQL默认引擎为InnoDB的最大原因</p>
+</li>
+<li>
+<p>InnoDB支持外键</p>
+</li>
+<li>
+<p>MyISAM支持全文本搜索，InnoDB不支持</p>
+</li>
+<li>
+<p>MyISAM表保存成文件形式，跨平台使用更加方便</p>
+</li>
+<li>
+<p>MyISAM管理非事务表，提供高速存储和检索以及全文搜索能力，如果再应用中执行大量select操作，应该选择MyISAM</p>
+</li>
+<li>
+<p>InnoDB用于事务处理，具有ACID事务支持等特性，如果在应用中执行大量insert和update操作，应该选择InnoDB</p>
+</li>
+</ul>
+<ol start="87">
+<li>MySQL全文搜索与like的区别</li>
+</ol>
+<ul>
+<li>like效率没有全文本高，随着文本的长度增加耗时也会随之增长</li>
+<li>like无法控制匹配条件，哪些关键词无须匹配哪些需要过滤掉等情况</li>
+<li>全文本能做到智能化匹配结果，可以控制匹配结果的优先级，匹配一个或多个关键词</li>
+</ul>

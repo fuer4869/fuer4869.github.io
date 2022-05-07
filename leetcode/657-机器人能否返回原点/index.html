@@ -1,22 +1,26 @@
-<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>657. 机器人能否返回原点</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">657. 机器人能否返回原点</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="toc-text">解题思路</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/%E7%AE%80%E5%8D%95"><i class="tag post-item-tag">简单</i></a><a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2"><i class="tag post-item-tag">字符串</i></a><a href="/tags/%E6%A8%A1%E6%8B%9F%E6%B3%95"><i class="tag post-item-tag">模拟法</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">657. 机器人能否返回原点</h1><time class="has-text-grey" datetime="2020-12-06T10:38:42.000Z">2020-12-06</time><article class="mt-2 post-content"><p><img src="/images/LeetCode_Sharing.png"></p>
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>657. 机器人能否返回原点</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">657. 机器人能否返回原点</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="toc-text">解题思路</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2"><i class="tag post-item-tag">字符串</i></a><a href="/tags/%E7%AE%80%E5%8D%95"><i class="tag post-item-tag">简单</i></a><a href="/tags/%E6%A8%A1%E6%8B%9F%E6%B3%95"><i class="tag post-item-tag">模拟法</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">657. 机器人能否返回原点</h1><time class="has-text-grey" datetime="2020-12-06T10:38:42.000Z">2020-12-06</time><article class="mt-2 post-content"><p><img src="/images/LeetCode_Sharing.png" alt=""></p>
 <a id="more"></a> 
-
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/robot-return-to-origin/">前往此题</a></p>
 </blockquote>
-<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>设定x,y变量代表坐标系<br><code>L</code>,<code>R</code>,<code>U</code>,<code>D</code>分别对应x,y变量的加减。</p>
-<p>如果指令是 UU，则令 <code>y=y-1y=y−1</code><br>如果指令是 DD，则令 <code>y=y+1y=y+1</code><br>如果指令是 LL，则令 <code>x=x-1x=x−1</code><br>如果指令是 RR，则令 <code>x=x+1x=x+1</code></p>
+<h3 id="解题思路">解题思路</h3>
+<p>设定x,y变量代表坐标系<br>
+<code>L</code>,<code>R</code>,<code>U</code>,<code>D</code>分别对应x,y变量的加减。</p>
+<p>如果指令是 UU，则令 <code>y=y-1y=y−1</code><br>
+如果指令是 DD，则令 <code>y=y+1y=y+1</code><br>
+如果指令是 LL，则令 <code>x=x-1x=x−1</code><br>
+如果指令是 RR，则令 <code>x=x+1x=x+1</code></p>
 <p>最后再判断是否在原点即可。</p>
 <p><strong>代码</strong></p>
-<pre><code class="python">class Solution:
+<pre><code class="language-python">class Solution:
     def judgeCircle(self, moves: str) -&gt; bool:
         x = 0
         y = 0
         for i in moves:
-            if i == &#39;L&#39;: x -= 1
-            if i == &#39;R&#39;: x += 1
-            if i == &#39;U&#39;: y += 1
-            if i == &#39;D&#39;: y -= 1
+            if i == 'L': x -= 1
+            if i == 'R': x += 1
+            if i == 'U': y += 1
+            if i == 'D': y -= 1
         if x == 0 and y == 0: return True
         return False
 </code></pre>

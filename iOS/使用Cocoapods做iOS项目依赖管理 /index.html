@@ -5,7 +5,8 @@
 <p><strong>CocoaPods简介</strong></p>
 <p>CocoaPods项目的源码在Github上管理，所以多多推荐大家使用Github。该项目开始于2011年8月12日，经过多年发展，现在已经成为iOS开发过程中不可缺少的依赖管理标准工具。开发iOS项目不可避免地要使用第三方开源库，CocoaPods的出现使得我们可以节省设置和更新第三方开源库的时间​。</p>
 <p><strong>CocoaPods的安装和使用介绍​</strong></p>
-<p>安装方式很简单, 因为Mac下都自带ruby，使用ruby的gem命令即可下载安装：<br>￼$ sudo gem install cocoapods</p>
+<p>安装方式很简单, 因为Mac下都自带ruby，使用ruby的gem命令即可下载安装：<br>
+￼$ sudo gem install cocoapods</p>
 <p><code>$ pod setup</code></p>
 <p>然后因为gem使用的时国外亚马逊的服务器，所以被墙了，我们只要把ruby源改成淘宝的源就行：</p>
 <p><code>gem sources --remove https://rubygems.org/</code></p>
@@ -15,17 +16,19 @@
 <p>首先得在项目中创建Podfile文件</p>
 <p><strong>touch Podfile</strong></p>
 <p>然后在Podfile文件中编辑</p>
-<p><code>platform :ios, &#39;7.0&#39;</code></p>
-<p><code>pod &#39;RegexKitLite&#39;, &#39;~&gt; 4.0&#39;</code></p>
-<p><code>pod &#39;ASIHTTPRequest&#39;, &#39;~&gt; 1.8.2&#39;</code></p>
+<p><code>platform :ios, '7.0'</code></p>
+<p><code>pod 'RegexKitLite', '~&gt; 4.0'</code></p>
+<p><code>pod 'ASIHTTPRequest', '~&gt; 1.8.2'</code></p>
 <p>编辑完成后</p>
 <p><strong>安装pods</strong></p>
 <p><code>pod install</code></p>
-<p>这里有可能还会遇到被墙的问题，​因为intall这个命令执行后，pod会首先对自己进行update，所以会一直卡在Analyzing<br>dependencies 这个状态。</p>
+<p>这里有可能还会遇到被墙的问题，​因为intall这个命令执行后，pod会首先对自己进行update，所以会一直卡在Analyzing<br>
+dependencies 这个状态。</p>
 <p>这个时候只要使用下面这个命令</p>
 <p><code>pod install --verbose --no-repo-update</code></p>
 <p>绕过pod的自更新就行了。包括以后更新Podfile文件后，想更新本地的pods，使用这个命令</p>
 <p><code>pod update --verbose --no-repo-update</code></p>
-<p>等安装完成后项目中会多几个文件，会看到xxx.workspace这个文件，直接打开它就行了。<br>这个时候项目中会多了个叫Pods的工程，并且已经集成了你所需要的第三方库了。不用管它，直接使用自己的工程就可以了。</p>
+<p>等安装完成后项目中会多几个文件，会看到xxx.workspace这个文件，直接打开它就行了。<br>
+这个时候项目中会多了个叫Pods的工程，并且已经集成了你所需要的第三方库了。不用管它，直接使用自己的工程就可以了。</p>
 <p>暂时就写这么多，接下来有时间会继续深入研究cocoapods</p>
 </article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/ios/%E5%88%9D%E6%8E%A2Size%20Classes%E7%AC%94%E8%AE%B0%20/" title="初探Size Classes笔记"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 初探Size Classes笔记</span></a><a class="button is-default" href="/ios/UITableViewCell%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97%E9%AB%98%E5%BA%A6%E4%BC%98%E5%8C%96%20/" title="UITableViewCell自动计算高度优化"><span class="has-text-weight-semibold">下一页: UITableViewCell自动计算高度优化</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="fuer4869/fuer4869.github.io" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2022</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>

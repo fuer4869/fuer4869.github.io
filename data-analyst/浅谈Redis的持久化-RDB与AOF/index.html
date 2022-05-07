@@ -1,7 +1,9 @@
-<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>浅谈Redis的持久化:RDB与AOF</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">浅谈Redis的持久化:RDB与AOF</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">Redis数据持久化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RDB%E5%BF%AB%E7%85%A7"><span class="toc-text">RDB快照</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#save%E4%B8%8Ebgsave%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">save与bgsave的区别</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AOF%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">AOF持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5-write-%E5%92%8C%E6%96%87%E4%BB%B6%E5%90%8C%E6%AD%A5-sync"><span class="toc-text">文件写入(write)和文件同步(sync)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AOF%E9%87%8D%E5%86%99"><span class="toc-text">AOF重写</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RDB-VS-AOF"><span class="toc-text">RDB VS AOF</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/Redis"><i class="tag post-item-tag">Redis</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">浅谈Redis的持久化:RDB与AOF</h1><time class="has-text-grey" datetime="2020-12-04T09:54:06.000Z">2020-12-04</time><article class="mt-2 post-content"><p><img src="https://i.loli.net/2021/02/05/8lWv7eXDJ4RtYsj.png"></p>
-<h3 id="Redis数据持久化"><a href="#Redis数据持久化" class="headerlink" title="Redis数据持久化"></a>Redis数据持久化</h3><p>Redis可不单单是一个缓存型数据库，如果出现Redis服务出现问题导致关闭或者人为的操作导致停止运行，那么所有的数据都将丢失。</p>
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>浅谈Redis的持久化:RDB与AOF</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">浅谈Redis的持久化:RDB与AOF</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">Redis数据持久化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RDB%E5%BF%AB%E7%85%A7"><span class="toc-text">RDB快照</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#save%E4%B8%8Ebgsave%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">save与bgsave的区别</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AOF%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">AOF持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5-write-%E5%92%8C%E6%96%87%E4%BB%B6%E5%90%8C%E6%AD%A5-sync"><span class="toc-text">文件写入(write)和文件同步(sync)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AOF%E9%87%8D%E5%86%99"><span class="toc-text">AOF重写</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RDB-VS-AOF"><span class="toc-text">RDB VS AOF</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/Redis"><i class="tag post-item-tag">Redis</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">浅谈Redis的持久化:RDB与AOF</h1><time class="has-text-grey" datetime="2020-12-04T09:54:06.000Z">2020-12-04</time><article class="mt-2 post-content"><p><img src="https://i.loli.net/2021/02/05/8lWv7eXDJ4RtYsj.png" alt=""></p>
+<h3 id="Redis数据持久化">Redis数据持久化</h3>
+<p>Redis可不单单是一个缓存型数据库，如果出现Redis服务出现问题导致关闭或者人为的操作导致停止运行，那么所有的数据都将丢失。</p>
 <p>为此Redis推出了数据持久化的方案，Redis推出了两种方案：<strong>RDB</strong>与<strong>AOF</strong></p>
-<h3 id="RDB快照"><a href="#RDB快照" class="headerlink" title="RDB快照"></a>RDB快照</h3><p>什么是<strong>RDB</strong>快照，<strong>RDB</strong>快照有点类似于传统数据库的db文件。指的是将Redis中的数据以二进制格式存储在<strong>RDB</strong>文件中，因为是在磁盘上进行的操作，所以每次写入数据都是IO操作。为了减少磁盘的负担，Redis支持修改<strong>RDB</strong>文件的写入时间间隔：</p>
+<h3 id="RDB快照">RDB快照</h3>
+<p>什么是<strong>RDB</strong>快照，<strong>RDB</strong>快照有点类似于传统数据库的db文件。指的是将Redis中的数据以二进制格式存储在<strong>RDB</strong>文件中，因为是在磁盘上进行的操作，所以每次写入数据都是IO操作。为了减少磁盘的负担，Redis支持修改<strong>RDB</strong>文件的写入时间间隔：</p>
 <p><code>save &lt;seconds&gt; &lt;changes&gt;</code>表示在seconds秒内，至少有changes次变化，就会自动触发<code>bgsave</code>命令</p>
 <ul>
 <li><code>save 900 1</code>  当时间到900秒时，如果至少有1个key发生变化，就会自动触发<code>bgsave</code>命令创建快照</li>
@@ -17,13 +19,15 @@
 <li>执行<code>flushall</code>命令清空服务器数据</li>
 <li>执行<code>shutdown</code>命令关闭Redis时，会执行<code>save</code>命令</li>
 </ul>
-<h4 id="save与bgsave的区别"><a href="#save与bgsave的区别" class="headerlink" title="save与bgsave的区别"></a>save与bgsave的区别</h4><p><strong>save</strong>会阻塞Redis服务器进程</p>
+<h4 id="save与bgsave的区别">save与bgsave的区别</h4>
+<p><strong>save</strong>会阻塞Redis服务器进程</p>
 <p><strong>bgsave</strong>则不同，它会<strong>fork</strong>一个子进程，然后在子进程中创建<strong>rdb</strong>文件，不会阻塞Redis服务器进程</p>
 <p>bgsave流程图:</p>
-<p><img src="https://raw.githubusercontent.com/fuer4869/imgbed/master/20210309025903.png"></p>
-<h3 id="AOF持久化"><a href="#AOF持久化" class="headerlink" title="AOF持久化"></a>AOF持久化</h3><p><strong>AOF</strong>不同于<strong>RDB</strong>,<strong>AOF</strong>是以日志形式记录每次数据的变化。当数据产生变化后，首先Redis会记录这条命令，将命令以<strong>命令追加</strong>的形式存储在<code>aof_buf</code>内存缓冲区，这也是为了避免多次的IO影响性能。</p>
+<p><img src="https://raw.githubusercontent.com/fuer4869/imgbed/master/20210309025903.png" alt=""></p>
+<h3 id="AOF持久化">AOF持久化</h3>
+<p><strong>AOF</strong>不同于<strong>RDB</strong>,<strong>AOF</strong>是以日志形式记录每次数据的变化。当数据产生变化后，首先Redis会记录这条命令，将命令以<strong>命令追加</strong>的形式存储在<code>aof_buf</code>内存缓冲区，这也是为了避免多次的IO影响性能。</p>
 <p>可以通过修改配置文件<code>redis.conf</code>来开启这个功能：</p>
-<pre><code class="shell"># appendonly参数开启AOF持久化
+<pre><code class="language-shell"># appendonly参数开启AOF持久化
 appendonly no
 
 # AOF持久化的文件名，默认是appendonly.aof
@@ -49,8 +53,10 @@ aof-load-truncated yes
 
 # 文件重写策略
 aof-rewrite-incremental-fsync yes
+
 </code></pre>
-<h4 id="文件写入-write-和文件同步-sync"><a href="#文件写入-write-和文件同步-sync" class="headerlink" title="文件写入(write)和文件同步(sync)"></a>文件写入(write)和文件同步(sync)</h4><p>那么在<code>aof_buf</code>缓冲区的命令何时存储到<strong>AOF</strong>文件中呢？Redis提供了下面几个策略</p>
+<h4 id="文件写入-write-和文件同步-sync">文件写入(write)和文件同步(sync)</h4>
+<p>那么在<code>aof_buf</code>缓冲区的命令何时存储到<strong>AOF</strong>文件中呢？Redis提供了下面几个策略</p>
 <ul>
 <li><code>appendfsync always</code>：将<code>aof_buf</code>缓冲区的所有内容写入并同步到AOF文件，每个写命令同步写入磁盘</li>
 <li><code>appendfsync everysec</code>：将<code>aof_buf</code>缓存区的内容写入AOF文件，每秒同步一次，该操作由一个线程专门负责</li>
@@ -62,7 +68,8 @@ aof-rewrite-incremental-fsync yes
 <p>为了提高文件写入效率，在现代操作系统中，当用户调用<code>write</code>函数，将一些数据写入文件时，操作系统通常会将数据暂存到一个内存缓冲区里，当缓冲区的空间被填满或超过了指定时限后，才真正将缓冲区的数据写入到磁盘里。</p>
 <p>这样的操作虽然提高了效率，但也为数据写入带来了安全问题：如果计算机停机，内存缓冲区中的数据会丢失。为此，系统提供了<code>fsync</code>、<code>fdatasync</code>同步函数，可以强制操作系统立刻将缓冲区中的数据写入到硬盘里，从而确保写入数据的安全性。</p>
 </blockquote>
-<h4 id="AOF重写"><a href="#AOF重写" class="headerlink" title="AOF重写"></a>AOF重写</h4><p><strong>AOF</strong>也有一个很明显的缺点，随着时间的推移，Redis无休止的对<strong>AOF</strong>文件进行命令追加，必然会把<strong>AOF</strong>文件填充的十分庞大。那么如何优化这个问题？</p>
+<h4 id="AOF重写">AOF重写</h4>
+<p><strong>AOF</strong>也有一个很明显的缺点，随着时间的推移，Redis无休止的对<strong>AOF</strong>文件进行命令追加，必然会把<strong>AOF</strong>文件填充的十分庞大。那么如何优化这个问题？</p>
 <p><strong>AOF</strong>支持文件重写<code>bgrewriteaof</code>，它会像<code>bgsave</code>一样先<code>fork</code>一个子进程，在子进程中执行文件重写。</p>
 <p><code>bgrewriteaod</code>有两触发方式：</p>
 <ul>
@@ -70,20 +77,24 @@ aof-rewrite-incremental-fsync yes
 <li>自动触发</li>
 </ul>
 <p>自动触发我们可以在<code>redis.conf</code>设置触发条件：</p>
-<pre><code class="shell"># 表示当AOF文件的体积大于64MB，且AOF文件的体积比上一次重写后的体积大了一倍（100%）时，会执行`bgrewriteaof`命令
+<pre><code class="language-shell"># 表示当AOF文件的体积大于64MB，且AOF文件的体积比上一次重写后的体积大了一倍（100%）时，会执行`bgrewriteaof`命令
 auto-aof-rewrite-percentage 100
 auto-aof-rewrite-min-size 64mb
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/fuer4869/imgbed/master/20210309042607.png"></p>
+<p><img src="https://raw.githubusercontent.com/fuer4869/imgbed/master/20210309042607.png" alt=""></p>
 <ul>
-<li><p>重写会有大量的写入操作，所以服务器进程会<code>fork</code>一个子进程来创建一个新的<strong>AOF</strong>文件</p>
+<li>
+<p>重写会有大量的写入操作，所以服务器进程会<code>fork</code>一个子进程来创建一个新的<strong>AOF</strong>文件</p>
 </li>
-<li><p>在重写期间，服务器进程继续处理命令请求，如果有写入的命令，追加到<code>aof_buf</code>的同时，还会追加到<code>aof_rewrite_buf</code><strong>AOF</strong>重写缓冲区</p>
+<li>
+<p>在重写期间，服务器进程继续处理命令请求，如果有写入的命令，追加到<code>aof_buf</code>的同时，还会追加到<code>aof_rewrite_buf</code><strong>AOF</strong>重写缓冲区</p>
 </li>
-<li><p>当子进程完成重写之后，会给父进程一个信号，然后父进程会把<strong>AOF</strong>重写缓冲区的内容写进新的<strong>AOF</strong>临时文件中，再对新的<strong>AOF</strong>文件改名完成替换，这样可以保证新的<strong>AOF</strong>文件与当前数据库数据的一致性</p>
+<li>
+<p>当子进程完成重写之后，会给父进程一个信号，然后父进程会把<strong>AOF</strong>重写缓冲区的内容写进新的<strong>AOF</strong>临时文件中，再对新的<strong>AOF</strong>文件改名完成替换，这样可以保证新的<strong>AOF</strong>文件与当前数据库数据的一致性</p>
 </li>
 </ul>
-<h3 id="RDB-VS-AOF"><a href="#RDB-VS-AOF" class="headerlink" title="RDB VS AOF"></a>RDB VS AOF</h3><p><strong>RDB优点</strong></p>
+<h3 id="RDB-VS-AOF">RDB VS AOF</h3>
+<p><strong>RDB优点</strong></p>
 <ul>
 <li>快照是以二进制压缩文件存储的，存储空间小，易于备份，如果可能出现大量数据丢失的情况推荐用这个方案</li>
 <li>子进程运行，不影响Redis其他服务</li>
@@ -99,10 +110,13 @@ auto-aof-rewrite-min-size 64mb
 </ul>
 <p><strong>AOF缺点</strong></p>
 <ul>
-<li><p><strong>AOF</strong>是以Redis序列化协议存储的，同数据集体积下，<strong>RDB</strong>文件大小比<strong>AOF</strong>小很多</p>
+<li>
+<p><strong>AOF</strong>是以Redis序列化协议存储的，同数据集体积下，<strong>RDB</strong>文件大小比<strong>AOF</strong>小很多</p>
 </li>
-<li><p>由于<strong>AOF</strong>文件庞大, 数据恢复也会比<strong>RDB</strong>慢</p>
+<li>
+<p>由于<strong>AOF</strong>文件庞大, 数据恢复也会比<strong>RDB</strong>慢</p>
 </li>
 </ul>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p><strong>RDB</strong>与<strong>AOF</strong>各有优势，如何选择得看业务场景。如果一秒的数据都不能丢，那么需要开启<strong>AOF</strong>。如果对于性能要求比较高并且能够承受几分钟的数据丢失，那么建议开启<strong>RDB</strong>。当然也有两种持久化方案都开启的情况。</p>
+<h4 id="总结">总结</h4>
+<p><strong>RDB</strong>与<strong>AOF</strong>各有优势，如何选择得看业务场景。如果一秒的数据都不能丢，那么需要开启<strong>AOF</strong>。如果对于性能要求比较高并且能够承受几分钟的数据丢失，那么建议开启<strong>RDB</strong>。当然也有两种持久化方案都开启的情况。</p>
 </article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/leetcode/657-%E6%9C%BA%E5%99%A8%E4%BA%BA%E8%83%BD%E5%90%A6%E8%BF%94%E5%9B%9E%E5%8E%9F%E7%82%B9/" title="657. 机器人能否返回原点"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 657. 机器人能否返回原点</span></a><a class="button is-default" href="/data-analyst/%E8%87%AA%E5%B7%B1%E5%8A%A8%E6%89%8B%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E7%89%88sqlite%EF%BC%88%E4%B8%80%EF%BC%89/" title="自己动手实现简易版sqlite（一）.md"><span class="has-text-weight-semibold">下一页: 自己动手实现简易版sqlite（一）.md</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="fuer4869/fuer4869.github.io" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2022</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>

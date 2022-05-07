@@ -2,16 +2,27 @@
 <p>之前有段时间一直被UITableViewCell的自动计算高度困扰着，查阅过很多资料试过很多种方法，有些勉强能用，有些计算高度不是很稳定会有错误，有些方法太过复杂影响开发效率,再加上苹果的2次发布会推出了2次针对UITableViewCell自动计算高度的改进，但效果都不是很好。所以这次正好有空就在这里统一整理出来，做一次总结，找出我个人觉得目前最好的方法出来。</p>
 <p>在这之前我做过一些调查，发现iOS7和iOS6的市场占有比还是有一点的，这个是iOS9发布三周后的数据</p>
 <p>发现现在还使用iOS7和iOS6的还是蛮多的，占了10%，所以接下来要做的适配起码要兼容iOS7甚至兼容iOS6。</p>
-<h3 id="estimatedRowHeight"><a href="#estimatedRowHeight" class="headerlink" title="estimatedRowHeight"></a>estimatedRowHeight</h3><p>这个是在iOS7发布会上推出的一个UITableView的属性：</p>
+<h3 id="estimatedRowHeight">estimatedRowHeight</h3>
+<p>这个是在iOS7发布会上推出的一个UITableView的属性：</p>
 <blockquote>
-<p>If the table contains variable height rows, it might be expensive to<br>calculate all their heights when the table loads. Using estimation<br>allows you to defer some of the cost of geometry calculation from load<br>time to scrolling time.</p>
+<p>If the table contains variable height rows, it might be expensive to<br>
+calculate all their heights when the table loads. Using estimation<br>
+allows you to defer some of the cost of geometry calculation from load<br>
+time to scrolling time.</p>
 </blockquote>
 <p>官方文档是这么解释这个属性的。</p>
-<p>一开始以为这个方法好像蛮有道理的，但仔细一想其实这个方法并不好。首先我们给了tableview一个估高确实能减少一部分开销，在tableview初次加载的时候没有对每个cell的高度去计算，它会对没出现的cell做估算，给了它们一个估算值，然后通过这个估算值计算出contentsize，从而决定tableview是否可以滑动以及滚动条的长度。<br>但是经过我几次测试之后我发现了几个很重要的问题，就是当tableview在持续滚动的时候它会去不断的重新计算cell的高度，因为这个时候需要精确计算了，所以你会发现tableview的滚动条的长度会在不停的跳动，并且下面这个回调函数在不断的被执行。</p>
+<p>一开始以为这个方法好像蛮有道理的，但仔细一想其实这个方法并不好。首先我们给了tableview一个估高确实能减少一部分开销，在tableview初次加载的时候没有对每个cell的高度去计算，它会对没出现的cell做估算，给了它们一个估算值，然后通过这个估算值计算出contentsize，从而决定tableview是否可以滑动以及滚动条的长度。<br>
+但是经过我几次测试之后我发现了几个很重要的问题，就是当tableview在持续滚动的时候它会去不断的重新计算cell的高度，因为这个时候需要精确计算了，所以你会发现tableview的滚动条的长度会在不停的跳动，并且下面这个回调函数在不断的被执行。</p>
 <p>对的，这部分的开销一样很大，并且旁边的滚动条的跳动的情况十分影响体验。这次iOS7的改动并不是十分完美，纰漏之处还是很明显的，这也是我不使用这个方法的原因。</p>
-<h3 id="self-sizing-cell"><a href="#self-sizing-cell" class="headerlink" title="self-sizing cell"></a>self-sizing cell</h3><p>iOS8 WWDC 中推出了 self-sizing cell 的概念，旨在让 cell<br>自己负责自己的高度计算，使用 frame layout 和 auto layout 都可以享受到：</p>
-<p>看来苹果也确实发现了iOS7的estimatedRowHeight<br>的问题确实太明显了，果然还是在iOS8的时候解决了这个问题。这个方法推出后我也用了一段时间，虽然它对约束的要求及其严格，在使用的时候需要先确定内容的宽度，所以会用到这个<code>preferredMaxLayoutWidth</code>，但是如果你的约束稍微有点问题的话，这个方法就会返回0造成计算错误。<br>但是这个新特性的要求是iOS8，低于iOS8是不能使用这种功能的，那也就是说我们在开发过程中还要另外再做一套针对低于iOS8系统的方法，也就是上面那个方案。一次适配要写2套代码，太麻烦，所以我个人认为也不是最好的方案。</p>
-<h3 id="UITableView-FDTemplateLayoutCell"><a href="#UITableView-FDTemplateLayoutCell" class="headerlink" title="UITableView + FDTemplateLayoutCell"></a>UITableView + FDTemplateLayoutCell</h3><p>这个是我在逛github时无意发现的，抱着好奇的态度看了下介绍发现出乎意料的满足了我现在对自动计算UITableViewCell高度的所有需求，能够解决我之前提到的所有困惑。抱着试一试的态度fork下来简单使用了下，确实解决了算高的问题，滑动也十分流畅，同时也支持iOS6。<br>其实它主要是综合了以前3个版本的计算高度的优点，既有一个单独计算cell高度的TemplateLayourCell,也有不影响cell动态变化的自动缓存机制和自动缓存清理机制，也有iOS8的self-sizing的特性。</p>
+<h3 id="self-sizing-cell">self-sizing cell</h3>
+<p>iOS8 WWDC 中推出了 self-sizing cell 的概念，旨在让 cell<br>
+自己负责自己的高度计算，使用 frame layout 和 auto layout 都可以享受到：</p>
+<p>看来苹果也确实发现了iOS7的estimatedRowHeight<br>
+的问题确实太明显了，果然还是在iOS8的时候解决了这个问题。这个方法推出后我也用了一段时间，虽然它对约束的要求及其严格，在使用的时候需要先确定内容的宽度，所以会用到这个<code>preferredMaxLayoutWidth</code>，但是如果你的约束稍微有点问题的话，这个方法就会返回0造成计算错误。<br>
+但是这个新特性的要求是iOS8，低于iOS8是不能使用这种功能的，那也就是说我们在开发过程中还要另外再做一套针对低于iOS8系统的方法，也就是上面那个方案。一次适配要写2套代码，太麻烦，所以我个人认为也不是最好的方案。</p>
+<h3 id="UITableView-FDTemplateLayoutCell">UITableView + FDTemplateLayoutCell</h3>
+<p>这个是我在逛github时无意发现的，抱着好奇的态度看了下介绍发现出乎意料的满足了我现在对自动计算UITableViewCell高度的所有需求，能够解决我之前提到的所有困惑。抱着试一试的态度fork下来简单使用了下，确实解决了算高的问题，滑动也十分流畅，同时也支持iOS6。<br>
+其实它主要是综合了以前3个版本的计算高度的优点，既有一个单独计算cell高度的TemplateLayourCell,也有不影响cell动态变化的自动缓存机制和自动缓存清理机制，也有iOS8的self-sizing的特性。</p>
 <p>总结：据可靠数据统计，使用该工具之后再效率上面也有了明显的提升，因为使用了预缓存的机制大大缩短了计算高度的所消耗的时间。使用方法完全整合了iOS6，iOS7，iOS8三中计算高度的优点并做了缓存的优化，使用方法也很简单不会有想iOS8那种对约束十分严格的情况出现，并且支持的最低系统是iOS6.所以本人还是很提倡使用这个工具的，并且该工具的开发者是著名的sunnyxx,相信不会突然烂尾不管这个项目，肯定还会持续更新维护项目，完全可以放心使用。</p>
 <p>github：<a target="_blank" rel="noopener" href="https://github.com/forkingdog/UITableView-FDTemplateLayoutCell">https://github.com/forkingdog/UITableView-FDTemplateLayoutCell</a></p>
 <p>使用 cocoapods：</p>

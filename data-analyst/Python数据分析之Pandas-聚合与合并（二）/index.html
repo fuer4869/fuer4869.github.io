@@ -1,8 +1,9 @@
-<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>Python数据分析之Pandas-聚合与合并（二）</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Python数据分析之Pandas-聚合与合并（二）</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E4%B8%8A%E7%9A%84%E5%90%88%E5%B9%B6"><span class="toc-text">索引上的合并</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E6%98%AF%E5%AF%B9%E4%BA%8E%E5%B1%82%E6%AC%A1%E5%8C%96%E7%B4%A2%E5%BC%95%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-text">如果是对于层次化索引的数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%B4%E5%90%91%E8%BF%9E%E6%8E%A5"><span class="toc-text">轴向连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%88%E5%B9%B6%E9%87%8D%E5%8F%A0%E6%95%B0%E6%8D%AE"><span class="toc-text">合并重叠数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/Python,%20Pandas"><i class="tag post-item-tag">Python, Pandas</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">Python数据分析之Pandas-聚合与合并（二）</h1><time class="has-text-grey" datetime="2019-05-07T08:02:57.000Z">2019-05-07</time><article class="mt-2 post-content"><p><img src="http://upload-images.jianshu.io/upload_images/1515206-fb41334e461576fa.wEY-WvPTUqSoBowdG85S5gHaEH&pid=Api&rs=1&p=0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="数据合并"></p>
-<h2 id="索引上的合并"><a href="#索引上的合并" class="headerlink" title="索引上的合并"></a>索引上的合并</h2><p>**比如DataFrame中连接键位于其索引中的情况，传入<code>left_index=True</code>或<code>right_index=True</code>以说明索引应该被用作连接键：</p>
-<pre><code>In [62]: left1 = DataFrame(&#123;&#39;key&#39;:[&#39;a&#39;,&#39;b&#39;,&#39;a&#39;,&#39;a&#39;,&#39;b&#39;,&#39;c&#39;],&#39;value&#39;:range(6)&#125;)
+<!DOCTYPE html><html class="appearance-auto" lang="zh-CN"><head><meta charset="UTF-8"><title>Python数据分析之Pandas-聚合与合并（二）</title><meta name="description"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body class="is-flex is-flex-direction-column"><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-space-between is-hidden-mobile"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">loannes's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Python数据分析之Pandas-聚合与合并（二）</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E4%B8%8A%E7%9A%84%E5%90%88%E5%B9%B6"><span class="toc-text">索引上的合并</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E6%98%AF%E5%AF%B9%E4%BA%8E%E5%B1%82%E6%AC%A1%E5%8C%96%E7%B4%A2%E5%BC%95%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-text">如果是对于层次化索引的数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%B4%E5%90%91%E8%BF%9E%E6%8E%A5"><span class="toc-text">轴向连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%88%E5%B9%B6%E9%87%8D%E5%8F%A0%E6%95%B0%E6%8D%AE"><span class="toc-text">合并重叠数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/Python,%20Pandas"><i class="tag post-item-tag">Python, Pandas</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">Python数据分析之Pandas-聚合与合并（二）</h1><time class="has-text-grey" datetime="2019-05-07T08:02:57.000Z">2019-05-07</time><article class="mt-2 post-content"><p><img src="http://upload-images.jianshu.io/upload_images/1515206-fb41334e461576fa.wEY-WvPTUqSoBowdG85S5gHaEH&amp;pid=Api&amp;rs=1&amp;p=0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="数据合并"></p>
+<h2 id="索引上的合并">索引上的合并</h2>
+<p>**比如DataFrame中连接键位于其索引中的情况，传入<code>left_index=True</code>或<code>right_index=True</code>以说明索引应该被用作连接键：</p>
+<pre><code>In [62]: left1 = DataFrame(&#123;'key':['a','b','a','a','b','c'],'value':range(6)&#125;)
 
-In [63]: right1 = DataFrame(&#123;&#39;group_val&#39;:[3.5, 7]&#125;, index=[&#39;a&#39;,&#39;b&#39;])
+In [63]: right1 = DataFrame(&#123;'group_val':[3.5, 7]&#125;, index=['a','b'])
 
 In [64]: left1
 Out[64]:
@@ -20,7 +21,7 @@ Out[65]:
 a        3.5
 b        7.0
 
-In [71]: pd.merge(left1,right1,left_on=&#39;key&#39;,right_index=True)
+In [71]: pd.merge(left1,right1,left_on='key',right_index=True)
 Out[71]:
   key  value  group_val
 0   a      0        3.5
@@ -30,7 +31,7 @@ Out[71]:
 4   b      4        7.0
 </code></pre>
 <p>上面例子中将<code>left1</code>的<code>key</code>列与<code>right1</code>中的行索引进行连接。<code>merge</code>函数默认是求连接键的交集。可以通过修改<code>how</code>参数来实现并集。</p>
-<pre><code>In [82]: pd.merge(left1,right1,left_on=&#39;key&#39;,right_index=True,how=&#39;outer&#39;)
+<pre><code>In [82]: pd.merge(left1,right1,left_on='key',right_index=True,how='outer')
 Out[82]:
   key  value  group_val
 0   a      0        3.5
@@ -40,12 +41,13 @@ Out[82]:
 4   b      4        7.0
 5   c      5        NaN
 </code></pre>
-<p>与数学中的交集与并集和合并中的交集并集还有有区别的，在<a href="%5Bhttps://www.jianshu.com/p/4ec9abd66501%5D">笔记|数据分析之pandas基础—-聚合、合并与重塑（一）</a>中已经分析过</p>
-<h2 id="如果是对于层次化索引的数据"><a href="#如果是对于层次化索引的数据" class="headerlink" title="如果是对于层次化索引的数据"></a>如果是对于层次化索引的数据</h2><pre><code>In [83]: lefth = DataFrame(&#123;&#39;key1&#39;:[&#39;Ohio&#39;,&#39;Ohio&#39;,&#39;Ohio&#39;,&#39;Nevada&#39;,&#39;Nevada&#39;],&#39;key2&#39;:[2000,2001,2002,
-    ...: 2001,2002],&#39;data&#39;:np.arange(5.)&#125;)
+<p>与数学中的交集与并集和合并中的交集并集还有有区别的，在<a href="%5Bhttps://www.jianshu.com/p/4ec9abd66501%5D">笔记|数据分析之pandas基础----聚合、合并与重塑（一）</a>中已经分析过</p>
+<h2 id="如果是对于层次化索引的数据">如果是对于层次化索引的数据</h2>
+<pre><code>In [83]: lefth = DataFrame(&#123;'key1':['Ohio','Ohio','Ohio','Nevada','Nevada'],'key2':[2000,2001,2002,
+    ...: 2001,2002],'data':np.arange(5.)&#125;)
 
-In [84]: righth = DataFrame(np.arange(12).reshape((6,2)),index=[[&#39;Nevada&#39;,&#39;Nevada&#39;,&#39;Ohio&#39;,&#39;Ohio&#39;,&#39;O
-    ...: hio&#39;,&#39;Ohio&#39;],[2001,2000,2000,2000,2001,2002]],columns=[&#39;event1&#39;,&#39;event2&#39;])
+In [84]: righth = DataFrame(np.arange(12).reshape((6,2)),index=[['Nevada','Nevada','Ohio','Ohio','O
+    ...: hio','Ohio'],[2001,2000,2000,2000,2001,2002]],columns=['event1','event2'])
 
 In [85]: lefth
 Out[85]:
@@ -67,7 +69,7 @@ Ohio   2000       4       5
        2002      10      11
 </code></pre>
 <p>这种情况下，你必须以列表的形式指明用作合并键的多个列：</p>
-<pre><code>In [89]: pd.merge(lefth,righth,left_on=[&#39;key1&#39;,&#39;key2&#39;],right_index=True)
+<pre><code>In [89]: pd.merge(lefth,righth,left_on=['key1','key2'],right_index=True)
 Out[89]:
      key1  key2  data  event1  event2
 0    Ohio  2000   0.0       4       5
@@ -76,12 +78,12 @@ Out[89]:
 2    Ohio  2002   2.0      10      11
 3  Nevada  2001   3.0       0       1
 </code></pre>
-<p>**要将<code>rightf</code>的层次化索引合并进来需要2列数据，<code>lefth</code>中的<code>key1,key2</code>正好可以对其进行合并，所以<code>left_on = [&#39;key1&#39;, &#39;key2&#39;]</code>。</p>
+<p>**要将<code>rightf</code>的层次化索引合并进来需要2列数据，<code>lefth</code>中的<code>key1,key2</code>正好可以对其进行合并，所以<code>left_on = ['key1', 'key2']</code>。</p>
 <p><strong>也可以同时合并双方的索引</strong></p>
-<pre><code>In [90]: left2 = DataFrame([[1,2],[3,4],[5,6]],index=[&#39;a&#39;,&#39;c&#39;,&#39;e&#39;], columns=[&#39;Ohio&#39;,&#39;Nevada&#39;])
+<pre><code>In [90]: left2 = DataFrame([[1,2],[3,4],[5,6]],index=['a','c','e'], columns=['Ohio','Nevada'])
 
-In [91]: right2 = DataFrame([[7,8],[9,10],[11,12],[13,14]],index=[&#39;b&#39;,&#39;c&#39;,&#39;d&#39;,&#39;e&#39;],columns=[&#39;Missou
-    ...: ri&#39;,&#39;Alabama&#39;])
+In [91]: right2 = DataFrame([[7,8],[9,10],[11,12],[13,14]],index=['b','c','d','e'],columns=['Missou
+    ...: ri','Alabama'])
 
 In [92]: left2
 Out[92]:
@@ -98,7 +100,7 @@ c         9       10
 d        11       12
 e        13       14
 
-In [94]: pd.merge(left2,right2, how=&#39;outer&#39;,left_index=True,right_index=True)
+In [94]: pd.merge(left2,right2, how='outer',left_index=True,right_index=True)
 Out[94]:
    Ohio  Nevada  Missouri  Alabama
 a   1.0     2.0       NaN      NaN
@@ -107,8 +109,9 @@ c   3.0     4.0       9.0     10.0
 d   NaN     NaN      11.0     12.0
 e   5.0     6.0      13.0     14.0
 </code></pre>
-<p>##通过join方法进行合并<br><strong>join函数可用于合并多个带有相同或相似索引的DataFrame对象而不管它们之间有没有重叠的列</strong></p>
-<pre><code>In [95]: left2.join(right2,how=&#39;outer&#39;)
+<p>##通过join方法进行合并<br>
+<strong>join函数可用于合并多个带有相同或相似索引的DataFrame对象而不管它们之间有没有重叠的列</strong></p>
+<pre><code>In [95]: left2.join(right2,how='outer')
 Out[95]:
    Ohio  Nevada  Missouri  Alabama
 a   1.0     2.0       NaN      NaN
@@ -118,8 +121,8 @@ d   NaN     NaN      11.0     12.0
 e   5.0     6.0      13.0     14.0
 </code></pre>
 <p><strong>还可以向<code>join</code>函数传入一组DataFrame对象</strong></p>
-<pre><code>In [96]: another = DataFrame([[7,8],[9,10],[11,12],[16,17]],index=[&#39;a&#39;,&#39;c&#39;,&#39;e&#39;,&#39;f&#39;],columns=[&#39;New Y
-    ...: ork&#39;,&#39;Oregon&#39;])
+<pre><code>In [96]: another = DataFrame([[7,8],[9,10],[11,12],[16,17]],index=['a','c','e','f'],columns=['New Y
+    ...: ork','Oregon'])
 
 In [97]: left2.join([right2,another])
 Out[97]:
@@ -129,7 +132,8 @@ c     3       4       9.0     10.0         9      10
 e     5       6      13.0     14.0        11      12
 </code></pre>
 <p>默认是交集，所以<code>a,b,c,d,e</code>与<code>a,c,e,f</code>合并后，索引就变成<code>a,c,e</code></p>
-<h2 id="轴向连接"><a href="#轴向连接" class="headerlink" title="轴向连接"></a>轴向连接</h2><p>pandas还有另一种合并运算:Numpy的```concatenation````函数：</p>
+<h2 id="轴向连接">轴向连接</h2>
+<p>pandas还有另一种合并运算:Numpy的```concatenation````函数：</p>
 <pre><code>In [98]: arr = np.arange(12).reshape(3,4)
 
 In [99]: arr
@@ -151,12 +155,13 @@ array([[ 0,  1,  2,  3,  0,  1,  2,  3],
 <li>结果对象中的分组需要各不相同吗？</li>
 <li>用于连接的轴重要吗？</li>
 </ul>
-<p>pandas的<code>concat</code>函数为这些问题提供了可靠的解决方案。<br>如下例，假设有三个没有重叠索引的Series:</p>
-<pre><code>In [102]: s1 = Series([0,1],index=[&#39;a&#39;,&#39;b&#39;])
+<p>pandas的<code>concat</code>函数为这些问题提供了可靠的解决方案。<br>
+如下例，假设有三个没有重叠索引的Series:</p>
+<pre><code>In [102]: s1 = Series([0,1],index=['a','b'])
 
-In [103]: s2 = Series([2,3,4], index=[&#39;c&#39;,&#39;d&#39;,&#39;e&#39;])
+In [103]: s2 = Series([2,3,4], index=['c','d','e'])
 
-In [104]: s3 = Series([5,6], index=[&#39;f&#39;,&#39;g&#39;])
+In [104]: s3 = Series([5,6], index=['f','g'])
 </code></pre>
 <p>我们可以通过<code>concat</code>函数将三个对象粘合在一起：</p>
 <pre><code>In [108]: pd.concat([s1,s2,s3])
@@ -170,7 +175,8 @@ f    5
 g    6
 dtype: int64
 </code></pre>
-<p><code>concat</code>函数默认<code>axis=0</code>，所以会合并行。<br>从结果中可以看到没有出现重叠的情况，再看下面的例子：</p>
+<p><code>concat</code>函数默认<code>axis=0</code>，所以会合并行。<br>
+从结果中可以看到没有出现重叠的情况，再看下面的例子：</p>
 <pre><code>In [115]: pd.concat([s1,s4], axis=1, sort=False)
 Out[115]:
      0  1
@@ -179,7 +185,7 @@ b  1.0  5
 f  NaN  5
 g  NaN  6
 </code></pre>
-<pre><code>In [117]: pd.concat([s1,s4], axis=1, sort=False, join=&#39;inner&#39;)
+<pre><code>In [117]: pd.concat([s1,s4], axis=1, sort=False, join='inner')
 Out[117]:
    0  1
 a  0  0
@@ -187,7 +193,7 @@ b  1  5
 </code></pre>
 <p>因为设置了<code>join=inner</code>交集，所以<code>f、g</code>标签消失了。</p>
 <p>你可以通过<code>join_axes</code>指定要在其他轴上使用的索引：</p>
-<pre><code>In [118]: pd.concat([s1,s4], axis=1, join_axes=[[&#39;a&#39;,&#39;c&#39;,&#39;b&#39;,&#39;e&#39;]])
+<pre><code>In [118]: pd.concat([s1,s4], axis=1, join_axes=[['a','c','b','e']])
 Out[118]:
      0    1
 a  0.0  0.0
@@ -196,7 +202,7 @@ b  1.0  5.0
 e  NaN  NaN
 </code></pre>
 <p>如果需要知道合并后的数据来源，我们可以创建一个层次化索引，使用<code>keys</code>参数可以做到：</p>
-<pre><code>In [119]: result = pd.concat([s1, s1, s3], keys = [&#39;one&#39;,&#39;two&#39;,&#39;three&#39;])
+<pre><code>In [119]: result = pd.concat([s1, s1, s3], keys = ['one','two','three'])
 
 In [120]: result
 Out[120]:
@@ -217,7 +223,7 @@ two    0.0  1.0  NaN  NaN
 three  NaN  NaN  5.0  6.0
 </code></pre>
 <p>如果沿着axis=1对Series进行合并，则keys就会成为DataFrame的列头：</p>
-<pre><code>In [129]: pd.concat([s1, s2, s3], keys = [&#39;one&#39;,&#39;two&#39;,&#39;three&#39;], axis=1, sort=False)
+<pre><code>In [129]: pd.concat([s1, s2, s3], keys = ['one','two','three'], axis=1, sort=False)
 Out[129]:
    one  two  three
 a  0.0  NaN    NaN
@@ -230,11 +236,11 @@ g  NaN  NaN    6.0
 </code></pre>
 <p>这里<code>axis=1</code>行向合并，<code>keys</code>也受到了它的影响变成了DataFrame的列头。</p>
 <p>同样DataFrame也是如此：</p>
-<pre><code>In [130]: df1 = DataFrame(np.arange(6).reshape(3,2), index=[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;], columns=[&#39;one&#39;,&#39;two&#39;])
+<pre><code>In [130]: df1 = DataFrame(np.arange(6).reshape(3,2), index=['a','b','c'], columns=['one','two'])
 
-In [131]: df2 = DataFrame(5 + np.arange(4).reshape(2, 2), index=[&#39;a&#39;,&#39;c&#39;], columns=[&#39;three&#39;,&#39;four&#39;])
+In [131]: df2 = DataFrame(5 + np.arange(4).reshape(2, 2), index=['a','c'], columns=['three','four'])
 
-In [133]: pd.concat([df1, df2], axis=1, keys=[&#39;level1&#39;,&#39;level2&#39;], sort=False)
+In [133]: pd.concat([df1, df2], axis=1, keys=['level1','level2'], sort=False)
 Out[133]:
   level1     level2
      one two  three four
@@ -243,7 +249,7 @@ b      2   3    NaN  NaN
 c      4   5    7.0  8.0
 </code></pre>
 <p>如果传入的不是列表而是一个字典，则字典的键就会被当做keys选项的值：</p>
-<pre><code>In [138]: pd.concat(&#123;&#39;level1&#39;:df1, &#39;level2&#39;:df2&#125;, axis=1, sort=False)
+<pre><code>In [138]: pd.concat(&#123;'level1':df1, 'level2':df2&#125;, axis=1, sort=False)
 Out[138]:
   level1     level2
      one two  three four
@@ -252,7 +258,7 @@ b      2   3    NaN  NaN
 c      4   5    7.0  8.0
 </code></pre>
 <p>此外还有两个用于管理层次化索引创建方式的参数：</p>
-<pre><code>In [139]: pd.concat([df1,df2], axis=1,sort=False, keys=[&#39;level1&#39;,&#39;level2&#39;],names=[&#39;upper&#39;,&#39;lower&#39;])
+<pre><code>In [139]: pd.concat([df1,df2], axis=1,sort=False, keys=['level1','level2'],names=['upper','lower'])
      ...:
 Out[139]:
 upper level1     level2
@@ -261,11 +267,13 @@ a          0   1    5.0  6.0
 b          2   3    NaN  NaN
 c          4   5    7.0  8.0
 </code></pre>
-<p>concat函数的参数<br><img src="https://upload-images.jianshu.io/upload_images/1515206-fe265c34e040a7cf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WechatIMG34.png"></p>
-<h2 id="合并重叠数据"><a href="#合并重叠数据" class="headerlink" title="合并重叠数据"></a>合并重叠数据</h2><p>如果遇到比较复杂的两个数据集需要合并，里面会遇到很多重叠的情况，那么用NumPy的<code>where</code>函数是最佳选择：</p>
-<pre><code>In [140]: a = Series([np.nan, 2.5, np.nan, 3.5, 4.5, np.nan],index=[&#39;f&#39;,&#39;e&#39;,&#39;d&#39;,&#39;c&#39;,&#39;b&#39;,&#39;a&#39;])
+<p>concat函数的参数<br>
+<img src="https://upload-images.jianshu.io/upload_images/1515206-fe265c34e040a7cf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WechatIMG34.png"></p>
+<h2 id="合并重叠数据">合并重叠数据</h2>
+<p>如果遇到比较复杂的两个数据集需要合并，里面会遇到很多重叠的情况，那么用NumPy的<code>where</code>函数是最佳选择：</p>
+<pre><code>In [140]: a = Series([np.nan, 2.5, np.nan, 3.5, 4.5, np.nan],index=['f','e','d','c','b','a'])
 
-In [141]: b = Series(np.arange(len(a), dtype=np.float64), index=[&#39;f&#39;,&#39;e&#39;,&#39;d&#39;,&#39;c&#39;,&#39;b&#39;,&#39;a&#39;])
+In [141]: b = Series(np.arange(len(a), dtype=np.float64), index=['f','e','d','c','b','a'])
 
 In [142]: b[-1] = np.nan
 
@@ -306,10 +314,10 @@ f    0.0
 Name: b, dtype: float64
 </code></pre>
 <p>同样<code>combine_first</code>也可以用在DataFrame上：</p>
-<pre><code>In [164]: df1 = DataFrame(&#123;&#39;a&#39;:[1, np.nan, 5, np.nan],&#39;b&#39;:[np.nan, 2, np.nan, 6],&#39;c&#39;:range(2, 18, 4
+<pre><code>In [164]: df1 = DataFrame(&#123;'a':[1, np.nan, 5, np.nan],'b':[np.nan, 2, np.nan, 6],'c':range(2, 18, 4
      ...: )&#125;)
 
-In [165]: df2 = DataFrame(&#123;&#39;a&#39;:[5, 4, np.nan, 3, 7],&#39;b&#39;:[np.nan, 3, 4, 6, 8]&#125;)
+In [165]: df2 = DataFrame(&#123;'a':[5, 4, np.nan, 3, 7],'b':[np.nan, 3, 4, 6, 8]&#125;)
 
 In [166]: df1.combine_first(df2)
 Out[166]:
@@ -321,7 +329,8 @@ Out[166]:
 4  7.0  8.0   NaN
 </code></pre>
 <p>在两组数据正好可以互相填补的情况下很适合用<code>combine_first</code>。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>今天学习了<code>merge</code>函数的后半部分功能：</p>
+<h2 id="总结">总结</h2>
+<p>今天学习了<code>merge</code>函数的后半部分功能：</p>
 <ul>
 <li>DataFrame对象行索引的合并</li>
 <li>也可以对层次化索引进行合并，因为有层次化索引的关系会有两列索引，所以相对应的要提供2列数据来对它合并。</li>

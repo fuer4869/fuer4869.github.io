@@ -3,28 +3,41 @@
 <p>使用SDWebImage这个第三方开源库也有一段时间了，一直没有机会去深入理解这个库为何如此强大。这次本着冒险的精神花了点时间去里面探索了一番。虽然过程有点痛苦结果也是弄的自己灰头土脸的，不过起码还是有收获的。所以在本blog做一次第一次探险的记录吧。</p>
 <hr>
 <p><a target="_blank" rel="noopener" href="https://github.com/rs/SDWebImage">SDWebImage github地址</a></p>
-<p>原文是这么说的：SDWebImage是一个图片的异步下载器并且支持缓存。<br>作者是 <a target="_blank" rel="noopener" href="https://github.com/mythodeia">Konstantinos<br>K.</a>,目前star数已超过1.3w。目前有很多著名的app都在使用这个库，如携程，Facebook等。<br>虽然它的主要功能就这2点，但是它无可厚非的成为了目前主流的iOS第三方开源库的王者之一。</p>
+<p>原文是这么说的：SDWebImage是一个图片的异步下载器并且支持缓存。<br>
+作者是 <a target="_blank" rel="noopener" href="https://github.com/mythodeia">Konstantinos<br>
+K.</a>,目前star数已超过1.3w。目前有很多著名的app都在使用这个库，如携程，Facebook等。<br>
+虽然它的主要功能就这2点，但是它无可厚非的成为了目前主流的iOS第三方开源库的王者之一。</p>
 <p>下面来看一下SDWebImage的类关系图</p>
 <p>PS: 图片来自于 <a target="_blank" rel="noopener" href="http://www.jianshu.com/p/c07df06c60be">http://www.jianshu.com/p/c07df06c60be</a></p>
 <hr>
-<p>自从更新iOS5.0之后，NSURLCache这个类已成为处理内存或者硬盘存储源数据的必需品。但是当你将原始缓存数据转换成UIImage的时候，这个举动其实是很浪费资源的，包括数据处理和内存拷贝等。<br>而SDWebImage就是为了解决这个问题而诞生的，SDWebImage会缓存UIimage的描述到内存中，并把经过压缩过的图片放到磁盘中（或者内存中），这样大大减小了在频繁从内存中获取图片的性能开销。<br>然后关于SDWebImage的压缩方式也很人性化的使用了后台线程的方式，避免了线程阻塞的问题。</p>
+<p>自从更新iOS5.0之后，NSURLCache这个类已成为处理内存或者硬盘存储源数据的必需品。但是当你将原始缓存数据转换成UIImage的时候，这个举动其实是很浪费资源的，包括数据处理和内存拷贝等。<br>
+而SDWebImage就是为了解决这个问题而诞生的，SDWebImage会缓存UIimage的描述到内存中，并把经过压缩过的图片放到磁盘中（或者内存中），这样大大减小了在频繁从内存中获取图片的性能开销。<br>
+然后关于SDWebImage的压缩方式也很人性化的使用了后台线程的方式，避免了线程阻塞的问题。</p>
 <p>参考文章：<a target="_blank" rel="noopener" href="https://github.com/rs/SDWebImage/wiki/How-is-SDWebImage-better-than-X%3F">https://github.com/rs/SDWebImage/wiki/How-is-SDWebImage-better-than-X%3F</a></p>
 <p>以上2点是SDWebImage的优势所在，接下来为了论证它的这些特点我们详细分析下它的源码：</p>
 <ol>
-<li> SDWebImage 在缓存中进行写的操作是异步执行的，所以不会对UI造成延迟</li>
-<li> SDWebImage 会在后台解压缩图片</li>
-<li> 异步下载图片，不会阻塞线程</li>
-<li> 良好的缓存管理</li>
-<li> 支持arm64位系统</li>
+<li>SDWebImage 在缓存中进行写的操作是异步执行的，所以不会对UI造成延迟</li>
+<li>SDWebImage 会在后台解压缩图片</li>
+<li>异步下载图片，不会阻塞线程</li>
+<li>良好的缓存管理</li>
+<li>支持arm64位系统</li>
 </ol>
 <p>先来看一下SDWebImageDownloader，在SDWebImageDownloader类中</p>
 <p><code>- (id &lt;SDWebImageOperation&gt;)downloadImageWithURL:(NSURL *)url options:(SDWebImageDownloaderOptions)options progress:(SDWebImageDownloaderProgressBlock)progressBlock completed:(SDWebImageDownloaderCompletedBlock)completedBlock</code></p>
 <p>该接口中这么写到</p>
 <blockquote>
-<p>In order to prevent from potential duplicate caching (NSURLCache +<br>SDImageCache) we disable the cache for image requests if told<br>otherwise</p>
+<p>In order to prevent from potential duplicate caching (NSURLCache +<br>
+SDImageCache) we disable the cache for image requests if told<br>
+otherwise</p>
 </blockquote>
 <p>它为了不与SDImageCache类产生冲突造成重复缓存，所以在请求的时候并没有做图片的存储工作。它把下载图片和缓存全部都交由SDWebImageManager来管理了。</p>
-<dl><dt>然后关于URL的缓存策略不出乎意料的还是就常见的2中方式<code>NSURLRequestUseProtocolCachePolicy</code></dt><dd>默认的缓存策略，<br>如果缓存不存在，直接从服务端获取。如果缓存存在，会根据response中的Cache-Control字段判断下一步操作，如:<br>Cache-Control字段为must-revalidata,<br>则询问服务端该数据是否有更新，无更新的话直接返回给用户缓存数据，若已更新，则请求服务端.</dd></dl><p><code>NSURLRequestReloadIgnoringLocalCacheData</code> :<br>忽略本地缓存，直接向服务器请求数据。</p>
+<p>然后关于URL的缓存策略不出乎意料的还是就常见的2中方式<code>NSURLRequestUseProtocolCachePolicy</code><br>
+: 默认的缓存策略，<br>
+如果缓存不存在，直接从服务端获取。如果缓存存在，会根据response中的Cache-Control字段判断下一步操作，如:<br>
+Cache-Control字段为must-revalidata,<br>
+则询问服务端该数据是否有更新，无更新的话直接返回给用户缓存数据，若已更新，则请求服务端.</p>
+<p><code>NSURLRequestReloadIgnoringLocalCacheData</code> :<br>
+忽略本地缓存，直接向服务器请求数据。</p>
 <pre><code>- (id &lt;SDWebImageOperation&gt;)downloadImageWithURL:(NSURL*)url options:(SDWebImageDownloaderOptions)options progress:(SDWebImageDownloaderProgressBlock)progressBlock completed:(SDWebImageDownloaderCompletedBlock)completedBlock &#123;
 __block SDWebImageDownloaderOperation *operation;
 __weak __typeof(self)wself = self;
@@ -99,7 +112,7 @@ __weak __typeof(self)wself = self;
 
     [wself.downloadQueue addOperation:operation];
     if (wself.executionOrder == SDWebImageDownloaderLIFOExecutionOrder) &#123;
-        // Emulate LIFO execution order by systematically adding new operations as last operation&#39;s dependency
+        // Emulate LIFO execution order by systematically adding new operations as last operation's dependency
         [wself.lastAddedOperation addDependency:operation];
         wself.lastAddedOperation = operation;
     &#125;
@@ -111,23 +124,31 @@ return operation;
 <p>SDWebImageDownLoader默认的缓存策略是<code>NSURLRequestReloadIgnoringLocalCacheData</code>，它会把已经设置好的request交由SDWebImageDownloaderOperation处理图片方向，标记标签等，它命名的标签就是URL。最终通过block返回给SDWebImageManager做本地存储工作。直到下次加载图片的时候会通过标签进行本地搜寻直接返回图片，如果本地没有该图片就会再通过NSURLConnection请求资源。</p>
 <p>在上面几个步骤中有几个问题需要讲一下：</p>
 <ul>
-<li><p>为什么SDWebImage不直接使用NSURLConection自己的缓存策略，反而还另外写了个SDImageCache类。那么麻烦的事情肯定有其中的原因在。</p>
+<li>
+<p>为什么SDWebImage不直接使用NSURLConection自己的缓存策略，反而还另外写了个SDImageCache类。那么麻烦的事情肯定有其中的原因在。</p>
 <ul>
-<li>  因为NSURLConection的缓存方式是把图片以data的形式存在本地的，所以SDWebImage考虑到如果频繁使用图片的情况下会花很多的资源在处理data转成UIImage对象上，所以才避开了这个缓存方式改以用SDImageCache。</li>
+<li>因为NSURLConection的缓存方式是把图片以data的形式存在本地的，所以SDWebImage考虑到如果频繁使用图片的情况下会花很多的资源在处理data转成UIImage对象上，所以才避开了这个缓存方式改以用SDImageCache。</li>
 </ul>
 </li>
-<li><p>使用过程当中有什么值得注意的细节</p>
+<li>
+<p>使用过程当中有什么值得注意的细节</p>
 <ul>
-<li><p>都知道压缩图片是一件很伤神伤力的事情，强大的SDWebImage也无法轻松承受多张图片同时解压缩过程，所以特地把这个过程放在了自动释放池中进行。但是在iOS7上面还是要记得通过调用<code>[SDImageCache sharedImageCache] clearMemory]</code>来清理缓存。详细可查看<code>SDWebImageDecoder</code>类。<br>  PS:它是不会对gif格式的图片进行压缩的。</p>
+<li>
+<p>都知道压缩图片是一件很伤神伤力的事情，强大的SDWebImage也无法轻松承受多张图片同时解压缩过程，所以特地把这个过程放在了自动释放池中进行。但是在iOS7上面还是要记得通过调用<code>[SDImageCache sharedImageCache] clearMemory]</code>来清理缓存。详细可查看<code>SDWebImageDecoder</code>类。<br>
+PS:它是不会对gif格式的图片进行压缩的。</p>
 </li>
-<li><p>  常用的图片格式有gif，jpg，png,tiff,bmp，webp等都是支持的。</p>
+<li>
+<p>常用的图片格式有gif，jpg，png,tiff,bmp，webp等都是支持的。</p>
 </li>
-<li><p>  目前使用的是NSURLConnection，所以还不支持后台运行。</p>
+<li>
+<p>目前使用的是NSURLConnection，所以还不支持后台运行。</p>
 </li>
 </ul>
 </li>
 </ul>
 <p>大致的缓存处理过程就是这么回事，核心思路就是这些，其他辅助类都不多做解释了。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>结构十分清晰，该避免的一些基础性的错误都避免了，类似retain<br>cycle，线程的管理。耗时长的请求都放在异步执行了。这个缓存策略是我以前从没想过的问题，为了追求性能的极致确实需要做到这份儿上。</p>
+<h3 id="总结">总结</h3>
+<p>结构十分清晰，该避免的一些基础性的错误都避免了，类似retain<br>
+cycle，线程的管理。耗时长的请求都放在异步执行了。这个缓存策略是我以前从没想过的问题，为了追求性能的极致确实需要做到这份儿上。</p>
 <p>代码上面没有什么难度，大量的基础知识非常适合中级iOS程序员做提升自己的训练课程，以上。</p>
 </article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/http/%E8%B0%88%E8%B0%88Http%E5%92%8CHttps%20/" title="谈谈Http和Https"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 谈谈Http和Https</span></a><a class="button is-default" href="/ios/%E5%88%9B%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89UIViewController%E8%BF%87%E6%B8%A1%E5%8A%A8%E7%94%BB/" title="创建自定义UIViewController过渡动画"><span class="has-text-weight-semibold">下一页: 创建自定义UIViewController过渡动画</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="fuer4869/fuer4869.github.io" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/fuer4869"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> loannes 2022</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>
